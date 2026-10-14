@@ -1,0 +1,10 @@
+{
+  "checked": 70,
+  "changed": [
+    "src/pvp/heroSkills/index.ts",
+    "src/pvp/heroSkills/resolveHeroSkills.ts",
+    "src/pvp/heroSkills/runtime.ts",
+    "src/pvp/heroSkills/types.ts",
+    "src/pvp/heroSkills/definitions/s3Heroes.ts"
+  ]
+}

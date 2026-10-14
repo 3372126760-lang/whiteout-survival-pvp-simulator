@@ -1,0 +1,371 @@
+{
+  "recordedAt": "2026-10-07T13:44:31.889Z",
+  "reports": [
+    {
+      "serverStage": "s11",
+      "provenance": "Full server-available body pool, four independent slots, same primary effect family at most two, Lv5; ordered raw identity counts. Current Criterion template aliases and commuting equal-level free-slot permutations include expected special proxies where order-independent; they do not establish formal seed-by-seed equivalence. Protected exact identities/orders are retained. No formal battles.",
+      "unorderedHeroIdentityCombinations": 19488,
+      "bodyPreprocessMs": 2181.5927,
+      "rawBodyCombinationCount": 3111696,
+      "rejectedDuringGenerationBySameEffectFamily": 112620,
+      "rejectedBySameEffectFamily": 112620,
+      "afterSameEffectMax2": 2999076,
+      "rejectedByStrictDominance": 0,
+      "rejectedBySkillDominance": 0,
+      "rejectedByProbabilityDominance": 1178952,
+      "afterStrictDominance": 2999076,
+      "afterProbabilityDominance": 1820124,
+      "rejectedBySemanticEquivalence": 1800622,
+      "semanticBodyCombinationCount": 19502,
+      "rejectedByParetoDominance": 14,
+      "afterPareto": 19488,
+      "afterMarginalStacking": 19488,
+      "finalPreprocessedBodyCount": 19488,
+      "preprocessedBodyCount": 19488,
+      "sourceSkillCount": 42,
+      "sourcesAfterStrictDominance": 42,
+      "sourcesAfterProbabilityDominance": 37,
+      "semanticMergeReasons": [
+        "identical current numeric Criterion templates share an identity representative",
+        "free equal-level slot permutations commute in Criterion except redirect and mixed proc last-binding lanes",
+        "protected complete identities and orders are restored; selected formal runtime slot order is unchanged"
+      ],
+      "formalSeedOrderEquivalenceClaimed": false,
+      "skillDominance": [
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 3
+        }
+      ],
+      "warnings": [
+        {
+          "code": "SEARCH_SPACE_EXPLOSION_WARNING",
+          "stage": "B0 preprocessedBody",
+          "actual": 19488,
+          "threshold": 1500
+        }
+      ],
+      "rejectedByLowMarginalStacking": 0,
+      "marginalPruningScope": "No Head/Ratio at B0; context-dependent pruning is recorded as rejectedJointByLowMarginalStacking at C1."
+    },
+    {
+      "serverStage": "s16",
+      "provenance": "Full server-available body pool, four independent slots, same primary effect family at most two, Lv5; ordered raw identity counts. Current Criterion template aliases and commuting equal-level free-slot permutations include expected special proxies where order-independent; they do not establish formal seed-by-seed equivalence. Protected exact identities/orders are retained. No formal battles.",
+      "unorderedHeroIdentityCombinations": 79048,
+      "bodyPreprocessMs": 4898.1729,
+      "rawBodyCombinationCount": 10556001,
+      "rejectedDuringGenerationBySameEffectFamily": 342549,
+      "rejectedBySameEffectFamily": 342549,
+      "afterSameEffectMax2": 10213452,
+      "rejectedByStrictDominance": 0,
+      "rejectedBySkillDominance": 0,
+      "rejectedByProbabilityDominance": 3106680,
+      "afterStrictDominance": 10213452,
+      "afterProbabilityDominance": 7106772,
+      "rejectedBySemanticEquivalence": 7027710,
+      "semanticBodyCombinationCount": 79062,
+      "rejectedByParetoDominance": 14,
+      "afterPareto": 79048,
+      "afterMarginalStacking": 79048,
+      "finalPreprocessedBodyCount": 79048,
+      "preprocessedBodyCount": 79048,
+      "sourceSkillCount": 57,
+      "sourcesAfterStrictDominance": 57,
+      "sourcesAfterProbabilityDominance": 52,
+      "semanticMergeReasons": [
+        "identical current numeric Criterion templates share an identity representative",
+        "free equal-level slot permutations commute in Criterion except redirect and mixed proc last-binding lanes",
+        "protected complete identities and orders are restored; selected formal runtime slot order is unchanged"
+      ],
+      "formalSeedOrderEquivalenceClaimed": false,
+      "skillDominance": [
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 0
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 1
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 2
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance",
+          "slot": 3
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance",
+          "slot": 3
+        }
+      ],
+      "warnings": [
+        {
+          "code": "SEARCH_SPACE_EXPLOSION_WARNING",
+          "stage": "B0 preprocessedBody",
+          "actual": 79048,
+          "threshold": 1500
+        }
+      ],
+      "rejectedByLowMarginalStacking": 0,
+      "marginalPruningScope": "No Head/Ratio at B0; context-dependent pruning is recorded as rejectedJointByLowMarginalStacking at C1."
+    }
+  ]
+}

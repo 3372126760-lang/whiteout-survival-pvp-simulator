@@ -1,0 +1,806 @@
+{
+  "recordedAt": "2026-10-06T22:58:51.486Z",
+  "node": "v24.20.0",
+  "provenance": "Synthetic six-hero equal panels; real numeric functions and real formal BattleEngine; single-thread. Timing excludes allocation sampling pass. No real 89.8% configuration supplied.",
+  "measurements": [
+    {
+      "wallStartMs": 1363.5769,
+      "name": "BodyEffectSignature aggregate",
+      "runs": 2000,
+      "batchSize": 1,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 26.41229999999996,
+      "p50Us": 22.499999999809006,
+      "p95Us": 35.20000000003165,
+      "wallMs": 52.82459999999992,
+      "heapNetDeltaBytes": 1127424,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 2000,
+        "sampledBytes": 51265968,
+        "estimatedBytesPerRun": 25632.984,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 4,
+        "durationMs": 2.6677998900413513
+      }
+    },
+    {
+      "wallStartMs": 1477.9652,
+      "name": "rough body criterion single",
+      "runs": 10000,
+      "batchSize": 1,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 0.25118999999999686,
+      "p50Us": 0.09999999997489795,
+      "p95Us": 0.20000000017716957,
+      "wallMs": 2.5118999999999687,
+      "heapNetDeltaBytes": 2880784,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 2000,
+        "sampledBytes": 98352,
+        "estimatedBytesPerRun": 49.176,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 0,
+        "durationMs": 0
+      }
+    },
+    {
+      "wallStartMs": 1498.5716,
+      "name": "MatrixCriterion single",
+      "runs": 3000,
+      "batchSize": 1,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 48.83759999999999,
+      "p50Us": 45.29999999999745,
+      "p95Us": 61.599999999998545,
+      "wallMs": 146.51279999999997,
+      "heapNetDeltaBytes": -7076920,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 2000,
+        "sampledBytes": 138671416,
+        "estimatedBytesPerRun": 69335.708,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 13,
+        "durationMs": 2.619000017642975
+      }
+    },
+    {
+      "wallStartMs": 1783.319,
+      "name": "100k MatrixCriterion",
+      "runs": 100000,
+      "batchSize": 100,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 44.882068999999994,
+      "p50Us": 44.15100000000166,
+      "p95Us": 48.81599999999935,
+      "wallMs": 4488.206899999999,
+      "heapNetDeltaBytes": -7169304,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 2000,
+        "sampledBytes": 128773984,
+        "estimatedBytesPerRun": 64386.992,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 389,
+        "durationMs": 65.51029884815216
+      }
+    },
+    {
+      "wallStartMs": 6390.5648,
+      "name": "1M rough body criterion",
+      "runs": 1000000,
+      "batchSize": 1000,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 0.01913079999999991,
+      "p50Us": 0.01720000000022992,
+      "p95Us": 0.0272000000004482,
+      "wallMs": 19.13079999999991,
+      "heapNetDeltaBytes": 873032,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 2000,
+        "sampledBytes": 65568,
+        "estimatedBytesPerRun": 32.784,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 1,
+        "durationMs": 0.43540000915527344
+      }
+    },
+    {
+      "wallStartMs": 6474.7378,
+      "name": "Criterion official coefficient compilation",
+      "runs": 300,
+      "batchSize": 1,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 487.3293333333337,
+      "p50Us": 446.10000000011496,
+      "p95Us": 686.9999999998981,
+      "wallMs": 146.19880000000012,
+      "heapNetDeltaBytes": 12571760,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 300,
+        "sampledBytes": 326607272,
+        "estimatedBytesPerRun": 1088690.9066666667,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 19,
+        "durationMs": 3.821600019931793
+      }
+    },
+    {
+      "wallStartMs": 6901.2881,
+      "name": "DeterministicTheory",
+      "runs": 1000,
+      "batchSize": 1,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 353.1891000000005,
+      "p50Us": 335.79999999983556,
+      "p95Us": 480.199999999968,
+      "wallMs": 353.1891000000005,
+      "heapNetDeltaBytes": 7203184,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 1000,
+        "sampledBytes": 613301016,
+        "estimatedBytesPerRun": 613301.016,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 37,
+        "durationMs": 7.214299976825714
+      }
+    },
+    {
+      "wallStartMs": 8885.21,
+      "name": "BattleEngine fast",
+      "runs": 300,
+      "batchSize": 1,
+      "latencyUnit": "microseconds per evaluation",
+      "meanUs": 10206.401666666667,
+      "p50Us": 10037.099999999555,
+      "p95Us": 12308.500000001004,
+      "wallMs": 3061.9205,
+      "heapNetDeltaBytes": 11277464,
+      "allocations": {
+        "method": "V8 statistical heap sampling; separate instrumented pass",
+        "runs": 300,
+        "sampledBytes": 3638108648,
+        "estimatedBytesPerRun": 12127028.826666666,
+        "exactObjectCount": null
+      },
+      "gc": {
+        "events": 111,
+        "durationMs": 39.228200137615204
+      }
+    }
+  ],
+  "rankingStudy": {
+    "candidates": 24,
+    "trialsPerCandidate": 100,
+    "formalRuns": 2400,
+    "spearman": 0.4103176124036522,
+    "rows": [
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": 0.1124218946895646,
+        "uncertainty": 0.95,
+        "formalWins": 86,
+        "formalTrials": 100,
+        "formalWinRate": 0.86
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.34808480280316606,
+        "uncertainty": 0.95,
+        "formalWins": 68,
+        "formalTrials": 100,
+        "formalWinRate": 0.68
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.36137150378398464,
+        "uncertainty": 0.95,
+        "formalWins": 11,
+        "formalTrials": 100,
+        "formalWinRate": 0.11
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": 0.0673172360267473,
+        "uncertainty": 0.95,
+        "formalWins": 1,
+        "formalTrials": 100,
+        "formalWinRate": 0.01
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.3622107495582357,
+        "uncertainty": 0.95,
+        "formalWins": 0,
+        "formalTrials": 100,
+        "formalWinRate": 0
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.4317701908310545,
+        "uncertainty": 0.95,
+        "formalWins": 0,
+        "formalTrials": 100,
+        "formalWinRate": 0
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s1.moli": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": -0.41786739366049297,
+        "uncertainty": 0.95,
+        "formalWins": 74,
+        "formalTrials": 100,
+        "formalWinRate": 0.74
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s1.moli": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.5409925401122352,
+        "uncertainty": 0.95,
+        "formalWins": 66,
+        "formalTrials": 100,
+        "formalWinRate": 0.66
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s1.moli": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.5232307233717425,
+        "uncertainty": 0.95,
+        "formalWins": 10,
+        "formalTrials": 100,
+        "formalWinRate": 0.1
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s1.moli": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": -0.4571611439590433,
+        "uncertainty": 0.95,
+        "formalWins": 2,
+        "formalTrials": 100,
+        "formalWinRate": 0.02
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s1.moli": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.5693175394153236,
+        "uncertainty": 0.95,
+        "formalWins": 1,
+        "formalTrials": 100,
+        "formalWinRate": 0.01
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s11.eleonora": 10,
+            "hero.s1.moli": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.5864330569358289,
+        "uncertainty": 0.95,
+        "formalWins": 0,
+        "formalTrials": 100,
+        "formalWinRate": 0
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": 0.26411228405858195,
+        "uncertainty": 0.95,
+        "formalWins": 89,
+        "formalTrials": 100,
+        "formalWinRate": 0.89
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.19074919978659452,
+        "uncertainty": 0.95,
+        "formalWins": 79,
+        "formalTrials": 100,
+        "formalWinRate": 0.79
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.25731976805679235,
+        "uncertainty": 0.95,
+        "formalWins": 40,
+        "formalTrials": 100,
+        "formalWinRate": 0.4
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": 0.2726460436381511,
+        "uncertainty": 0.95,
+        "formalWins": 25,
+        "formalTrials": 100,
+        "formalWinRate": 0.25
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.19078803392833357,
+        "uncertainty": 0.95,
+        "formalWins": 5,
+        "formalTrials": 100,
+        "formalWinRate": 0.05
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s11.lloyd": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.3226775074817737,
+        "uncertainty": 0.95,
+        "formalWins": 0,
+        "formalTrials": 100,
+        "formalWinRate": 0
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s1.moli": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": -0.3467915966394515,
+        "uncertainty": 0.95,
+        "formalWins": 78,
+        "formalTrials": 100,
+        "formalWinRate": 0.78
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s1.moli": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.480635796430452,
+        "uncertainty": 0.95,
+        "formalWins": 68,
+        "formalTrials": 100,
+        "formalWinRate": 0.68
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s1.moli": 10,
+            "hero.s11.rufus": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.47993638725810295,
+        "uncertainty": 0.95,
+        "formalWins": 35,
+        "formalTrials": 100,
+        "formalWinRate": 0.35
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s1.moli": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        },
+        "criterionMargin": -0.3690124166324519,
+        "uncertainty": 0.95,
+        "formalWins": 17,
+        "formalTrials": 100,
+        "formalWinRate": 0.17
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s1.moli": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 70,
+            "lancer": 5,
+            "marksman": 25
+          }
+        },
+        "criterionMargin": -0.4960005142549417,
+        "uncertainty": 0.95,
+        "formalWins": 11,
+        "formalTrials": 100,
+        "formalWinRate": 0.11
+      },
+      {
+        "candidate": {
+          "leaderHeroIds": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "memberSkillIds": [],
+          "headWeaponLevels": {
+            "hero.s1.nataliya": 10,
+            "hero.s1.moli": 10,
+            "hero.s1.jinman": 10
+          },
+          "ratios": {
+            "shield": 20,
+            "lancer": 20,
+            "marksman": 60
+          }
+        },
+        "criterionMargin": -0.5323094500955924,
+        "uncertainty": 0.95,
+        "formalWins": 0,
+        "formalTrials": 100,
+        "formalWinRate": 0
+      }
+    ]
+  },
+  "notes": [
+    "heapNetDelta is retained/net heap, not allocation count",
+    "allocations are statistical V8 estimates; exact object count unavailable",
+    "batched p50/p95 are batch-average per evaluation, not individual tail latency",
+    "includes timer overhead; microbench targets are not acceptance assertions"
+  ],
+  "sink": 1342026.451895806
+}

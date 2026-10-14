@@ -1,0 +1,1262 @@
+{
+  "recordedAt": "2026-10-07T16:14:17.880Z",
+  "rule": "R/SR have no S generation; server S3+ excludes all R/SR from optimizer HEAD only. Recent window uses enabled owned stage-legal S heroes.",
+  "ratioScan": {
+    "stepPercent": 5,
+    "unrestrictedRatioCount": 231
+  },
+  "globalRegistry": {
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 49
+  },
+  "defaultUi": {
+    "serverGeneration": 11,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 34,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 34
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 4,
+    "excludedSRByServerStage": 9,
+    "optimizerHeadHeroCount": 34,
+    "sHeroCountByGeneration": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 12,
+      "lancer": 11,
+      "marksman": 11
+    },
+    "maxEnabledSGeneration": 11,
+    "recentSGenerationWindow": [
+      9,
+      11
+    ],
+    "recentEligibleHeadCount": 876,
+    "rawHeadRatioCount": 202356,
+    "optimizationPoolVisibleHeroCount": 34,
+    "excludedPostGen3RCount": 4,
+    "excludedPostGen3SRCount": 9,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 12,
+      "lancer": 11,
+      "marksman": 11
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 1452,
+    "selectedHeadHeroIds": [
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s9.magenusi",
+      "hero.s9.fuleide",
+      "hero.s9.xiula",
+      "hero.s10.gregory",
+      "hero.s10.freya",
+      "hero.s10.blanchette",
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus"
+    ],
+    "excludedHeroes": [
+      {
+        "heroId": "hero.r.youjin",
+        "name": "尤金",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.shimisi",
+        "name": "史密斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.chali",
+        "name": "查理",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.r.kelaoruisi",
+        "name": "克劳瑞斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.xieergai",
+        "name": "谢尔盖",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.sr.patelike",
+        "name": "帕特里克",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.baxiti",
+        "name": "巴希提",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiexi",
+        "name": "杰西",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.body.shuyun",
+        "name": "书允",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiesaier",
+        "name": "杰塞尔",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.lumubogen",
+        "name": "卢姆·波根",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.lingshuang",
+        "name": "凌霜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.jina",
+        "name": "吉娜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      }
+    ]
+  },
+  "allCatalogS2": {
+    "serverGeneration": 2,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 7,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 7
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 0,
+    "excludedSRByServerStage": 0,
+    "optimizerHeadHeroCount": 20,
+    "sHeroCountByGeneration": {
+      "1": 4,
+      "2": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 6,
+      "lancer": 7,
+      "marksman": 7
+    },
+    "maxEnabledSGeneration": 2,
+    "recentSGenerationWindow": [
+      1,
+      2
+    ],
+    "recentEligibleHeadCount": 219,
+    "rawHeadRatioCount": 50589,
+    "optimizationPoolVisibleHeroCount": 20,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 6,
+      "lancer": 7,
+      "marksman": 7
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 4,
+      "2": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 294,
+    "selectedHeadHeroIds": [
+      "hero.r.youjin",
+      "hero.r.shimisi",
+      "hero.r.chali",
+      "hero.r.kelaoruisi",
+      "hero.sr.xieergai",
+      "hero.sr.patelike",
+      "hero.sr.baxiti",
+      "hero.body.jiexi",
+      "hero.body.shuyun",
+      "hero.body.jiesaier",
+      "hero.sr.lumubogen",
+      "hero.sr.lingshuang",
+      "hero.sr.jina",
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo"
+    ],
+    "excludedHeroes": []
+  },
+  "allCatalogS3": {
+    "serverGeneration": 3,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 10,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 10
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 4,
+    "excludedSRByServerStage": 9,
+    "optimizerHeadHeroCount": 10,
+    "sHeroCountByGeneration": {
+      "1": 4,
+      "2": 3,
+      "3": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 4,
+      "lancer": 3,
+      "marksman": 3
+    },
+    "maxEnabledSGeneration": 3,
+    "recentSGenerationWindow": [
+      1,
+      3
+    ],
+    "recentEligibleHeadCount": 36,
+    "rawHeadRatioCount": 8316,
+    "optimizationPoolVisibleHeroCount": 10,
+    "excludedPostGen3RCount": 4,
+    "excludedPostGen3SRCount": 9,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 4,
+      "lancer": 3,
+      "marksman": 3
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 4,
+      "2": 3,
+      "3": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 36,
+    "selectedHeadHeroIds": [
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige"
+    ],
+    "excludedHeroes": [
+      {
+        "heroId": "hero.r.youjin",
+        "name": "尤金",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.shimisi",
+        "name": "史密斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.chali",
+        "name": "查理",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.r.kelaoruisi",
+        "name": "克劳瑞斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.xieergai",
+        "name": "谢尔盖",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.sr.patelike",
+        "name": "帕特里克",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.baxiti",
+        "name": "巴希提",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiexi",
+        "name": "杰西",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.body.shuyun",
+        "name": "书允",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiesaier",
+        "name": "杰塞尔",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.lumubogen",
+        "name": "卢姆·波根",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.lingshuang",
+        "name": "凌霜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.jina",
+        "name": "吉娜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      }
+    ]
+  },
+  "allCatalogS11": {
+    "serverGeneration": 11,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 34,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 34
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 4,
+    "excludedSRByServerStage": 9,
+    "optimizerHeadHeroCount": 34,
+    "sHeroCountByGeneration": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 12,
+      "lancer": 11,
+      "marksman": 11
+    },
+    "maxEnabledSGeneration": 11,
+    "recentSGenerationWindow": [
+      9,
+      11
+    ],
+    "recentEligibleHeadCount": 876,
+    "rawHeadRatioCount": 202356,
+    "optimizationPoolVisibleHeroCount": 34,
+    "excludedPostGen3RCount": 4,
+    "excludedPostGen3SRCount": 9,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 12,
+      "lancer": 11,
+      "marksman": 11
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 1452,
+    "selectedHeadHeroIds": [
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s9.magenusi",
+      "hero.s9.fuleide",
+      "hero.s9.xiula",
+      "hero.s10.gregory",
+      "hero.s10.freya",
+      "hero.s10.blanchette",
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus"
+    ],
+    "excludedHeroes": [
+      {
+        "heroId": "hero.r.youjin",
+        "name": "尤金",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.shimisi",
+        "name": "史密斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.chali",
+        "name": "查理",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.r.kelaoruisi",
+        "name": "克劳瑞斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.xieergai",
+        "name": "谢尔盖",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.sr.patelike",
+        "name": "帕特里克",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.baxiti",
+        "name": "巴希提",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiexi",
+        "name": "杰西",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.body.shuyun",
+        "name": "书允",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiesaier",
+        "name": "杰塞尔",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.lumubogen",
+        "name": "卢姆·波根",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.lingshuang",
+        "name": "凌霜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.jina",
+        "name": "吉娜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      }
+    ]
+  },
+  "allCatalogS16": {
+    "serverGeneration": 16,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 49,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 4,
+    "excludedSRByServerStage": 9,
+    "optimizerHeadHeroCount": 49,
+    "sHeroCountByGeneration": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3,
+      "12": 3,
+      "13": 3,
+      "14": 3,
+      "15": 3,
+      "16": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 17,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "maxEnabledSGeneration": 16,
+    "recentSGenerationWindow": [
+      14,
+      16
+    ],
+    "recentEligibleHeadCount": 1986,
+    "rawHeadRatioCount": 458766,
+    "optimizationPoolVisibleHeroCount": 49,
+    "excludedPostGen3RCount": 4,
+    "excludedPostGen3SRCount": 9,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 17,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3,
+      "12": 3,
+      "13": 3,
+      "14": 3,
+      "15": 3,
+      "16": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 4352,
+    "selectedHeadHeroIds": [
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s9.magenusi",
+      "hero.s9.fuleide",
+      "hero.s9.xiula",
+      "hero.s10.gregory",
+      "hero.s10.freya",
+      "hero.s10.blanchette",
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus",
+      "hero.s12.hervor",
+      "hero.s12.karol",
+      "hero.s12.ligeia",
+      "hero.s13.gisela",
+      "hero.s13.flora",
+      "hero.s13.vulcanus",
+      "hero.s14.elif",
+      "hero.s14.dominic",
+      "hero.s14.cara",
+      "hero.s15.hank",
+      "hero.s15.estrella",
+      "hero.s15.viveca",
+      "hero.s16.sigel",
+      "hero.s16.ursa",
+      "hero.s16.aishilin"
+    ],
+    "excludedHeroes": [
+      {
+        "heroId": "hero.r.youjin",
+        "name": "尤金",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.shimisi",
+        "name": "史密斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.chali",
+        "name": "查理",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.r.kelaoruisi",
+        "name": "克劳瑞斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.xieergai",
+        "name": "谢尔盖",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.sr.patelike",
+        "name": "帕特里克",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.baxiti",
+        "name": "巴希提",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiexi",
+        "name": "杰西",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.body.shuyun",
+        "name": "书允",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiesaier",
+        "name": "杰塞尔",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.lumubogen",
+        "name": "卢姆·波根",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.lingshuang",
+        "name": "凌霜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.jina",
+        "name": "吉娜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      }
+    ]
+  },
+  "serverS11EnabledThroughS8": {
+    "serverGeneration": 11,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 34,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 25
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 4,
+    "excludedSRByServerStage": 9,
+    "optimizerHeadHeroCount": 25,
+    "sHeroCountByGeneration": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 9,
+      "lancer": 8,
+      "marksman": 8
+    },
+    "maxEnabledSGeneration": 8,
+    "recentSGenerationWindow": [
+      6,
+      8
+    ],
+    "recentEligibleHeadCount": 426,
+    "rawHeadRatioCount": 98406,
+    "optimizationPoolVisibleHeroCount": 25,
+    "excludedPostGen3RCount": 4,
+    "excludedPostGen3SRCount": 9,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 9,
+      "lancer": 8,
+      "marksman": 8
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 576,
+    "selectedHeadHeroIds": [
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike"
+    ],
+    "excludedHeroes": [
+      {
+        "heroId": "hero.r.youjin",
+        "name": "尤金",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.shimisi",
+        "name": "史密斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.chali",
+        "name": "查理",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.r.kelaoruisi",
+        "name": "克劳瑞斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.xieergai",
+        "name": "谢尔盖",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.sr.patelike",
+        "name": "帕特里克",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.baxiti",
+        "name": "巴希提",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiexi",
+        "name": "杰西",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.body.shuyun",
+        "name": "书允",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiesaier",
+        "name": "杰塞尔",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.lumubogen",
+        "name": "卢姆·波根",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.lingshuang",
+        "name": "凌霜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.jina",
+        "name": "吉娜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      }
+    ]
+  },
+  "oldLargeSsrFixture": {
+    "serverGeneration": 16,
+    "rHeroCount": 4,
+    "srHeroCount": 9,
+    "sHeroCount": 49,
+    "enabledPoolCategoryCounts": {
+      "rHeroCount": 0,
+      "srHeroCount": 0,
+      "sHeroCount": 47
+    },
+    "registryCategoryCounts": {
+      "rHeroCount": 4,
+      "srHeroCount": 9,
+      "sHeroCount": 49
+    },
+    "excludedRByServerStage": 0,
+    "excludedSRByServerStage": 0,
+    "optimizerHeadHeroCount": 47,
+    "sHeroCountByGeneration": {
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3,
+      "12": 3,
+      "13": 3,
+      "14": 3,
+      "15": 3,
+      "16": 3
+    },
+    "heroCountByTroopTypeAfterHeadFilter": {
+      "shield": 15,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "maxEnabledSGeneration": 16,
+    "recentSGenerationWindow": [
+      14,
+      16
+    ],
+    "recentEligibleHeadCount": 1812,
+    "rawHeadRatioCount": 418572,
+    "optimizationPoolVisibleHeroCount": 47,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 15,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3,
+      "12": 3,
+      "13": 3,
+      "14": 3,
+      "15": 3,
+      "16": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 3840,
+    "selectedHeadHeroIds": [
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s9.magenusi",
+      "hero.s9.fuleide",
+      "hero.s9.xiula",
+      "hero.s10.gregory",
+      "hero.s10.freya",
+      "hero.s10.blanchette",
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus",
+      "hero.s12.hervor",
+      "hero.s12.karol",
+      "hero.s12.ligeia",
+      "hero.s13.gisela",
+      "hero.s13.flora",
+      "hero.s13.vulcanus",
+      "hero.s14.elif",
+      "hero.s14.dominic",
+      "hero.s14.cara",
+      "hero.s15.hank",
+      "hero.s15.estrella",
+      "hero.s15.viveca",
+      "hero.s16.sigel",
+      "hero.s16.ursa",
+      "hero.s16.aishilin"
+    ],
+    "excludedHeroes": [
+      {
+        "heroId": "hero.r.youjin",
+        "name": "尤金",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.shimisi",
+        "name": "史密斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.r.chali",
+        "name": "查理",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.r.kelaoruisi",
+        "name": "克劳瑞斯",
+        "category": "R",
+        "categoryLabel": "R",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.xieergai",
+        "name": "谢尔盖",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "shield"
+      },
+      {
+        "heroId": "hero.sr.patelike",
+        "name": "帕特里克",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.baxiti",
+        "name": "巴希提",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiexi",
+        "name": "杰西",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.body.shuyun",
+        "name": "书允",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.body.jiesaier",
+        "name": "杰塞尔",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      },
+      {
+        "heroId": "hero.sr.lumubogen",
+        "name": "卢姆·波根",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.lingshuang",
+        "name": "凌霜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "lancer"
+      },
+      {
+        "heroId": "hero.sr.jina",
+        "name": "吉娜",
+        "category": "SR",
+        "categoryLabel": "SR",
+        "troopType": "marksman"
+      }
+    ]
+  },
+  "preservedManualAndBodyCategories": {
+    "manualRegistryRCount": 4,
+    "manualRegistrySRCount": 9,
+    "bodySRHeroIds": [
+      "hero.sr.xieergai",
+      "hero.sr.baxiti",
+      "hero.sr.patelike",
+      "hero.body.jiexi",
+      "hero.body.jiesaier",
+      "hero.body.shuyun",
+      "hero.sr.lumubogen",
+      "hero.sr.lingshuang"
+    ]
+  },
+  "countScope": "Unrestricted unique complete shield/lancer/marksman heads, before fixed locks or baselines. No measured user config JSON was supplied; default UI and prior SSR fixture are separate audits."
+}

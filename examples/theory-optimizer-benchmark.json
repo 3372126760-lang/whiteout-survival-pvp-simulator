@@ -1,0 +1,422 @@
+{
+  "provenance": "same synthetic equal-panel eight-lineup regression; no user real battle report provided",
+  "searchSpace": "8 legal heads × 231 theoretical coarse ratios; fixed empty body; same seed 91 and final seed range",
+  "verificationTrials": 1000,
+  "old": {
+    "battles": 60040,
+    "elapsedMs": 524144.9929,
+    "best": {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s1.moli",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [],
+        "ratios": {
+          "shield": 44,
+          "lancer": 9,
+          "marksman": 47
+        }
+      },
+      "actualCounts": {
+        "shield": 15840,
+        "lancer": 3240,
+        "marksman": 16920
+      },
+      "trials": 1000,
+      "wins": 894,
+      "losses": 102,
+      "draws": 4,
+      "timeouts": 0,
+      "winRate": 0.894,
+      "wilson95": [
+        0.8733895811764342,
+        0.9115949331369485
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 12981.225,
+          "p05": 0,
+          "p50": 14711,
+          "p95": 21031,
+          "min": 0,
+          "max": 24557
+        },
+        "shield": {
+          "mean": 535.957,
+          "p05": 0,
+          "p50": 0,
+          "p95": 2836,
+          "min": 0,
+          "max": 6054
+        },
+        "lancer": {
+          "mean": 1548.144,
+          "p05": 0,
+          "p50": 1247,
+          "p95": 3240,
+          "min": 0,
+          "max": 3240
+        },
+        "marksman": {
+          "mean": 10897.124,
+          "p05": 0,
+          "p50": 12731,
+          "p95": 16515,
+          "min": 0,
+          "max": 16920
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 846.389,
+          "p05": 0,
+          "p50": 0,
+          "p95": 8335,
+          "min": 0,
+          "max": 23199
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 133.204,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 11199
+        },
+        "marksman": {
+          "mean": 713.185,
+          "p05": 0,
+          "p50": 0,
+          "p95": 8160,
+          "min": 0,
+          "max": 12000
+        }
+      },
+      "rounds": {
+        "mean": 15.278,
+        "p05": 13,
+        "p50": 15,
+        "p95": 18,
+        "min": 12,
+        "max": 20
+      }
+    },
+    "parameters": {
+      "objectiveMode": "singleWin",
+      "constraints": {
+        "fixedBodyExact": true,
+        "fixedMemberSkillIds": []
+      },
+      "stages": [
+        {
+          "ratioStep": 5,
+          "trials": 20,
+          "keep": 8,
+          "maxCandidates": 300
+        },
+        {
+          "ratioStep": 2,
+          "trials": 50,
+          "keep": 5,
+          "maxCandidates": 100
+        },
+        {
+          "ratioStep": 1,
+          "trials": 200,
+          "keep": 5,
+          "maxCandidates": 60
+        }
+      ],
+      "theory": {
+        "ratioStep": 5,
+        "localPeaksPerLineup": 3,
+        "minSurvivorsPerLineup": 1,
+        "randomExploration": 1,
+        "diversityExploration": 1,
+        "uncertaintyExploration": 1,
+        "uncertaintyWeight": 1,
+        "deterministicRounds": 24,
+        "probabilityEquivalentCoefficient": 1,
+        "calibratedEquivalents": {}
+      },
+      "initialBattleTrials": 5,
+      "verificationTrials": 1000,
+      "verificationTop": 10,
+      "topN": 5,
+      "firstSeed": 91,
+      "targetDefeatProbability": 0.9,
+      "maxWaves": 3,
+      "beamWidth": 3,
+      "branchWidth": 3,
+      "beamTrials": 50,
+      "singleFightThresholdLow": 0.05,
+      "singleFightThresholdHigh": 0.95,
+      "protectedCandidates": [
+        {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        }
+      ]
+    }
+  },
+  "current": {
+    "theoryCandidates": 1848,
+    "theoryElapsedMs": 54.20819999999367,
+    "battleCandidatesM1": 51,
+    "battles": 41005,
+    "elapsedMs": 343714.409,
+    "best": {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [],
+        "ratios": {
+          "shield": 52,
+          "lancer": 8,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "localExpansion"
+        ]
+      },
+      "actualCounts": {
+        "shield": 18720,
+        "lancer": 2880,
+        "marksman": 14400
+      },
+      "trials": 1000,
+      "wins": 942,
+      "losses": 57,
+      "draws": 1,
+      "timeouts": 0,
+      "winRate": 0.942,
+      "wilson95": [
+        0.9257504237337675,
+        0.9548667217650018
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 12981.077,
+          "p05": 0,
+          "p50": 14178,
+          "p95": 19475,
+          "min": 0,
+          "max": 24001
+        },
+        "shield": {
+          "mean": 1250.63,
+          "p05": 0,
+          "p50": 649,
+          "p95": 4174,
+          "min": 0,
+          "max": 7297
+        },
+        "lancer": {
+          "mean": 2089.345,
+          "p05": 0,
+          "p50": 2880,
+          "p95": 2880,
+          "min": 0,
+          "max": 2880
+        },
+        "marksman": {
+          "mean": 9641.102,
+          "p05": 0,
+          "p50": 10512,
+          "p95": 13824,
+          "min": 0,
+          "max": 14400
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 408.448,
+          "p05": 0,
+          "p50": 0,
+          "p95": 1749,
+          "min": 0,
+          "max": 20376
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 42.827,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 8376
+        },
+        "marksman": {
+          "mean": 365.621,
+          "p05": 0,
+          "p50": 0,
+          "p95": 1749,
+          "min": 0,
+          "max": 12000
+        }
+      },
+      "rounds": {
+        "mean": 18.316,
+        "p05": 16,
+        "p50": 18,
+        "p95": 22,
+        "min": 13,
+        "max": 25
+      }
+    },
+    "parameters": {
+      "objectiveMode": "singleWin",
+      "constraints": {
+        "fixedBodyExact": true,
+        "fixedMemberSkillIds": []
+      },
+      "stages": [
+        {
+          "ratioStep": 5,
+          "trials": 20,
+          "keep": 3000,
+          "maxCandidates": 300
+        },
+        {
+          "ratioStep": 2,
+          "trials": 50,
+          "keep": 500,
+          "maxCandidates": 100
+        },
+        {
+          "ratioStep": 1,
+          "trials": 200,
+          "keep": 50,
+          "maxCandidates": 60
+        }
+      ],
+      "theory": {
+        "ratioStep": 5,
+        "localPeaksPerLineup": 3,
+        "minSurvivorsPerLineup": 1,
+        "randomExploration": 1,
+        "diversityExploration": 1,
+        "uncertaintyExploration": 1,
+        "uncertaintyWeight": 1,
+        "deterministicRounds": 24,
+        "probabilityEquivalentCoefficient": 1,
+        "calibratedEquivalents": {}
+      },
+      "initialBattleTrials": 5,
+      "verificationTrials": 1000,
+      "verificationTop": 10,
+      "topN": 5,
+      "firstSeed": 91,
+      "targetDefeatProbability": 0.9,
+      "maxWaves": 3,
+      "beamWidth": 3,
+      "branchWidth": 3,
+      "beamTrials": 50,
+      "singleFightThresholdLow": 0.05,
+      "singleFightThresholdHigh": 0.95,
+      "protectedCandidates": [
+        {
+          "leaderHeroIds": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "memberSkillIds": [],
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        }
+      ]
+    }
+  },
+  "battleCallReductionPercent": 31.70386409060626,
+  "elapsedReductionPercent": 34.423792336870385,
+  "knownManualWinRate": 0.866,
+  "knownSelection": {
+    "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|20|30",
+    "selectionReasons": [
+      "protectedReference"
+    ]
+  },
+  "manualPreserved": true,
+  "matchesOrExceedsManual": true,
+  "matchesOrExceedsOld": true,
+  "coverage": {
+    "theoryCandidateCount": 1848,
+    "legalHeroLineupCount": 8,
+    "theoryHeroCoverage": 100,
+    "ratiosPerHeroLineup": 231,
+    "localPeaksDetected": 13,
+    "battleCandidateCount": 51,
+    "heroLineupsEnteringBattleEngine": 8,
+    "battleHeroCoverage": 100
+  },
+  "stages": [
+    {
+      "stage": "M1 · 全车头正式验证",
+      "candidates": 51,
+      "trials": 5,
+      "retained": 51,
+      "simulatedTrials": 255
+    },
+    {
+      "stage": "M2 · 正式逐级筛选",
+      "candidates": 51,
+      "trials": 20,
+      "retained": 51,
+      "simulatedTrials": 1020
+    },
+    {
+      "stage": "M3 · 正式逐级筛选",
+      "candidates": 151,
+      "trials": 50,
+      "retained": 50,
+      "simulatedTrials": 4770
+    },
+    {
+      "stage": "M4 · 正式逐级筛选",
+      "candidates": 110,
+      "trials": 200,
+      "retained": 13,
+      "simulatedTrials": 20960
+    },
+    {
+      "stage": "Final · 统一高场次复验",
+      "candidates": 13,
+      "trials": 1000,
+      "retained": 13,
+      "simulatedTrials": 13000
+    }
+  ]
+}

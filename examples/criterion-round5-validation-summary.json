@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-08",
+  "scope": "Rules confirmed after 07:39: final-report fixed heads, empty candidates, activity schedulers, optimizer pool UI",
+  "FINAL_REPORT": {
+    "singleSearchDimensions": ["ratio"],
+    "rallySearchDimensions": ["ratio", "body"],
+    "rallyFixedBodySearchDimensions": ["ratio"],
+    "headSearchEnabled": false,
+    "fixedWeaponConfirmed": true,
+    "actualUnspecifiedWeaponLevel": 0,
+    "finalReportHeroPoolHidden": true
+  },
+  "EMPTY_HEAD": {
+    "singleEmptyHeadTemplateCount": 1,
+    "singleRatioEvaluations": 231,
+    "singleCriterionEvaluations": 231,
+    "singleTheoryEvaluations": 231,
+    "firstStageRequestedBattles": 4620,
+    "ratio514Included": true,
+    "rallyEmptyHeadTemplateCount": 1,
+    "emptyHeadRecentGenerationBypass": true,
+    "emptyBodySupported": true,
+    "fixedEmptyBodyCandidateCount": 1,
+    "auditSource": "examples/criterion-round5-fixed-head-audit.json",
+    "auditBoundary": "Real Criterion/Theory and search workflow; controlled outcome oracle proves coverage, not the user's original 0.2% matchup."
+  },
+  "ThreeQueue": {
+    "iceFireSchedulerImplemented": true,
+    "randomChallengeSchedulerPreserved": true,
+    "iceFireRegressionPassed": true,
+    "threeQueueModeUIAdded": true,
+    "legacyDefaultMode": "EARTH_HEART_BRAVE_LAND",
+    "formalEngineFixtureSequence": ["A1-B1", "A2-B2", "A3-B3", "A1-B2", "A1-B3"],
+    "formalEngineFixtureWinners": ["A", "B", "B", "A", "A"],
+    "A1ShieldTroops": [90, 87, 67, 43],
+    "auditSource": "examples/criterion-round5-icefire-audit.json",
+    "auditBoundary": "Actual formal BattleEngine on synthetic fixture, not user historical report parameters."
+  },
+  "HeroPoolUI": {
+    "optimizerCardCheckboxCount": 1,
+    "ownedEditableInOptimizer": false,
+    "ownedEditableInSeparateMyHeroesSection": true,
+    "selectAllChangesOwned": false,
+    "selectAllChangesWeaponLevel": false,
+    "finalReportHeroPoolVisible": false,
+    "unownedCanBeEnabled": false
+  },
+  "gates": {
+    "typecheck": { "exitCode": 0, "log": "examples/criterion-round5-typecheck.log" },
+    "lint": { "exitCode": 0, "log": "examples/criterion-round5-lint.log" },
+    "build": { "exitCode": 0, "log": "examples/criterion-round5-build.log", "warnings": ["Existing minified chunks exceed 500 kB"] },
+    "tests": { "exitCode": 0, "files": 99, "tests": 1073, "durationSeconds": 103.72, "command": "npm.cmd test -- --maxWorkers=2", "log": "examples/criterion-round5-test-results.log" }
+  },
+  "formalCore": { "fileCount": 72, "changedFileCount": 0, "audit": "examples/criterion-round5-core-boundary-audit.json" },
+  "browser": { "visualVerification": "notPerformedThisRound", "delegatedUiEventAndPersistenceRegression": "passed", "additionalDevServersStarted": 0 }
+}

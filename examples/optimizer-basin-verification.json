@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-06",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "buildWarning": "existing main chunk exceeds 500KB",
+  "testFiles": 72,
+  "testsPassed": 857,
+  "testsFailed": 0,
+  "fullTestDurationSeconds": 87.66,
+  "coreFilesUnchanged": 55,
+  "devServerStarted": false,
+  "browserVerified": false,
+  "benchmarkArtifact": "examples/basin-optimizer-benchmark.json",
+  "documentation": "docs/pvp-basin-search-and-hero-policy.md"
+}

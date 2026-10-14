@@ -1,0 +1,160 @@
+{
+  "recordedAt": "2026-10-07T13:27:44.442Z",
+  "defaultUi": {
+    "stage": "s11",
+    "optimizationPoolVisibleHeroCount": 47,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 15,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "0": 13,
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 3840,
+    "effectiveHeroGeneration": 11,
+    "recentGenerationWindow": [
+      9,
+      11
+    ],
+    "allLegalHeads": 3840,
+    "recentEligibleHeads": 1812,
+    "oldRecentEligibleHeads": 1812,
+    "oldRecentHeadsRemovedByRarity": 0,
+    "rawHeadRatioCount": 418572,
+    "excludedHeroes": []
+  },
+  "allCatalogS11": {
+    "stage": "s11",
+    "optimizationPoolVisibleHeroCount": 47,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 15,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "0": 13,
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 3840,
+    "effectiveHeroGeneration": 11,
+    "recentGenerationWindow": [
+      9,
+      11
+    ],
+    "allLegalHeads": 3840,
+    "recentEligibleHeads": 1812,
+    "oldRecentEligibleHeads": 1812,
+    "oldRecentHeadsRemovedByRarity": 0,
+    "rawHeadRatioCount": 418572,
+    "excludedHeroes": []
+  },
+  "allCatalogS16": {
+    "stage": "s16",
+    "optimizationPoolVisibleHeroCount": 62,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 20,
+      "lancer": 21,
+      "marksman": 21
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "0": 13,
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3,
+      "12": 3,
+      "13": 3,
+      "14": 3,
+      "15": 3,
+      "16": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 8820,
+    "effectiveHeroGeneration": 16,
+    "recentGenerationWindow": [
+      14,
+      16
+    ],
+    "allLegalHeads": 8820,
+    "recentEligibleHeads": 3312,
+    "oldRecentEligibleHeads": 3312,
+    "oldRecentHeadsRemovedByRarity": 0,
+    "rawHeadRatioCount": 765072,
+    "excludedHeroes": []
+  },
+  "oldLargeSsrFixture": {
+    "stage": "s16",
+    "optimizationPoolVisibleHeroCount": 47,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 15,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 3,
+      "5": 3,
+      "6": 3,
+      "7": 3,
+      "8": 3,
+      "9": 3,
+      "10": 3,
+      "11": 3,
+      "12": 3,
+      "13": 3,
+      "14": 3,
+      "15": 3,
+      "16": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 3840,
+    "effectiveHeroGeneration": 16,
+    "recentGenerationWindow": [
+      14,
+      16
+    ],
+    "allLegalHeads": 3840,
+    "recentEligibleHeads": 1812,
+    "oldRecentEligibleHeads": 1812,
+    "oldRecentHeadsRemovedByRarity": 0,
+    "rawHeadRatioCount": 418572,
+    "excludedHeroes": []
+  }
+}

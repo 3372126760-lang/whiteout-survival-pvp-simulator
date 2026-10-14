@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-06",
+  "typecheck": "passed",
+  "lint": "passed",
+  "engineBuild": "passed",
+  "uiBuild": "passed",
+  "buildWarning": "existing main chunk exceeds 500KB",
+  "testFiles": 73,
+  "passedTests": 865,
+  "failedTests": 0,
+  "fullTestDurationSeconds": 75.87,
+  "checkedBoundaryFiles": 70,
+  "changedBoundaryFiles": [],
+  "boundaryIncludes": [
+    "battle",
+    "damage",
+    "formulas",
+    "round",
+    "heroSkills",
+    "validationUi",
+    "storage"
+  ],
+  "devServerStarted": false,
+  "existingServer": {
+    "url": "http://127.0.0.1:5173/",
+    "pid": 51740,
+    "projectIdentityVerified": true,
+    "uiHmrObserved": true
+  },
+  "browserVisualVerified": false,
+  "browserBlocker": "Edge extension inventory failed: nodeRepl.fetch request failed",
+  "newTests": [
+    "effect/hero identity and original IDs",
+    "configured level/probability/target/duration",
+    "stage availability and member slot 1 only",
+    "keyword/percent/rarity/season search",
+    "grouped options and details",
+    "no-match selected identity preserved",
+    "duplicate body IDs/levels persist unchanged",
+    "search does not save/rerender; actual selection saves exact hero"
+  ]
+}

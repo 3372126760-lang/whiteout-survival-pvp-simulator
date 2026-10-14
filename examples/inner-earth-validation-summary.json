@@ -1,0 +1,228 @@
+﻿{
+    "generatedAt":  "2026-10-08T03:27:06.8042159Z",
+    "battleSceneOptions":  [
+                               "SINGLE",
+                               "THREE_THREE_THREE",
+                               "ICE_FIRE_LEAGUE",
+                               "RALLY",
+                               "INNER_EARTH"
+                           ],
+    "genericThreeQueueUiRemoved":  true,
+    "innerEarthModeCount":  6,
+    "modeAudits":  [
+                       {
+                           "battleScenario":  "INNER_EARTH",
+                           "innerEarthMode":  "HEART_OF_EARTH",
+                           "schedulerType":  "RandomAliveQueueScheduler",
+                           "attributeInputMode":  "prediction",
+                           "heroSearchEnabled":  true,
+                           "ratioSearchEnabled":  true,
+                           "searchDimensions":  [
+                                                    "head",
+                                                    "ratio"
+                                                ],
+                           "fixedTroopTier":  null,
+                           "enemyCapacityMode":  "userInput",
+                           "enemyCapacity":  1,
+                           "enemyRatioPreset":  "BALANCED",
+                           "petEnabled":  true,
+                           "petAppliedToBaseStats":  false,
+                           "petAppliedToOptimization":  true,
+                           "t12SkillEnabled":  true,
+                           "t12SkillMaxLevel":  24
+                       },
+                       {
+                           "battleScenario":  "INNER_EARTH",
+                           "innerEarthMode":  "HERO_LAND",
+                           "schedulerType":  "RandomAliveQueueScheduler",
+                           "attributeInputMode":  "prediction",
+                           "heroSearchEnabled":  true,
+                           "ratioSearchEnabled":  true,
+                           "searchDimensions":  [
+                                                    "head",
+                                                    "ratio"
+                                                ],
+                           "fixedTroopTier":  "T10",
+                           "enemyCapacityMode":  "userInput",
+                           "enemyCapacity":  1,
+                           "enemyRatioPreset":  "SHIELD_HEAVY",
+                           "petEnabled":  false,
+                           "petAppliedToBaseStats":  false,
+                           "petAppliedToOptimization":  false,
+                           "t12SkillEnabled":  false,
+                           "t12SkillMaxLevel":  0
+                       },
+                       {
+                           "battleScenario":  "INNER_EARTH",
+                           "innerEarthMode":  "BEAST_CAVE",
+                           "schedulerType":  "SingleBattle",
+                           "attributeInputMode":  "finalReport",
+                           "heroSearchEnabled":  false,
+                           "ratioSearchEnabled":  true,
+                           "searchDimensions":  [
+                                                    "ratio"
+                                                ],
+                           "fixedTroopTier":  "T10",
+                           "enemyCapacityMode":  "userInput",
+                           "enemyCapacity":  90,
+                           "enemyRatioPreset":  "BALANCED",
+                           "petEnabled":  false,
+                           "petAppliedToBaseStats":  false,
+                           "petAppliedToOptimization":  false,
+                           "t12SkillEnabled":  false,
+                           "t12SkillMaxLevel":  0
+                       },
+                       {
+                           "battleScenario":  "INNER_EARTH",
+                           "innerEarthMode":  "GEM_MINE",
+                           "schedulerType":  "SingleBattle",
+                           "attributeInputMode":  "finalReport",
+                           "heroSearchEnabled":  false,
+                           "ratioSearchEnabled":  true,
+                           "searchDimensions":  [
+                                                    "ratio"
+                                                ],
+                           "fixedTroopTier":  "T10",
+                           "enemyCapacityMode":  "fixed150000",
+                           "enemyCapacity":  150000,
+                           "enemyRatioPreset":  "SHIELD_HEAVY",
+                           "petEnabled":  false,
+                           "petAppliedToBaseStats":  false,
+                           "petAppliedToOptimization":  false,
+                           "t12SkillEnabled":  false,
+                           "t12SkillMaxLevel":  0
+                       },
+                       {
+                           "battleScenario":  "INNER_EARTH",
+                           "innerEarthMode":  "UNDERGROUND_LAB",
+                           "schedulerType":  "SingleBattle",
+                           "attributeInputMode":  "finalReport",
+                           "heroSearchEnabled":  false,
+                           "ratioSearchEnabled":  true,
+                           "searchDimensions":  [
+                                                    "ratio"
+                                                ],
+                           "fixedTroopTier":  null,
+                           "enemyCapacityMode":  "userInput",
+                           "enemyCapacity":  90,
+                           "enemyRatioPreset":  "BALANCED",
+                           "petEnabled":  false,
+                           "petAppliedToBaseStats":  false,
+                           "petAppliedToOptimization":  false,
+                           "t12SkillEnabled":  true,
+                           "t12SkillMaxLevel":  3
+                       },
+                       {
+                           "battleScenario":  "INNER_EARTH",
+                           "innerEarthMode":  "EQUIPMENT_FORGE",
+                           "schedulerType":  "SingleBattle",
+                           "attributeInputMode":  "finalReport",
+                           "heroSearchEnabled":  false,
+                           "ratioSearchEnabled":  true,
+                           "searchDimensions":  [
+                                                    "ratio"
+                                                ],
+                           "fixedTroopTier":  "T10",
+                           "enemyCapacityMode":  "fixed150000",
+                           "enemyCapacity":  150000,
+                           "enemyRatioPreset":  "SHIELD_HEAVY",
+                           "petEnabled":  false,
+                           "petAppliedToBaseStats":  false,
+                           "petAppliedToOptimization":  false,
+                           "t12SkillEnabled":  false,
+                           "t12SkillMaxLevel":  0
+                       }
+                   ],
+    "iceFire":  {
+                    "scheduler":  "IceFireLeagueScheduler",
+                    "randomSchedulerUsed":  false,
+                    "matchSequence":  [
+                                          "A1-B1",
+                                          "A2-B2",
+                                          "A3-B3",
+                                          "A1-B2",
+                                          "A1-B3"
+                                      ],
+                    "cursorHistoryA":  [
+                                           0,
+                                           1,
+                                           2,
+                                           0,
+                                           1,
+                                           1
+                                       ],
+                    "cursorHistoryB":  [
+                                           0,
+                                           1,
+                                           2,
+                                           0,
+                                           2,
+                                           0
+                                       ],
+                    "inheritedSurvivors":  {
+                                               "A1Round4EqualsRound1":  true,
+                                               "A1Round5EqualsRound4":  true,
+                                               "B2Round4EqualsRound2":  true,
+                                               "B3Round5EqualsRound3":  true
+                                           }
+                },
+    "lab":  {
+                "T11Constant":  8.8437,
+                "T12Constant":  10.4356,
+                "maxT12SkillLevel":  3,
+                "fireCrystalSkillsEnabled":  false
+            },
+    "enemyRatioPresets":  [
+                              "BALANCED",
+                              "SHIELD_HEAVY"
+                          ],
+    "fixed150kModes":  [
+                           "GEM_MINE",
+                           "EQUIPMENT_FORGE"
+                       ],
+    "petAppliedToBaseStats":  false,
+    "gates":  {
+                  "typecheck":  {
+                                    "passed":  true,
+                                    "exitCode":  0,
+                                    "log":  "examples/inner-earth-typecheck-results.log"
+                                },
+                  "lint":  {
+                               "passed":  true,
+                               "exitCode":  0,
+                               "log":  "examples/inner-earth-lint-results.log"
+                           },
+                  "build":  {
+                                "passed":  true,
+                                "exitCode":  0,
+                                "log":  "examples/inner-earth-build-results.log",
+                                "note":  "Vite emitted chunk size warnings; build completed successfully."
+                            },
+                  "tests":  {
+                                "passed":  true,
+                                "exitCode":  0,
+                                "passedFiles":  104,
+                                "passedTests":  1147,
+                                "durationSeconds":  175.41,
+                                "log":  "examples/inner-earth-test-results.log"
+                            }
+              },
+    "coreBoundary":  {
+                         "checkedFiles":  72,
+                         "unchangedFiles":  70,
+                         "changedFiles":  [
+                                              "src/pvp/scenario/scenarioTypes.ts",
+                                              "src/pvp/scenario/threeQueueScenario.ts"
+                                          ],
+                         "protectedPvpCoreUnchanged":  true,
+                         "approvedSceneConfigurationChanges":  {
+                                                                   "src/pvp/scenario/scenarioTypes.ts":  "新增 ICE_FIRE_LEAGUE/INNER_EARTH 场景枚举；保留 THREE_QUEUE 仅用于兼容。",
+                                                                   "src/pvp/scenario/threeQueueScenario.ts":  "场景强制绑定冰火循环调度；接入地心敌方精确预设兵数及场景/游标审计，保留既有单场 BattleEngine。"
+                                                               },
+                         "audit":  "examples/inner-earth-core-boundary-audit.json"
+                     },
+    "uiVerification":  "main.ts event, save/restore, worker result/application regression tests; no live Edge visual verification",
+    "devServerStarted":  false,
+    "documentation":  "docs/pvp-inner-earth-modes.md",
+    "actualEngineRun":  "examples/inner-earth-modes-audit.json"
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "ambush",
+  "name": "奇袭",
+  "description": "A方矛兵启用奇袭，其他概率技能全部关闭；验证每次矛兵行动仅判定一次。",
+  "kind": "probability",
+  "skillId": "lancer-ambush",
+  "targetSide": "A",
+  "simulationCount": 10000,
+  "randomSeed": 22345,
+  "maxRounds": 1,
+  "sides": {
+    "A": {
+      "shield": { "count": 0, "level": "T10" },
+      "lancer": { "count": 100000, "level": "T10" },
+      "marksman": { "count": 0, "level": "T10" }
+    },
+    "B": {
+      "shield": { "count": 50000, "level": "T10" },
+      "lancer": { "count": 0, "level": "T10" },
+      "marksman": { "count": 50000, "level": "T10" }
+    }
+  },
+  "probability": {
+    "theoretical": 0.2,
+    "absoluteTolerance": 0.02,
+    "expectedChecksPerTrial": 1
+  }
+}

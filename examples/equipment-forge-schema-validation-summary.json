@@ -1,0 +1,28 @@
+﻿{
+    "generatedAt":  "2026-10-09T03:47:31.2651887Z",
+    "schema":  "PER_TROOP_ATTACK_DEFENSE_SEPARATE_PEN_LIFE_PAIRED_9",
+    "expectedFieldCountA":  9,
+    "expectedFieldCountB":  2,
+    "typecheck":  "passed",
+    "lint":  "passed",
+    "build":  "passed",
+    "fullSuite":  {
+                      "command":  "npm test -- --maxWorkers=1 --reporter=default --reporter=json",
+                      "success":  true,
+                      "files":  109,
+                      "total":  1216,
+                      "passed":  1216,
+                      "failed":  0
+                  },
+    "targetedRegression":  {
+                               "total":  19,
+                               "status":  "passed"
+                           },
+    "initialFullRun":  {
+                           "passed":  1215,
+                           "failed":  1,
+                           "note":  "Candidate generation regression passed on standalone rerun and the final single-worker full run. Initial full run overlapped static checks and build; cause not confirmed."
+                       },
+    "coreAudit":  "examples/equipment-forge-core-boundary-audit.json",
+    "coreFilesUnchanged":  72
+}

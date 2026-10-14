@@ -1,0 +1,1033 @@
+{
+  "generatedAt": "2026-10-08T03:21:55.615Z",
+  "fixtureKind": "syntheticFormalBattleEngineRegression",
+  "note": "Synthetic fixtures verify configuration and execution, not historical game-report accuracy. Single fixtures intentionally stop after two rounds and can report timeout. Hero Land and fixed-150k modes retain their required capacities.",
+  "reproductionCommand": "node scripts/run-tsx.mjs scripts/audit-inner-earth-modes.ts",
+  "formalBattleEngineUsed": true,
+  "modes": [
+    {
+      "mode": "HEART_OF_EARTH",
+      "audit": {
+        "battleScenario": "INNER_EARTH",
+        "innerEarthMode": "HEART_OF_EARTH",
+        "schedulerType": "RandomAliveQueueScheduler",
+        "attributeInputMode": "prediction",
+        "heroSearchEnabled": true,
+        "ratioSearchEnabled": true,
+        "searchDimensions": [
+          "head",
+          "ratio"
+        ],
+        "fixedTroopTier": null,
+        "enemyCapacityMode": "userInput",
+        "enemyCapacity": 1,
+        "enemyRatioPreset": "BALANCED",
+        "petEnabled": true,
+        "petAppliedToBaseStats": false,
+        "petAppliedToOptimization": true,
+        "t12SkillEnabled": true,
+        "t12SkillMaxLevel": 24
+      },
+      "actualRun": {
+        "runner": "runValidationThreeQueueScenario",
+        "winner": "A",
+        "totalBattles": 3,
+        "scheduler": {
+          "battleScenario": "INNER_EARTH",
+          "innerEarthMode": "HEART_OF_EARTH",
+          "threeQueueMode": "EARTH_HEART_BRAVE_LAND",
+          "schedulerType": "RandomAliveQueueScheduler",
+          "rule": "uniformAliveRandom",
+          "ruleStatus": "confirmed",
+          "seed": 771,
+          "queueCursorA": null,
+          "queueCursorB": null,
+          "matchSequence": [
+            "A2-B3",
+            "A3-B1",
+            "A3-B2"
+          ],
+          "cursorHistoryA": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "cursorHistoryB": [
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "formalRoundCounts": [
+          1,
+          1,
+          1
+        ],
+        "battles": [
+          {
+            "battleIndex": 1,
+            "attackerQueueId": "A2",
+            "defenderQueueId": "B3",
+            "battleSeed": 904264808,
+            "attackerBefore": {
+              "shield": 18,
+              "lancer": 27,
+              "marksman": 45
+            },
+            "defenderBefore": {
+              "shield": 1,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "attackerAfter": {
+              "shield": 18,
+              "lancer": 27,
+              "marksman": 45
+            },
+            "defenderAfter": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "winner": "A",
+            "eliminatedQueue": "B3",
+            "queueCursorA": null,
+            "queueCursorB": null,
+            "nextQueueCursorA": null,
+            "nextQueueCursorB": null
+          },
+          {
+            "battleIndex": 2,
+            "attackerQueueId": "A3",
+            "defenderQueueId": "B1",
+            "battleSeed": 3596218181,
+            "attackerBefore": {
+              "shield": 9,
+              "lancer": 45,
+              "marksman": 36
+            },
+            "defenderBefore": {
+              "shield": 1,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "attackerAfter": {
+              "shield": 9,
+              "lancer": 45,
+              "marksman": 36
+            },
+            "defenderAfter": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "winner": "A",
+            "eliminatedQueue": "B1",
+            "queueCursorA": null,
+            "queueCursorB": null,
+            "nextQueueCursorA": null,
+            "nextQueueCursorB": null
+          },
+          {
+            "battleIndex": 3,
+            "attackerQueueId": "A3",
+            "defenderQueueId": "B2",
+            "battleSeed": 3835422367,
+            "attackerBefore": {
+              "shield": 9,
+              "lancer": 45,
+              "marksman": 36
+            },
+            "defenderBefore": {
+              "shield": 1,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "attackerAfter": {
+              "shield": 9,
+              "lancer": 45,
+              "marksman": 36
+            },
+            "defenderAfter": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "winner": "A",
+            "eliminatedQueue": "B2",
+            "queueCursorA": null,
+            "queueCursorB": null,
+            "nextQueueCursorA": null,
+            "nextQueueCursorB": null
+          }
+        ]
+      },
+      "baseConfigUnchanged": true,
+      "baseReportStatsUnchanged": true,
+      "allyCapacityPerQueue": 90,
+      "allyQueueRatios": [
+        {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        },
+        {
+          "shield": 20,
+          "lancer": 30,
+          "marksman": 50
+        },
+        {
+          "shield": 10,
+          "lancer": 50,
+          "marksman": 40
+        }
+      ],
+      "allyQueueBaseShieldAttacks": [
+        10000,
+        11000,
+        12000
+      ],
+      "enemyCounts": {
+        "shield": 1,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "expectedEnemyCounts": {
+        "shield": 1,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "enemyQueueInitialCounts": [
+        {
+          "shield": 1,
+          "lancer": 0,
+          "marksman": 0
+        },
+        {
+          "shield": 1,
+          "lancer": 0,
+          "marksman": 0
+        },
+        {
+          "shield": 1,
+          "lancer": 0,
+          "marksman": 0
+        }
+      ],
+      "enemySharedConfiguration": true,
+      "enemyTiers": [
+        {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        },
+        {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        },
+        {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      ],
+      "eligiblePet": {
+        "attackLevel": 3,
+        "defenseLevel": 0,
+        "penetrationLevel": 0,
+        "lifeLevel": 0,
+        "enemyDefenseReductionLevel": 0,
+        "enemyPenetrationReductionLevel": 0,
+        "enemyLifeReductionLevel": 0
+      }
+    },
+    {
+      "mode": "HERO_LAND",
+      "audit": {
+        "battleScenario": "INNER_EARTH",
+        "innerEarthMode": "HERO_LAND",
+        "schedulerType": "RandomAliveQueueScheduler",
+        "attributeInputMode": "prediction",
+        "heroSearchEnabled": true,
+        "ratioSearchEnabled": true,
+        "searchDimensions": [
+          "head",
+          "ratio"
+        ],
+        "fixedTroopTier": "T10",
+        "enemyCapacityMode": "userInput",
+        "enemyCapacity": 1,
+        "enemyRatioPreset": "SHIELD_HEAVY",
+        "petEnabled": false,
+        "petAppliedToBaseStats": false,
+        "petAppliedToOptimization": false,
+        "t12SkillEnabled": false,
+        "t12SkillMaxLevel": 0
+      },
+      "actualRun": {
+        "runner": "runValidationThreeQueueScenario",
+        "winner": "A",
+        "totalBattles": 3,
+        "scheduler": {
+          "battleScenario": "INNER_EARTH",
+          "innerEarthMode": "HERO_LAND",
+          "threeQueueMode": "EARTH_HEART_BRAVE_LAND",
+          "schedulerType": "RandomAliveQueueScheduler",
+          "rule": "uniformAliveRandom",
+          "ruleStatus": "confirmed",
+          "seed": 772,
+          "queueCursorA": null,
+          "queueCursorB": null,
+          "matchSequence": [
+            "A1-B3",
+            "A1-B1",
+            "A1-B2"
+          ],
+          "cursorHistoryA": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "cursorHistoryB": [
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "formalRoundCounts": [
+          1,
+          1,
+          1
+        ],
+        "battles": [
+          {
+            "battleIndex": 1,
+            "attackerQueueId": "A1",
+            "defenderQueueId": "B3",
+            "battleSeed": 489135876,
+            "attackerBefore": {
+              "shield": 95205,
+              "lancer": 38082,
+              "marksman": 57123
+            },
+            "defenderBefore": {
+              "shield": 1,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "attackerAfter": {
+              "shield": 95205,
+              "lancer": 38082,
+              "marksman": 57123
+            },
+            "defenderAfter": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "winner": "A",
+            "eliminatedQueue": "B3",
+            "queueCursorA": null,
+            "queueCursorB": null,
+            "nextQueueCursorA": null,
+            "nextQueueCursorB": null
+          },
+          {
+            "battleIndex": 2,
+            "attackerQueueId": "A1",
+            "defenderQueueId": "B1",
+            "battleSeed": 1590116571,
+            "attackerBefore": {
+              "shield": 95205,
+              "lancer": 38082,
+              "marksman": 57123
+            },
+            "defenderBefore": {
+              "shield": 1,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "attackerAfter": {
+              "shield": 95205,
+              "lancer": 38082,
+              "marksman": 57123
+            },
+            "defenderAfter": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "winner": "A",
+            "eliminatedQueue": "B1",
+            "queueCursorA": null,
+            "queueCursorB": null,
+            "nextQueueCursorA": null,
+            "nextQueueCursorB": null
+          },
+          {
+            "battleIndex": 3,
+            "attackerQueueId": "A1",
+            "defenderQueueId": "B2",
+            "battleSeed": 1468539618,
+            "attackerBefore": {
+              "shield": 95205,
+              "lancer": 38082,
+              "marksman": 57123
+            },
+            "defenderBefore": {
+              "shield": 1,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "attackerAfter": {
+              "shield": 95205,
+              "lancer": 38082,
+              "marksman": 57123
+            },
+            "defenderAfter": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            },
+            "winner": "A",
+            "eliminatedQueue": "B2",
+            "queueCursorA": null,
+            "queueCursorB": null,
+            "nextQueueCursorA": null,
+            "nextQueueCursorB": null
+          }
+        ]
+      },
+      "baseConfigUnchanged": true,
+      "baseReportStatsUnchanged": true,
+      "allyCapacityPerQueue": 190410,
+      "allyQueueRatios": [
+        {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        },
+        {
+          "shield": 20,
+          "lancer": 30,
+          "marksman": 50
+        },
+        {
+          "shield": 10,
+          "lancer": 50,
+          "marksman": 40
+        }
+      ],
+      "allyQueueBaseShieldAttacks": [
+        10000,
+        11000,
+        12000
+      ],
+      "enemyCounts": {
+        "shield": 1,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "expectedEnemyCounts": {
+        "shield": 1,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "enemyQueueInitialCounts": [
+        {
+          "shield": 1,
+          "lancer": 0,
+          "marksman": 0
+        },
+        {
+          "shield": 1,
+          "lancer": 0,
+          "marksman": 0
+        },
+        {
+          "shield": 1,
+          "lancer": 0,
+          "marksman": 0
+        }
+      ],
+      "enemySharedConfiguration": true,
+      "enemyTiers": [
+        {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        },
+        {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        },
+        {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      ],
+      "eligiblePet": null
+    },
+    {
+      "mode": "BEAST_CAVE",
+      "audit": {
+        "battleScenario": "INNER_EARTH",
+        "innerEarthMode": "BEAST_CAVE",
+        "schedulerType": "SingleBattle",
+        "attributeInputMode": "finalReport",
+        "heroSearchEnabled": false,
+        "ratioSearchEnabled": true,
+        "searchDimensions": [
+          "ratio"
+        ],
+        "fixedTroopTier": "T10",
+        "enemyCapacityMode": "userInput",
+        "enemyCapacity": 90,
+        "enemyRatioPreset": "BALANCED",
+        "petEnabled": false,
+        "petAppliedToBaseStats": false,
+        "petAppliedToOptimization": false,
+        "t12SkillEnabled": false,
+        "t12SkillMaxLevel": 0
+      },
+      "actualRun": {
+        "runner": "runValidationBattle",
+        "outcome": "timeout",
+        "rounds": 2,
+        "remaining": {
+          "A": {
+            "shield": 43,
+            "lancer": 18,
+            "marksman": 27
+          },
+          "B": {
+            "shield": 28,
+            "lancer": 30,
+            "marksman": 30
+          }
+        }
+      },
+      "baseConfigUnchanged": true,
+      "baseReportStatsUnchanged": true,
+      "emptyHead": true,
+      "allyInitialCounts": {
+        "shield": 45,
+        "lancer": 18,
+        "marksman": 27
+      },
+      "enemyCounts": {
+        "shield": 30,
+        "lancer": 30,
+        "marksman": 30
+      },
+      "expectedEnemyCounts": {
+        "shield": 30,
+        "lancer": 30,
+        "marksman": 30
+      },
+      "laboratory": null
+    },
+    {
+      "mode": "GEM_MINE",
+      "audit": {
+        "battleScenario": "INNER_EARTH",
+        "innerEarthMode": "GEM_MINE",
+        "schedulerType": "SingleBattle",
+        "attributeInputMode": "finalReport",
+        "heroSearchEnabled": false,
+        "ratioSearchEnabled": true,
+        "searchDimensions": [
+          "ratio"
+        ],
+        "fixedTroopTier": "T10",
+        "enemyCapacityMode": "fixed150000",
+        "enemyCapacity": 150000,
+        "enemyRatioPreset": "SHIELD_HEAVY",
+        "petEnabled": false,
+        "petAppliedToBaseStats": false,
+        "petAppliedToOptimization": false,
+        "t12SkillEnabled": false,
+        "t12SkillMaxLevel": 0
+      },
+      "actualRun": {
+        "runner": "runValidationBattle",
+        "outcome": "timeout",
+        "rounds": 2,
+        "remaining": {
+          "A": {
+            "shield": 0,
+            "lancer": 18,
+            "marksman": 27
+          },
+          "B": {
+            "shield": 79998,
+            "lancer": 40000,
+            "marksman": 29999
+          }
+        }
+      },
+      "baseConfigUnchanged": true,
+      "baseReportStatsUnchanged": true,
+      "emptyHead": true,
+      "allyInitialCounts": {
+        "shield": 45,
+        "lancer": 18,
+        "marksman": 27
+      },
+      "enemyCounts": {
+        "shield": 80000,
+        "lancer": 40000,
+        "marksman": 30000
+      },
+      "expectedEnemyCounts": {
+        "shield": 80000,
+        "lancer": 40000,
+        "marksman": 30000
+      },
+      "laboratory": null
+    },
+    {
+      "mode": "UNDERGROUND_LAB",
+      "audit": {
+        "battleScenario": "INNER_EARTH",
+        "innerEarthMode": "UNDERGROUND_LAB",
+        "schedulerType": "SingleBattle",
+        "attributeInputMode": "finalReport",
+        "heroSearchEnabled": false,
+        "ratioSearchEnabled": true,
+        "searchDimensions": [
+          "ratio"
+        ],
+        "fixedTroopTier": null,
+        "enemyCapacityMode": "userInput",
+        "enemyCapacity": 90,
+        "enemyRatioPreset": "BALANCED",
+        "petEnabled": false,
+        "petAppliedToBaseStats": false,
+        "petAppliedToOptimization": false,
+        "t12SkillEnabled": true,
+        "t12SkillMaxLevel": 3
+      },
+      "actualRun": {
+        "runner": "runValidationBattle",
+        "outcome": "timeout",
+        "rounds": 2,
+        "remaining": {
+          "A": {
+            "shield": 43,
+            "lancer": 18,
+            "marksman": 27
+          },
+          "B": {
+            "shield": 27,
+            "lancer": 30,
+            "marksman": 30
+          }
+        }
+      },
+      "baseConfigUnchanged": true,
+      "baseReportStatsUnchanged": true,
+      "emptyHead": true,
+      "allyInitialCounts": {
+        "shield": 45,
+        "lancer": 18,
+        "marksman": 27
+      },
+      "enemyCounts": {
+        "shield": 30,
+        "lancer": 30,
+        "marksman": 30
+      },
+      "expectedEnemyCounts": {
+        "shield": 30,
+        "lancer": 30,
+        "marksman": 30
+      },
+      "laboratory": {
+        "shield": {
+          "userTier": "T10",
+          "troopConstant": 7.4947,
+          "skillRuntimes": [
+            {
+              "skillId": "shield-dense-formation",
+              "level": 1,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            },
+            {
+              "skillId": "shield-steel-guardian",
+              "level": 1,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            }
+          ],
+          "fireCrystalSkillPresent": false
+        },
+        "lancer": {
+          "userTier": "LAB_T11",
+          "troopConstant": 8.8437,
+          "skillRuntimes": [
+            {
+              "skillId": "lancer-charge",
+              "level": 1,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            },
+            {
+              "skillId": "lancer-ambush",
+              "level": 1,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            }
+          ],
+          "fireCrystalSkillPresent": false
+        },
+        "marksman": {
+          "userTier": "LAB_T12",
+          "troopConstant": 10.4356,
+          "skillRuntimes": [
+            {
+              "skillId": "marksman-remote-strike",
+              "level": 1,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            },
+            {
+              "skillId": "marksman-rapid-fire",
+              "level": 1,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            },
+            {
+              "skillId": "marksman-blazing-star-t12",
+              "level": 3,
+              "enabled": true,
+              "stacks": 0,
+              "remainingDuration": 0,
+              "cooldown": 0,
+              "lastTriggeredRound": null,
+              "triggerCount": 0
+            }
+          ],
+          "fireCrystalSkillPresent": false
+        }
+      }
+    },
+    {
+      "mode": "EQUIPMENT_FORGE",
+      "audit": {
+        "battleScenario": "INNER_EARTH",
+        "innerEarthMode": "EQUIPMENT_FORGE",
+        "schedulerType": "SingleBattle",
+        "attributeInputMode": "finalReport",
+        "heroSearchEnabled": false,
+        "ratioSearchEnabled": true,
+        "searchDimensions": [
+          "ratio"
+        ],
+        "fixedTroopTier": "T10",
+        "enemyCapacityMode": "fixed150000",
+        "enemyCapacity": 150000,
+        "enemyRatioPreset": "SHIELD_HEAVY",
+        "petEnabled": false,
+        "petAppliedToBaseStats": false,
+        "petAppliedToOptimization": false,
+        "t12SkillEnabled": false,
+        "t12SkillMaxLevel": 0
+      },
+      "actualRun": {
+        "runner": "runValidationBattle",
+        "outcome": "timeout",
+        "rounds": 2,
+        "remaining": {
+          "A": {
+            "shield": 0,
+            "lancer": 18,
+            "marksman": 0
+          },
+          "B": {
+            "shield": 79997,
+            "lancer": 40000,
+            "marksman": 30000
+          }
+        }
+      },
+      "baseConfigUnchanged": true,
+      "baseReportStatsUnchanged": true,
+      "emptyHead": true,
+      "allyInitialCounts": {
+        "shield": 45,
+        "lancer": 18,
+        "marksman": 27
+      },
+      "enemyCounts": {
+        "shield": 80000,
+        "lancer": 40000,
+        "marksman": 30000
+      },
+      "expectedEnemyCounts": {
+        "shield": 80000,
+        "lancer": 40000,
+        "marksman": 30000
+      },
+      "laboratory": null
+    }
+  ],
+  "exactEnemyPresetReferenceAt150000": {
+    "BALANCED": {
+      "shield": 50000,
+      "lancer": 50000,
+      "marksman": 50000
+    },
+    "SHIELD_HEAVY": {
+      "shield": 80000,
+      "lancer": 40000,
+      "marksman": 30000
+    }
+  },
+  "iceFire": {
+    "reusedFixtureSource": "scripts/run-three-queue-icefire-audit-round5.ts",
+    "suppliedLegacyScheduler": "EARTH_HEART_BRAVE_LAND",
+    "scheduler": {
+      "battleScenario": "ICE_FIRE_LEAGUE",
+      "innerEarthMode": null,
+      "threeQueueMode": "ICE_FIRE_LEAGUE",
+      "schedulerType": "IceFireLeagueScheduler",
+      "rule": "independentCircularCursors",
+      "ruleStatus": "confirmed",
+      "seed": 771,
+      "queueCursorA": 1,
+      "queueCursorB": 0,
+      "matchSequence": [
+        "A1-B1",
+        "A2-B2",
+        "A3-B3",
+        "A1-B2",
+        "A1-B3"
+      ],
+      "cursorHistoryA": [
+        0,
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      "cursorHistoryB": [
+        0,
+        1,
+        2,
+        0,
+        2,
+        0
+      ]
+    },
+    "randomSchedulerUsed": false,
+    "winner": "A",
+    "totalBattles": 5,
+    "inheritedSurvivors": {
+      "A1Round4EqualsRound1": true,
+      "A1Round5EqualsRound4": true,
+      "B2Round4EqualsRound2": true,
+      "B3Round5EqualsRound3": true
+    },
+    "battles": [
+      {
+        "battleIndex": 1,
+        "attackerQueueId": "A1",
+        "defenderQueueId": "B1",
+        "battleSeed": 904264808,
+        "attackerBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "attackerAfter": {
+          "shield": 87,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderAfter": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "winner": "A",
+        "eliminatedQueue": "B1",
+        "queueCursorA": 0,
+        "queueCursorB": 0,
+        "nextQueueCursorA": 1,
+        "nextQueueCursorB": 1,
+        "formalRoundCount": 90
+      },
+      {
+        "battleIndex": 2,
+        "attackerQueueId": "A2",
+        "defenderQueueId": "B2",
+        "battleSeed": 3596218181,
+        "attackerBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "attackerAfter": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderAfter": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "winner": "B",
+        "eliminatedQueue": "A2",
+        "queueCursorA": 1,
+        "queueCursorB": 1,
+        "nextQueueCursorA": 2,
+        "nextQueueCursorB": 2,
+        "formalRoundCount": 41
+      },
+      {
+        "battleIndex": 3,
+        "attackerQueueId": "A3",
+        "defenderQueueId": "B3",
+        "battleSeed": 3835422367,
+        "attackerBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "attackerAfter": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderAfter": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "winner": "B",
+        "eliminatedQueue": "A3",
+        "queueCursorA": 2,
+        "queueCursorB": 2,
+        "nextQueueCursorA": 0,
+        "nextQueueCursorB": 0,
+        "formalRoundCount": 39
+      },
+      {
+        "battleIndex": 4,
+        "attackerQueueId": "A1",
+        "defenderQueueId": "B2",
+        "battleSeed": 944190423,
+        "attackerBefore": {
+          "shield": 87,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "attackerAfter": {
+          "shield": 67,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderAfter": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "winner": "A",
+        "eliminatedQueue": "B2",
+        "queueCursorA": 0,
+        "queueCursorB": 0,
+        "nextQueueCursorA": 1,
+        "nextQueueCursorB": 2,
+        "formalRoundCount": 220
+      },
+      {
+        "battleIndex": 5,
+        "attackerQueueId": "A1",
+        "defenderQueueId": "B3",
+        "battleSeed": 936989661,
+        "attackerBefore": {
+          "shield": 67,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderBefore": {
+          "shield": 90,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "attackerAfter": {
+          "shield": 43,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "defenderAfter": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        },
+        "winner": "A",
+        "eliminatedQueue": "B3",
+        "queueCursorA": 1,
+        "queueCursorB": 2,
+        "nextQueueCursorA": 1,
+        "nextQueueCursorB": 0,
+        "formalRoundCount": 300
+      }
+    ]
+  }
+}

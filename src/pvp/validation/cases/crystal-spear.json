@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "crystal-spear",
+  "name": "炎晶战矛",
+  "description": "A方FC5矛兵启用炎晶战矛Lv2，触发时生成100% skillDamage/extraDamage独立事件；其他概率技能全部关闭。",
+  "kind": "probability",
+  "skillId": "lancer-crystal-spear",
+  "targetSide": "A",
+  "simulationCount": 10000,
+  "randomSeed": 32345,
+  "maxRounds": 1,
+  "sides": {
+    "A": {
+      "shield": { "count": 0, "level": "T10" },
+      "lancer": { "count": 100000, "level": "T10-FC5" },
+      "marksman": { "count": 0, "level": "T10" }
+    },
+    "B": {
+      "shield": { "count": 100000, "level": "T10" },
+      "lancer": { "count": 0, "level": "T10" },
+      "marksman": { "count": 0, "level": "T10" }
+    }
+  },
+  "probability": {
+    "theoretical": 0.15,
+    "absoluteTolerance": 0.02,
+    "expectedChecksPerTrial": 1
+  },
+  "theoreticalImpact": {
+    "damageGain": 0.15
+  }
+}

@@ -1,0 +1,1166 @@
+{
+  "seed": 12345,
+  "trials": 10,
+  "seedPolicy": "identical shared seeds for every body",
+  "headHeroIds": {
+    "shield": "hero.s10.gregory",
+    "lancer": "hero.s3.miya",
+    "marksman": "hero.s11.rufus"
+  },
+  "headWeaponLevels": {
+    "hero.s10.gregory": 10,
+    "hero.s3.miya": 10,
+    "hero.s11.rufus": 10
+  },
+  "ratios": {
+    "shield": 33.333333333333336,
+    "lancer": 33.333333333333336,
+    "marksman": 33.333333333333336
+  },
+  "paired95Method": "empirical Bernstein bound, paired outcomes in [-1,1]",
+  "rows": [
+    {
+      "label": "P1 诺拉×2+亨德里克+书允",
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "memberSkillIds": [
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.s8.hengdelike.defense-reduction",
+          "hero-skill.shuyun.attack"
+        ],
+        "ratios": {
+          "shield": 33.333333333333336,
+          "lancer": 33.333333333333336,
+          "marksman": 33.333333333333336
+        }
+      },
+      "trials": 10,
+      "wins": 10,
+      "winRate": 1,
+      "wilson95": [
+        0.7224672001371107,
+        0.9999999999999999
+      ],
+      "remaining": {
+        "A": {
+          "shield": 4270.9,
+          "lancer": 12000,
+          "marksman": 10546.2
+        },
+        "B": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        }
+      }
+    },
+    {
+      "label": "P2 无名×2+诺拉×2",
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "ratios": {
+          "shield": 33.333333333333336,
+          "lancer": 33.333333333333336,
+          "marksman": 33.333333333333336
+        }
+      },
+      "trials": 10,
+      "wins": 10,
+      "winRate": 1,
+      "wilson95": [
+        0.7224672001371107,
+        0.9999999999999999
+      ],
+      "remaining": {
+        "A": {
+          "shield": 5278.1,
+          "lancer": 12000,
+          "marksman": 10170
+        },
+        "B": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        }
+      }
+    },
+    {
+      "label": "P3 11盾×3+亨德里克",
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "memberSkillIds": [
+          "hero-skill.eleonora.sunlight-majesty",
+          "hero-skill.eleonora.sunlight-majesty",
+          "hero-skill.eleonora.sunlight-majesty",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "ratios": {
+          "shield": 33.333333333333336,
+          "lancer": 33.333333333333336,
+          "marksman": 33.333333333333336
+        }
+      },
+      "trials": 10,
+      "wins": 10,
+      "winRate": 1,
+      "wilson95": [
+        0.7224672001371107,
+        0.9999999999999999
+      ],
+      "remaining": {
+        "A": {
+          "shield": 5102.2,
+          "lancer": 12000,
+          "marksman": 10558.5
+        },
+        "B": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        }
+      }
+    },
+    {
+      "label": "P4 诺拉×2+亨德里克×2",
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "memberSkillIds": [
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.s8.hengdelike.defense-reduction",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "ratios": {
+          "shield": 33.333333333333336,
+          "lancer": 33.333333333333336,
+          "marksman": 33.333333333333336
+        }
+      },
+      "trials": 10,
+      "wins": 10,
+      "winRate": 1,
+      "wilson95": [
+        0.7224672001371107,
+        0.9999999999999999
+      ],
+      "remaining": {
+        "A": {
+          "shield": 4476,
+          "lancer": 12000,
+          "marksman": 10640.3
+        },
+        "B": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        }
+      }
+    },
+    {
+      "label": "P5 诺拉×2+书允×2",
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "memberSkillIds": [
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.shuyun.attack",
+          "hero-skill.shuyun.attack"
+        ],
+        "ratios": {
+          "shield": 33.333333333333336,
+          "lancer": 33.333333333333336,
+          "marksman": 33.333333333333336
+        }
+      },
+      "trials": 10,
+      "wins": 10,
+      "winRate": 1,
+      "wilson95": [
+        0.7224672001371107,
+        0.9999999999999999
+      ],
+      "remaining": {
+        "A": {
+          "shield": 3707.3,
+          "lancer": 12000,
+          "marksman": 10005.4
+        },
+        "B": {
+          "shield": 0,
+          "lancer": 0,
+          "marksman": 0
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "baseline": "P1 诺拉×2+亨德里克+书允",
+      "challenger": "P2 无名×2+诺拉×2",
+      "deltaWinRate": 0,
+      "paired95": [
+        -1,
+        1
+      ],
+      "sameSeedPairs": {
+        "favorable": 0,
+        "unfavorable": 0,
+        "bothWin": 10,
+        "bothLose": 0
+      },
+      "significantImprovement": false
+    },
+    {
+      "baseline": "P1 诺拉×2+亨德里克+书允",
+      "challenger": "P3 11盾×3+亨德里克",
+      "deltaWinRate": 0,
+      "paired95": [
+        -1,
+        1
+      ],
+      "sameSeedPairs": {
+        "favorable": 0,
+        "unfavorable": 0,
+        "bothWin": 10,
+        "bothLose": 0
+      },
+      "significantImprovement": false
+    },
+    {
+      "baseline": "P1 诺拉×2+亨德里克+书允",
+      "challenger": "P4 诺拉×2+亨德里克×2",
+      "deltaWinRate": 0,
+      "paired95": [
+        -1,
+        1
+      ],
+      "sameSeedPairs": {
+        "favorable": 0,
+        "unfavorable": 0,
+        "bothWin": 10,
+        "bothLose": 0
+      },
+      "significantImprovement": false
+    },
+    {
+      "baseline": "P1 诺拉×2+亨德里克+书允",
+      "challenger": "P5 诺拉×2+书允×2",
+      "deltaWinRate": 0,
+      "paired95": [
+        -1,
+        1
+      ],
+      "sameSeedPairs": {
+        "favorable": 0,
+        "unfavorable": 0,
+        "bothWin": 10,
+        "bothLose": 0
+      },
+      "significantImprovement": false
+    }
+  ],
+  "pairResults": [
+    {
+      "seed": 712345,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4960,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 6212,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5961,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4974,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4902,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712346,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3718,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4479,
+              "lancer": 12000,
+              "marksman": 10591
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4059,
+              "lancer": 12000,
+              "marksman": 11000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3733,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 2361,
+              "lancer": 12000,
+              "marksman": 10293
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712347,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4217,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5792,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5577,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4235,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3061,
+              "lancer": 12000,
+              "marksman": 11346
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712348,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5942,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5618,
+              "lancer": 12000,
+              "marksman": 8028
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5462,
+              "lancer": 12000,
+              "marksman": 9105
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5954,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4994,
+              "lancer": 12000,
+              "marksman": 9009
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712349,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5223,
+              "lancer": 12000,
+              "marksman": 11019
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 6083,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5503,
+              "lancer": 12000,
+              "marksman": 11843
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5236,
+              "lancer": 12000,
+              "marksman": 11019
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5169,
+              "lancer": 12000,
+              "marksman": 11019
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712350,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 2653,
+              "lancer": 12000,
+              "marksman": 11463
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4638,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4255,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 2667,
+              "lancer": 12000,
+              "marksman": 11465
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 2348,
+              "lancer": 12000,
+              "marksman": 11458
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712351,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5613,
+              "lancer": 12000,
+              "marksman": 10037
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5987,
+              "lancer": 12000,
+              "marksman": 10037
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 6690,
+              "lancer": 12000,
+              "marksman": 9626
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5631,
+              "lancer": 12000,
+              "marksman": 10037
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5291,
+              "lancer": 12000,
+              "marksman": 10037
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712352,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 2291,
+              "lancer": 12000,
+              "marksman": 3078
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3539,
+              "lancer": 12000,
+              "marksman": 1769
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3602,
+              "lancer": 12000,
+              "marksman": 4549
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4225,
+              "lancer": 12000,
+              "marksman": 4004
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 2174,
+              "lancer": 12000,
+              "marksman": 3078
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712353,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3954,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5477,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 5297,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3958,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3495,
+              "lancer": 12000,
+              "marksman": 12000
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "seed": 712354,
+      "results": [
+        {
+          "label": "P1 诺拉×2+亨德里克+书允",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4138,
+              "lancer": 12000,
+              "marksman": 9865
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P2 无名×2+诺拉×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4956,
+              "lancer": 12000,
+              "marksman": 11275
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P3 11盾×3+亨德里克",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4616,
+              "lancer": 12000,
+              "marksman": 11462
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P4 诺拉×2+亨德里克×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 4147,
+              "lancer": 12000,
+              "marksman": 9878
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        },
+        {
+          "label": "P5 诺拉×2+书允×2",
+          "outcome": "A",
+          "remaining": {
+            "A": {
+              "shield": 3278,
+              "lancer": 12000,
+              "marksman": 9814
+            },
+            "B": {
+              "shield": 0,
+              "lancer": 0,
+              "marksman": 0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

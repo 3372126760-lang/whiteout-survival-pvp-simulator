@@ -1,0 +1,404 @@
+{
+  "serverStage": "s11",
+  "sideA": {
+    "troops": {
+      "shield": {
+        "count": 100,
+        "attack": 240,
+        "defense": 240,
+        "penetration": 240,
+        "life": 240,
+        "troopLevel": "T10",
+        "levelMode": "single",
+        "t12Level": 0
+      },
+      "lancer": {
+        "count": 100,
+        "attack": 240,
+        "defense": 240,
+        "penetration": 240,
+        "life": 240,
+        "troopLevel": "T10",
+        "levelMode": "single",
+        "t12Level": 0
+      },
+      "marksman": {
+        "count": 100,
+        "attack": 240,
+        "defense": 240,
+        "penetration": 240,
+        "life": 240,
+        "troopLevel": "T10",
+        "levelMode": "single",
+        "t12Level": 0
+      }
+    },
+    "reportHeroIds": [],
+    "reportHeroByTroop": {
+      "shield": null,
+      "lancer": null,
+      "marksman": null
+    },
+    "reportWeaponLevels": {},
+    "leaderHeroId": null,
+    "leaderHeroIds": {
+      "shield": null,
+      "lancer": null,
+      "marksman": null
+    },
+    "selectedMemberSkillIds": [],
+    "simulationWeaponLevels": {},
+    "externalBuffs": {
+      "town": {
+        "attack": "none",
+        "defense": "none",
+        "penetration": "none",
+        "life": "none",
+        "enemyAttackReduction": "none",
+        "enemyDefenseReduction": "none"
+      },
+      "pet": {
+        "attackLevel": 0,
+        "defenseLevel": 0,
+        "penetrationLevel": 0,
+        "lifeLevel": 0,
+        "enemyDefenseReductionLevel": 0,
+        "enemyPenetrationReductionLevel": 0,
+        "enemyLifeReductionLevel": 0
+      },
+      "expert": {
+        "garethFourthSkillLevel": 0
+      }
+    },
+    "rallyDeployment": {
+      "totalTroops": 36000,
+      "ratios": {
+        "shield": 34,
+        "lancer": 33,
+        "marksman": 33
+      }
+    },
+    "threeQueues": [
+      {
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "attributeSource": "manualBase",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "troopLevels": {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "attributeSource": "manualBase",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "troopLevels": {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "attributeSource": "manualBase",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "troopLevels": {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      }
+    ],
+    "deploymentCapacity": 300,
+    "highestTroopLevels": {
+      "shield": "T10",
+      "lancer": "T10",
+      "marksman": "T10"
+    }
+  },
+  "sideB": {
+    "troops": {
+      "shield": {
+        "count": 100,
+        "attack": 220,
+        "defense": 220,
+        "penetration": 220,
+        "life": 220,
+        "troopLevel": "T10",
+        "levelMode": "single",
+        "t12Level": 0
+      },
+      "lancer": {
+        "count": 100,
+        "attack": 220,
+        "defense": 220,
+        "penetration": 220,
+        "life": 220,
+        "troopLevel": "T10",
+        "levelMode": "single",
+        "t12Level": 0
+      },
+      "marksman": {
+        "count": 100,
+        "attack": 220,
+        "defense": 220,
+        "penetration": 220,
+        "life": 220,
+        "troopLevel": "T10",
+        "levelMode": "single",
+        "t12Level": 0
+      }
+    },
+    "reportHeroIds": [],
+    "reportHeroByTroop": {
+      "shield": null,
+      "lancer": null,
+      "marksman": null
+    },
+    "reportWeaponLevels": {},
+    "leaderHeroId": null,
+    "leaderHeroIds": {
+      "shield": null,
+      "lancer": null,
+      "marksman": null
+    },
+    "selectedMemberSkillIds": [],
+    "simulationWeaponLevels": {},
+    "externalBuffs": {
+      "town": {
+        "attack": "none",
+        "defense": "none",
+        "penetration": "none",
+        "life": "none",
+        "enemyAttackReduction": "none",
+        "enemyDefenseReduction": "none"
+      },
+      "pet": {
+        "attackLevel": 0,
+        "defenseLevel": 0,
+        "penetrationLevel": 0,
+        "lifeLevel": 0,
+        "enemyDefenseReductionLevel": 0,
+        "enemyPenetrationReductionLevel": 0,
+        "enemyLifeReductionLevel": 0
+      },
+      "expert": {
+        "garethFourthSkillLevel": 0
+      }
+    },
+    "rallyDeployment": {
+      "totalTroops": 36000,
+      "ratios": {
+        "shield": 34,
+        "lancer": 33,
+        "marksman": 33
+      }
+    },
+    "threeQueues": [
+      {
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "attributeSource": "manualBase",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "troopLevels": {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "attributeSource": "manualBase",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "troopLevels": {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "attributeSource": "manualBase",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "troopLevels": {
+          "shield": "T10",
+          "lancer": "T10",
+          "marksman": "T10"
+        }
+      }
+    ],
+    "deploymentCapacity": 300,
+    "highestTroopLevels": {
+      "shield": "T10",
+      "lancer": "T10",
+      "marksman": "T10"
+    }
+  },
+  "postBattleCasualtyMode": "NORMAL",
+  "maxRounds": 1500,
+  "randomSeed": 12345,
+  "battleContext": "challenge",
+  "simulationMode": "fixedSeed",
+  "attributeInputMode": "prediction",
+  "triggerOverrides": {},
+  "disabledSkillIds": [],
+  "actualRounds": [],
+  "scenarioType": "ICE_FIRE_LEAGUE",
+  "availableHeroIds": []
+}

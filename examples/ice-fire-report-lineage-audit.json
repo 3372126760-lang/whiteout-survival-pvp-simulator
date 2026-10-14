@@ -1,0 +1,607 @@
+{
+  "generatedAt": "2026-10-08T04:06:48.324Z",
+  "legacyFailure": {
+    "reportValue": 240,
+    "reportFactor": 3.4,
+    "reportHoldHeroIds": [
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus"
+    ],
+    "simulationHeroIds": [],
+    "heroStaticDeltaPercent": -1281.02,
+    "finalFactor": -9.4102
+  },
+  "preflightPassed": true,
+  "saveAndRestorePassed": true,
+  "queues": [
+    {
+      "queue": "A1",
+      "simulationHeroIds": [],
+      "reportHoldHeroIds": [],
+      "heroStaticDeltaPercent": {
+        "shield": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "lancer": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "marksman": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "reportValueSource": {
+        "shield": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.shield.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.shield.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.shield.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.shield.life"
+          }
+        },
+        "lancer": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.lancer.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.lancer.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.lancer.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.lancer.life"
+          }
+        },
+        "marksman": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.marksman.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.marksman.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.marksman.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[0].attributes.marksman.life"
+          }
+        }
+      },
+      "shieldAttack": {
+        "rawInputPercent": 240,
+        "heroStaticDeltaPercent": 0,
+        "finalFactor": 3.4
+      }
+    },
+    {
+      "queue": "A2",
+      "simulationHeroIds": [],
+      "reportHoldHeroIds": [],
+      "heroStaticDeltaPercent": {
+        "shield": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "lancer": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "marksman": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "reportValueSource": {
+        "shield": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.shield.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.shield.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.shield.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.shield.life"
+          }
+        },
+        "lancer": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.lancer.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.lancer.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.lancer.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.lancer.life"
+          }
+        },
+        "marksman": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.marksman.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.marksman.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.marksman.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[1].attributes.marksman.life"
+          }
+        }
+      },
+      "shieldAttack": {
+        "rawInputPercent": 240,
+        "heroStaticDeltaPercent": 0,
+        "finalFactor": 3.4
+      }
+    },
+    {
+      "queue": "A3",
+      "simulationHeroIds": [],
+      "reportHoldHeroIds": [],
+      "heroStaticDeltaPercent": {
+        "shield": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "lancer": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "marksman": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "reportValueSource": {
+        "shield": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.shield.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.shield.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.shield.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.shield.life"
+          }
+        },
+        "lancer": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.lancer.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.lancer.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.lancer.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.lancer.life"
+          }
+        },
+        "marksman": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.marksman.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.marksman.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.marksman.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideA.threeQueues[2].attributes.marksman.life"
+          }
+        }
+      },
+      "shieldAttack": {
+        "rawInputPercent": 240,
+        "heroStaticDeltaPercent": 0,
+        "finalFactor": 3.4
+      }
+    },
+    {
+      "queue": "B1",
+      "simulationHeroIds": [],
+      "reportHoldHeroIds": [],
+      "heroStaticDeltaPercent": {
+        "shield": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "lancer": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "marksman": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "reportValueSource": {
+        "shield": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.shield.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.shield.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.shield.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.shield.life"
+          }
+        },
+        "lancer": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.lancer.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.lancer.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.lancer.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.lancer.life"
+          }
+        },
+        "marksman": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.marksman.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.marksman.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.marksman.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[0].attributes.marksman.life"
+          }
+        }
+      },
+      "shieldAttack": {
+        "rawInputPercent": 240,
+        "heroStaticDeltaPercent": 0,
+        "finalFactor": 3.4
+      }
+    },
+    {
+      "queue": "B2",
+      "simulationHeroIds": [],
+      "reportHoldHeroIds": [],
+      "heroStaticDeltaPercent": {
+        "shield": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "lancer": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "marksman": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "reportValueSource": {
+        "shield": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.shield.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.shield.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.shield.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.shield.life"
+          }
+        },
+        "lancer": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.lancer.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.lancer.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.lancer.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.lancer.life"
+          }
+        },
+        "marksman": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.marksman.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.marksman.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.marksman.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[1].attributes.marksman.life"
+          }
+        }
+      },
+      "shieldAttack": {
+        "rawInputPercent": 240,
+        "heroStaticDeltaPercent": 0,
+        "finalFactor": 3.4
+      }
+    },
+    {
+      "queue": "B3",
+      "simulationHeroIds": [],
+      "reportHoldHeroIds": [],
+      "heroStaticDeltaPercent": {
+        "shield": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "lancer": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "marksman": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "reportValueSource": {
+        "shield": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.shield.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.shield.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.shield.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.shield.life"
+          }
+        },
+        "lancer": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.lancer.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.lancer.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.lancer.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.lancer.life"
+          }
+        },
+        "marksman": {
+          "attack": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.marksman.attack"
+          },
+          "defense": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.marksman.defense"
+          },
+          "penetration": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.marksman.penetration"
+          },
+          "life": {
+            "value": 240,
+            "source": "manualInput",
+            "path": "sideB.threeQueues[2].attributes.marksman.life"
+          }
+        }
+      },
+      "shieldAttack": {
+        "rawInputPercent": 240,
+        "heroStaticDeltaPercent": 0,
+        "finalFactor": 3.4
+      }
+    }
+  ]
+}

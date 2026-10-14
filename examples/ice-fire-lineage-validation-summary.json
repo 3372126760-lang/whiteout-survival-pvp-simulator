@@ -1,0 +1,38 @@
+﻿{
+    "generatedAt":  "2026-10-08T04:12:48.1863759Z",
+    "task":  "IceFire stale report lineage",
+    "typecheckExitCode":  0,
+    "lintExitCode":  0,
+    "buildExitCode":  0,
+    "tests":  {
+                  "exitCode":  0,
+                  "files":  105,
+                  "passed":  1162,
+                  "newRegressionTests":  15
+              },
+    "sixEmptyQueues":  {
+                           "simulationHeroIds":  [
+
+                                                 ],
+                           "reportHoldHeroIds":  [
+
+                                                 ],
+                           "heroStaticDeltaPercent":  0,
+                           "shieldAttackInputPercent":  240,
+                           "finalFactor":  3.4,
+                           "preflightPassed":  true,
+                           "saveAndRestorePassed":  true
+                       },
+    "protectedCoreFiles":  72,
+    "protectedCoreFilesUnchanged":  true,
+    "newDevServerStarted":  false,
+    "browserVisualVerification":  false,
+    "evidence":  [
+                     "examples/ice-fire-report-lineage-audit.json",
+                     "examples/ice-fire-lineage-core-boundary-audit.json",
+                     "examples/ice-fire-lineage-typecheck-results.log",
+                     "examples/ice-fire-lineage-lint-results.log",
+                     "examples/ice-fire-lineage-build-results.log",
+                     "examples/ice-fire-lineage-test-results.log"
+                 ]
+}

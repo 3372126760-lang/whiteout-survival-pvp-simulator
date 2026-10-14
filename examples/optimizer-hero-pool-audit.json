@@ -1,0 +1,1025 @@
+{
+  "serverGeneration": 11,
+  "optimizerHeroPoolBeforeFilter": [
+    {
+      "heroId": "hero.r.youjin",
+      "name": "尤金",
+      "rarity": "R",
+      "troopType": "shield",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.r.shimisi",
+      "name": "史密斯",
+      "rarity": "R",
+      "troopType": "shield",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.r.chali",
+      "name": "查理",
+      "rarity": "R",
+      "troopType": "lancer",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.r.kelaoruisi",
+      "name": "克劳瑞斯",
+      "rarity": "R",
+      "troopType": "marksman",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.sr.xieergai",
+      "name": "谢尔盖",
+      "rarity": "SR",
+      "troopType": "shield",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.sr.patelike",
+      "name": "帕特里克",
+      "rarity": "SR",
+      "troopType": "lancer",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.sr.baxiti",
+      "name": "巴希提",
+      "rarity": "SR",
+      "troopType": "marksman",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.body.jiexi",
+      "name": "杰西",
+      "rarity": "SR",
+      "troopType": "lancer",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.body.shuyun",
+      "name": "书允",
+      "rarity": "SR",
+      "troopType": "marksman",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.body.jiesaier",
+      "name": "杰塞尔",
+      "rarity": "SR",
+      "troopType": "marksman",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.sr.lumubogen",
+      "name": "卢姆·波根",
+      "rarity": "SR",
+      "troopType": "lancer",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.sr.lingshuang",
+      "name": "凌霜",
+      "rarity": "SR",
+      "troopType": "lancer",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.sr.jina",
+      "name": "吉娜",
+      "rarity": "SR",
+      "troopType": "marksman",
+      "generation": null,
+      "weaponMaxStat": null
+    },
+    {
+      "heroId": "hero.s1.heluonimo",
+      "name": "赫罗尼莫",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 1,
+      "weaponMaxStat": 0.625
+    },
+    {
+      "heroId": "hero.s1.nataliya",
+      "name": "娜塔莉亚",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 1,
+      "weaponMaxStat": 0.55
+    },
+    {
+      "heroId": "hero.s1.moli",
+      "name": "茉莉",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 1,
+      "weaponMaxStat": 0.55
+    },
+    {
+      "heroId": "hero.s1.jinman",
+      "name": "津曼",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 1,
+      "weaponMaxStat": 0.55
+    },
+    {
+      "heroId": "hero.head.fulinte",
+      "name": "弗林特",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 2,
+      "weaponMaxStat": 0.6
+    },
+    {
+      "heroId": "hero.s2.feilande",
+      "name": "菲兰德",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 2,
+      "weaponMaxStat": 0.6
+    },
+    {
+      "heroId": "hero.s2.alongsuo",
+      "name": "阿隆索",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 2,
+      "weaponMaxStat": 0.6
+    },
+    {
+      "heroId": "hero.s3.luogen",
+      "name": "罗根",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 3,
+      "weaponMaxStat": 0.7
+    },
+    {
+      "heroId": "hero.s3.miya",
+      "name": "米娅",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 3,
+      "weaponMaxStat": 0.7
+    },
+    {
+      "heroId": "hero.s3.gelaige",
+      "name": "格雷格",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 3,
+      "weaponMaxStat": 0.7
+    },
+    {
+      "heroId": "hero.s4.ahemosi",
+      "name": "阿赫莫斯",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 4,
+      "weaponMaxStat": 0.925
+    },
+    {
+      "heroId": "hero.s4.lingnai",
+      "name": "玲奈",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 4,
+      "weaponMaxStat": 0.925
+    },
+    {
+      "heroId": "hero.s4.linen",
+      "name": "琳恩",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 4,
+      "weaponMaxStat": 0.925
+    },
+    {
+      "heroId": "hero.s5.heketuo",
+      "name": "赫克托",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 5,
+      "weaponMaxStat": 1.11
+    },
+    {
+      "heroId": "hero.s5.nuola",
+      "name": "诺拉",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 5,
+      "weaponMaxStat": 1.11
+    },
+    {
+      "heroId": "hero.s5.gewen",
+      "name": "格温",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 5,
+      "weaponMaxStat": 1.11
+    },
+    {
+      "heroId": "hero.s6.wuming",
+      "name": "无名",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 6,
+      "weaponMaxStat": 1.335
+    },
+    {
+      "heroId": "hero.s6.ruini",
+      "name": "芮妮",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 6,
+      "weaponMaxStat": 1.335
+    },
+    {
+      "heroId": "hero.s6.weien",
+      "name": "韦恩",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 6,
+      "weaponMaxStat": 1.335
+    },
+    {
+      "heroId": "hero.s7.aidisi",
+      "name": "艾迪丝",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 7,
+      "weaponMaxStat": 1.605
+    },
+    {
+      "heroId": "hero.s7.gedun",
+      "name": "哥顿",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 7,
+      "weaponMaxStat": 1.605
+    },
+    {
+      "heroId": "hero.s7.buladeli",
+      "name": "布拉德利",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 7,
+      "weaponMaxStat": 1.605
+    },
+    {
+      "heroId": "hero.s8.jiatuo",
+      "name": "加托",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 8,
+      "weaponMaxStat": 1.93
+    },
+    {
+      "heroId": "hero.s8.suoniya",
+      "name": "索妮娅",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 8,
+      "weaponMaxStat": 1.93
+    },
+    {
+      "heroId": "hero.s8.hengdelike",
+      "name": "亨德里克",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 8,
+      "weaponMaxStat": 1.93
+    },
+    {
+      "heroId": "hero.s9.magenusi",
+      "name": "马格努斯",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 9,
+      "weaponMaxStat": 2.32
+    },
+    {
+      "heroId": "hero.s9.fuleide",
+      "name": "弗雷德",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 9,
+      "weaponMaxStat": 2.32
+    },
+    {
+      "heroId": "hero.s9.xiula",
+      "name": "修拉",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 9,
+      "weaponMaxStat": 2.32
+    },
+    {
+      "heroId": "hero.s10.gregory",
+      "name": "格里高利",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 10,
+      "weaponMaxStat": 2.775
+    },
+    {
+      "heroId": "hero.s10.freya",
+      "name": "芙蕾雅",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 10,
+      "weaponMaxStat": 2.775
+    },
+    {
+      "heroId": "hero.s10.blanchette",
+      "name": "布兰琪",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 10,
+      "weaponMaxStat": 2.775
+    },
+    {
+      "heroId": "hero.s11.eleonora",
+      "name": "埃莱奥诺拉",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 11,
+      "weaponMaxStat": 3.2
+    },
+    {
+      "heroId": "hero.s11.lloyd",
+      "name": "劳埃德",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 11,
+      "weaponMaxStat": 3.2
+    },
+    {
+      "heroId": "hero.s11.rufus",
+      "name": "鲁弗斯",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 11,
+      "weaponMaxStat": 3.2
+    }
+  ],
+  "rarityFilteredHeroes": [
+    "hero.r.youjin",
+    "hero.r.shimisi",
+    "hero.r.chali",
+    "hero.r.kelaoruisi",
+    "hero.sr.xieergai",
+    "hero.sr.patelike",
+    "hero.sr.baxiti",
+    "hero.body.jiexi",
+    "hero.body.shuyun",
+    "hero.body.jiesaier",
+    "hero.sr.lumubogen",
+    "hero.sr.lingshuang",
+    "hero.sr.jina"
+  ],
+  "recentGenerationConstraint": [
+    9,
+    10,
+    11
+  ],
+  "dominanceRelations": [],
+  "heroClassifications": [
+    {
+      "heroId": "hero.s1.heluonimo",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s1.nataliya",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s1.moli",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s1.jinman",
+      "status": "nonDominated",
+      "reasons": [
+        "no complete dominating signature found"
+      ]
+    },
+    {
+      "heroId": "hero.head.fulinte",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s2.feilande",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s2.alongsuo",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s3.luogen",
+      "status": "nonDominated",
+      "reasons": [
+        "no complete dominating signature found"
+      ]
+    },
+    {
+      "heroId": "hero.s3.miya",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s3.gelaige",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s4.ahemosi",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s4.lingnai",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s4.linen",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s5.heketuo",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s5.nuola",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics",
+        "action/timing/control semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s5.gewen",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics",
+        "benefit direction / side effect not proven"
+      ]
+    },
+    {
+      "heroId": "hero.s6.wuming",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s6.ruini",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics",
+        "benefit direction / side effect not proven"
+      ]
+    },
+    {
+      "heroId": "hero.s6.weien",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s7.aidisi",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s7.gedun",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s7.buladeli",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s8.jiatuo",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics",
+        "action/timing/control semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s8.suoniya",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics",
+        "benefit direction / side effect not proven"
+      ]
+    },
+    {
+      "heroId": "hero.s8.hengdelike",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics",
+        "action/timing/control semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s9.magenusi",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s9.fuleide",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics",
+        "action/timing/control semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s9.xiula",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s10.gregory",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s10.freya",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s10.blanchette",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s11.eleonora",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics",
+        "action/timing/control semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s11.lloyd",
+      "status": "nonDominated",
+      "reasons": [
+        "scope/lifecycle/nonlinear semantics",
+        "action/timing/control semantics"
+      ]
+    },
+    {
+      "heroId": "hero.s11.rufus",
+      "status": "nonDominated",
+      "reasons": [
+        "action/timing/control semantics",
+        "scope/lifecycle/nonlinear semantics"
+      ]
+    }
+  ],
+  "optimizerHeroPoolAfterFilter": [
+    {
+      "heroId": "hero.s1.heluonimo",
+      "name": "赫罗尼莫",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 1,
+      "weaponMaxStat": 0.625
+    },
+    {
+      "heroId": "hero.s1.nataliya",
+      "name": "娜塔莉亚",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 1,
+      "weaponMaxStat": 0.55
+    },
+    {
+      "heroId": "hero.s1.moli",
+      "name": "茉莉",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 1,
+      "weaponMaxStat": 0.55
+    },
+    {
+      "heroId": "hero.s1.jinman",
+      "name": "津曼",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 1,
+      "weaponMaxStat": 0.55
+    },
+    {
+      "heroId": "hero.head.fulinte",
+      "name": "弗林特",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 2,
+      "weaponMaxStat": 0.6
+    },
+    {
+      "heroId": "hero.s2.feilande",
+      "name": "菲兰德",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 2,
+      "weaponMaxStat": 0.6
+    },
+    {
+      "heroId": "hero.s2.alongsuo",
+      "name": "阿隆索",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 2,
+      "weaponMaxStat": 0.6
+    },
+    {
+      "heroId": "hero.s3.luogen",
+      "name": "罗根",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 3,
+      "weaponMaxStat": 0.7
+    },
+    {
+      "heroId": "hero.s3.miya",
+      "name": "米娅",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 3,
+      "weaponMaxStat": 0.7
+    },
+    {
+      "heroId": "hero.s3.gelaige",
+      "name": "格雷格",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 3,
+      "weaponMaxStat": 0.7
+    },
+    {
+      "heroId": "hero.s4.ahemosi",
+      "name": "阿赫莫斯",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 4,
+      "weaponMaxStat": 0.925
+    },
+    {
+      "heroId": "hero.s4.lingnai",
+      "name": "玲奈",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 4,
+      "weaponMaxStat": 0.925
+    },
+    {
+      "heroId": "hero.s4.linen",
+      "name": "琳恩",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 4,
+      "weaponMaxStat": 0.925
+    },
+    {
+      "heroId": "hero.s5.heketuo",
+      "name": "赫克托",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 5,
+      "weaponMaxStat": 1.11
+    },
+    {
+      "heroId": "hero.s5.nuola",
+      "name": "诺拉",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 5,
+      "weaponMaxStat": 1.11
+    },
+    {
+      "heroId": "hero.s5.gewen",
+      "name": "格温",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 5,
+      "weaponMaxStat": 1.11
+    },
+    {
+      "heroId": "hero.s6.wuming",
+      "name": "无名",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 6,
+      "weaponMaxStat": 1.335
+    },
+    {
+      "heroId": "hero.s6.ruini",
+      "name": "芮妮",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 6,
+      "weaponMaxStat": 1.335
+    },
+    {
+      "heroId": "hero.s6.weien",
+      "name": "韦恩",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 6,
+      "weaponMaxStat": 1.335
+    },
+    {
+      "heroId": "hero.s7.aidisi",
+      "name": "艾迪丝",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 7,
+      "weaponMaxStat": 1.605
+    },
+    {
+      "heroId": "hero.s7.gedun",
+      "name": "哥顿",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 7,
+      "weaponMaxStat": 1.605
+    },
+    {
+      "heroId": "hero.s7.buladeli",
+      "name": "布拉德利",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 7,
+      "weaponMaxStat": 1.605
+    },
+    {
+      "heroId": "hero.s8.jiatuo",
+      "name": "加托",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 8,
+      "weaponMaxStat": 1.93
+    },
+    {
+      "heroId": "hero.s8.suoniya",
+      "name": "索妮娅",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 8,
+      "weaponMaxStat": 1.93
+    },
+    {
+      "heroId": "hero.s8.hengdelike",
+      "name": "亨德里克",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 8,
+      "weaponMaxStat": 1.93
+    },
+    {
+      "heroId": "hero.s9.magenusi",
+      "name": "马格努斯",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 9,
+      "weaponMaxStat": 2.32
+    },
+    {
+      "heroId": "hero.s9.fuleide",
+      "name": "弗雷德",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 9,
+      "weaponMaxStat": 2.32
+    },
+    {
+      "heroId": "hero.s9.xiula",
+      "name": "修拉",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 9,
+      "weaponMaxStat": 2.32
+    },
+    {
+      "heroId": "hero.s10.gregory",
+      "name": "格里高利",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 10,
+      "weaponMaxStat": 2.775
+    },
+    {
+      "heroId": "hero.s10.freya",
+      "name": "芙蕾雅",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 10,
+      "weaponMaxStat": 2.775
+    },
+    {
+      "heroId": "hero.s10.blanchette",
+      "name": "布兰琪",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 10,
+      "weaponMaxStat": 2.775
+    },
+    {
+      "heroId": "hero.s11.eleonora",
+      "name": "埃莱奥诺拉",
+      "rarity": "SSR",
+      "troopType": "shield",
+      "generation": 11,
+      "weaponMaxStat": 3.2
+    },
+    {
+      "heroId": "hero.s11.lloyd",
+      "name": "劳埃德",
+      "rarity": "SSR",
+      "troopType": "lancer",
+      "generation": 11,
+      "weaponMaxStat": 3.2
+    },
+    {
+      "heroId": "hero.s11.rufus",
+      "name": "鲁弗斯",
+      "rarity": "SSR",
+      "troopType": "marksman",
+      "generation": 11,
+      "weaponMaxStat": 3.2
+    }
+  ],
+  "counts": {
+    "before": {
+      "shield": 15,
+      "lancer": 16,
+      "marksman": 16
+    },
+    "afterRarity": {
+      "shield": 12,
+      "lancer": 11,
+      "marksman": 11
+    },
+    "afterDominance": {
+      "shield": 12,
+      "lancer": 11,
+      "marksman": 11
+    },
+    "originalCombinations": 3840,
+    "afterRarityCombinations": 1452,
+    "afterRecentCombinations": 876,
+    "legalCombinations": 876
+  },
+  "exclusions": [
+    {
+      "heroId": "hero.r.youjin",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.r.shimisi",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.r.chali",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.r.kelaoruisi",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.sr.xieergai",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.sr.patelike",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.sr.baxiti",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.body.jiexi",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.body.shuyun",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.body.jiesaier",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.sr.lumubogen",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.sr.lingshuang",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "heroId": "hero.sr.jina",
+      "exclusionReason": "rarityRule"
+    },
+    {
+      "count": 576,
+      "exclusionReason": "recentGenerationRule"
+    }
+  ]
+}

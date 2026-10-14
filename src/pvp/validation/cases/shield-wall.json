@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "shield-wall",
+  "name": "不朽之壁",
+  "description": "A方T12盾兵启用不朽之壁L10，与禁用该技能的同种子基线比较防御等效价值。",
+  "kind": "impact",
+  "skillId": "shield-immortal-wall-t12",
+  "targetSide": "A",
+  "simulationCount": 10000,
+  "randomSeed": 42345,
+  "maxRounds": 5,
+  "sides": {
+    "A": {
+      "shield": { "count": 80000, "level": "T12-FC10", "t12Level": 10 },
+      "lancer": { "count": 0, "level": "T10" },
+      "marksman": { "count": 0, "level": "T10" }
+    },
+    "B": {
+      "shield": { "count": 0, "level": "T10" },
+      "lancer": { "count": 80000, "level": "T10" },
+      "marksman": { "count": 0, "level": "T10" }
+    }
+  },
+  "theoreticalImpact": {
+    "damageTakenReduction": 0.06
+  }
+}

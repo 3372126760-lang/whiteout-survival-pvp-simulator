@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "rapid-fire",
+  "name": "连射",
+  "description": "A方射手启用连射，双方其他概率技能全部关闭；验证第二击不重复判定。",
+  "kind": "probability",
+  "skillId": "marksman-rapid-fire",
+  "targetSide": "A",
+  "simulationCount": 10000,
+  "randomSeed": 12345,
+  "maxRounds": 1,
+  "sides": {
+    "A": {
+      "shield": { "count": 0, "level": "T10" },
+      "lancer": { "count": 0, "level": "T10" },
+      "marksman": { "count": 100000, "level": "T10" }
+    },
+    "B": {
+      "shield": { "count": 0, "level": "T10" },
+      "lancer": { "count": 0, "level": "T10" },
+      "marksman": { "count": 100000, "level": "T10" }
+    }
+  },
+  "probability": {
+    "theoretical": 0.1,
+    "absoluteTolerance": 0.015,
+    "expectedChecksPerTrial": 1
+  },
+  "theoreticalImpact": {
+    "damageGain": 0.1
+  }
+}

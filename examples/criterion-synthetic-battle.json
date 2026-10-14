@@ -1,0 +1,581 @@
+{
+  "schemaVersion": 3,
+  "savedAt": 1791328015707,
+  "data": {
+    "input": {
+      "serverStage": "s11",
+      "sideA": {
+        "troops": {
+          "shield": {
+            "count": 12000,
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240,
+            "troopLevel": "T10-FC8",
+            "levelMode": "single",
+            "t12Level": 0
+          },
+          "lancer": {
+            "count": 12000,
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240,
+            "troopLevel": "T10-FC8",
+            "levelMode": "single",
+            "t12Level": 0
+          },
+          "marksman": {
+            "count": 12000,
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240,
+            "troopLevel": "T10-FC10",
+            "levelMode": "single",
+            "t12Level": 0
+          }
+        },
+        "reportHeroIds": [],
+        "leaderHeroId": null,
+        "bodySkills": [],
+        "threeQueues": [
+          {
+            "leaderHeroIds": {},
+            "ratiosBp": {
+              "shield": 5000,
+              "lancer": 2000,
+              "marksman": 3000
+            },
+            "attributes": {
+              "shield": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "lancer": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "marksman": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              }
+            },
+            "troopLevels": {
+              "shield": "T10-FC8",
+              "lancer": "T10-FC8",
+              "marksman": "T10-FC10"
+            },
+            "externalBuffs": {
+              "town": {
+                "attack": "none",
+                "defense": "none",
+                "penetration": "none",
+                "life": "none",
+                "enemyAttackReduction": "none",
+                "enemyDefenseReduction": "none"
+              },
+              "pet": {
+                "attackLevel": 0,
+                "defenseLevel": 0,
+                "penetrationLevel": 0,
+                "lifeLevel": 0,
+                "enemyDefenseReductionLevel": 0,
+                "enemyPenetrationReductionLevel": 0,
+                "enemyLifeReductionLevel": 0
+              },
+              "expert": {
+                "garethFourthSkillLevel": 0
+              }
+            },
+            "heroSkillLevels": {}
+          },
+          {
+            "leaderHeroIds": {},
+            "ratiosBp": {
+              "shield": 3300,
+              "lancer": 3300,
+              "marksman": 3400
+            },
+            "attributes": {
+              "shield": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "lancer": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "marksman": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              }
+            },
+            "troopLevels": {
+              "shield": "T10-FC8",
+              "lancer": "T10-FC8",
+              "marksman": "T10-FC10"
+            },
+            "externalBuffs": {
+              "town": {
+                "attack": "none",
+                "defense": "none",
+                "penetration": "none",
+                "life": "none",
+                "enemyAttackReduction": "none",
+                "enemyDefenseReduction": "none"
+              },
+              "pet": {
+                "attackLevel": 0,
+                "defenseLevel": 0,
+                "penetrationLevel": 0,
+                "lifeLevel": 0,
+                "enemyDefenseReductionLevel": 0,
+                "enemyPenetrationReductionLevel": 0,
+                "enemyLifeReductionLevel": 0
+              },
+              "expert": {
+                "garethFourthSkillLevel": 0
+              }
+            },
+            "heroSkillLevels": {}
+          },
+          {
+            "leaderHeroIds": {},
+            "ratiosBp": {
+              "shield": 1000,
+              "lancer": 2000,
+              "marksman": 7000
+            },
+            "attributes": {
+              "shield": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "lancer": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "marksman": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              }
+            },
+            "troopLevels": {
+              "shield": "T10-FC8",
+              "lancer": "T10-FC8",
+              "marksman": "T10-FC10"
+            },
+            "externalBuffs": {
+              "town": {
+                "attack": "none",
+                "defense": "none",
+                "penetration": "none",
+                "life": "none",
+                "enemyAttackReduction": "none",
+                "enemyDefenseReduction": "none"
+              },
+              "pet": {
+                "attackLevel": 0,
+                "defenseLevel": 0,
+                "penetrationLevel": 0,
+                "lifeLevel": 0,
+                "enemyDefenseReductionLevel": 0,
+                "enemyPenetrationReductionLevel": 0,
+                "enemyLifeReductionLevel": 0
+              },
+              "expert": {
+                "garethFourthSkillLevel": 0
+              }
+            },
+            "heroSkillLevels": {}
+          }
+        ],
+        "reportHeroByTroop": {},
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "reportWeaponLevels": {},
+        "simulationWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "rallyDeployment": {
+          "totalTroops": 36000,
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        }
+      },
+      "sideB": {
+        "troops": {
+          "shield": {
+            "count": 12000,
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240,
+            "troopLevel": "T10-FC8",
+            "levelMode": "single",
+            "t12Level": 0
+          },
+          "lancer": {
+            "count": 12000,
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240,
+            "troopLevel": "T10-FC8",
+            "levelMode": "single",
+            "t12Level": 0
+          },
+          "marksman": {
+            "count": 12000,
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240,
+            "troopLevel": "T10-FC10",
+            "levelMode": "single",
+            "t12Level": 0
+          }
+        },
+        "reportHeroIds": [],
+        "leaderHeroId": null,
+        "bodySkills": [],
+        "threeQueues": [
+          {
+            "leaderHeroIds": {},
+            "ratiosBp": {
+              "shield": 5000,
+              "lancer": 2000,
+              "marksman": 3000
+            },
+            "attributes": {
+              "shield": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "lancer": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "marksman": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              }
+            },
+            "troopLevels": {
+              "shield": "T10-FC8",
+              "lancer": "T10-FC8",
+              "marksman": "T10-FC10"
+            },
+            "externalBuffs": {
+              "town": {
+                "attack": "none",
+                "defense": "none",
+                "penetration": "none",
+                "life": "none",
+                "enemyAttackReduction": "none",
+                "enemyDefenseReduction": "none"
+              },
+              "pet": {
+                "attackLevel": 0,
+                "defenseLevel": 0,
+                "penetrationLevel": 0,
+                "lifeLevel": 0,
+                "enemyDefenseReductionLevel": 0,
+                "enemyPenetrationReductionLevel": 0,
+                "enemyLifeReductionLevel": 0
+              },
+              "expert": {
+                "garethFourthSkillLevel": 0
+              }
+            },
+            "heroSkillLevels": {}
+          },
+          {
+            "leaderHeroIds": {},
+            "ratiosBp": {
+              "shield": 3300,
+              "lancer": 3300,
+              "marksman": 3400
+            },
+            "attributes": {
+              "shield": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "lancer": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "marksman": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              }
+            },
+            "troopLevels": {
+              "shield": "T10-FC8",
+              "lancer": "T10-FC8",
+              "marksman": "T10-FC10"
+            },
+            "externalBuffs": {
+              "town": {
+                "attack": "none",
+                "defense": "none",
+                "penetration": "none",
+                "life": "none",
+                "enemyAttackReduction": "none",
+                "enemyDefenseReduction": "none"
+              },
+              "pet": {
+                "attackLevel": 0,
+                "defenseLevel": 0,
+                "penetrationLevel": 0,
+                "lifeLevel": 0,
+                "enemyDefenseReductionLevel": 0,
+                "enemyPenetrationReductionLevel": 0,
+                "enemyLifeReductionLevel": 0
+              },
+              "expert": {
+                "garethFourthSkillLevel": 0
+              }
+            },
+            "heroSkillLevels": {}
+          },
+          {
+            "leaderHeroIds": {},
+            "ratiosBp": {
+              "shield": 1000,
+              "lancer": 2000,
+              "marksman": 7000
+            },
+            "attributes": {
+              "shield": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "lancer": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              },
+              "marksman": {
+                "attack": 240,
+                "defense": 240,
+                "penetration": 240,
+                "life": 240
+              }
+            },
+            "troopLevels": {
+              "shield": "T10-FC8",
+              "lancer": "T10-FC8",
+              "marksman": "T10-FC10"
+            },
+            "externalBuffs": {
+              "town": {
+                "attack": "none",
+                "defense": "none",
+                "penetration": "none",
+                "life": "none",
+                "enemyAttackReduction": "none",
+                "enemyDefenseReduction": "none"
+              },
+              "pet": {
+                "attackLevel": 0,
+                "defenseLevel": 0,
+                "penetrationLevel": 0,
+                "lifeLevel": 0,
+                "enemyDefenseReductionLevel": 0,
+                "enemyPenetrationReductionLevel": 0,
+                "enemyLifeReductionLevel": 0
+              },
+              "expert": {
+                "garethFourthSkillLevel": 0
+              }
+            },
+            "heroSkillLevels": {}
+          }
+        ],
+        "reportHeroByTroop": {},
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "reportWeaponLevels": {},
+        "simulationWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "rallyDeployment": {
+          "totalTroops": 36000,
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          }
+        }
+      },
+      "postBattleCasualtyMode": "NORMAL",
+      "maxRounds": 300,
+      "randomSeed": 12345,
+      "battleContext": "rally",
+      "simulationMode": "fixedSeed",
+      "attributeInputMode": "finalReport",
+      "triggerOverrides": {},
+      "disabledSkillIds": [],
+      "actualRounds": [],
+      "scenarioType": "RALLY",
+      "availableHeroIds": [
+        "hero.s10.gregory",
+        "hero.s3.miya",
+        "hero.s11.rufus",
+        "hero.s11.eleonora",
+        "hero.s1.nataliya",
+        "hero.s11.lloyd",
+        "hero.s1.jinman"
+      ],
+      "rallyBodyPoolIds": [
+        "hero.s5.nuola",
+        "hero.s6.wuming",
+        "hero.s8.hengdelike",
+        "hero.body.shuyun"
+      ]
+    },
+    "simulationCount": 1000,
+    "optimizationConfig": {
+      "objectiveMode": "singleWin",
+      "constraints": {},
+      "stages": [
+        {
+          "ratioStep": 5,
+          "trials": 20,
+          "keep": 3000,
+          "maxCandidates": 300
+        },
+        {
+          "ratioStep": 5,
+          "trials": 50,
+          "keep": 500,
+          "maxCandidates": 100
+        },
+        {
+          "ratioStep": 1,
+          "trials": 100,
+          "keep": 50,
+          "maxCandidates": 60
+        }
+      ],
+      "theory": {
+        "ratioStep": 5,
+        "localPeaksPerLineup": 3,
+        "minSurvivorsPerLineup": 1,
+        "randomExploration": 1,
+        "diversityExploration": 1,
+        "uncertaintyExploration": 1,
+        "uncertaintyWeight": 1,
+        "deterministicRounds": 24,
+        "probabilityEquivalentCoefficient": 1,
+        "calibratedEquivalents": {}
+      },
+      "initialBattleTrials": 10,
+      "verificationTrials": 1000,
+      "verificationTop": 10,
+      "topN": 5,
+      "firstSeed": 91,
+      "targetDefeatProbability": 0.9,
+      "maxWaves": 3,
+      "beamWidth": 3,
+      "branchWidth": 3,
+      "beamTrials": 50,
+      "singleFightThresholdLow": 0.05,
+      "singleFightThresholdHigh": 0.95
+    }
+  }
+}

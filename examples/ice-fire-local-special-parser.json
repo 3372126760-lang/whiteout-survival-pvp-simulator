@@ -1,0 +1,228 @@
+{
+  "syntheticImage": true,
+  "localOnly": true,
+  "report": {
+    "imageId": "中文战报.png",
+    "imageIds": [
+      "中文战报.png"
+    ],
+    "pageType": "attributes",
+    "pageTypes": [
+      "attributes",
+      "specialBonuses"
+    ],
+    "left": {
+      "sourceSide": "left",
+      "attributes": {
+        "shield": {
+          "attack": {
+            "value": 1917.1,
+            "rawText": "盾兵攻击力 1917.1%",
+            "confidence": 0.95,
+            "ocrConfidence": 0.98451,
+            "structuralConfidence": 0.95,
+            "validationConfidence": 1,
+            "finalConfidence": 0.95,
+            "needsConfirmation": false,
+            "box": [
+              [
+                20,
+                89
+              ],
+              [
+                365,
+                88
+              ],
+              [
+                366,
+                138
+              ],
+              [
+                20,
+                140
+              ]
+            ]
+          }
+        },
+        "lancer": {},
+        "marksman": {}
+      },
+      "troopSetup": {
+        "shield": {},
+        "lancer": {},
+        "marksman": {}
+      },
+      "specialBonuses": {
+        "additive": [
+          {
+            "label": "官职赐予部队攻击力 0%",
+            "canonicalLabel": "官职赋予部队攻击力",
+            "sourceReportSide": "left",
+            "matchConfidence": 1,
+            "matchScore": 1,
+            "matchType": "alias",
+            "rowQuality": {
+              "labelConfidence": 0.9644,
+              "valueConfidence": 0.9644,
+              "structuralConfidence": 0.98,
+              "finalConfidence": 0.9644,
+              "isNearTopEdge": false,
+              "isNearBottomEdge": false,
+              "isPartiallyClipped": false
+            },
+            "sources": [
+              {
+                "labelConfidence": 0.9644,
+                "valueConfidence": 0.9644,
+                "structuralConfidence": 0.98,
+                "finalConfidence": 0.9644,
+                "isNearTopEdge": false,
+                "isNearBottomEdge": false,
+                "isPartiallyClipped": false,
+                "imageId": "中文战报.png",
+                "imageIndex": 0,
+                "rawText": "官职赐予部队攻击力 0%",
+                "normalizedText": "官职赐予部队攻击",
+                "bbox": {
+                  "x1": 23,
+                  "y1": 311,
+                  "x2": 415,
+                  "y2": 359
+                },
+                "matchType": "alias",
+                "value": 0
+              }
+            ],
+            "attribute": "attack",
+            "amount": {
+              "value": 0,
+              "rawText": "官职赐予部队攻击力 0%",
+              "confidence": 0.9644,
+              "ocrConfidence": 0.9644,
+              "structuralConfidence": 0.98,
+              "validationConfidence": 1,
+              "finalConfidence": 0.9644,
+              "needsConfirmation": false,
+              "box": [
+                [
+                  23,
+                  311
+                ],
+                [
+                  415,
+                  311
+                ],
+                [
+                  415,
+                  359
+                ],
+                [
+                  23,
+                  359
+                ]
+              ]
+            },
+            "scope": "general",
+            "category": "additive",
+            "troopScope": "all",
+            "activeInThisBattle": true,
+            "effectTarget": "self"
+          }
+        ],
+        "buffs": [],
+        "debuffs": [
+          {
+            "label": "敌方穿透力减益（专家技能）5%",
+            "canonicalLabel": "专家穿透力",
+            "sourceReportSide": "left",
+            "matchConfidence": 1,
+            "matchScore": 1,
+            "matchType": "alias",
+            "rowQuality": {
+              "labelConfidence": 0.95621,
+              "valueConfidence": 0.95621,
+              "structuralConfidence": 0.98,
+              "finalConfidence": 0.95621,
+              "isNearTopEdge": false,
+              "isNearBottomEdge": false,
+              "isPartiallyClipped": false
+            },
+            "sources": [
+              {
+                "labelConfidence": 0.95621,
+                "valueConfidence": 0.95621,
+                "structuralConfidence": 0.98,
+                "finalConfidence": 0.95621,
+                "isNearTopEdge": false,
+                "isNearBottomEdge": false,
+                "isPartiallyClipped": false,
+                "imageId": "中文战报.png",
+                "imageIndex": 0,
+                "rawText": "敌方穿透力减益（专家技能）5%",
+                "normalizedText": "敌方穿透减益专家技能",
+                "bbox": {
+                  "x1": 21,
+                  "y1": 380,
+                  "x2": 561,
+                  "y2": 430
+                },
+                "matchType": "alias",
+                "value": 5
+              }
+            ],
+            "attribute": "penetration",
+            "amount": {
+              "value": 5,
+              "rawText": "敌方穿透力减益（专家技能）5%",
+              "confidence": 0.95621,
+              "ocrConfidence": 0.95621,
+              "structuralConfidence": 0.98,
+              "validationConfidence": 1,
+              "finalConfidence": 0.95621,
+              "needsConfirmation": false,
+              "box": [
+                [
+                  21,
+                  380
+                ],
+                [
+                  561,
+                  380
+                ],
+                [
+                  561,
+                  430
+                ],
+                [
+                  21,
+                  430
+                ]
+              ]
+            },
+            "scope": "general",
+            "category": "debuff",
+            "troopScope": "all",
+            "activeInThisBattle": true,
+            "effectTarget": "enemy"
+          }
+        ]
+      },
+      "unmatchedBonuses": [],
+      "specialEvidence": true
+    },
+    "warnings": [
+      "missing left.shield.defense",
+      "missing left.shield.penetration",
+      "missing left.shield.life",
+      "missing left.lancer.attack",
+      "missing left.lancer.defense",
+      "missing left.lancer.penetration",
+      "missing left.lancer.life",
+      "missing left.marksman.attack",
+      "missing left.marksman.defense",
+      "missing left.marksman.penetration",
+      "missing left.marksman.life"
+    ],
+    "confidence": 0.95
+  }
+}

@@ -1,0 +1,12 @@
+export * from "./types";
+export * from "./recognize";
+export * from "./mapping";
+export * from "./layout";
+export * from "./values";
+export * from "./attributeParser";
+export * from "./troopParser";
+export * from "./specialBonusRegistry";
+export * from "./specialBonusParser";
+export * from "./specialBonusMerge";
+export { resolveDisplayedTroopComposition, resolveParsedTroopSetup,
+  TROOP_APPROXIMATION_WARNING } from "./troopResolution";

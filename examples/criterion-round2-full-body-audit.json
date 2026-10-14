@@ -1,0 +1,257 @@
+{
+  "recordedAt": "2026-10-07T05:19:30.127Z",
+  "reports": [
+    {
+      "serverStage": "s11",
+      "provenance": "Full server-available body pool, max two distinct heroes, ordered slots, Lv5, default constraints; theoretical preprocessing only, no formal battles.",
+      "sourceSkillCount": 42,
+      "unorderedHeroIdentityCombinations": 632,
+      "rawGenerationMs": 25.519300000000044,
+      "bodyPreprocessMs": 1416.319,
+      "rawBodyCombinationCount": 11816,
+      "rejectedBySameEffectFamily": 6980,
+      "rejectedBySkillDominance": 0,
+      "rejectedByProbabilityDominance": 1044,
+      "rejectedByParetoDominance": 0,
+      "preprocessedBodyCount": 3792,
+      "skillDominance": [
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.baxiti.danger-sense",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xiula.mist-spores",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.baxiti.danger-sense",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xiula.mist-spores",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiesaier.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.blanchette.crimson-hunting-blade",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.heluonimo.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiesaier.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.blanchette.crimson-hunting-blade",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.heluonimo.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.baxiti.danger-sense",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xiula.mist-spores",
+          "reason": "probabilityDominance"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "SEARCH_SPACE_EXPLOSION_WARNING",
+          "stage": "B0 preprocessedBody",
+          "actual": 3792,
+          "threshold": 1500
+        }
+      ]
+    },
+    {
+      "serverStage": "s16",
+      "provenance": "Full server-available body pool, max two distinct heroes, ordered slots, Lv5, default constraints; theoretical preprocessing only, no formal battles.",
+      "sourceSkillCount": 57,
+      "unorderedHeroIdentityCombinations": 1246,
+      "rawGenerationMs": 32.596900000000005,
+      "bodyPreprocessMs": 2176.2533,
+      "rawBodyCombinationCount": 21687,
+      "rejectedBySameEffectFamily": 12759,
+      "rejectedBySkillDominance": 0,
+      "rejectedByProbabilityDominance": 1452,
+      "rejectedByParetoDominance": 0,
+      "preprocessedBodyCount": 7476,
+      "skillDominance": [
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.baxiti.danger-sense",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.nataliya.wild-roar",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xiula.mist-spores",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.baxiti.danger-sense",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.moli.snow-command",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xiula.mist-spores",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiesaier.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.blanchette.crimson-hunting-blade",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.alongsuo.stormy-waves",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.heluonimo.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiexi.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.jiesaier.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.blanchette.crimson-hunting-blade",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.linen.lion-song",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.heluonimo.penetration",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xieergai.guardian-power",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.baxiti.danger-sense",
+          "reason": "probabilityDominance"
+        },
+        {
+          "skillId": "hero-skill.heketuo.survival-instinct",
+          "skillLevel": 5,
+          "dominatedBy": "hero-skill.xiula.mist-spores",
+          "reason": "probabilityDominance"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "SEARCH_SPACE_EXPLOSION_WARNING",
+          "stage": "B0 preprocessedBody",
+          "actual": 7476,
+          "threshold": 1500
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "localDate": "2026-10-08",
+  "timezone": "Asia/Shanghai",
+  "typecheck": { "exitCode": 0, "log": "examples/criterion-round4-typecheck.log" },
+  "lint": { "exitCode": 0, "log": "examples/criterion-round4-lint.log" },
+  "build": {
+    "exitCode": 0,
+    "log": "examples/criterion-round4-build.log",
+    "warning": "Vite main bundle exceeds 500 kB after minification"
+  },
+  "tests": {
+    "command": "npm.cmd test -- --maxWorkers=2",
+    "exitCode": 0,
+    "filesPassed": 95,
+    "testsPassed": 1032,
+    "durationSeconds": 99.92,
+    "log": "examples/criterion-round4-test-results.log"
+  },
+  "formalCoreBoundary": {
+    "filesChecked": 72,
+    "changedFiles": [],
+    "audit": "examples/criterion-round4-core-boundary-audit.json"
+  },
+  "heroPoolAudit": "examples/criterion-round4-head-pool-audit.json",
+  "browser": {
+    "status": "notVerified",
+    "inventoryError": "Unexpected token '<', returned HTML is not valid JSON",
+    "connectionError": "nodeRepl.fetch request failed",
+    "observedDevServerUrl": "http://127.0.0.1:5173/",
+    "additionalDevServersStarted": false
+  }
+}

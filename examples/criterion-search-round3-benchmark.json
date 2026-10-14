@@ -1,0 +1,5174 @@
+{
+  "inputPath": null,
+  "comparisonWithUserSummary": {
+    "comparableSameInput": false,
+    "note": "User exact export was not supplied. These numerical differences are not a same-config performance comparison.",
+    "baselineWallMs": 182950,
+    "baselineExecuted": 10465,
+    "wallDifferenceMs": -36242.8719,
+    "executedDifference": 6585
+  },
+  "recordedAt": "2026-10-07T13:58:58.825Z",
+  "provenance": "Same prior-round synthetic equal panels, seven head / four body hero pool. Real official BattleEngine, final1000. This is NOT the user183s/fullpool configuration.",
+  "input": {
+    "serverStage": "s11",
+    "sideA": {
+      "troops": {
+        "shield": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "lancer": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "marksman": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC10",
+          "levelMode": "single",
+          "t12Level": 0
+        }
+      },
+      "reportHeroIds": [],
+      "reportHeroByTroop": {},
+      "reportWeaponLevels": {},
+      "leaderHeroId": null,
+      "leaderHeroIds": {
+        "shield": "hero.s10.gregory",
+        "lancer": "hero.s3.miya",
+        "marksman": "hero.s11.rufus"
+      },
+      "selectedMemberSkillIds": [],
+      "simulationWeaponLevels": {
+        "hero.s10.gregory": 10,
+        "hero.s3.miya": 10,
+        "hero.s11.rufus": 10
+      },
+      "externalBuffs": {
+        "town": {
+          "attack": "none",
+          "defense": "none",
+          "penetration": "none",
+          "life": "none",
+          "enemyAttackReduction": "none",
+          "enemyDefenseReduction": "none"
+        },
+        "pet": {
+          "attackLevel": 0,
+          "defenseLevel": 0,
+          "penetrationLevel": 0,
+          "lifeLevel": 0,
+          "enemyDefenseReductionLevel": 0,
+          "enemyPenetrationReductionLevel": 0,
+          "enemyLifeReductionLevel": 0
+        },
+        "expert": {
+          "garethFourthSkillLevel": 0
+        }
+      },
+      "rallyDeployment": {
+        "totalTroops": 36000,
+        "ratios": {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        }
+      },
+      "threeQueues": [
+        {
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 33,
+            "lancer": 33,
+            "marksman": 34
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 10,
+            "lancer": 20,
+            "marksman": 70
+          },
+          "leaderHeroIds": {}
+        }
+      ],
+      "bodySkills": []
+    },
+    "sideB": {
+      "troops": {
+        "shield": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "lancer": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "marksman": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC10",
+          "levelMode": "single",
+          "t12Level": 0
+        }
+      },
+      "reportHeroIds": [],
+      "reportHeroByTroop": {},
+      "reportWeaponLevels": {},
+      "leaderHeroId": null,
+      "leaderHeroIds": {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s11.rufus"
+      },
+      "selectedMemberSkillIds": [],
+      "simulationWeaponLevels": {
+        "hero.s11.eleonora": 10,
+        "hero.s11.lloyd": 10,
+        "hero.s11.rufus": 10
+      },
+      "externalBuffs": {
+        "town": {
+          "attack": "none",
+          "defense": "none",
+          "penetration": "none",
+          "life": "none",
+          "enemyAttackReduction": "none",
+          "enemyDefenseReduction": "none"
+        },
+        "pet": {
+          "attackLevel": 0,
+          "defenseLevel": 0,
+          "penetrationLevel": 0,
+          "lifeLevel": 0,
+          "enemyDefenseReductionLevel": 0,
+          "enemyPenetrationReductionLevel": 0,
+          "enemyLifeReductionLevel": 0
+        },
+        "expert": {
+          "garethFourthSkillLevel": 0
+        }
+      },
+      "rallyDeployment": {
+        "totalTroops": 36000,
+        "ratios": {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        }
+      },
+      "threeQueues": [
+        {
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 33,
+            "lancer": 33,
+            "marksman": 34
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 10,
+            "lancer": 20,
+            "marksman": 70
+          },
+          "leaderHeroIds": {}
+        }
+      ],
+      "bodySkills": []
+    },
+    "postBattleCasualtyMode": "NORMAL",
+    "maxRounds": 300,
+    "randomSeed": 12345,
+    "battleContext": "rally",
+    "simulationMode": "fixedSeed",
+    "attributeInputMode": "finalReport",
+    "triggerOverrides": {},
+    "disabledSkillIds": [],
+    "actualRounds": [],
+    "scenarioType": "RALLY",
+    "availableHeroIds": [
+      "hero.s10.gregory",
+      "hero.s3.miya",
+      "hero.s11.rufus",
+      "hero.s11.eleonora",
+      "hero.s1.nataliya",
+      "hero.s11.lloyd",
+      "hero.s1.jinman"
+    ],
+    "rallyBodyPoolIds": [
+      "hero.s5.nuola",
+      "hero.s6.wuming",
+      "hero.s8.hengdelike",
+      "hero.body.shuyun"
+    ]
+  },
+  "config": {
+    "objectiveMode": "singleWin",
+    "constraints": {},
+    "stages": [
+      {
+        "ratioStep": 5,
+        "trials": 20,
+        "keep": 3000,
+        "maxCandidates": 300
+      },
+      {
+        "ratioStep": 5,
+        "trials": 50,
+        "keep": 500,
+        "maxCandidates": 100
+      },
+      {
+        "ratioStep": 1,
+        "trials": 100,
+        "keep": 50,
+        "maxCandidates": 60
+      }
+    ],
+    "theory": {
+      "ratioStep": 5,
+      "localPeaksPerLineup": 3,
+      "minSurvivorsPerLineup": 1,
+      "randomExploration": 1,
+      "diversityExploration": 1,
+      "uncertaintyExploration": 1,
+      "uncertaintyWeight": 1,
+      "deterministicRounds": 24,
+      "probabilityEquivalentCoefficient": 1,
+      "calibratedEquivalents": {}
+    },
+    "criterion": {
+      "racingVersion": 3,
+      "enabled": true,
+      "representativesPerHead": 6,
+      "headRatioLimit": 2000,
+      "headRatioFraction": 0.01,
+      "smallSpaceHeadRatioFloor": 24,
+      "potentialMainShare": 0.75,
+      "potentialProtectionShare": 0.15,
+      "potentialDiversityShare": 0.1,
+      "theoryCandidateLimit": 4000,
+      "theoryCandidateFraction": 0.125,
+      "smallSpaceTheoryFloor": 24,
+      "formalCandidateLimit": 1500,
+      "formalCandidateFraction": 0.375,
+      "smallSpaceFormalFloor": 16,
+      "roughBodyTop": 16,
+      "bodyDiversity": 3,
+      "bodyUncertainty": 2,
+      "bodySpecial": 2,
+      "bodyExploration": 1,
+      "matrixBodiesPerRatio": 24,
+      "theoryCandidatesPerRatio": 8,
+      "minimumHeadRuns": 20,
+      "uncertainHeadRuns": 40,
+      "uncertaintyThreshold": 0.35,
+      "screeningTrials": [
+        5,
+        20,
+        50,
+        100,
+        300
+      ],
+      "screeningKeep": [
+        300,
+        80,
+        25,
+        10,
+        5
+      ],
+      "probeLaneShares": {
+        "theory": 0.4,
+        "matrix": 0.2,
+        "paired": 0.2,
+        "uncertainty": 0.08,
+        "special": 0.04,
+        "disagreement": 0.08
+      },
+      "finalHeadBasins": 4,
+      "finalBodyBasinsPerHead": 2,
+      "fineRadius": 3,
+      "finePerBasin": 4,
+      "c0TheoryRounds": 4
+    },
+    "initialBattleTrials": 5,
+    "verificationTrials": 1000,
+    "verificationTop": 5,
+    "topN": 5,
+    "firstSeed": 91,
+    "targetDefeatProbability": 0.9,
+    "maxWaves": 3,
+    "beamWidth": 3,
+    "branchWidth": 3,
+    "beamTrials": 50,
+    "singleFightThresholdLow": 0.05,
+    "singleFightThresholdHigh": 0.95,
+    "profiling": true
+  },
+  "wallMs": 146707.1281,
+  "formalRuns": 17050,
+  "coverage": {
+    "m1aCandidateCount": 29,
+    "m1aBattlePerCandidate": 5,
+    "m1aAdvancedCount": 29,
+    "m1aRejectedByTheoryBudget": 0,
+    "m1aRejectedByFiveRunProbe": 0,
+    "m1aProtectedByTheory": 11,
+    "m1aProtectedByUncertainty": 2,
+    "m1aProtectedBySpecialMechanism": 1,
+    "uniqueHeadsAtM1a": 3,
+    "uniqueHeadsAfterM1a": 3,
+    "uniqueBodiesAtM1a": 13,
+    "uniqueBodiesAfterM1a": 13,
+    "candidatesEliminatedWith5Samples": 0,
+    "candidatesEliminatedByConfidenceWith5Samples": 0,
+    "headsEliminatedByConfidenceWithLessThan20Samples": 0,
+    "highUncertaintyEliminatedWithLessThan40Samples": 0,
+    "highUncertaintyBudgetEliminationsWithLessThan40Samples": 0,
+    "retainedByProbeLane": {
+      "theory": 11,
+      "matrix": 5,
+      "paired": 5,
+      "uncertainty": 2,
+      "special": 1,
+      "disagreement": 2
+    },
+    "retainedByCombinedRanking": 12,
+    "retainedByReference": 3,
+    "pairedProbeEvidence": [
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17910.8,
+        "pairedScore": 0.06784010982408609
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 18152.8,
+        "pairedScore": 0.06809261944435706
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17415.8,
+        "pairedScore": 0.06734951465824275
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17657.8,
+        "pairedScore": 0.06705970002943684
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17008,
+        "pairedScore": 0.06647836839961996
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17158.8,
+        "pairedScore": 0.06718809718996038
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16118.8,
+        "pairedScore": 0.06614910952018135
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 18341.2,
+        "pairedScore": 0.06852392814792584
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17100.8,
+        "pairedScore": 0.06703089954463375
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 15058,
+        "pairedScore": 0.06479610412047287
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17191.2,
+        "pairedScore": 0.06657282551814735
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16335,
+        "pairedScore": 0.06572206450164725
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16028.6,
+        "pairedScore": 0.06521366286434363
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17971.4,
+        "pairedScore": 0.06800453601902814
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16754.8,
+        "pairedScore": 0.06698431784309695
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 14493.2,
+        "pairedScore": 0.06346684275678721
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|65|30|5:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 13141.8,
+        "pairedScore": 0.061017194337407744
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17864.6,
+        "pairedScore": 0.06778948430924223
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|20|25:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 17366.8,
+        "pairedScore": 0.06733601537796227
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16816.8,
+        "pairedScore": 0.06704867019440112
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16004.2,
+        "pairedScore": 0.06561199751797528
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|20|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 16069.2,
+        "pairedScore": 0.06619146993234312
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 14920.2,
+        "pairedScore": 0.06411120009000869
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 15045.8,
+        "pairedScore": 0.0646894196342159
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 14915.8,
+        "pairedScore": 0.06355806458734632
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 14980.4,
+        "pairedScore": 0.06449585389627369
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 0,
+        "pairedLosses": 0,
+        "pairedDraws": 5,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 0,
+        "pairedScore": 0
+      },
+      {
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 20006.6,
+        "pairedScore": 0.06896413544940247
+      },
+      {
+        "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "referenceCandidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "seeds": [
+          91,
+          92,
+          93,
+          94,
+          95
+        ],
+        "pairedWins": 5,
+        "pairedLosses": 0,
+        "pairedDraws": 0,
+        "deltaOutcome": 0,
+        "deltaRemainingTroops": 20550.6,
+        "pairedScore": 0.06921771091438948
+      }
+    ],
+    "optimizationPoolVisibleHeroCount": 7,
+    "excludedPostGen3RCount": 0,
+    "excludedPostGen3SRCount": 0,
+    "heroCountByTroopTypeAfterRarityFilter": {
+      "shield": 3,
+      "lancer": 2,
+      "marksman": 2
+    },
+    "heroCountByGenerationAfterRarityFilter": {
+      "1": 2,
+      "3": 1,
+      "10": 1,
+      "11": 3
+    },
+    "allLegalHeadCountBeforeRecentRule": 12,
+    "headsBeforeC0": 11,
+    "retainedByMainTheory": 21,
+    "retainedByUncertainty": 1,
+    "retainedBySpecialMechanism": 1,
+    "retainedByDisagreement": 1,
+    "retainedByDiversity": 2,
+    "rejectedDuringGenerationBySameEffectFamily": 52,
+    "afterSameEffectMax2": 204,
+    "rejectedByStrictDominance": 0,
+    "finalPreprocessedBodyCount": 20,
+    "m1bCandidateCount": 29,
+    "m1bAdvancedCount": 29,
+    "afterStrictDominance": 204,
+    "afterProbabilityDominance": 204,
+    "rejectedBySemanticEquivalence": 184,
+    "semanticBodyCombinationCount": 20,
+    "afterPareto": 20,
+    "afterMarginalStacking": 20,
+    "sourceSkillCount": 4,
+    "sourcesAfterStrictDominance": 4,
+    "sourcesAfterProbabilityDominance": 4,
+    "rejectedJointByLowMarginalStacking": 0,
+    "allLegalHeadCount": 12,
+    "effectiveHeroGeneration": 11,
+    "recentGenerationWindow": [
+      9,
+      11
+    ],
+    "recentEligibleHeadCount": 11,
+    "rejectedByRecentGenerationCount": 1,
+    "rawHeadRatioCount": 2541,
+    "retainedHeadRatioCount": 28,
+    "headsAfterC0": 4,
+    "headsFullyEliminatedAtC0": 7,
+    "c0Cutoff": 1.0293169437810132,
+    "c0MainPotentialCutoff": 1.9126750812286744,
+    "eliminatedByTheoryPotential": [
+      {
+        "headKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman",
+        "bestPotential": 1.803352698921121,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      },
+      {
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s11.rufus",
+        "bestPotential": 1.7505396714732488,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      },
+      {
+        "headKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus",
+        "bestPotential": 1.678870963893675,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      },
+      {
+        "headKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus",
+        "bestPotential": 1.611844850821724,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      },
+      {
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s1.jinman",
+        "bestPotential": 1.4501598961357791,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      },
+      {
+        "headKey": "hero.s11.eleonora|hero.s3.miya|hero.s1.jinman",
+        "bestPotential": 1.3053115063722056,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      },
+      {
+        "headKey": "hero.s1.nataliya|hero.s3.miya|hero.s11.rufus",
+        "bestPotential": 1.16209275388778,
+        "cutoff": 1.0293169437810132,
+        "reason": "belowMainPotentialCutoff"
+      }
+    ],
+    "rawBodyCombinationCount": 256,
+    "rejectedBySameEffectFamily": 52,
+    "rejectedBySkillDominance": 0,
+    "rejectedByProbabilityDominance": 0,
+    "rejectedByParetoDominance": 0,
+    "rejectedByLowMarginalStacking": 0,
+    "preprocessedBodyCount": 20,
+    "roughJointEvaluations": 560,
+    "matrixCriterionCandidates": 560,
+    "deterministicTheoryCandidates": 72,
+    "battleEngineCandidates": 29,
+    "battleRunsRequested": 24075,
+    "battleRunsExecuted": 17050,
+    "battleRunsReused": 7025,
+    "finalCandidates": 7,
+    "uniqueFinalHeads": 2,
+    "uniqueFinalBodies": 2,
+    "known89StructureReachedFinal": true,
+    "headGenerationTime": 26.523299999999836,
+    "headRatioCriterionTime": 553.4472000000001,
+    "bodyPreprocessTime": 7.518499999999676,
+    "bodyRoughScanTime": 2.663000000000011,
+    "matrixCriterionTime": 116.44389999999976,
+    "deterministicTheoryTime": 469.52970000000005,
+    "battleEngineTime": 145259.80810000002,
+    "totalWallTime": 146704.0742,
+    "warnings": [],
+    "protectedTheoryReferences": 2,
+    "exactBaselineException": true,
+    "legalHeads": 11,
+    "ratiosPerHead": 231,
+    "criterionEvaluations": 2541,
+    "representativesPerHead": {
+      "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus": 1,
+      "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman": 25,
+      "hero.s10.gregory|hero.s3.miya|hero.s11.rufus": 1,
+      "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman": 1
+    },
+    "uniqueHeads": 4,
+    "headsEnteredBodySearch": 4,
+    "ratiosEnteredBodySearch": 28,
+    "bodyCombosScanned": 560,
+    "perHeadBodyCandidateCount": {
+      "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus": 20,
+      "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman": 20,
+      "hero.s10.gregory|hero.s3.miya|hero.s11.rufus": 20,
+      "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman": 20
+    },
+    "legalBodyCount": 20,
+    "roughBodyEvaluations": 560,
+    "matrixBodyEvaluations": 560,
+    "theoryBodyEvaluations": 72,
+    "stageCoverage": {
+      "C0": {
+        "candidates": 28,
+        "uniqueHeads": 4,
+        "uniqueBodies": 1
+      },
+      "C1": {
+        "candidates": 560,
+        "uniqueHeads": 4,
+        "uniqueBodies": 20
+      },
+      "C2": {
+        "candidates": 560,
+        "uniqueHeads": 4,
+        "uniqueBodies": 20
+      },
+      "Theory": {
+        "candidates": 72,
+        "uniqueHeads": 3,
+        "uniqueBodies": 16
+      },
+      "M1a": {
+        "candidates": 29,
+        "uniqueHeads": 3,
+        "uniqueBodies": 13
+      },
+      "M1": {
+        "candidates": 29,
+        "uniqueHeads": 3,
+        "uniqueBodies": 13
+      },
+      "M1b": {
+        "candidates": 29,
+        "uniqueHeads": 3,
+        "uniqueBodies": 13
+      },
+      "M2": {
+        "candidates": 26,
+        "uniqueHeads": 3,
+        "uniqueBodies": 12
+      },
+      "M3": {
+        "candidates": 11,
+        "uniqueHeads": 3,
+        "uniqueBodies": 10
+      },
+      "M4": {
+        "candidates": 6,
+        "uniqueHeads": 3,
+        "uniqueBodies": 5
+      },
+      "Final": {
+        "candidates": 7,
+        "uniqueHeads": 2,
+        "uniqueBodies": 2
+      }
+    },
+    "protection": {},
+    "eliminations": [
+      {
+        "stage": "M2 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 50,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M2 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 50,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M2 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|65|30|5:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 50,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|20|25:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|20|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 100,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|54|5|41:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|58|4|38:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|58|5|37:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|55|4|41:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|43|34|23:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|44|33|23:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|32|23:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|46|32|22:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|32|23:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|32|23:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|46|32|22:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|46|32|22:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|46|33|21:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|47|32|21:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|47|32|21:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman",
+        "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|48|32|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.95
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||36.333333333333336|30.333333333333336|33.33333333333333:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.49000000000000016
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||35.333333333333336|30.333333333333336|34.33333333333332:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.49000000000000016
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||36.333333333333336|31.333333333333336|32.33333333333333:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.49000000000000016
+      },
+      {
+        "stage": "M4Fine",
+        "headKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus",
+        "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||35.333333333333336|31.333333333333336|33.33333333333332:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+        "reason": "budget",
+        "samples": 300,
+        "uncertainty": 0.49000000000000016
+      }
+    ],
+    "actualWeaponLevels": {
+      "hero.s1.nataliya": 10,
+      "hero.s1.jinman": 10,
+      "hero.s3.miya": 10,
+      "hero.s10.gregory": 10,
+      "hero.s11.eleonora": 10,
+      "hero.s11.lloyd": 10,
+      "hero.s11.rufus": 10
+    },
+    "finalists": [
+      {
+        "bodySlots": [
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-0",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-1",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-2",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-3",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          }
+        ],
+        "headHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "optimizerHeroPool",
+        "bodySkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "ratios": {
+          "shield": 54,
+          "lancer": 3,
+          "marksman": 43
+        },
+        "trials": 1000,
+        "wins": 1000,
+        "winRate": 1,
+        "winRateConfidenceInterval": [
+          0.996173241514445,
+          1
+        ],
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "uncertainty": 0.47250000000000014,
+        "theoryScore": 0.7399890420157897,
+        "criterion": {
+          "predictedWinner": "A",
+          "margin": 0.3005545692390907,
+          "estimatedBattleTime": 34.80064401204965,
+          "aRemaining": {
+            "shield": 5888.577580793121,
+            "lancer": 1080,
+            "marksman": 4425.952239759899
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 0
+          },
+          "lifetimeOutputPotentialA": 2871125145285470,
+          "lifetimeOutputPotentialB": 1879648724593535.5,
+          "frontlineProtectionValue": [
+            2323657310040806,
+            1337416710251406.8
+          ],
+          "rearExposureLoss": [
+            0.11063148898041056,
+            0.01959073842095868
+          ],
+          "crossTargetDamageShare": 0.08524118197713326,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        }
+      },
+      {
+        "bodySlots": [
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-0",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-1",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-2",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-3",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          }
+        ],
+        "headHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "optimizerHeroPool",
+        "bodySkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "ratios": {
+          "shield": 54,
+          "lancer": 4,
+          "marksman": 42
+        },
+        "trials": 1000,
+        "wins": 1000,
+        "winRate": 1,
+        "winRateConfidenceInterval": [
+          0.996173241514445,
+          1
+        ],
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "uncertainty": 0.47250000000000014,
+        "theoryScore": 0.7400036951142251,
+        "criterion": {
+          "predictedWinner": "A",
+          "margin": 0.3005545692390907,
+          "estimatedBattleTime": 34.80064401204965,
+          "aRemaining": {
+            "shield": 5888.577580793121,
+            "lancer": 1080,
+            "marksman": 4425.952239759899
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 0
+          },
+          "lifetimeOutputPotentialA": 2871125145285470,
+          "lifetimeOutputPotentialB": 1879648724593535.5,
+          "frontlineProtectionValue": [
+            2323657310040806,
+            1337416710251406.8
+          ],
+          "rearExposureLoss": [
+            0.11063148898041056,
+            0.01959073842095868
+          ],
+          "crossTargetDamageShare": 0.08524118197713326,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        }
+      },
+      {
+        "bodySlots": [
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-0",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-1",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-2",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-3",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          }
+        ],
+        "headHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "optimizerHeroPool",
+        "bodySkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "ratios": {
+          "shield": 57,
+          "lancer": 4,
+          "marksman": 39
+        },
+        "trials": 1000,
+        "wins": 1000,
+        "winRate": 1,
+        "winRateConfidenceInterval": [
+          0.996173241514445,
+          1
+        ],
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "uncertainty": 0.49000000000000016,
+        "theoryScore": 0.7603807741463773,
+        "criterion": {
+          "predictedWinner": "A",
+          "margin": 0.3547979035946664,
+          "estimatedBattleTime": 28.448565950543433,
+          "aRemaining": {
+            "shield": 7149.005009604747,
+            "lancer": 1080,
+            "marksman": 4743.2832296692295
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 1.3322676295501878e-12
+          },
+          "lifetimeOutputPotentialA": 2740101372846893,
+          "lifetimeOutputPotentialB": 1689996909032386.5,
+          "frontlineProtectionValue": [
+            2188892200954374,
+            1200818627399402
+          ],
+          "rearExposureLoss": [
+            0.10711167428158341,
+            0.021136847535128338
+          ],
+          "crossTargetDamageShare": 0.0789638896282619,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        }
+      },
+      {
+        "bodySlots": [
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-0",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-1",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-2",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-3",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          }
+        ],
+        "headHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "optimizerHeroPool",
+        "bodySkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "trials": 1000,
+        "wins": 1000,
+        "winRate": 1,
+        "winRateConfidenceInterval": [
+          0.996173241514445,
+          1
+        ],
+        "selectionReasons": [
+          "criterionTop",
+          "protectedReference",
+          "bodyScreening"
+        ],
+        "uncertainty": 0.49000000000000016,
+        "theoryScore": 0.7602562492764231,
+        "criterion": {
+          "predictedWinner": "A",
+          "margin": 0.3547979035946664,
+          "estimatedBattleTime": 28.448565950543433,
+          "aRemaining": {
+            "shield": 7149.005009604747,
+            "lancer": 1080,
+            "marksman": 4743.2832296692295
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 1.3322676295501878e-12
+          },
+          "lifetimeOutputPotentialA": 2740101372846893,
+          "lifetimeOutputPotentialB": 1689996909032386.5,
+          "frontlineProtectionValue": [
+            2188892200954374,
+            1200818627399402
+          ],
+          "rearExposureLoss": [
+            0.10711167428158341,
+            0.021136847535128338
+          ],
+          "crossTargetDamageShare": 0.0789638896282619,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        }
+      },
+      {
+        "bodySlots": [
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-0",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-1",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-2",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-3",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          }
+        ],
+        "headHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "optimizerHeroPool",
+        "bodySkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "ratios": {
+          "shield": 57,
+          "lancer": 5,
+          "marksman": 38
+        },
+        "trials": 1000,
+        "wins": 1000,
+        "winRate": 1,
+        "winRateConfidenceInterval": [
+          0.996173241514445,
+          1
+        ],
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "uncertainty": 0.49000000000000016,
+        "theoryScore": 0.7603982421678006,
+        "criterion": {
+          "predictedWinner": "A",
+          "margin": 0.3547979035946664,
+          "estimatedBattleTime": 28.448565950543433,
+          "aRemaining": {
+            "shield": 7149.005009604747,
+            "lancer": 1080,
+            "marksman": 4743.2832296692295
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 1.3322676295501878e-12
+          },
+          "lifetimeOutputPotentialA": 2740101372846893,
+          "lifetimeOutputPotentialB": 1689996909032386.5,
+          "frontlineProtectionValue": [
+            2188892200954374,
+            1200818627399402
+          ],
+          "rearExposureLoss": [
+            0.10711167428158341,
+            0.021136847535128338
+          ],
+          "crossTargetDamageShare": 0.0789638896282619,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        }
+      },
+      {
+        "bodySlots": [
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-0",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s6.wuming",
+            "runtimeInstanceId": "A-body-1",
+            "effectFamily": "[\"damageReduction\",\"\",\"receivedNormalAttackReduction\",\"selfArmy\",\"army\",\"shield\",\"all\",\"normalAttack\",[]]",
+            "skillId": "hero-skill.wuming.wind-shelter",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-2",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          },
+          {
+            "heroDefinitionId": "hero.s5.nuola",
+            "runtimeInstanceId": "A-body-3",
+            "effectFamily": "[\"damageIncrease\",\"\",\"commonDamageIncrease\",\"selfArmy\",\"shield\",\"all\",\"all\",\"all\",[]]",
+            "skillId": "hero-skill.nuola.multi-troop-combat",
+            "level": 5
+          }
+        ],
+        "headHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "optimizerHeroPool",
+        "bodySkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "trials": 1000,
+        "wins": 1000,
+        "winRate": 1,
+        "winRateConfidenceInterval": [
+          0.996173241514445,
+          1
+        ],
+        "selectionReasons": [
+          "criterionTop",
+          "protectedReference",
+          "bodyScreening"
+        ],
+        "uncertainty": 0.47250000000000014,
+        "theoryScore": 0.7395546090253666,
+        "criterion": {
+          "predictedWinner": "A",
+          "margin": 0.3005545692390907,
+          "estimatedBattleTime": 34.80064401204965,
+          "aRemaining": {
+            "shield": 5888.577580793121,
+            "lancer": 1080,
+            "marksman": 4425.952239759899
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 0
+          },
+          "lifetimeOutputPotentialA": 2871125145285470,
+          "lifetimeOutputPotentialB": 1879648724593535.5,
+          "frontlineProtectionValue": [
+            2323657310040806,
+            1337416710251406.8
+          ],
+          "rearExposureLoss": [
+            0.11063148898041056,
+            0.01959073842095868
+          ],
+          "crossTargetDamageShare": 0.08524118197713326,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        }
+      },
+      {
+        "bodySlots": [],
+        "headHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "weaponLevelSource": "exactBaseline",
+        "bodySkillIds": [],
+        "bodySkillLevels": [],
+        "ratios": {
+          "shield": 33.333333333333336,
+          "lancer": 33.333333333333336,
+          "marksman": 33.333333333333336
+        },
+        "trials": 1000,
+        "wins": 731,
+        "winRate": 0.731,
+        "winRateConfidenceInterval": [
+          0.7026702288645861,
+          0.7575618087150875
+        ],
+        "selectionReasons": [
+          "currentConfig"
+        ],
+        "uncertainty": 1
+      }
+    ],
+    "knownScenario": {
+      "status": "notSupplied",
+      "reason": "89.8%摘要缺少完整双方配置；合成回归不冒充真实战报复现。"
+    },
+    "defaultTargetPriority": [
+      "shield",
+      "lancer",
+      "marksman"
+    ],
+    "semanticMergeReasons": [
+      "identical current numeric Criterion templates share an identity representative",
+      "free equal-level slot permutations commute in Criterion except redirect and mixed proc last-binding lanes",
+      "protected complete identities and orders are restored; selected formal runtime slot order is unchanged"
+    ],
+    "formalSeedOrderEquivalenceClaimed": false
+  },
+  "integrity": {
+    "perStage": [
+      {
+        "stage": "M1a · 共享种子全局探针",
+        "candidatesEntered": 29,
+        "candidatesAdvanced": 29,
+        "candidatesEliminated": 0,
+        "requestedBattles": 145,
+        "executedBattles": 145,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "elapsedMs": 1891.9260999999997
+      },
+      {
+        "stage": "M1b · 候选累计样本复筛",
+        "candidatesEntered": 29,
+        "candidatesAdvanced": 29,
+        "candidatesEliminated": 0,
+        "requestedBattles": 580,
+        "executedBattles": 435,
+        "reusedBattles": 145,
+        "cacheHitRate": 0.25,
+        "elapsedMs": 4169.4552
+      },
+      {
+        "stage": "M2 · 累计联合筛选",
+        "candidatesEntered": 29,
+        "candidatesAdvanced": 26,
+        "candidatesEliminated": 3,
+        "requestedBattles": 1450,
+        "executedBattles": 870,
+        "reusedBattles": 580,
+        "cacheHitRate": 0.4,
+        "elapsedMs": 8018.0008
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "candidatesEntered": 26,
+        "candidatesAdvanced": 11,
+        "candidatesEliminated": 15,
+        "requestedBattles": 2600,
+        "executedBattles": 1300,
+        "reusedBattles": 1300,
+        "cacheHitRate": 0.5,
+        "elapsedMs": 11516.6898
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "candidatesEntered": 11,
+        "candidatesAdvanced": 6,
+        "candidatesEliminated": 5,
+        "requestedBattles": 3300,
+        "executedBattles": 2200,
+        "reusedBattles": 1100,
+        "cacheHitRate": 0.3333333333333333,
+        "elapsedMs": 18116.1335
+      },
+      {
+        "stage": "M4 · 联合盆地正式复筛",
+        "candidatesEntered": 30,
+        "candidatesAdvanced": 7,
+        "candidatesEliminated": 23,
+        "requestedBattles": 9000,
+        "executedBattles": 7200,
+        "reusedBattles": 1800,
+        "cacheHitRate": 0.2,
+        "elapsedMs": 60255.03629999999
+      },
+      {
+        "stage": "Final · 联合方案统一高场次复验",
+        "candidatesEntered": 7,
+        "candidatesAdvanced": 7,
+        "candidatesEliminated": 0,
+        "requestedBattles": 7000,
+        "executedBattles": 4900,
+        "reusedBattles": 2100,
+        "cacheHitRate": 0.3,
+        "elapsedMs": 41293.29160000001
+      }
+    ],
+    "racing": {
+      "eliminatedByConfidence": 0,
+      "protectedByUncertainty": 0,
+      "protectedByTopK": 60,
+      "checkpoints": [],
+      "decisions": [
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|20|25:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|20|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|65|30|5:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 20,
+          "wins": 20,
+          "losses": 0,
+          "n": 20,
+          "winRate": 1,
+          "confidenceLower": 0.5580509618583163,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M1b · 候选累计样本复筛",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 20,
+          "wins": 13,
+          "losses": 7,
+          "n": 20,
+          "winRate": 0.65,
+          "confidenceLower": 0.2597661640630979,
+          "confidenceUpper": 0.9076491244943969,
+          "cutoffLower": 0.2597661640630979,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|20|25:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|25|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|20|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|60|25|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|55|30|15:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 50,
+          "wins": 50,
+          "losses": 0,
+          "n": 50,
+          "winRate": 1,
+          "confidenceLower": 0.7594280630635623,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M2 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 50,
+          "wins": 36,
+          "losses": 14,
+          "n": 50,
+          "winRate": 0.72,
+          "confidenceLower": 0.44057815722577165,
+          "confidenceUpper": 0.8935701905221958,
+          "cutoffLower": 0.7594280630635623,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 100,
+          "wins": 100,
+          "losses": 0,
+          "n": 100,
+          "winRate": 1,
+          "confidenceLower": 0.863266966131285,
+          "confidenceUpper": 0.9999999999999999,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M3 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 100,
+          "wins": 75,
+          "losses": 24,
+          "n": 100,
+          "winRate": 0.75,
+          "confidenceLower": 0.5520915479619538,
+          "confidenceUpper": 0.8795419351036887,
+          "cutoffLower": 0.863266966131285,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s11.eleonora|hero.s3.miya|hero.s11.rufus|hero-skill.wuming.wind-shelter|hero-skill.wuming.wind-shelter|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|57|3|40:w:hero.s11.eleonora=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "protectedReference"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "protectedByTopK"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "maxBudgetReached"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.nuola.multi-troop-combat|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "maxBudgetReached"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.nuola.multi-troop-combat|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "maxBudgetReached"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.s8.hengdelike.defense-reduction|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "maxBudgetReached"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s11.lloyd|hero.s1.jinman|hero-skill.shuyun.attack|hero-skill.shuyun.attack|hero-skill.wuming.wind-shelter|hero-skill.s8.hengdelike.defense-reduction|45|35|20:w:hero.s1.jinman=10,hero.s10.gregory=10,hero.s11.lloyd=10",
+          "checkpoint": 300,
+          "wins": 300,
+          "losses": 0,
+          "n": 300,
+          "winRate": 1,
+          "confidenceLower": 0.9498509693018017,
+          "confidenceUpper": 1,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "maxBudgetReached"
+        },
+        {
+          "stage": "M4 · 累计联合筛选",
+          "candidateKey": "hero.s10.gregory|hero.s3.miya|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336:w:hero.s10.gregory=10,hero.s11.rufus=10,hero.s3.miya=10",
+          "checkpoint": 300,
+          "wins": 225,
+          "losses": 74,
+          "n": 300,
+          "winRate": 0.75,
+          "confidenceLower": 0.6396868450607859,
+          "confidenceUpper": 0.8352386395901149,
+          "cutoffLower": 0.9498509693018017,
+          "eliminationReason": "protectedReference"
+        }
+      ]
+    },
+    "fineSearch": {
+      "basinCount": 6,
+      "basin2PercentEntered": 0,
+      "basin1PercentEntered": 6,
+      "basinEarlyStopped": 0,
+      "generated2PercentRatios": 0,
+      "generated1PercentRatios": 24
+    },
+    "final": {
+      "finalistsAt300": 7,
+      "finalistsAt500": 7,
+      "finalistsAt1000": 7,
+      "screeningRuns": 12150,
+      "independentValidationRuns": 4900
+    },
+    "seedPolicy": {
+      "screeningOffset": 0,
+      "independentOffset": 500000,
+      "finalScreeningPrefix": 300
+    }
+  },
+  "profiling": {
+    "status": "completed",
+    "totalElapsedMs": 146706.74610000002,
+    "stages": [
+      {
+        "stage": "H0 · 近三代车头生成",
+        "visibleStageId": "H0 · 近三代车头生成",
+        "wallElapsedMs": 25.875499999999647,
+        "exclusiveElapsedMs": 10.577400000000125,
+        "executedCount": 1,
+        "reusedCount": 0,
+        "throughput": 38.64659620104012,
+        "peakCandidateCount": 1,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 2.0132000000003245,
+        "finishedAt": 27.88869999999997,
+        "elapsedMs": 10.577400000000125,
+        "completed": 1,
+        "total": 1,
+        "candidateCount": 1,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 2,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.0072098933969881865,
+        "status": "completed"
+      },
+      {
+        "stage": "英雄目录合法性过滤",
+        "visibleStageId": "英雄目录合法性过滤",
+        "wallElapsedMs": 3.5195000000003347,
+        "exclusiveElapsedMs": 3.5195000000003347,
+        "executedCount": 186,
+        "reusedCount": 0,
+        "throughput": 52848.415968172274,
+        "peakCandidateCount": 62,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 2.5949000000000524,
+        "finishedAt": 18.920800000000327,
+        "elapsedMs": 3.5195000000003347,
+        "completed": 186,
+        "total": 186,
+        "candidateCount": 186,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.0023990035179441106,
+        "status": "completed"
+      },
+      {
+        "stage": "英雄合法性 / 稀有度 / 代数过滤",
+        "visibleStageId": "英雄合法性 / 稀有度 / 代数过滤",
+        "wallElapsedMs": 0.08849999999983993,
+        "exclusiveElapsedMs": 0.08849999999983993,
+        "executedCount": 7,
+        "reusedCount": 0,
+        "throughput": 79096.04519788317,
+        "peakCandidateCount": 7,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 4.304300000000239,
+        "finishedAt": 4.392800000000079,
+        "elapsedMs": 0.08849999999983993,
+        "completed": 7,
+        "total": 7,
+        "candidateCount": 7,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.0000603244243039209,
+        "status": "completed"
+      },
+      {
+        "stage": "严格支配检测",
+        "visibleStageId": "严格支配检测",
+        "wallElapsedMs": 11.623799999999846,
+        "exclusiveElapsedMs": 11.623799999999846,
+        "executedCount": 7,
+        "reusedCount": 0,
+        "throughput": 602.212701526187,
+        "peakCandidateCount": 7,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 4.412000000000262,
+        "finishedAt": 16.03580000000011,
+        "elapsedMs": 11.623799999999846,
+        "completed": 7,
+        "total": 7,
+        "candidateCount": 7,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.007923153030792935,
+        "status": "completed"
+      },
+      {
+        "stage": "B0 · 车身语义与支配预处理",
+        "visibleStageId": "B0 · 车身语义与支配预处理",
+        "wallElapsedMs": 6.756600000000162,
+        "exclusiveElapsedMs": 6.756600000000162,
+        "executedCount": 1,
+        "reusedCount": 0,
+        "throughput": 148.0034336796578,
+        "peakCandidateCount": 1,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 33.97910000000002,
+        "finishedAt": 40.73570000000018,
+        "elapsedMs": 6.756600000000162,
+        "completed": 1,
+        "total": 1,
+        "candidateCount": 1,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.004605514183645411,
+        "status": "completed"
+      },
+      {
+        "stage": "C0 · 近三代全车头 × 全比例潜力",
+        "visibleStageId": "C0 · 近三代全车头 × 全比例潜力",
+        "wallElapsedMs": 553.3503999999998,
+        "exclusiveElapsedMs": 553.3503999999998,
+        "executedCount": 2541,
+        "reusedCount": 0,
+        "throughput": 4592.027041093674,
+        "peakCandidateCount": 2543,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 47.52590000000009,
+        "finishedAt": 600.8762999999999,
+        "elapsedMs": 553.3503999999998,
+        "completed": 2541,
+        "total": 2541,
+        "candidateCount": 0,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.37718129173338655,
+        "status": "completed"
+      },
+      {
+        "stage": "C1 · 预处理车身边际粗扫描",
+        "visibleStageId": "C1 · 预处理车身边际粗扫描",
+        "wallElapsedMs": 2.5698999999999614,
+        "exclusiveElapsedMs": 2.5698999999999614,
+        "executedCount": 560,
+        "reusedCount": 0,
+        "throughput": 217907.3115685468,
+        "peakCandidateCount": 580,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 601.1071000000002,
+        "finishedAt": 603.6770000000001,
+        "elapsedMs": 2.5698999999999614,
+        "completed": 560,
+        "total": 560,
+        "candidateCount": 0,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.0017517258533211793,
+        "status": "completed"
+      },
+      {
+        "stage": "C2 · MatrixCriterion 联合候选",
+        "visibleStageId": "C2 · MatrixCriterion 联合候选",
+        "wallElapsedMs": 116.29539999999997,
+        "exclusiveElapsedMs": 116.29539999999997,
+        "executedCount": 560,
+        "reusedCount": 0,
+        "throughput": 4815.323735934527,
+        "peakCandidateCount": 560,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 604.2296000000001,
+        "finishedAt": 720.5250000000001,
+        "elapsedMs": 116.29539999999997,
+        "completed": 560,
+        "total": 560,
+        "candidateCount": 0,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.07927065597973885,
+        "status": "completed"
+      },
+      {
+        "stage": "C3 · 全局联合确定性理论",
+        "visibleStageId": "C3 · 全局联合确定性理论",
+        "wallElapsedMs": 469.3910999999998,
+        "exclusiveElapsedMs": 469.3910999999998,
+        "executedCount": 72,
+        "reusedCount": 0,
+        "throughput": 153.39021127584232,
+        "peakCandidateCount": 72,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 733.7027000000003,
+        "finishedAt": 1203.0938,
+        "elapsedMs": 469.3910999999998,
+        "completed": 72,
+        "total": 72,
+        "candidateCount": 72,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.3199519534568968,
+        "status": "completed"
+      },
+      {
+        "stage": "M1a · 共享种子全局探针",
+        "visibleStageId": "M1a · 共享种子全局探针",
+        "wallElapsedMs": 1891.8049,
+        "exclusiveElapsedMs": 1891.8049,
+        "executedCount": 145,
+        "reusedCount": 0,
+        "throughput": 76.64638145297118,
+        "peakCandidateCount": 29,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 1208.3450000000003,
+        "finishedAt": 3100.1499000000003,
+        "elapsedMs": 1891.8049,
+        "completed": 145,
+        "total": 145,
+        "candidateCount": 29,
+        "battleCount": 145,
+        "battleElapsedMs": 1852.8196999999918,
+        "avgBattleMs": 12.778066896551667,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 145,
+        "executedBattles": 145,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 1.2895145930852323,
+        "status": "completed"
+      },
+      {
+        "stage": "M1b · 候选累计样本复筛",
+        "visibleStageId": "M1b · 候选累计样本复筛",
+        "wallElapsedMs": 4169.3218,
+        "exclusiveElapsedMs": 4169.3218,
+        "executedCount": 435,
+        "reusedCount": 145,
+        "throughput": 104.33351534534945,
+        "peakCandidateCount": 29,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 3109.4698,
+        "finishedAt": 7278.7916,
+        "elapsedMs": 4169.3218,
+        "completed": 435,
+        "total": 435,
+        "candidateCount": 29,
+        "battleCount": 435,
+        "battleElapsedMs": 4162.006499999988,
+        "avgBattleMs": 9.56783103448273,
+        "cacheHitCount": 145,
+        "templateCacheHitCount": 29,
+        "requestedBattles": 580,
+        "executedBattles": 435,
+        "reusedBattles": 145,
+        "cacheHitRate": 0.25,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 2.841942794612905,
+        "status": "completed"
+      },
+      {
+        "stage": "M2 · 累计联合筛选",
+        "visibleStageId": "M2 · 累计联合筛选",
+        "wallElapsedMs": 8017.9290999999985,
+        "exclusiveElapsedMs": 8017.9290999999985,
+        "executedCount": 870,
+        "reusedCount": 580,
+        "throughput": 108.5068212937927,
+        "peakCandidateCount": 29,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 7280.971700000001,
+        "finishedAt": 15298.9008,
+        "elapsedMs": 8017.9290999999985,
+        "completed": 870,
+        "total": 870,
+        "candidateCount": 29,
+        "battleCount": 870,
+        "battleElapsedMs": 8006.841999999937,
+        "avgBattleMs": 9.203266666666595,
+        "cacheHitCount": 580,
+        "templateCacheHitCount": 29,
+        "requestedBattles": 1450,
+        "executedBattles": 870,
+        "reusedBattles": 580,
+        "cacheHitRate": 0.4,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 5.465276351051179,
+        "status": "completed"
+      },
+      {
+        "stage": "M3 · 累计联合筛选",
+        "visibleStageId": "M3 · 累计联合筛选",
+        "wallElapsedMs": 11516.583599999998,
+        "exclusiveElapsedMs": 11516.583599999998,
+        "executedCount": 1300,
+        "reusedCount": 1300,
+        "throughput": 112.88069840434278,
+        "peakCandidateCount": 26,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 15300.8606,
+        "finishedAt": 26817.444199999998,
+        "elapsedMs": 11516.583599999998,
+        "completed": 1300,
+        "total": 1300,
+        "candidateCount": 26,
+        "battleCount": 1300,
+        "battleElapsedMs": 11503.0834,
+        "avgBattleMs": 8.848525692307692,
+        "cacheHitCount": 1300,
+        "templateCacheHitCount": 26,
+        "requestedBattles": 2600,
+        "executedBattles": 1300,
+        "reusedBattles": 1300,
+        "cacheHitRate": 0.5,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 7.850070910951788,
+        "status": "completed"
+      },
+      {
+        "stage": "M4 · 累计联合筛选",
+        "visibleStageId": "M4 · 累计联合筛选",
+        "wallElapsedMs": 18116.038300000004,
+        "exclusiveElapsedMs": 18116.038300000004,
+        "executedCount": 2200,
+        "reusedCount": 1100,
+        "throughput": 121.43935465183905,
+        "peakCandidateCount": 11,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 26818.4858,
+        "finishedAt": 44934.5241,
+        "elapsedMs": 18116.038300000004,
+        "completed": 2200,
+        "total": 2200,
+        "candidateCount": 11,
+        "battleCount": 2200,
+        "battleElapsedMs": 18103.277199999946,
+        "avgBattleMs": 8.228762363636339,
+        "cacheHitCount": 1100,
+        "templateCacheHitCount": 11,
+        "requestedBattles": 3300,
+        "executedBattles": 2200,
+        "reusedBattles": 1100,
+        "cacheHitRate": 0.3333333333333333,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 12.348469843132865,
+        "status": "completed"
+      },
+      {
+        "stage": "1% · 联合盆地理论微调",
+        "visibleStageId": "1% · 联合盆地理论微调",
+        "wallElapsedMs": 213.80189999999857,
+        "exclusiveElapsedMs": 213.80189999999857,
+        "executedCount": 6,
+        "reusedCount": 0,
+        "throughput": 28.063361457498928,
+        "peakCandidateCount": 6,
+        "totalStable": true,
+        "executionWorkload": false,
+        "executionUnit": "battle",
+        "startedAt": 44940.6888,
+        "finishedAt": 45154.4907,
+        "elapsedMs": 213.80189999999857,
+        "completed": 6,
+        "total": 6,
+        "candidateCount": 6,
+        "battleCount": 0,
+        "battleElapsedMs": 0,
+        "avgBattleMs": null,
+        "cacheHitCount": 0,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 0.14573419810856164,
+        "status": "completed"
+      },
+      {
+        "stage": "M4 · 联合盆地正式复筛",
+        "visibleStageId": "M4 · 联合盆地正式复筛",
+        "wallElapsedMs": 60254.918099999995,
+        "exclusiveElapsedMs": 60254.918099999995,
+        "executedCount": 7200,
+        "reusedCount": 1800,
+        "throughput": 119.49232074385644,
+        "peakCandidateCount": 30,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 45154.758400000006,
+        "finishedAt": 105409.6765,
+        "elapsedMs": 60254.918099999995,
+        "completed": 7200,
+        "total": 7200,
+        "candidateCount": 30,
+        "battleCount": 7200,
+        "battleElapsedMs": 60196.116299999856,
+        "avgBattleMs": 8.360571708333314,
+        "cacheHitCount": 1800,
+        "templateCacheHitCount": 0,
+        "requestedBattles": 9000,
+        "executedBattles": 7200,
+        "reusedBattles": 1800,
+        "cacheHitRate": 0.2,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 41.07167509456471,
+        "status": "completed"
+      },
+      {
+        "stage": "Final · 联合方案统一高场次复验",
+        "visibleStageId": "Final · 联合方案统一高场次复验",
+        "wallElapsedMs": 41293.21230000003,
+        "exclusiveElapsedMs": 41293.21230000003,
+        "executedCount": 4900,
+        "reusedCount": 2100,
+        "throughput": 118.66357028368066,
+        "peakCandidateCount": 7,
+        "totalStable": true,
+        "executionWorkload": true,
+        "executionUnit": "battle",
+        "startedAt": 105410.5137,
+        "finishedAt": 146703.72600000002,
+        "elapsedMs": 41293.21230000003,
+        "completed": 4900,
+        "total": 4900,
+        "candidateCount": 7,
+        "battleCount": 4900,
+        "battleElapsedMs": 41269.51900000012,
+        "avgBattleMs": 8.422350816326555,
+        "cacheHitCount": 2100,
+        "templateCacheHitCount": 7,
+        "requestedBattles": 7000,
+        "executedBattles": 4900,
+        "reusedBattles": 2100,
+        "cacheHitRate": 0.3,
+        "estimatedRemainingMs": 0,
+        "percentOfTotal": 28.146771295611213,
+        "status": "completed"
+      }
+    ],
+    "totalBattleEngineCalls": 17050,
+    "requestedBattles": 24075,
+    "executedBattles": 17050,
+    "reusedBattles": 7025,
+    "cacheHitCount": 7025,
+    "cacheHitRate": 0.29179646936656284,
+    "totalBattleElapsedMs": 145093.66409999982,
+    "overallAvgBattleMs": 8.509892322580635,
+    "unaccountedElapsedMs": 58.96349999998347
+  },
+  "top": [
+    {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 3,
+          "marksman": 43
+        },
+        "criterionEstimate": {
+          "predictedWinner": "A",
+          "margin": 0.3005545692390907,
+          "estimatedBattleTime": 34.80064401204965,
+          "aRemaining": {
+            "shield": 5888.577580793121,
+            "lancer": 1080,
+            "marksman": 4425.952239759899
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 0
+          },
+          "lifetimeOutputPotentialA": 2871125145285470,
+          "lifetimeOutputPotentialB": 1879648724593535.5,
+          "frontlineProtectionValue": [
+            2323657310040806,
+            1337416710251406.8
+          ],
+          "rearExposureLoss": [
+            0.11063148898041056,
+            0.01959073842095868
+          ],
+          "crossTargetDamageShare": 0.08524118197713326,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "theoryEstimate": {
+          "staticTheoryScore": 0.4682437858760835,
+          "deterministicScore": 0.8863134107064007,
+          "theoryScore": 0.7399890420157897,
+          "uncertainty": 0.47250000000000014,
+          "metrics": {
+            "initialDps": [
+              13329937.306056062,
+              6207647.752039246
+            ],
+            "ehp": [
+              2882977665.8735375,
+              1103313143.260973
+            ],
+            "firstTargetTtk": [
+              12.468697802838788,
+              43.37476705432395
+            ],
+            "shieldSurvivalRounds": [
+              43.37476705432395,
+              12.468697802838788
+            ],
+            "initialNextRoundOutput": [
+              13415405.630720794,
+              6531218.807852045
+            ],
+            "nextRoundOutput": [
+              0,
+              0
+            ],
+            "outputRetention": [
+              0,
+              0
+            ],
+            "nextRoundOutputMatrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "marksmanOutputWindow": [
+              43.37476705432395,
+              12.468697802838788
+            ]
+          }
+        }
+      },
+      "actualCounts": {
+        "shield": 19440,
+        "lancer": 1080,
+        "marksman": 15480
+      },
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 25964.13,
+          "p05": 21714,
+          "p50": 26343,
+          "p95": 29115,
+          "min": 13375,
+          "max": 30217
+        },
+        "shield": {
+          "mean": 11926.889,
+          "p05": 10127,
+          "p50": 11941,
+          "p95": 13536,
+          "min": 8045,
+          "max": 14733
+        },
+        "lancer": {
+          "mean": 1080,
+          "p05": 1080,
+          "p50": 1080,
+          "p95": 1080,
+          "min": 1080,
+          "max": 1080
+        },
+        "marksman": {
+          "mean": 12957.241,
+          "p05": 9307,
+          "p50": 13323,
+          "p95": 15480,
+          "min": 4250,
+          "max": 15480
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "marksman": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "rounds": {
+        "mean": 15.393,
+        "p05": 13,
+        "p50": 15,
+        "p95": 18,
+        "min": 12,
+        "max": 22
+      }
+    },
+    {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 4,
+          "marksman": 42
+        },
+        "criterionEstimate": {
+          "predictedWinner": "A",
+          "margin": 0.3005545692390907,
+          "estimatedBattleTime": 34.80064401204965,
+          "aRemaining": {
+            "shield": 5888.577580793121,
+            "lancer": 1080,
+            "marksman": 4425.952239759899
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 0
+          },
+          "lifetimeOutputPotentialA": 2871125145285470,
+          "lifetimeOutputPotentialB": 1879648724593535.5,
+          "frontlineProtectionValue": [
+            2323657310040806,
+            1337416710251406.8
+          ],
+          "rearExposureLoss": [
+            0.11063148898041056,
+            0.01959073842095868
+          ],
+          "crossTargetDamageShare": 0.08524118197713326,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "theoryEstimate": {
+          "staticTheoryScore": 0.46783763722501936,
+          "deterministicScore": 0.8865546493622591,
+          "theoryScore": 0.7400036951142251,
+          "uncertainty": 0.47250000000000014,
+          "metrics": {
+            "initialDps": [
+              13306224.032259151,
+              6207647.752039246
+            ],
+            "ehp": [
+              2883032455.938537,
+              1103313143.260973
+            ],
+            "firstTargetTtk": [
+              12.490918505283961,
+              43.37476705432395
+            ],
+            "shieldSurvivalRounds": [
+              43.37476705432395,
+              12.490918505283961
+            ],
+            "initialNextRoundOutput": [
+              13404914.352763891,
+              6531218.807852045
+            ],
+            "nextRoundOutput": [
+              0,
+              0
+            ],
+            "outputRetention": [
+              0,
+              0
+            ],
+            "nextRoundOutputMatrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "marksmanOutputWindow": [
+              43.37476705432395,
+              12.490918505283961
+            ]
+          }
+        }
+      },
+      "actualCounts": {
+        "shield": 19440,
+        "lancer": 1440,
+        "marksman": 15120
+      },
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 25939.542,
+          "p05": 21737,
+          "p50": 26341,
+          "p95": 29112,
+          "min": 13357,
+          "max": 30241
+        },
+        "shield": {
+          "mean": 11915.424,
+          "p05": 10142,
+          "p50": 11928,
+          "p95": 13510,
+          "min": 8048,
+          "max": 14761
+        },
+        "lancer": {
+          "mean": 1440,
+          "p05": 1440,
+          "p50": 1440,
+          "p95": 1440,
+          "min": 1440,
+          "max": 1440
+        },
+        "marksman": {
+          "mean": 12584.118,
+          "p05": 8911,
+          "p50": 12913,
+          "p95": 15120,
+          "min": 3869,
+          "max": 15120
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "marksman": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "rounds": {
+        "mean": 15.425,
+        "p05": 13,
+        "p50": 15,
+        "p95": 18,
+        "min": 11,
+        "max": 22
+      }
+    },
+    {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 4,
+          "marksman": 39
+        },
+        "criterionEstimate": {
+          "predictedWinner": "A",
+          "margin": 0.3547979035946664,
+          "estimatedBattleTime": 28.448565950543433,
+          "aRemaining": {
+            "shield": 7149.005009604747,
+            "lancer": 1080,
+            "marksman": 4743.2832296692295
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 1.3322676295501878e-12
+          },
+          "lifetimeOutputPotentialA": 2740101372846893,
+          "lifetimeOutputPotentialB": 1689996909032386.5,
+          "frontlineProtectionValue": [
+            2188892200954374,
+            1200818627399402
+          ],
+          "rearExposureLoss": [
+            0.10711167428158341,
+            0.021136847535128338
+          ],
+          "crossTargetDamageShare": 0.0789638896282619,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "theoryEstimate": {
+          "staticTheoryScore": 0.5212440166041918,
+          "deterministicScore": 0.8891467205152463,
+          "theoryScore": 0.7603807741463773,
+          "uncertainty": 0.49000000000000016,
+          "metrics": {
+            "initialDps": [
+              15887923.376447637,
+              5351227.550707727
+            ],
+            "ehp": [
+              2773442614.6185465,
+              1103313143.260973
+            ],
+            "firstTargetTtk": [
+              10.461213593614525,
+              42.48952583784799
+            ],
+            "shieldSurvivalRounds": [
+              42.48952583784799,
+              10.461213593614525
+            ],
+            "initialNextRoundOutput": [
+              16022485.4830141,
+              5656104.028061125
+            ],
+            "nextRoundOutput": [
+              0,
+              0
+            ],
+            "outputRetention": [
+              0,
+              0
+            ],
+            "nextRoundOutputMatrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "marksmanOutputWindow": [
+              42.48952583784799,
+              10.461213593614525
+            ]
+          }
+        }
+      },
+      "actualCounts": {
+        "shield": 20520,
+        "lancer": 1440,
+        "marksman": 14040
+      },
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 25825.145,
+          "p05": 20903,
+          "p50": 26234,
+          "p95": 29292,
+          "min": 12219,
+          "max": 30789
+        },
+        "shield": {
+          "mean": 13032.477,
+          "p05": 11101,
+          "p50": 13106,
+          "p95": 14792,
+          "min": 9130,
+          "max": 15976
+        },
+        "lancer": {
+          "mean": 1440,
+          "p05": 1440,
+          "p50": 1440,
+          "p95": 1440,
+          "min": 1440,
+          "max": 1440
+        },
+        "marksman": {
+          "mean": 11352.668,
+          "p05": 7479,
+          "p50": 11704,
+          "p95": 14040,
+          "min": 930,
+          "max": 14040
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "marksman": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "rounds": {
+        "mean": 13.868,
+        "p05": 11,
+        "p50": 14,
+        "p95": 17,
+        "min": 10,
+        "max": 22
+      }
+    },
+    {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "criterionEstimate": {
+          "predictedWinner": "A",
+          "margin": 0.3547979035946664,
+          "estimatedBattleTime": 28.448565950543433,
+          "aRemaining": {
+            "shield": 7149.005009604747,
+            "lancer": 1080,
+            "marksman": 4743.2832296692295
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 1.3322676295501878e-12
+          },
+          "lifetimeOutputPotentialA": 2740101372846893,
+          "lifetimeOutputPotentialB": 1689996909032386.5,
+          "frontlineProtectionValue": [
+            2188892200954374,
+            1200818627399402
+          ],
+          "rearExposureLoss": [
+            0.10711167428158341,
+            0.021136847535128338
+          ],
+          "crossTargetDamageShare": 0.0789638896282619,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        },
+        "selectionReasons": [
+          "criterionTop",
+          "protectedReference",
+          "bodyScreening"
+        ],
+        "theoryEstimate": {
+          "staticTheoryScore": 0.5214217193831497,
+          "deterministicScore": 0.8888594576804932,
+          "theoryScore": 0.7602562492764231,
+          "uncertainty": 0.49000000000000016,
+          "metrics": {
+            "initialDps": [
+              15904323.65752646,
+              5351227.550707727
+            ],
+            "ehp": [
+              2773394399.3613467,
+              1103313143.260973
+            ],
+            "firstTargetTtk": [
+              10.45042615951451,
+              42.48952583784799
+            ],
+            "shieldSurvivalRounds": [
+              42.48952583784799,
+              10.45042615951451
+            ],
+            "initialNextRoundOutput": [
+              16020857.860199766,
+              5656104.028061125
+            ],
+            "nextRoundOutput": [
+              0,
+              0
+            ],
+            "outputRetention": [
+              0,
+              0
+            ],
+            "nextRoundOutputMatrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "marksmanOutputWindow": [
+              42.48952583784799,
+              10.45042615951451
+            ]
+          }
+        }
+      },
+      "actualCounts": {
+        "shield": 20520,
+        "lancer": 1080,
+        "marksman": 14400
+      },
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 25825.073,
+          "p05": 21067,
+          "p50": 26233,
+          "p95": 29277,
+          "min": 12232,
+          "max": 31106
+        },
+        "shield": {
+          "mean": 13027.586,
+          "p05": 11069,
+          "p50": 13090,
+          "p95": 14830,
+          "min": 9094,
+          "max": 15949
+        },
+        "lancer": {
+          "mean": 1080,
+          "p05": 1080,
+          "p50": 1080,
+          "p95": 1080,
+          "min": 1080,
+          "max": 1080
+        },
+        "marksman": {
+          "mean": 11717.487,
+          "p05": 7857,
+          "p50": 12064,
+          "p95": 14400,
+          "min": 1318,
+          "max": 14400
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "marksman": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "rounds": {
+        "mean": 13.861,
+        "p05": 11,
+        "p50": 14,
+        "p95": 17,
+        "min": 10,
+        "max": 22
+      }
+    },
+    {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 5,
+          "marksman": 38
+        },
+        "criterionEstimate": {
+          "predictedWinner": "A",
+          "margin": 0.3547979035946664,
+          "estimatedBattleTime": 28.448565950543433,
+          "aRemaining": {
+            "shield": 7149.005009604747,
+            "lancer": 1080,
+            "marksman": 4743.2832296692295
+          },
+          "bRemaining": {
+            "shield": 0,
+            "lancer": 0,
+            "marksman": 1.3322676295501878e-12
+          },
+          "lifetimeOutputPotentialA": 2740101372846893,
+          "lifetimeOutputPotentialB": 1689996909032386.5,
+          "frontlineProtectionValue": [
+            2188892200954374,
+            1200818627399402
+          ],
+          "rearExposureLoss": [
+            0.10711167428158341,
+            0.021136847535128338
+          ],
+          "crossTargetDamageShare": 0.0789638896282619,
+          "uncertainty": 0.95,
+          "flags": {
+            "probabilityApproximation": true,
+            "roundSkillApproximation": true,
+            "targetRedirect": true,
+            "hardToStaticize": true
+          },
+          "omittedMechanisms": [
+            "hero-skill.rufus.armor-breaking-strike:lifecycle/refresh proxy",
+            "hero-skill.rufus.armor-breaking-strike:target-bound debuff",
+            "hero-skill.rufus.violent-blast:target-bound debuff",
+            "shield-lightforged-body:linked proc dependency",
+            "marksman-flame-impact:extraDamageContribution",
+            "hero-skill.miya.doom-entanglement:lifecycle/refresh proxy",
+            "hero-skill.miya.doom-entanglement:target-bound debuff",
+            "hero-skill.eleonora.soaring-flame:lifecycle/refresh proxy",
+            "hero-skill.lloyd.ice-fog-bomb:lifecycle/refresh proxy"
+          ],
+          "eventCount": 3
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "theoryEstimate": {
+          "staticTheoryScore": 0.5208468491653605,
+          "deterministicScore": 0.8893874537844991,
+          "theoryScore": 0.7603982421678006,
+          "uncertainty": 0.49000000000000016,
+          "metrics": {
+            "initialDps": [
+              15851541.010636762,
+              5351227.550707727
+            ],
+            "ehp": [
+              2773490829.8757463,
+              1103313143.260973
+            ],
+            "firstTargetTtk": [
+              10.485224110922161,
+              42.48952583784799
+            ],
+            "shieldSurvivalRounds": [
+              42.48952583784799,
+              10.485224110922161
+            ],
+            "initialNextRoundOutput": [
+              16001986.019375851,
+              5656104.028061125
+            ],
+            "nextRoundOutput": [
+              0,
+              0
+            ],
+            "outputRetention": [
+              0,
+              0
+            ],
+            "nextRoundOutputMatrix": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ]
+            ],
+            "marksmanOutputWindow": [
+              42.48952583784799,
+              10.485224110922161
+            ]
+          }
+        }
+      },
+      "actualCounts": {
+        "shield": 20520,
+        "lancer": 1800,
+        "marksman": 13680
+      },
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 25809.181,
+          "p05": 20950,
+          "p50": 26219,
+          "p95": 29284,
+          "min": 12175,
+          "max": 30797
+        },
+        "shield": {
+          "mean": 13017.377,
+          "p05": 11076,
+          "p50": 13098,
+          "p95": 14720,
+          "min": 9162,
+          "max": 15999
+        },
+        "lancer": {
+          "mean": 1800,
+          "p05": 1800,
+          "p50": 1800,
+          "p95": 1800,
+          "min": 1800,
+          "max": 1800
+        },
+        "marksman": {
+          "mean": 10991.804,
+          "p05": 7119,
+          "p50": 11344,
+          "p95": 13680,
+          "min": 493,
+          "max": 13680
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "marksman": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "rounds": {
+        "mean": 13.897,
+        "p05": 11,
+        "p50": 14,
+        "p95": 17,
+        "min": 10,
+        "max": 22
+      }
+    }
+  ],
+  "current": {
+    "candidate": {
+      "leaderHeroIds": {
+        "shield": "hero.s10.gregory",
+        "lancer": "hero.s3.miya",
+        "marksman": "hero.s11.rufus"
+      },
+      "headWeaponLevels": {
+        "hero.s10.gregory": 10,
+        "hero.s3.miya": 10,
+        "hero.s11.rufus": 10
+      },
+      "memberSkillIds": [],
+      "ratios": {
+        "shield": 33.333333333333336,
+        "lancer": 33.333333333333336,
+        "marksman": 33.333333333333336
+      },
+      "selectionReasons": [
+        "currentConfig"
+      ]
+    },
+    "actualCounts": {
+      "shield": 12000,
+      "lancer": 12000,
+      "marksman": 12000
+    },
+    "trials": 1000,
+    "wins": 731,
+    "losses": 266,
+    "draws": 3,
+    "timeouts": 0,
+    "winRate": 0.731,
+    "wilson95": [
+      0.7026702288645861,
+      0.7575618087150875
+    ],
+    "selfRemaining": {
+      "total": {
+        "mean": 9399.836,
+        "p05": 0,
+        "p50": 9057,
+        "p95": 22446,
+        "min": 0,
+        "max": 26403
+      },
+      "shield": {
+        "mean": 55.602,
+        "p05": 0,
+        "p50": 0,
+        "p95": 268,
+        "min": 0,
+        "max": 3659
+      },
+      "lancer": {
+        "mean": 3594.275,
+        "p05": 0,
+        "p50": 405,
+        "p95": 12000,
+        "min": 0,
+        "max": 12000
+      },
+      "marksman": {
+        "mean": 5749.959,
+        "p05": 0,
+        "p50": 6781,
+        "p95": 11781,
+        "min": 0,
+        "max": 12000
+      }
+    },
+    "enemyRemaining": {
+      "total": {
+        "mean": 2723.873,
+        "p05": 0,
+        "p50": 0,
+        "p95": 15249,
+        "min": 0,
+        "max": 22510
+      },
+      "shield": {
+        "mean": 3.803,
+        "p05": 0,
+        "p50": 0,
+        "p95": 0,
+        "min": 0,
+        "max": 2714
+      },
+      "lancer": {
+        "mean": 687.618,
+        "p05": 0,
+        "p50": 0,
+        "p95": 6517,
+        "min": 0,
+        "max": 12000
+      },
+      "marksman": {
+        "mean": 2032.452,
+        "p05": 0,
+        "p50": 0,
+        "p95": 10328,
+        "min": 0,
+        "max": 12000
+      }
+    },
+    "rounds": {
+      "mean": 15.965,
+      "p05": 13,
+      "p50": 16,
+      "p95": 19,
+      "min": 11,
+      "max": 22
+    }
+  },
+  "comparison": {
+    "sameSyntheticInput": true,
+    "previousSynthetic": {
+      "wallMs": 167304.0306,
+      "battleRunsRequested": 33780,
+      "battleRunsExecuted": 21650,
+      "battleRunsReused": 12130,
+      "final": {
+        "candidates": 14,
+        "uniqueHeads": 3,
+        "uniqueBodies": 4
+      }
+    },
+    "round3": {
+      "wallMs": 146707.1281,
+      "battleRunsRequested": 24075,
+      "battleRunsExecuted": 17050,
+      "battleRunsReused": 7025,
+      "finalCandidates": 7,
+      "uniqueFinalHeads": 2,
+      "uniqueFinalBodies": 2
+    },
+    "wallReductionPercent": 12.311061739596841,
+    "formalExecutionReductionPercent": 21.247113163972287
+  },
+  "coreBoundary": {
+    "checkedAt": "2026-10-07T13:58:58.821Z",
+    "baseline": "examples/criterion-round3-core-hashes-before.json",
+    "fileCount": 72,
+    "changedFiles": [],
+    "unchanged": true
+  },
+  "optimizerSourceSnapshot": {
+    "before": {
+      "fileCount": 50,
+      "sha256": "3ae83e2be45abcdefaa32af5f50d1c9039318a85f992e60b279b7d5797f275f2"
+    },
+    "after": {
+      "fileCount": 50,
+      "sha256": "3ae83e2be45abcdefaa32af5f50d1c9039318a85f992e60b279b7d5797f275f2"
+    },
+    "unchanged": true
+  }
+}

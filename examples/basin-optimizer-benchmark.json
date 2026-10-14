@@ -1,0 +1,4045 @@
+{
+  "provenance": "Synthetic equal-panel regression, not a real user battle report. Previous code is a frozen copy of the immediately preceding multi-peak version.",
+  "timingNote": "Wall time is observational; a reused previous run included concurrent verification work. Official battle counts and common-seed final results are the comparable measurements.",
+  "reusedPreviousMeasurement": true,
+  "seed": 91,
+  "verificationTrials": 1000,
+  "config": {
+    "objectiveMode": "singleWin",
+    "constraints": {
+      "fixedBodyExact": true,
+      "fixedMemberSkillIds": []
+    },
+    "stages": [
+      {
+        "ratioStep": 5,
+        "trials": 20,
+        "keep": 3000,
+        "maxCandidates": 300
+      },
+      {
+        "ratioStep": 2,
+        "trials": 50,
+        "keep": 500,
+        "maxCandidates": 100
+      },
+      {
+        "ratioStep": 1,
+        "trials": 200,
+        "keep": 50,
+        "maxCandidates": 60
+      }
+    ],
+    "theory": {
+      "ratioStep": 5,
+      "localPeaksPerLineup": 3,
+      "minSurvivorsPerLineup": 1,
+      "randomExploration": 1,
+      "diversityExploration": 1,
+      "uncertaintyExploration": 1,
+      "uncertaintyWeight": 1,
+      "deterministicRounds": 24,
+      "probabilityEquivalentCoefficient": 1,
+      "calibratedEquivalents": {}
+    },
+    "initialBattleTrials": 5,
+    "verificationTrials": 1000,
+    "verificationTop": 10,
+    "topN": 5,
+    "firstSeed": 91,
+    "targetDefeatProbability": 0.9,
+    "maxWaves": 3,
+    "beamWidth": 3,
+    "branchWidth": 3,
+    "beamTrials": 50,
+    "singleFightThresholdLow": 0.05,
+    "singleFightThresholdHigh": 0.95,
+    "protectedCandidates": [
+      {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [],
+        "ratios": {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        }
+      }
+    ]
+  },
+  "previous": {
+    "battles": 41005,
+    "elapsedMs": 368864.7147,
+    "best": {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [],
+        "ratios": {
+          "shield": 52,
+          "lancer": 8,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "localExpansion"
+        ]
+      },
+      "actualCounts": {
+        "shield": 18720,
+        "lancer": 2880,
+        "marksman": 14400
+      },
+      "trials": 1000,
+      "wins": 942,
+      "losses": 57,
+      "draws": 1,
+      "timeouts": 0,
+      "winRate": 0.942,
+      "wilson95": [
+        0.9257504237337675,
+        0.9548667217650018
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 12981.077,
+          "p05": 0,
+          "p50": 14178,
+          "p95": 19475,
+          "min": 0,
+          "max": 24001
+        },
+        "shield": {
+          "mean": 1250.63,
+          "p05": 0,
+          "p50": 649,
+          "p95": 4174,
+          "min": 0,
+          "max": 7297
+        },
+        "lancer": {
+          "mean": 2089.345,
+          "p05": 0,
+          "p50": 2880,
+          "p95": 2880,
+          "min": 0,
+          "max": 2880
+        },
+        "marksman": {
+          "mean": 9641.102,
+          "p05": 0,
+          "p50": 10512,
+          "p95": 13824,
+          "min": 0,
+          "max": 14400
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 408.448,
+          "p05": 0,
+          "p50": 0,
+          "p95": 1749,
+          "min": 0,
+          "max": 20376
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 42.827,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 8376
+        },
+        "marksman": {
+          "mean": 365.621,
+          "p05": 0,
+          "p50": 0,
+          "p95": 1749,
+          "min": 0,
+          "max": 12000
+        }
+      },
+      "rounds": {
+        "mean": 18.316,
+        "p05": 16,
+        "p50": 18,
+        "p95": 22,
+        "min": 13,
+        "max": 25
+      }
+    },
+    "coverage": {
+      "theoryCandidateCount": 1848,
+      "legalHeroLineupCount": 8,
+      "theoryHeroCoverage": 100,
+      "ratiosPerHeroLineup": 231,
+      "localPeaksDetected": 13,
+      "battleCandidateCount": 51,
+      "heroLineupsEnteringBattleEngine": 8,
+      "battleHeroCoverage": 100
+    },
+    "stages": [
+      {
+        "stage": "M1 · 全车头正式验证",
+        "candidates": 51,
+        "trials": 5,
+        "retained": 51,
+        "simulatedTrials": 255
+      },
+      {
+        "stage": "M2 · 正式逐级筛选",
+        "candidates": 51,
+        "trials": 20,
+        "retained": 51,
+        "simulatedTrials": 1020
+      },
+      {
+        "stage": "M3 · 正式逐级筛选",
+        "candidates": 151,
+        "trials": 50,
+        "retained": 50,
+        "simulatedTrials": 4770
+      },
+      {
+        "stage": "M4 · 正式逐级筛选",
+        "candidates": 110,
+        "trials": 200,
+        "retained": 13,
+        "simulatedTrials": 20960
+      },
+      {
+        "stage": "Final · 统一高场次复验",
+        "candidates": 13,
+        "trials": 1000,
+        "retained": 13,
+        "simulatedTrials": 13000
+      }
+    ]
+  },
+  "current": {
+    "battles": 38080,
+    "elapsedMs": 311011.93220000004,
+    "theoryMs": 1988.2185,
+    "best": {
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [],
+        "ratios": {
+          "shield": 50,
+          "lancer": 10,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "localExpansion"
+        ]
+      },
+      "actualCounts": {
+        "shield": 18000,
+        "lancer": 3600,
+        "marksman": 14400
+      },
+      "trials": 1000,
+      "wins": 943,
+      "losses": 56,
+      "draws": 1,
+      "timeouts": 0,
+      "winRate": 0.943,
+      "wilson95": [
+        0.9268629323405141,
+        0.9557465596412841
+      ],
+      "selfRemaining": {
+        "total": {
+          "mean": 13177.331,
+          "p05": 0,
+          "p50": 14395,
+          "p95": 19897,
+          "min": 0,
+          "max": 24081
+        },
+        "shield": {
+          "mean": 1036.794,
+          "p05": 0,
+          "p50": 364,
+          "p95": 3892,
+          "min": 0,
+          "max": 6657
+        },
+        "lancer": {
+          "mean": 2498.221,
+          "p05": 0,
+          "p50": 3600,
+          "p95": 3600,
+          "min": 0,
+          "max": 3600
+        },
+        "marksman": {
+          "mean": 9642.316,
+          "p05": 0,
+          "p50": 10476,
+          "p95": 13824,
+          "min": 0,
+          "max": 14400
+        }
+      },
+      "enemyRemaining": {
+        "total": {
+          "mean": 404.162,
+          "p05": 0,
+          "p50": 0,
+          "p95": 2077,
+          "min": 0,
+          "max": 18784
+        },
+        "shield": {
+          "mean": 0,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 0
+        },
+        "lancer": {
+          "mean": 34.979,
+          "p05": 0,
+          "p50": 0,
+          "p95": 0,
+          "min": 0,
+          "max": 7919
+        },
+        "marksman": {
+          "mean": 369.183,
+          "p05": 0,
+          "p50": 0,
+          "p95": 2077,
+          "min": 0,
+          "max": 12000
+        }
+      },
+      "rounds": {
+        "mean": 18.029,
+        "p05": 15,
+        "p50": 18,
+        "p95": 21,
+        "min": 13,
+        "max": 24
+      }
+    },
+    "diagnostics": {
+      "heroPoolAudit": {
+        "serverGeneration": 11,
+        "optimizerHeroPoolBeforeFilter": [
+          {
+            "heroId": "hero.s1.nataliya",
+            "name": "娜塔莉亚",
+            "rarity": "SSR",
+            "troopType": "shield",
+            "generation": 1,
+            "weaponMaxStat": 0.55
+          },
+          {
+            "heroId": "hero.s1.moli",
+            "name": "茉莉",
+            "rarity": "SSR",
+            "troopType": "lancer",
+            "generation": 1,
+            "weaponMaxStat": 0.55
+          },
+          {
+            "heroId": "hero.s1.jinman",
+            "name": "津曼",
+            "rarity": "SSR",
+            "troopType": "marksman",
+            "generation": 1,
+            "weaponMaxStat": 0.55
+          },
+          {
+            "heroId": "hero.s11.eleonora",
+            "name": "埃莱奥诺拉",
+            "rarity": "SSR",
+            "troopType": "shield",
+            "generation": 11,
+            "weaponMaxStat": 3.2
+          },
+          {
+            "heroId": "hero.s11.lloyd",
+            "name": "劳埃德",
+            "rarity": "SSR",
+            "troopType": "lancer",
+            "generation": 11,
+            "weaponMaxStat": 3.2
+          },
+          {
+            "heroId": "hero.s11.rufus",
+            "name": "鲁弗斯",
+            "rarity": "SSR",
+            "troopType": "marksman",
+            "generation": 11,
+            "weaponMaxStat": 3.2
+          }
+        ],
+        "rarityFilteredHeroes": [],
+        "recentGenerationConstraint": [
+          9,
+          10,
+          11
+        ],
+        "dominanceRelations": [],
+        "heroClassifications": [
+          {
+            "heroId": "hero.s1.nataliya",
+            "status": "nonDominated",
+            "reasons": [
+              "action/timing/control semantics",
+              "scope/lifecycle/nonlinear semantics"
+            ]
+          },
+          {
+            "heroId": "hero.s1.moli",
+            "status": "nonDominated",
+            "reasons": [
+              "action/timing/control semantics",
+              "scope/lifecycle/nonlinear semantics"
+            ]
+          },
+          {
+            "heroId": "hero.s1.jinman",
+            "status": "nonDominated",
+            "reasons": [
+              "no complete dominating signature found"
+            ]
+          },
+          {
+            "heroId": "hero.s11.eleonora",
+            "status": "nonDominated",
+            "reasons": [
+              "scope/lifecycle/nonlinear semantics",
+              "action/timing/control semantics"
+            ]
+          },
+          {
+            "heroId": "hero.s11.lloyd",
+            "status": "nonDominated",
+            "reasons": [
+              "scope/lifecycle/nonlinear semantics",
+              "action/timing/control semantics"
+            ]
+          },
+          {
+            "heroId": "hero.s11.rufus",
+            "status": "nonDominated",
+            "reasons": [
+              "action/timing/control semantics",
+              "scope/lifecycle/nonlinear semantics"
+            ]
+          }
+        ],
+        "optimizerHeroPoolAfterFilter": [
+          {
+            "heroId": "hero.s1.nataliya",
+            "name": "娜塔莉亚",
+            "rarity": "SSR",
+            "troopType": "shield",
+            "generation": 1,
+            "weaponMaxStat": 0.55
+          },
+          {
+            "heroId": "hero.s1.moli",
+            "name": "茉莉",
+            "rarity": "SSR",
+            "troopType": "lancer",
+            "generation": 1,
+            "weaponMaxStat": 0.55
+          },
+          {
+            "heroId": "hero.s1.jinman",
+            "name": "津曼",
+            "rarity": "SSR",
+            "troopType": "marksman",
+            "generation": 1,
+            "weaponMaxStat": 0.55
+          },
+          {
+            "heroId": "hero.s11.eleonora",
+            "name": "埃莱奥诺拉",
+            "rarity": "SSR",
+            "troopType": "shield",
+            "generation": 11,
+            "weaponMaxStat": 3.2
+          },
+          {
+            "heroId": "hero.s11.lloyd",
+            "name": "劳埃德",
+            "rarity": "SSR",
+            "troopType": "lancer",
+            "generation": 11,
+            "weaponMaxStat": 3.2
+          },
+          {
+            "heroId": "hero.s11.rufus",
+            "name": "鲁弗斯",
+            "rarity": "SSR",
+            "troopType": "marksman",
+            "generation": 11,
+            "weaponMaxStat": 3.2
+          }
+        ],
+        "counts": {
+          "before": {
+            "shield": 2,
+            "lancer": 2,
+            "marksman": 2
+          },
+          "afterRarity": {
+            "shield": 2,
+            "lancer": 2,
+            "marksman": 2
+          },
+          "afterDominance": {
+            "shield": 2,
+            "lancer": 2,
+            "marksman": 2
+          },
+          "originalCombinations": 8,
+          "afterRarityCombinations": 8,
+          "afterRecentCombinations": 7,
+          "legalCombinations": 7
+        },
+        "exclusions": [
+          {
+            "count": 1,
+            "exclusionReason": "recentGenerationRule"
+          }
+        ]
+      },
+      "ratioSearchAudit": {
+        "basins": [
+          {
+            "id": "basin-1",
+            "head": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus:",
+            "seed": {
+              "shield": 45,
+              "lancer": 5,
+              "marksman": 50
+            },
+            "centers": [
+              {
+                "shield": 45,
+                "lancer": 5,
+                "marksman": 50
+              }
+            ],
+            "rounds": 1,
+            "stopReason": "localOptimum",
+            "fineCandidates": 121,
+            "fineCenter": {
+              "shield": 45,
+              "lancer": 5,
+              "marksman": 50
+            }
+          },
+          {
+            "id": "basin-2",
+            "head": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus:",
+            "seed": {
+              "shield": 45,
+              "lancer": 15,
+              "marksman": 40
+            },
+            "centers": [
+              {
+                "shield": 45,
+                "lancer": 15,
+                "marksman": 40
+              },
+              {
+                "shield": 50,
+                "lancer": 15,
+                "marksman": 35
+              },
+              {
+                "shield": 55,
+                "lancer": 10,
+                "marksman": 35
+              }
+            ],
+            "rounds": 3,
+            "stopReason": "localOptimum",
+            "fineCandidates": 121,
+            "fineCenter": {
+              "shield": 55,
+              "lancer": 10,
+              "marksman": 35
+            }
+          },
+          {
+            "id": "basin-3",
+            "head": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus:",
+            "seed": {
+              "shield": 45,
+              "lancer": 10,
+              "marksman": 45
+            },
+            "centers": [
+              {
+                "shield": 45,
+                "lancer": 10,
+                "marksman": 45
+              },
+              {
+                "shield": 50,
+                "lancer": 10,
+                "marksman": 40
+              }
+            ],
+            "rounds": 2,
+            "stopReason": "localOptimum",
+            "fineCandidates": 121,
+            "fineCenter": {
+              "shield": 50,
+              "lancer": 10,
+              "marksman": 40
+            }
+          },
+          {
+            "id": "basin-4",
+            "head": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus:",
+            "seed": {
+              "shield": 40,
+              "lancer": 10,
+              "marksman": 50
+            },
+            "centers": [
+              {
+                "shield": 40,
+                "lancer": 10,
+                "marksman": 50
+              }
+            ],
+            "rounds": 1,
+            "stopReason": "localOptimum",
+            "fineCandidates": 121,
+            "fineCenter": {
+              "shield": 40,
+              "lancer": 10,
+              "marksman": 50
+            }
+          }
+        ],
+        "generatedCoarseNeighbors": 31,
+        "generatedFineRatios": 454,
+        "fineHeroLineupCount": 3,
+        "fineBasinCount": 4
+      },
+      "theoryCoverage": {
+        "theoryCandidateCount": 1617,
+        "legalHeroLineupCount": 7,
+        "theoryHeroCoverage": 100,
+        "ratiosPerHeroLineup": 231,
+        "localPeaksDetected": 15,
+        "battleCandidateCount": 44,
+        "heroLineupsEnteringBattleEngine": 7,
+        "battleHeroCoverage": 100
+      },
+      "theoryOptions": {
+        "ratioStep": 5,
+        "localPeaksPerLineup": 3,
+        "minSurvivorsPerLineup": 1,
+        "randomExploration": 1,
+        "diversityExploration": 1,
+        "uncertaintyExploration": 1,
+        "uncertaintyWeight": 1,
+        "deterministicRounds": 24,
+        "probabilityEquivalentCoefficient": 1,
+        "calibratedEquivalents": {}
+      },
+      "theoryLineups": [
+        {
+          "head": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 1,
+          "selectedRatios": 6
+        },
+        {
+          "head": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 1,
+          "selectedRatios": 6
+        },
+        {
+          "head": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 2,
+          "selectedRatios": 6
+        },
+        {
+          "head": {
+            "shield": "hero.s11.eleonora",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s1.jinman"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 2,
+          "selectedRatios": 6
+        },
+        {
+          "head": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s11.rufus"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 2,
+          "selectedRatios": 6
+        },
+        {
+          "head": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s11.lloyd",
+            "marksman": "hero.s1.jinman"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 2,
+          "selectedRatios": 6
+        },
+        {
+          "head": {
+            "shield": "hero.s1.nataliya",
+            "lancer": "hero.s1.moli",
+            "marksman": "hero.s11.rufus"
+          },
+          "scannedRatios": 231,
+          "localPeaks": 5,
+          "selectedRatios": 6
+        }
+      ],
+      "battleSelections": [
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|10|50",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|15|45",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|15|40",
+          "selectionReasons": [
+            "theoryTop"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|10|45",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||0|100|0",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|30|15",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman||40|15|45",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman||40|10|50",
+          "selectionReasons": [
+            "theoryTop"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman||40|20|40",
+          "selectionReasons": [
+            "theoryTop"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman||45|15|40",
+          "selectionReasons": [
+            "uncertaintyExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman||0|100|0",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s1.jinman||75|5|20",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s11.rufus||45|5|50",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s11.rufus||25|35|40",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s11.rufus||45|10|45",
+          "selectionReasons": [
+            "theoryTop"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s11.rufus||40|5|55",
+          "selectionReasons": [
+            "uncertaintyExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s11.rufus||0|100|0",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s11.rufus||15|55|30",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s1.jinman||45|5|50",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s1.jinman||40|15|45",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s1.jinman||40|10|50",
+          "selectionReasons": [
+            "theoryTop"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s1.jinman||45|15|40",
+          "selectionReasons": [
+            "uncertaintyExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s1.jinman||0|100|0",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s1.moli|hero.s1.jinman||75|5|20",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|10|45",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||0|0|100",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|15|40",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|5|50",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||0|85|15",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|40|5",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman||40|15|45",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman||45|20|35",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman||40|10|50",
+          "selectionReasons": [
+            "theoryTop"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman||45|15|40",
+          "selectionReasons": [
+            "uncertaintyExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman||0|100|0",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s1.jinman||70|30|0",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|10|45",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||0|55|45",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||0|45|55",
+          "selectionReasons": [
+            "theoryLocalPeak"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|5|50",
+          "selectionReasons": [
+            "uncertaintyExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||100|0|0",
+          "selectionReasons": [
+            "ratioDiversity"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||75|20|5",
+          "selectionReasons": [
+            "randomExploration"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||33.333333333333336|33.333333333333336|33.333333333333336",
+          "selectionReasons": [
+            "protectedReference"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|20|30",
+          "selectionReasons": [
+            "protectedReference"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|10|50",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|5|55",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|0|50",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|0|55",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|5|45",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|20|40",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|10|40",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|15|35",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|20|35",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||40|15|45",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||40|10|50",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|5|45",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|10|40",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|15|50",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|10|55",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|5|50",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|5|55",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|10|35",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|15|30",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|5|40",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|10|35",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|15|35",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|5|35",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|5|40",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|10|30",
+          "selectionReasons": [
+            "localExpansion"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|0|60",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|1|59",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|2|58",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|3|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|4|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|6|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|7|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|8|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||40|9|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|0|59",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|1|58",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|2|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|3|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|4|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|5|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|6|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|7|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|8|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|9|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||41|10|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|0|58",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|1|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|2|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|3|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|4|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|5|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|6|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|7|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|8|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|9|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||42|10|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|0|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|1|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|2|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|3|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|4|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|5|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|6|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|7|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|8|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|9|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||43|10|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|0|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|1|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|2|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|3|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|4|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|5|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|6|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|7|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|8|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|9|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||44|10|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|1|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|2|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|3|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|4|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|6|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|7|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|8|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||45|9|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|0|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|1|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|2|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|3|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|4|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|5|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|6|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|7|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|8|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|9|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||46|10|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|0|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|1|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|2|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|3|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|4|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|5|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|6|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|7|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|8|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|9|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||47|10|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|0|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|1|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|2|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|3|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|4|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|5|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|6|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|7|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|8|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|9|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||48|10|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|0|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|1|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|2|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|3|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|4|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|5|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|6|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|7|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|8|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|9|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||49|10|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|1|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|2|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|3|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|4|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|6|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|7|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|8|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|9|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s1.moli|hero.s11.rufus||50|10|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|5|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|6|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|7|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|8|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|9|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|11|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|12|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|13|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||50|14|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|5|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|6|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|7|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|8|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|9|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|10|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|11|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|12|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|13|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|14|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||51|15|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|5|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|6|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|7|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|8|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|9|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|10|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|11|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|12|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|13|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|14|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||52|15|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|5|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|6|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|7|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|8|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|9|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|10|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|11|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|12|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|13|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|14|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||53|15|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|5|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|6|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|7|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|8|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|9|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|10|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|11|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|12|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|13|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|14|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||54|15|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|6|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|7|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|8|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|9|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|11|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|12|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|13|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||55|14|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|5|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|6|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|7|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|8|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|9|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|10|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|11|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|12|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|13|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|14|30",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||56|15|29",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|5|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|6|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|7|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|8|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|9|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|10|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|11|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|12|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|13|30",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|14|29",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||57|15|28",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|5|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|6|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|7|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|8|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|9|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|10|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|11|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|12|30",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|13|29",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|14|28",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||58|15|27",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|5|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|6|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|7|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|8|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|9|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|10|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|11|30",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|12|29",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|13|28",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|14|27",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||59|15|26",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|6|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|7|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|8|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|9|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|11|29",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|12|28",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|13|27",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|14|26",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||60|15|25",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|6|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|7|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|8|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|9|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|11|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|12|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|13|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||45|14|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|5|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|6|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|7|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|8|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|9|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|10|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|11|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|12|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|13|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|14|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||46|15|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|5|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|6|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|7|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|8|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|9|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|10|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|11|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|12|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|13|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|14|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||47|15|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|5|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|6|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|7|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|8|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|9|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|10|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|11|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|12|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|13|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|14|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||48|15|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|5|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|6|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|7|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|8|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|9|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|10|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|11|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|12|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|13|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|14|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||49|15|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|6|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|7|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|8|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|9|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|11|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|12|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|13|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||50|14|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|5|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|6|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|7|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|8|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|9|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|10|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|11|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|12|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|13|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|14|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||51|15|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|5|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|6|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|7|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|8|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|9|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|10|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|11|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|12|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|13|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|14|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||52|15|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|5|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|6|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|7|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|8|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|9|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|10|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|11|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|12|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|13|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|14|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||53|15|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|5|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|6|40",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|7|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|8|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|9|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|10|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|11|35",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|12|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|13|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|14|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||54|15|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|6|39",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|7|38",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|8|37",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|9|36",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|11|34",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|12|33",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|13|32",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|14|31",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s1.nataliya|hero.s11.lloyd|hero.s11.rufus||55|15|30",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|5|60",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|6|59",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|7|58",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|8|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|9|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|11|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|12|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|13|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||35|14|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|5|59",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|6|58",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|7|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|8|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|9|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|10|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|11|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|12|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|13|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|14|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||36|15|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|5|58",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|6|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|7|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|8|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|9|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|10|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|11|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|12|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|13|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|14|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||37|15|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|5|57",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|6|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|7|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|8|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|9|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|10|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|11|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|12|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|13|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|14|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||38|15|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|5|56",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|6|55",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|7|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|8|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|9|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|10|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|11|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|12|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|13|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|14|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||39|15|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|6|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|7|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|8|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|9|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|11|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|12|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|13|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||40|14|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|5|54",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|6|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|7|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|8|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|9|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|10|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|11|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|12|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|13|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|14|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||41|15|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|5|53",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|6|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|7|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|8|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|9|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|10|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|11|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|12|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|13|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|14|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||42|15|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|5|52",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|6|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|7|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|8|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|9|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|10|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|11|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|12|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|13|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|14|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||43|15|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|5|51",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|6|50",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|7|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|8|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|9|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|10|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|11|45",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|12|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|13|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|14|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||44|15|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|6|49",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|7|48",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|8|47",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|9|46",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|11|44",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|12|43",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|13|42",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        },
+        {
+          "candidateKey": "hero.s11.eleonora|hero.s11.lloyd|hero.s11.rufus||45|14|41",
+          "selectionReasons": [
+            "fineSearch"
+          ]
+        }
+      ],
+      "monteCarloStages": [
+        {
+          "stage": "M1 · 全车头正式验证",
+          "candidates": 44,
+          "trials": 5,
+          "retained": 44,
+          "simulatedTrials": 220
+        },
+        {
+          "stage": "M2 · 正式逐级筛选",
+          "candidates": 44,
+          "trials": 20,
+          "retained": 44,
+          "simulatedTrials": 880
+        },
+        {
+          "stage": "Basin · 5%扩张第1轮",
+          "candidates": 26,
+          "trials": 50,
+          "retained": 26,
+          "simulatedTrials": 1300
+        },
+        {
+          "stage": "Basin · 5%扩张第2轮",
+          "candidates": 6,
+          "trials": 50,
+          "retained": 6,
+          "simulatedTrials": 300
+        },
+        {
+          "stage": "Basin · 5%扩张第3轮",
+          "candidates": 3,
+          "trials": 50,
+          "retained": 3,
+          "simulatedTrials": 150
+        },
+        {
+          "stage": "Basin · 1%窗口共同种子复筛",
+          "candidates": 523,
+          "trials": 20,
+          "retained": 52,
+          "simulatedTrials": 9580
+        },
+        {
+          "stage": "M3 · 正式逐级筛选",
+          "candidates": 55,
+          "trials": 50,
+          "retained": 51,
+          "simulatedTrials": 2450
+        },
+        {
+          "stage": "M4 · 正式逐级筛选",
+          "candidates": 51,
+          "trials": 200,
+          "retained": 12,
+          "simulatedTrials": 10200
+        },
+        {
+          "stage": "Final · 统一高场次复验",
+          "candidates": 12,
+          "trials": 1000,
+          "retained": 12,
+          "simulatedTrials": 12000
+        }
+      ],
+      "localExpansionCount": 479,
+      "legalHeadCandidateCount": 7,
+      "evaluatedUniqueHeadCandidateCount": 7,
+      "headCoverageRate": 100,
+      "fixedBody": true,
+      "availableBodyCandidateCount": 1,
+      "stage1Trials": 5,
+      "stage1CandidateCount": 44,
+      "retainedHeadCandidateCount": 7,
+      "stage2RatioCandidateCount": 44,
+      "fixedHead": false,
+      "searchDimensions": {
+        "headShield": true,
+        "headLancer": true,
+        "headMarksman": true,
+        "body": false,
+        "troopRatio": true
+      },
+      "availableHeadHeroesByTroop": {
+        "shield": [
+          "hero.s11.eleonora",
+          "hero.s1.nataliya"
+        ],
+        "lancer": [
+          "hero.s11.lloyd",
+          "hero.s1.moli"
+        ],
+        "marksman": [
+          "hero.s11.rufus",
+          "hero.s1.jinman"
+        ]
+      },
+      "shieldCandidateCount": 2,
+      "lancerCandidateCount": 2,
+      "marksmanCandidateCount": 2,
+      "headCandidateCount": 8,
+      "bodyCandidateCount": 1,
+      "ratioCandidateCount": 231,
+      "totalCandidateCount": 1617,
+      "coarseRatioCandidateCount": 231,
+      "coarseCandidateCount": 44,
+      "generatedFormationCount": 7,
+      "evaluatedHeadLineups": [
+        {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s1.jinman"
+        },
+        {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s1.moli",
+          "marksman": "hero.s11.rufus"
+        },
+        {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s1.moli",
+          "marksman": "hero.s1.jinman"
+        },
+        {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s1.jinman"
+        },
+        {
+          "shield": "hero.s1.nataliya",
+          "lancer": "hero.s1.moli",
+          "marksman": "hero.s11.rufus"
+        }
+      ],
+      "bestHeadLineup": {
+        "shield": "hero.s1.nataliya",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s11.rufus"
+      },
+      "optimizationTargetSide": "A",
+      "candidateChangedSide": "A"
+    }
+  },
+  "battleCallReductionPercent": 7.133276429703694,
+  "elapsedReductionPercent": 15.684011019338618,
+  "knownManualWinRate": 0.866,
+  "manualPreserved": true,
+  "matchesOrExceedsManual": true,
+  "matchesOrExceedsPrevious": true
+}

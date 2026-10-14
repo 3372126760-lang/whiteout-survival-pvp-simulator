@@ -1,0 +1,42 @@
+{
+  "name": "whiteout-survival-pvp-engine",
+  "version": "0.2.0-beta",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:engine && npm run build:ui",
+    "build:engine": "tsc -p tsconfig.build.json",
+    "build:ui": "vite build",
+    "dev": "node scripts/start-dev.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "example:pure-troop": "tsx scripts/run-pure-troop-example.ts",
+    "example:all-troop-skills": "tsx scripts/run-all-troop-skills-example.ts",
+    "example:simple-heroes": "tsx scripts/run-simple-hero-example.ts",
+    "example:hero-rule-sync": "tsx scripts/run-hero-rule-sync-example.ts",
+    "validate:skills": "node scripts/run-tsx.mjs scripts/run-skill-validations.ts",
+    "benchmark:optimizer": "node scripts/run-tsx.mjs scripts/benchmark-optimizer.ts",
+    "verify:optimizer-workers": "node scripts/run-tsx.mjs scripts/verify-optimizer-workers.ts",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "benchmark:theory-optimizer": "node scripts/run-tsx.mjs scripts/benchmark-theory-optimizer.ts",
+    "benchmark:basin-optimizer": "node scripts/run-tsx.mjs scripts/benchmark-basin-optimizer.ts",
+    "profile:theory-estimator": "node scripts/run-tsx.mjs scripts/profile-expectation.ts",
+    "benchmark:optimizer-profiling": "node scripts/run-tsx.mjs scripts/benchmark-optimizer-profiling.ts",
+    "benchmark:adaptive-search": "node scripts/run-tsx.mjs scripts/benchmark-adaptive-search.ts",
+    "benchmark:criterion": "node scripts/run-tsx.mjs scripts/benchmark-criterion.ts",
+    "debug:body-ablation": "node scripts/run-tsx.mjs scripts/run-body-ablation.ts",
+    "benchmark:criterion-search": "node scripts/run-tsx.mjs scripts/benchmark-criterion-search.ts",
+    "benchmark:criterion-round3": "node scripts/run-tsx.mjs scripts/benchmark-criterion-search-round3.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "@types/node": "^24.0.0",
+    "eslint": "^9.39.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.46.0",
+    "vite": "^8.3.0",
+    "vitest": "^4.0.0"
+  }
+}

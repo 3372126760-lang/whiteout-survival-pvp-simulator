@@ -1,0 +1,2024 @@
+{
+  "provenance": "Synthetic fixed-seed independent-source regression, not a real game report. TEST troop constant and huge HP keep target identity stable.",
+  "seed": 93,
+  "trace": {
+    "heroStatCorrections": {},
+    "rounds": [
+      {
+        "round": 1,
+        "roundStart": {
+          "fixedInitialMinTroops": 100,
+          "battleContext": "unspecified",
+          "sides": {
+            "A": {
+              "shield": {
+                "aliveCount": 100,
+                "totalAliveCount": 100,
+                "frontUnitHp": 1000000000,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 100
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 100
+              },
+              "lancer": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              },
+              "marksman": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              }
+            },
+            "B": {
+              "shield": {
+                "aliveCount": 100,
+                "totalAliveCount": 100,
+                "frontUnitHp": 1000000000,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 100
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 100
+              },
+              "lancer": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              },
+              "marksman": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              }
+            }
+          }
+        },
+        "damageEvents": [
+          {
+            "id": "round:1:action:0:A:shield:normal",
+            "sourceSide": "A",
+            "sourceTroop": "shield",
+            "targetSide": "B",
+            "targetTroop": "shield",
+            "damageType": "normalAttack",
+            "damageSubtype": "normalAttack",
+            "baseDamage": 100,
+            "baseDamageFormula": {
+              "fixedInitialMinTroops": 100,
+              "aliveCount": 100,
+              "fixedInitialCountFactor": 10,
+              "aliveCountFactor": 10,
+              "damageCoefficient": 1,
+              "troopConstant": 1,
+              "penetrationMultiplier": 1,
+              "attackMultiplier": 1,
+              "baseDamageMultiplier": 1,
+              "specialGroups": []
+            },
+            "baseDamageAttributeEffects": [],
+            "attributeResolutions": [
+              {
+                "attribute": "attack",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "penetration",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "defense",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              }
+            ],
+            "round": 1,
+            "actionOrder": 0,
+            "rootEventId": "round:1:action:0:A:shield:normal",
+            "depth": 0,
+            "increaseGroups": [],
+            "defenseReductionGroups": [],
+            "reductionGroups": [],
+            "directCancellationGroups": [],
+            "appliedIncreaseEffects": [],
+            "appliedReductionEffects": [],
+            "appliedDefenseReductionEffects": [],
+            "appliedDefenseEffects": [],
+            "appliedDirectCancellationEffects": [],
+            "increaseMultiplier": 1,
+            "defenseReductionMultiplier": 1,
+            "reductionMultiplier": 1,
+            "receivedDamageReductionSources": [],
+            "receivedDamageReductionTotal": 0,
+            "receivedDamageReductionDenominator": 1,
+            "damageBeforeReceivedReduction": 100,
+            "damageAfterReceivedReduction": 100,
+            "targetDefenseMultiplier": 1,
+            "directCancellationMultiplier": 1,
+            "rawDamage": 100,
+            "modifiedDamage": 100,
+            "roundedDamage": 100,
+            "damageRoundingStrategyId": "confirmed-nearest-integer-damage-floor-full-casualties",
+            "finalDamage": 100,
+            "primaryRoundedDamage": 100,
+            "mainHitCancelled": false,
+            "appliedDamage": 100,
+            "hpAppliedDamage": 100,
+            "overflowDiscarded": 0,
+            "temporaryShield": [],
+            "temporaryShieldAbsorbed": 0
+          },
+          {
+            "id": "round:1:action:1:B:shield:normal",
+            "sourceSide": "B",
+            "sourceTroop": "shield",
+            "targetSide": "A",
+            "targetTroop": "shield",
+            "damageType": "normalAttack",
+            "damageSubtype": "normalAttack",
+            "baseDamage": 100,
+            "baseDamageFormula": {
+              "fixedInitialMinTroops": 100,
+              "aliveCount": 100,
+              "fixedInitialCountFactor": 10,
+              "aliveCountFactor": 10,
+              "damageCoefficient": 1,
+              "troopConstant": 1,
+              "penetrationMultiplier": 1,
+              "attackMultiplier": 1,
+              "baseDamageMultiplier": 1,
+              "specialGroups": []
+            },
+            "baseDamageAttributeEffects": [],
+            "attributeResolutions": [
+              {
+                "attribute": "attack",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "penetration",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "defense",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              }
+            ],
+            "round": 1,
+            "actionOrder": 1,
+            "rootEventId": "round:1:action:1:B:shield:normal",
+            "depth": 0,
+            "increaseGroups": [],
+            "defenseReductionGroups": [],
+            "reductionGroups": [],
+            "directCancellationGroups": [],
+            "appliedIncreaseEffects": [],
+            "appliedReductionEffects": [],
+            "appliedDefenseReductionEffects": [],
+            "appliedDefenseEffects": [],
+            "appliedDirectCancellationEffects": [],
+            "increaseMultiplier": 1,
+            "defenseReductionMultiplier": 1,
+            "reductionMultiplier": 1,
+            "receivedDamageReductionSources": [],
+            "receivedDamageReductionTotal": 0,
+            "receivedDamageReductionDenominator": 1,
+            "damageBeforeReceivedReduction": 100,
+            "damageAfterReceivedReduction": 100,
+            "targetDefenseMultiplier": 1,
+            "directCancellationMultiplier": 1,
+            "rawDamage": 100,
+            "modifiedDamage": 100,
+            "roundedDamage": 100,
+            "damageRoundingStrategyId": "confirmed-nearest-integer-damage-floor-full-casualties",
+            "finalDamage": 100,
+            "primaryRoundedDamage": 100,
+            "mainHitCancelled": false,
+            "appliedDamage": 100,
+            "hpAppliedDamage": 100,
+            "overflowDiscarded": 0,
+            "temporaryShield": [],
+            "temporaryShieldAbsorbed": 0
+          }
+        ],
+        "troopSkills": [],
+        "heroSkills": [
+          {
+            "round": 1,
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "familyEffectValue": 0.5,
+            "side": "B",
+            "sourceTroop": "shield",
+            "heroId": "hero.s3.miya",
+            "heroDefinitionId": "hero.s3.miya",
+            "runtimeInstanceId": "B-body-1",
+            "skillId": "hero-skill.miya.doom-entanglement",
+            "ruleStatus": "supported",
+            "skillName": "米娅·厄运缠身",
+            "uiSummary": "使命中目标受到伤害增加 +50%",
+            "skillLevel": 5,
+            "skillVersion": "Expedition Lv.5",
+            "position": "member",
+            "weaponLevel": 0,
+            "trigger": "beforeAttack",
+            "checked": true,
+            "eligible": true,
+            "triggered": true,
+            "probability": 0.5,
+            "rngRoll": 0.2514261936303228,
+            "procRoll": 0.2514261936303228,
+            "procResult": true,
+            "producedActiveEffectIds": [
+              "effect:[\"hero-family:B:miya-doom-entanglement-family:target:A:shield\",\"miya-doom-entanglement-family\",\"incomingDamageIncrease:vulnerability:0.5\"]"
+            ],
+            "producedDamageEventIds": [],
+            "activationTiming": "nextRound",
+            "groups": [
+              "vulnerability"
+            ],
+            "appliedGroupValues": [
+              {
+                "group": "vulnerability",
+                "value": 0.5
+              }
+            ],
+            "damageIncrease": 0,
+            "damageReduction": 0,
+            "reason": "probabilityPassed",
+            "targetTroop": "shield",
+            "appliedDebuffTargetTroop": "shield",
+            "effectiveFromRound": 2,
+            "expiresAfterRound": 2,
+            "parentEventId": "round:1:action:1:B:shield:normal"
+          },
+          {
+            "round": 1,
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "familyEffectValue": 0.5,
+            "side": "B",
+            "sourceTroop": "shield",
+            "heroId": "hero.s3.miya",
+            "heroDefinitionId": "hero.s3.miya",
+            "runtimeInstanceId": "B-body-2",
+            "skillId": "hero-skill.miya.doom-entanglement",
+            "ruleStatus": "supported",
+            "skillName": "米娅·厄运缠身",
+            "uiSummary": "使命中目标受到伤害增加 +50%",
+            "skillLevel": 5,
+            "skillVersion": "Expedition Lv.5",
+            "position": "member",
+            "weaponLevel": 0,
+            "trigger": "beforeAttack",
+            "checked": true,
+            "eligible": true,
+            "triggered": true,
+            "probability": 0.5,
+            "rngRoll": 0.4452923508360982,
+            "procRoll": 0.4452923508360982,
+            "procResult": true,
+            "producedActiveEffectIds": [
+              "effect:[\"hero-family:B:miya-doom-entanglement-family:target:A:shield\",\"miya-doom-entanglement-family\",\"incomingDamageIncrease:vulnerability:0.5\"]"
+            ],
+            "producedDamageEventIds": [],
+            "activationTiming": "nextRound",
+            "groups": [
+              "vulnerability"
+            ],
+            "appliedGroupValues": [
+              {
+                "group": "vulnerability",
+                "value": 0.5
+              }
+            ],
+            "damageIncrease": 0,
+            "damageReduction": 0,
+            "reason": "probabilityPassed",
+            "targetTroop": "shield",
+            "appliedDebuffTargetTroop": "shield",
+            "effectiveFromRound": 2,
+            "expiresAfterRound": 2,
+            "parentEventId": "round:1:action:1:B:shield:normal"
+          }
+        ],
+        "procEffectFamilies": [
+          {
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "side": "B",
+            "sourceTroop": "shield",
+            "targetTroop": "shield",
+            "parentEventId": "round:1:action:1:B:shield:normal",
+            "familySources": [
+              {
+                "runtimeInstanceId": "B-body-1",
+                "heroDefinitionId": "hero.s3.miya",
+                "skillId": "hero-skill.miya.doom-entanglement",
+                "procProbability": 0.5,
+                "procRoll": 0.2514261936303228,
+                "procResult": true
+              },
+              {
+                "runtimeInstanceId": "B-body-2",
+                "heroDefinitionId": "hero.s3.miya",
+                "skillId": "hero-skill.miya.doom-entanglement",
+                "procProbability": 0.5,
+                "procRoll": 0.4452923508360982,
+                "procResult": true
+              }
+            ],
+            "familyProcResult": true,
+            "familyCombinedProbability": 0.75,
+            "generatedEffectValue": 0.5
+          }
+        ],
+        "roundEnd": {
+          "troops": [
+            {
+              "side": "A",
+              "troop": "shield",
+              "receivedDamage": 100,
+              "resolvedDamage": 100,
+              "absorbedDamage": 100,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 1000000000,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 100,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 100,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 100
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "aliveCount": 100,
+              "totalAliveCount": 100,
+              "frontUnitHp": 999999900,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 100
+            },
+            {
+              "side": "A",
+              "troop": "lancer",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "A",
+              "troop": "marksman",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "B",
+              "troop": "shield",
+              "receivedDamage": 100,
+              "resolvedDamage": 100,
+              "absorbedDamage": 100,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 1000000000,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 100,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 100,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 100
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "aliveCount": 100,
+              "totalAliveCount": 100,
+              "frontUnitHp": 999999900,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 100
+            },
+            {
+              "side": "B",
+              "troop": "lancer",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "B",
+              "troop": "marksman",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            }
+          ],
+          "battleStatus": "ready"
+        }
+      },
+      {
+        "round": 2,
+        "roundStart": {
+          "fixedInitialMinTroops": 100,
+          "battleContext": "unspecified",
+          "sides": {
+            "A": {
+              "shield": {
+                "aliveCount": 100,
+                "totalAliveCount": 100,
+                "frontUnitHp": 999999900,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 100
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 100
+              },
+              "lancer": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              },
+              "marksman": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              }
+            },
+            "B": {
+              "shield": {
+                "aliveCount": 100,
+                "totalAliveCount": 100,
+                "frontUnitHp": 999999900,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 100
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 100
+              },
+              "lancer": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              },
+              "marksman": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              }
+            }
+          }
+        },
+        "damageEvents": [
+          {
+            "id": "round:2:action:0:A:shield:normal",
+            "sourceSide": "A",
+            "sourceTroop": "shield",
+            "targetSide": "B",
+            "targetTroop": "shield",
+            "damageType": "normalAttack",
+            "damageSubtype": "normalAttack",
+            "baseDamage": 100,
+            "baseDamageFormula": {
+              "fixedInitialMinTroops": 100,
+              "aliveCount": 100,
+              "fixedInitialCountFactor": 10,
+              "aliveCountFactor": 10,
+              "damageCoefficient": 1,
+              "troopConstant": 1,
+              "penetrationMultiplier": 1,
+              "attackMultiplier": 1,
+              "baseDamageMultiplier": 1,
+              "specialGroups": []
+            },
+            "baseDamageAttributeEffects": [],
+            "attributeResolutions": [
+              {
+                "attribute": "attack",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "penetration",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "defense",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              }
+            ],
+            "round": 2,
+            "actionOrder": 0,
+            "rootEventId": "round:2:action:0:A:shield:normal",
+            "depth": 0,
+            "increaseGroups": [],
+            "defenseReductionGroups": [],
+            "reductionGroups": [],
+            "directCancellationGroups": [],
+            "appliedIncreaseEffects": [],
+            "appliedReductionEffects": [],
+            "appliedDefenseReductionEffects": [],
+            "appliedDefenseEffects": [],
+            "appliedDirectCancellationEffects": [],
+            "increaseMultiplier": 1,
+            "defenseReductionMultiplier": 1,
+            "reductionMultiplier": 1,
+            "receivedDamageReductionSources": [],
+            "receivedDamageReductionTotal": 0,
+            "receivedDamageReductionDenominator": 1,
+            "damageBeforeReceivedReduction": 100,
+            "damageAfterReceivedReduction": 100,
+            "targetDefenseMultiplier": 1,
+            "directCancellationMultiplier": 1,
+            "rawDamage": 100,
+            "modifiedDamage": 100,
+            "roundedDamage": 100,
+            "damageRoundingStrategyId": "confirmed-nearest-integer-damage-floor-full-casualties",
+            "finalDamage": 100,
+            "primaryRoundedDamage": 100,
+            "mainHitCancelled": false,
+            "appliedDamage": 100,
+            "hpAppliedDamage": 100,
+            "overflowDiscarded": 0,
+            "temporaryShield": [],
+            "temporaryShieldAbsorbed": 0
+          },
+          {
+            "id": "round:2:action:1:B:shield:normal",
+            "sourceSide": "B",
+            "sourceTroop": "shield",
+            "targetSide": "A",
+            "targetTroop": "shield",
+            "damageType": "normalAttack",
+            "damageSubtype": "normalAttack",
+            "baseDamage": 100,
+            "baseDamageFormula": {
+              "fixedInitialMinTroops": 100,
+              "aliveCount": 100,
+              "fixedInitialCountFactor": 10,
+              "aliveCountFactor": 10,
+              "damageCoefficient": 1,
+              "troopConstant": 1,
+              "penetrationMultiplier": 1,
+              "attackMultiplier": 1,
+              "baseDamageMultiplier": 1,
+              "specialGroups": []
+            },
+            "baseDamageAttributeEffects": [],
+            "attributeResolutions": [
+              {
+                "attribute": "attack",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "penetration",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "defense",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              }
+            ],
+            "round": 2,
+            "actionOrder": 1,
+            "rootEventId": "round:2:action:1:B:shield:normal",
+            "depth": 0,
+            "increaseGroups": [
+              {
+                "group": "vulnerability",
+                "summedValue": 0.5,
+                "multiplier": 1.5,
+                "effectInstanceIds": [
+                  "effect:[\"hero-family:B:miya-doom-entanglement-family:target:A:shield\",\"miya-doom-entanglement-family\",\"incomingDamageIncrease:vulnerability:0.5\"]"
+                ]
+              }
+            ],
+            "defenseReductionGroups": [],
+            "reductionGroups": [],
+            "directCancellationGroups": [],
+            "appliedIncreaseEffects": [
+              {
+                "instanceId": "effect:[\"hero-family:B:miya-doom-entanglement-family:target:A:shield\",\"miya-doom-entanglement-family\",\"incomingDamageIncrease:vulnerability:0.5\"]",
+                "effectId": "hero-effect.miya.doom-entanglement",
+                "effectName": "hero-effect.miya.doom-entanglement",
+                "sourceId": "hero-family:B:miya-doom-entanglement-family:target:A:shield",
+                "sourceSkillId": "miya-doom-entanglement-family",
+                "effectKind": "incomingDamageIncrease",
+                "group": "vulnerability",
+                "valuePerStack": 0.5,
+                "stackCount": 1,
+                "effectiveValue": 0.5
+              }
+            ],
+            "appliedReductionEffects": [],
+            "appliedDefenseReductionEffects": [],
+            "appliedDefenseEffects": [],
+            "appliedDirectCancellationEffects": [],
+            "increaseMultiplier": 1.5,
+            "defenseReductionMultiplier": 1,
+            "reductionMultiplier": 1,
+            "receivedDamageReductionSources": [],
+            "receivedDamageReductionTotal": 0,
+            "receivedDamageReductionDenominator": 1,
+            "damageBeforeReceivedReduction": 150,
+            "damageAfterReceivedReduction": 150,
+            "targetDefenseMultiplier": 1,
+            "directCancellationMultiplier": 1,
+            "rawDamage": 100,
+            "modifiedDamage": 150,
+            "roundedDamage": 150,
+            "damageRoundingStrategyId": "confirmed-nearest-integer-damage-floor-full-casualties",
+            "finalDamage": 150,
+            "primaryRoundedDamage": 150,
+            "mainHitCancelled": false,
+            "appliedDamage": 150,
+            "hpAppliedDamage": 150,
+            "overflowDiscarded": 0,
+            "temporaryShield": [],
+            "temporaryShieldAbsorbed": 0
+          }
+        ],
+        "troopSkills": [],
+        "heroSkills": [
+          {
+            "round": 2,
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "familyEffectValue": 0.5,
+            "side": "B",
+            "sourceTroop": "shield",
+            "heroId": "hero.s3.miya",
+            "heroDefinitionId": "hero.s3.miya",
+            "runtimeInstanceId": "B-body-1",
+            "skillId": "hero-skill.miya.doom-entanglement",
+            "ruleStatus": "supported",
+            "skillName": "米娅·厄运缠身",
+            "uiSummary": "使命中目标受到伤害增加 +50%",
+            "skillLevel": 5,
+            "skillVersion": "Expedition Lv.5",
+            "position": "member",
+            "weaponLevel": 0,
+            "trigger": "beforeAttack",
+            "checked": true,
+            "eligible": true,
+            "triggered": false,
+            "probability": 0.5,
+            "rngRoll": 0.572540569351986,
+            "procRoll": 0.572540569351986,
+            "procResult": false,
+            "producedActiveEffectIds": [],
+            "producedDamageEventIds": [],
+            "activationTiming": "nextRound",
+            "groups": [
+              "vulnerability"
+            ],
+            "appliedGroupValues": [],
+            "damageIncrease": 0,
+            "damageReduction": 0,
+            "reason": "probabilityFailed",
+            "targetTroop": "shield",
+            "parentEventId": "round:2:action:1:B:shield:normal"
+          },
+          {
+            "round": 2,
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "familyEffectValue": 0.5,
+            "side": "B",
+            "sourceTroop": "shield",
+            "heroId": "hero.s3.miya",
+            "heroDefinitionId": "hero.s3.miya",
+            "runtimeInstanceId": "B-body-2",
+            "skillId": "hero-skill.miya.doom-entanglement",
+            "ruleStatus": "supported",
+            "skillName": "米娅·厄运缠身",
+            "uiSummary": "使命中目标受到伤害增加 +50%",
+            "skillLevel": 5,
+            "skillVersion": "Expedition Lv.5",
+            "position": "member",
+            "weaponLevel": 0,
+            "trigger": "beforeAttack",
+            "checked": true,
+            "eligible": true,
+            "triggered": false,
+            "probability": 0.5,
+            "rngRoll": 0.8168800661806017,
+            "procRoll": 0.8168800661806017,
+            "procResult": false,
+            "producedActiveEffectIds": [],
+            "producedDamageEventIds": [],
+            "activationTiming": "nextRound",
+            "groups": [
+              "vulnerability"
+            ],
+            "appliedGroupValues": [],
+            "damageIncrease": 0,
+            "damageReduction": 0,
+            "reason": "probabilityFailed",
+            "targetTroop": "shield",
+            "parentEventId": "round:2:action:1:B:shield:normal"
+          }
+        ],
+        "procEffectFamilies": [
+          {
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "side": "B",
+            "sourceTroop": "shield",
+            "targetTroop": "shield",
+            "parentEventId": "round:2:action:1:B:shield:normal",
+            "familySources": [
+              {
+                "runtimeInstanceId": "B-body-1",
+                "heroDefinitionId": "hero.s3.miya",
+                "skillId": "hero-skill.miya.doom-entanglement",
+                "procProbability": 0.5,
+                "procRoll": 0.572540569351986,
+                "procResult": false
+              },
+              {
+                "runtimeInstanceId": "B-body-2",
+                "heroDefinitionId": "hero.s3.miya",
+                "skillId": "hero-skill.miya.doom-entanglement",
+                "procProbability": 0.5,
+                "procRoll": 0.8168800661806017,
+                "procResult": false
+              }
+            ],
+            "familyProcResult": false,
+            "familyCombinedProbability": 0.75,
+            "generatedEffectValue": 0
+          }
+        ],
+        "roundEnd": {
+          "troops": [
+            {
+              "side": "A",
+              "troop": "shield",
+              "receivedDamage": 150,
+              "resolvedDamage": 150,
+              "absorbedDamage": 150,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 999999900,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 100,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 100,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 100
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "aliveCount": 100,
+              "totalAliveCount": 100,
+              "frontUnitHp": 999999750,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 100
+            },
+            {
+              "side": "A",
+              "troop": "lancer",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "A",
+              "troop": "marksman",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "B",
+              "troop": "shield",
+              "receivedDamage": 100,
+              "resolvedDamage": 100,
+              "absorbedDamage": 100,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 999999900,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 100,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 100,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 100
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "aliveCount": 100,
+              "totalAliveCount": 100,
+              "frontUnitHp": 999999800,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 100
+            },
+            {
+              "side": "B",
+              "troop": "lancer",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "B",
+              "troop": "marksman",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            }
+          ],
+          "battleStatus": "ready"
+        }
+      },
+      {
+        "round": 3,
+        "roundStart": {
+          "fixedInitialMinTroops": 100,
+          "battleContext": "unspecified",
+          "sides": {
+            "A": {
+              "shield": {
+                "aliveCount": 100,
+                "totalAliveCount": 100,
+                "frontUnitHp": 999999750,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 100
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 100
+              },
+              "lancer": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              },
+              "marksman": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              }
+            },
+            "B": {
+              "shield": {
+                "aliveCount": 100,
+                "totalAliveCount": 100,
+                "frontUnitHp": 999999800,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 100
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 100
+              },
+              "lancer": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              },
+              "marksman": {
+                "aliveCount": 0,
+                "totalAliveCount": 0,
+                "frontUnitHp": 0,
+                "maxHpPerUnit": 1000000000,
+                "levelCompositionAtRoundStart": [
+                  {
+                    "level": "TEST",
+                    "aliveCount": 0
+                  }
+                ],
+                "effectiveTroopConstant": 1,
+                "weightedConstantNumerator": 0
+              }
+            }
+          }
+        },
+        "damageEvents": [
+          {
+            "id": "round:3:action:0:A:shield:normal",
+            "sourceSide": "A",
+            "sourceTroop": "shield",
+            "targetSide": "B",
+            "targetTroop": "shield",
+            "damageType": "normalAttack",
+            "damageSubtype": "normalAttack",
+            "baseDamage": 100,
+            "baseDamageFormula": {
+              "fixedInitialMinTroops": 100,
+              "aliveCount": 100,
+              "fixedInitialCountFactor": 10,
+              "aliveCountFactor": 10,
+              "damageCoefficient": 1,
+              "troopConstant": 1,
+              "penetrationMultiplier": 1,
+              "attackMultiplier": 1,
+              "baseDamageMultiplier": 1,
+              "specialGroups": []
+            },
+            "baseDamageAttributeEffects": [],
+            "attributeResolutions": [
+              {
+                "attribute": "attack",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "penetration",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "defense",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              }
+            ],
+            "round": 3,
+            "actionOrder": 0,
+            "rootEventId": "round:3:action:0:A:shield:normal",
+            "depth": 0,
+            "increaseGroups": [],
+            "defenseReductionGroups": [],
+            "reductionGroups": [],
+            "directCancellationGroups": [],
+            "appliedIncreaseEffects": [],
+            "appliedReductionEffects": [],
+            "appliedDefenseReductionEffects": [],
+            "appliedDefenseEffects": [],
+            "appliedDirectCancellationEffects": [],
+            "increaseMultiplier": 1,
+            "defenseReductionMultiplier": 1,
+            "reductionMultiplier": 1,
+            "receivedDamageReductionSources": [],
+            "receivedDamageReductionTotal": 0,
+            "receivedDamageReductionDenominator": 1,
+            "damageBeforeReceivedReduction": 100,
+            "damageAfterReceivedReduction": 100,
+            "targetDefenseMultiplier": 1,
+            "directCancellationMultiplier": 1,
+            "rawDamage": 100,
+            "modifiedDamage": 100,
+            "roundedDamage": 100,
+            "damageRoundingStrategyId": "confirmed-nearest-integer-damage-floor-full-casualties",
+            "finalDamage": 100,
+            "primaryRoundedDamage": 100,
+            "mainHitCancelled": false,
+            "appliedDamage": 100,
+            "hpAppliedDamage": 100,
+            "overflowDiscarded": 0,
+            "temporaryShield": [],
+            "temporaryShieldAbsorbed": 0
+          },
+          {
+            "id": "round:3:action:1:B:shield:normal",
+            "sourceSide": "B",
+            "sourceTroop": "shield",
+            "targetSide": "A",
+            "targetTroop": "shield",
+            "damageType": "normalAttack",
+            "damageSubtype": "normalAttack",
+            "baseDamage": 100,
+            "baseDamageFormula": {
+              "fixedInitialMinTroops": 100,
+              "aliveCount": 100,
+              "fixedInitialCountFactor": 10,
+              "aliveCountFactor": 10,
+              "damageCoefficient": 1,
+              "troopConstant": 1,
+              "penetrationMultiplier": 1,
+              "attackMultiplier": 1,
+              "baseDamageMultiplier": 1,
+              "specialGroups": []
+            },
+            "baseDamageAttributeEffects": [],
+            "attributeResolutions": [
+              {
+                "attribute": "attack",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "penetration",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              },
+              {
+                "attribute": "defense",
+                "baseAttribute": 0,
+                "buffedAttribute": 0,
+                "modifierGroups": [],
+                "reductionGroups": [],
+                "divisionFactor": 1,
+                "finalAttribute": 0
+              }
+            ],
+            "round": 3,
+            "actionOrder": 1,
+            "rootEventId": "round:3:action:1:B:shield:normal",
+            "depth": 0,
+            "increaseGroups": [],
+            "defenseReductionGroups": [],
+            "reductionGroups": [],
+            "directCancellationGroups": [],
+            "appliedIncreaseEffects": [],
+            "appliedReductionEffects": [],
+            "appliedDefenseReductionEffects": [],
+            "appliedDefenseEffects": [],
+            "appliedDirectCancellationEffects": [],
+            "increaseMultiplier": 1,
+            "defenseReductionMultiplier": 1,
+            "reductionMultiplier": 1,
+            "receivedDamageReductionSources": [],
+            "receivedDamageReductionTotal": 0,
+            "receivedDamageReductionDenominator": 1,
+            "damageBeforeReceivedReduction": 100,
+            "damageAfterReceivedReduction": 100,
+            "targetDefenseMultiplier": 1,
+            "directCancellationMultiplier": 1,
+            "rawDamage": 100,
+            "modifiedDamage": 100,
+            "roundedDamage": 100,
+            "damageRoundingStrategyId": "confirmed-nearest-integer-damage-floor-full-casualties",
+            "finalDamage": 100,
+            "primaryRoundedDamage": 100,
+            "mainHitCancelled": false,
+            "appliedDamage": 100,
+            "hpAppliedDamage": 100,
+            "overflowDiscarded": 0,
+            "temporaryShield": [],
+            "temporaryShieldAbsorbed": 0
+          }
+        ],
+        "troopSkills": [],
+        "heroSkills": [
+          {
+            "round": 3,
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "familyEffectValue": 0.5,
+            "side": "B",
+            "sourceTroop": "shield",
+            "heroId": "hero.s3.miya",
+            "heroDefinitionId": "hero.s3.miya",
+            "runtimeInstanceId": "B-body-1",
+            "skillId": "hero-skill.miya.doom-entanglement",
+            "ruleStatus": "supported",
+            "skillName": "米娅·厄运缠身",
+            "uiSummary": "使命中目标受到伤害增加 +50%",
+            "skillLevel": 5,
+            "skillVersion": "Expedition Lv.5",
+            "position": "member",
+            "weaponLevel": 0,
+            "trigger": "beforeAttack",
+            "checked": true,
+            "eligible": true,
+            "triggered": false,
+            "probability": 0.5,
+            "rngRoll": 0.7254342380911112,
+            "procRoll": 0.7254342380911112,
+            "procResult": false,
+            "producedActiveEffectIds": [],
+            "producedDamageEventIds": [],
+            "activationTiming": "nextRound",
+            "groups": [
+              "vulnerability"
+            ],
+            "appliedGroupValues": [],
+            "damageIncrease": 0,
+            "damageReduction": 0,
+            "reason": "probabilityFailed",
+            "targetTroop": "shield",
+            "parentEventId": "round:3:action:1:B:shield:normal"
+          },
+          {
+            "round": 3,
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "familyEffectValue": 0.5,
+            "side": "B",
+            "sourceTroop": "shield",
+            "heroId": "hero.s3.miya",
+            "heroDefinitionId": "hero.s3.miya",
+            "runtimeInstanceId": "B-body-2",
+            "skillId": "hero-skill.miya.doom-entanglement",
+            "ruleStatus": "supported",
+            "skillName": "米娅·厄运缠身",
+            "uiSummary": "使命中目标受到伤害增加 +50%",
+            "skillLevel": 5,
+            "skillVersion": "Expedition Lv.5",
+            "position": "member",
+            "weaponLevel": 0,
+            "trigger": "beforeAttack",
+            "checked": true,
+            "eligible": true,
+            "triggered": false,
+            "probability": 0.5,
+            "rngRoll": 0.5318972417153418,
+            "procRoll": 0.5318972417153418,
+            "procResult": false,
+            "producedActiveEffectIds": [],
+            "producedDamageEventIds": [],
+            "activationTiming": "nextRound",
+            "groups": [
+              "vulnerability"
+            ],
+            "appliedGroupValues": [],
+            "damageIncrease": 0,
+            "damageReduction": 0,
+            "reason": "probabilityFailed",
+            "targetTroop": "shield",
+            "parentEventId": "round:3:action:1:B:shield:normal"
+          }
+        ],
+        "procEffectFamilies": [
+          {
+            "procEffectFamilyId": "miya-doom-entanglement-family",
+            "side": "B",
+            "sourceTroop": "shield",
+            "targetTroop": "shield",
+            "parentEventId": "round:3:action:1:B:shield:normal",
+            "familySources": [
+              {
+                "runtimeInstanceId": "B-body-1",
+                "heroDefinitionId": "hero.s3.miya",
+                "skillId": "hero-skill.miya.doom-entanglement",
+                "procProbability": 0.5,
+                "procRoll": 0.7254342380911112,
+                "procResult": false
+              },
+              {
+                "runtimeInstanceId": "B-body-2",
+                "heroDefinitionId": "hero.s3.miya",
+                "skillId": "hero-skill.miya.doom-entanglement",
+                "procProbability": 0.5,
+                "procRoll": 0.5318972417153418,
+                "procResult": false
+              }
+            ],
+            "familyProcResult": false,
+            "familyCombinedProbability": 0.75,
+            "generatedEffectValue": 0
+          }
+        ],
+        "roundEnd": {
+          "troops": [
+            {
+              "side": "A",
+              "troop": "shield",
+              "receivedDamage": 100,
+              "resolvedDamage": 100,
+              "absorbedDamage": 100,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 999999750,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 100,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 100,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 100
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "aliveCount": 100,
+              "totalAliveCount": 100,
+              "frontUnitHp": 999999650,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 100
+            },
+            {
+              "side": "A",
+              "troop": "lancer",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "A",
+              "troop": "marksman",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "B",
+              "troop": "shield",
+              "receivedDamage": 100,
+              "resolvedDamage": 100,
+              "absorbedDamage": 100,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 999999800,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 100,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 100,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 100
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "aliveCount": 100,
+              "totalAliveCount": 100,
+              "frontUnitHp": 999999700,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 100
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 100
+            },
+            {
+              "side": "B",
+              "troop": "lancer",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            },
+            {
+              "side": "B",
+              "troop": "marksman",
+              "receivedDamage": 0,
+              "resolvedDamage": 0,
+              "absorbedDamage": 0,
+              "discardedOverflowDamage": 0,
+              "originalFrontUnitHp": 0,
+              "casualties": 0,
+              "totalDeaths": 0,
+              "casualtyAllocationStrategy": "confirmed-initial-ratio-ceiling",
+              "casualtyAllocationRoundingDifference": {
+                "deaths": 0,
+                "survivors": 0
+              },
+              "casualtyAllocationByLevel": [
+                {
+                  "level": "TEST",
+                  "aliveCountBefore": 0,
+                  "exactProportionalDeaths": 0,
+                  "deaths": 0,
+                  "aliveCountAfter": 0,
+                  "ceilingDeaths": 0,
+                  "ceilingAliveCountAfter": 0
+                }
+              ],
+              "levelCompositionAtRoundEnd": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "aliveCount": 0,
+              "totalAliveCount": 0,
+              "frontUnitHp": 0,
+              "maxHpPerUnit": 1000000000,
+              "levelCompositionAtRoundStart": [
+                {
+                  "level": "TEST",
+                  "aliveCount": 0
+                }
+              ],
+              "effectiveTroopConstant": 1,
+              "weightedConstantNumerator": 0
+            }
+          ],
+          "battleStatus": "ready"
+        }
+      }
+    ],
+    "endReason": "roundLimit",
+    "finalStatus": "ready"
+  }
+}

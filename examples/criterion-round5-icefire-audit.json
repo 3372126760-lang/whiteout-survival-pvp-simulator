@@ -1,0 +1,234 @@
+{
+  "fixtureKind": "syntheticFormalBattleEngineRegression",
+  "disclaimer": "Synthetic fixture; not the user's war-report parameters or an accuracy fit.",
+  "reproductionCommand": "node scripts/run-tsx.mjs scripts/run-three-queue-icefire-audit-round5.ts",
+  "fixture": {
+    "seed": 771,
+    "deploymentCapacityPerQueue": 90,
+    "ratios": "100/0/0",
+    "heroIds": [],
+    "attributeFactors": {
+      "A": [
+        3,
+        0.01,
+        0.01
+      ],
+      "B": [
+        1,
+        2,
+        2
+      ]
+    },
+    "maxRoundsPerBattle": 300
+  },
+  "formalBattleEngineUsed": true,
+  "scheduler": {
+    "threeQueueMode": "ICE_FIRE_LEAGUE",
+    "schedulerType": "IceFireLeagueScheduler",
+    "rule": "independentCircularCursors",
+    "ruleStatus": "confirmed",
+    "seed": 771,
+    "queueCursorA": 1,
+    "queueCursorB": 0,
+    "matchSequence": [
+      "A1-B1",
+      "A2-B2",
+      "A3-B3",
+      "A1-B2",
+      "A1-B3"
+    ]
+  },
+  "winner": "A",
+  "totalBattles": 5,
+  "battles": [
+    {
+      "battleIndex": 1,
+      "attackerQueueId": "A1",
+      "defenderQueueId": "B1",
+      "battleSeed": 904264808,
+      "attackerBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "attackerAfter": {
+        "shield": 87,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderAfter": {
+        "shield": 0,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "winner": "A",
+      "eliminatedQueue": "B1",
+      "queueCursorA": 0,
+      "queueCursorB": 0,
+      "nextQueueCursorA": 1,
+      "nextQueueCursorB": 1,
+      "formalRoundCount": 90,
+      "formalTraceGenerated": true
+    },
+    {
+      "battleIndex": 2,
+      "attackerQueueId": "A2",
+      "defenderQueueId": "B2",
+      "battleSeed": 3596218181,
+      "attackerBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "attackerAfter": {
+        "shield": 0,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderAfter": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "winner": "B",
+      "eliminatedQueue": "A2",
+      "queueCursorA": 1,
+      "queueCursorB": 1,
+      "nextQueueCursorA": 2,
+      "nextQueueCursorB": 2,
+      "formalRoundCount": 41,
+      "formalTraceGenerated": true
+    },
+    {
+      "battleIndex": 3,
+      "attackerQueueId": "A3",
+      "defenderQueueId": "B3",
+      "battleSeed": 3835422367,
+      "attackerBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "attackerAfter": {
+        "shield": 0,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderAfter": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "winner": "B",
+      "eliminatedQueue": "A3",
+      "queueCursorA": 2,
+      "queueCursorB": 2,
+      "nextQueueCursorA": 0,
+      "nextQueueCursorB": 0,
+      "formalRoundCount": 39,
+      "formalTraceGenerated": true
+    },
+    {
+      "battleIndex": 4,
+      "attackerQueueId": "A1",
+      "defenderQueueId": "B2",
+      "battleSeed": 944190423,
+      "attackerBefore": {
+        "shield": 87,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "attackerAfter": {
+        "shield": 67,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderAfter": {
+        "shield": 0,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "winner": "A",
+      "eliminatedQueue": "B2",
+      "queueCursorA": 0,
+      "queueCursorB": 0,
+      "nextQueueCursorA": 1,
+      "nextQueueCursorB": 2,
+      "formalRoundCount": 220,
+      "formalTraceGenerated": true
+    },
+    {
+      "battleIndex": 5,
+      "attackerQueueId": "A1",
+      "defenderQueueId": "B3",
+      "battleSeed": 936989661,
+      "attackerBefore": {
+        "shield": 67,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderBefore": {
+        "shield": 90,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "attackerAfter": {
+        "shield": 43,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "defenderAfter": {
+        "shield": 0,
+        "lancer": 0,
+        "marksman": 0
+      },
+      "winner": "A",
+      "eliminatedQueue": "B3",
+      "queueCursorA": 1,
+      "queueCursorB": 2,
+      "nextQueueCursorA": 1,
+      "nextQueueCursorB": 0,
+      "formalRoundCount": 300,
+      "formalTraceGenerated": true
+    }
+  ],
+  "inheritedSurvivors": {
+    "A1Round4EqualsRound1": true,
+    "A1Round5EqualsRound4": true,
+    "B2Round4EqualsRound2": true,
+    "B3Round5EqualsRound3": true
+  },
+  "remaining": {
+    "A": [
+      {
+        "id": "A1",
+        "survivors": {
+          "shield": 43,
+          "lancer": 0,
+          "marksman": 0
+        }
+      }
+    ],
+    "B": []
+  }
+}

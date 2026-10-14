@@ -1,0 +1,8 @@
+﻿{
+    "fileCount":  72,
+    "changedFiles":  [
+
+                     ],
+    "source":  "examples/criterion-round5-core-hashes-before.json",
+    "note":  "ThreeQueue scenario wrappers and optimizer/UI are outside the ordinary formal PVP core boundary."
+}

@@ -1,0 +1,390 @@
+{
+  "date": "2026-10-08",
+  "nativeDialogsRemoved": true,
+  "ocr": {
+    "troopRecognitionRemoved": true,
+    "attributeRecognitionRemaining": true,
+    "cloudOcrUsed": false
+  },
+  "schemaAudit": [
+    {
+      "mode": "HEART_OF_EARTH",
+      "allySchema": "SHARED_BY_STAT_4",
+      "enemySchema": "SHARED_BY_STAT_4",
+      "allyInputs": 12,
+      "enemyInputs": 4,
+      "formalAttributesPerSidePerQueue": 12
+    },
+    {
+      "mode": "HERO_LAND",
+      "allySchema": "SHARED_BY_STAT_4",
+      "enemySchema": "SHARED_BY_STAT_4",
+      "allyInputs": 12,
+      "enemyInputs": 4,
+      "formalAttributesPerSidePerQueue": 12
+    },
+    {
+      "mode": "BEAST_CAVE",
+      "allySchema": "FULL_12",
+      "enemySchema": "SHARED_BY_STAT_4",
+      "allyInputs": 12,
+      "enemyInputs": 4,
+      "formalAttributesPerSidePerQueue": 12
+    },
+    {
+      "mode": "GEM_MINE",
+      "allySchema": "ATTACK_DEFENSE__PEN_LIFE_2",
+      "enemySchema": "ATTACK_DEFENSE__PEN_LIFE_2",
+      "allyInputs": 2,
+      "enemyInputs": 2,
+      "formalAttributesPerSidePerQueue": 12
+    },
+    {
+      "mode": "UNDERGROUND_LAB",
+      "allySchema": "FULL_12",
+      "enemySchema": "ALL_SHARED_1",
+      "allyInputs": 12,
+      "enemyInputs": 1,
+      "formalAttributesPerSidePerQueue": 12
+    },
+    {
+      "mode": "EQUIPMENT_FORGE",
+      "allySchema": "ATTACK_DEFENSE__PEN_LIFE_2",
+      "enemySchema": "ATTACK_DEFENSE__PEN_LIFE_2",
+      "allyInputs": 2,
+      "enemyInputs": 2,
+      "formalAttributesPerSidePerQueue": 12
+    }
+  ],
+  "laboratory": {
+    "allyConstants": {
+      "shield": 7.4947,
+      "lancer": 8.8437,
+      "marksman": 10.4356
+    },
+    "enemyTiers": [
+      "T10",
+      "T10",
+      "T10"
+    ],
+    "t12VisibleFields": 1
+  },
+  "optimizerRuns": [
+    {
+      "mode": "ICE_FIRE_LEAGUE",
+      "elapsedMs": 166042,
+      "criterion": {
+        "kernel": "CriterionBattle",
+        "schedulerStatus": "confirmed",
+        "threeQueueMode": "ICE_FIRE_LEAGUE",
+        "schedulerType": "IceFireLeagueScheduler",
+        "schedulerStrategy": "ICE_FIRE_CURSOR",
+        "singleQueueHeads": 3,
+        "pairwiseEvaluations": 2079,
+        "queuePoolSizes": [
+          150,
+          150,
+          150
+        ],
+        "singleQueueCandidates": [
+          150,
+          150,
+          150
+        ],
+        "pairCandidates": 2000,
+        "combinations": 964,
+        "tripleCandidates": 964,
+        "fineTripleCandidates": 144,
+        "pairTheoryEvaluations": 2000,
+        "criterionTripleEvaluations": 964,
+        "schedulerSeeds": 1,
+        "schedulerCriterionSamples": 1,
+        "theoryTripleCandidates": 200,
+        "formalTripleCandidates": 201,
+        "selected": 200,
+        "estimatedCriterionWinRate": 1,
+        "meanRemainingTroops": 519.0136285820411,
+        "twoQueueFinishRate": 1,
+        "uncertainty": 0.16,
+        "matchSequenceSamples": [
+          [
+            "A1-B1",
+            "A2-B2",
+            "A3-B3"
+          ]
+        ],
+        "finalWinRate": 1,
+        "formalWinRate": 1
+      },
+      "formalStages": [
+        {
+          "trials": 20,
+          "candidates": 201,
+          "retained": 50
+        },
+        {
+          "trials": 50,
+          "candidates": 51,
+          "retained": 20
+        },
+        {
+          "trials": 100,
+          "candidates": 21,
+          "retained": 10
+        },
+        {
+          "trials": 300,
+          "candidates": 11,
+          "retained": 5
+        },
+        {
+          "trials": 1000,
+          "candidates": 6,
+          "retained": 5
+        }
+      ],
+      "finalValidationCount": 1000,
+      "currentWinRate": 1,
+      "finalWinRate": 1,
+      "failedTrials": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "performance": {
+        "simulatedTrials": 17970,
+        "skippedTrials": 0,
+        "prunedCandidates": 0,
+        "templateBuilds": 273,
+        "templateHits": 17
+      }
+    },
+    {
+      "mode": "HEART_OF_EARTH",
+      "elapsedMs": 78515,
+      "criterion": {
+        "kernel": "CriterionBattle",
+        "schedulerStatus": "confirmed",
+        "threeQueueMode": "EARTH_HEART_BRAVE_LAND",
+        "schedulerType": "RandomAliveQueueScheduler",
+        "schedulerStrategy": "RANDOM_ALIVE_QUEUE",
+        "singleQueueHeads": 81,
+        "pairwiseEvaluations": 56133,
+        "queuePoolSizes": [
+          150,
+          150,
+          150
+        ],
+        "singleQueueCandidates": [
+          150,
+          150,
+          150
+        ],
+        "pairCandidates": 2000,
+        "combinations": 950,
+        "tripleCandidates": 950,
+        "fineTripleCandidates": 130,
+        "pairTheoryEvaluations": 2000,
+        "criterionTripleEvaluations": 950,
+        "schedulerSeeds": 100,
+        "schedulerCriterionSamples": 100,
+        "theoryTripleCandidates": 200,
+        "formalTripleCandidates": 201,
+        "selected": 200,
+        "estimatedCriterionWinRate": 1,
+        "meanRemainingTroops": 898.6621568389127,
+        "twoQueueFinishRate": 1,
+        "uncertainty": 0.9302000000000017,
+        "matchSequenceSamples": [
+          [
+            "A3-B3",
+            "A1-B1",
+            "A1-B2"
+          ],
+          [
+            "A3-B2",
+            "A3-B1",
+            "A1-B3"
+          ],
+          [
+            "A3-B1",
+            "A2-B3",
+            "A3-B2"
+          ]
+        ],
+        "finalWinRate": 1,
+        "formalWinRate": 1
+      },
+      "formalStages": [
+        {
+          "trials": 20,
+          "candidates": 201,
+          "retained": 50
+        },
+        {
+          "trials": 50,
+          "candidates": 50,
+          "retained": 20
+        },
+        {
+          "trials": 100,
+          "candidates": 21,
+          "retained": 10
+        },
+        {
+          "trials": 300,
+          "candidates": 11,
+          "retained": 5
+        },
+        {
+          "trials": 1000,
+          "candidates": 6,
+          "retained": 5
+        }
+      ],
+      "finalValidationCount": 1000,
+      "currentWinRate": 1,
+      "finalWinRate": 1,
+      "failedTrials": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "performance": {
+        "simulatedTrials": 17920,
+        "skippedTrials": 0,
+        "prunedCandidates": 0,
+        "templateBuilds": 273,
+        "templateHits": 16
+      }
+    },
+    {
+      "mode": "HERO_LAND",
+      "elapsedMs": 45774,
+      "criterion": {
+        "kernel": "CriterionBattle",
+        "schedulerStatus": "confirmed",
+        "threeQueueMode": "EARTH_HEART_BRAVE_LAND",
+        "schedulerType": "RandomAliveQueueScheduler",
+        "schedulerStrategy": "RANDOM_ALIVE_QUEUE",
+        "singleQueueHeads": 81,
+        "pairwiseEvaluations": 56133,
+        "queuePoolSizes": [
+          150,
+          150,
+          150
+        ],
+        "singleQueueCandidates": [
+          150,
+          150,
+          150
+        ],
+        "pairCandidates": 2000,
+        "combinations": 950,
+        "tripleCandidates": 950,
+        "fineTripleCandidates": 130,
+        "pairTheoryEvaluations": 2000,
+        "criterionTripleEvaluations": 950,
+        "schedulerSeeds": 100,
+        "schedulerCriterionSamples": 100,
+        "theoryTripleCandidates": 200,
+        "formalTripleCandidates": 201,
+        "selected": 200,
+        "estimatedCriterionWinRate": 1,
+        "meanRemainingTroops": 571229.9469194257,
+        "twoQueueFinishRate": 1,
+        "uncertainty": 0.9302000000000017,
+        "matchSequenceSamples": [
+          [
+            "A3-B3",
+            "A1-B1",
+            "A1-B2"
+          ],
+          [
+            "A3-B2",
+            "A3-B1",
+            "A1-B3"
+          ],
+          [
+            "A3-B1",
+            "A2-B3",
+            "A3-B2"
+          ]
+        ],
+        "finalWinRate": 1,
+        "formalWinRate": 1
+      },
+      "formalStages": [
+        {
+          "trials": 20,
+          "candidates": 201,
+          "retained": 50
+        },
+        {
+          "trials": 50,
+          "candidates": 50,
+          "retained": 20
+        },
+        {
+          "trials": 100,
+          "candidates": 20,
+          "retained": 10
+        },
+        {
+          "trials": 300,
+          "candidates": 10,
+          "retained": 5
+        },
+        {
+          "trials": 1000,
+          "candidates": 5,
+          "retained": 5
+        }
+      ],
+      "finalValidationCount": 1000,
+      "currentWinRate": 1,
+      "finalWinRate": 1,
+      "failedTrials": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "performance": {
+        "simulatedTrials": 16520,
+        "skippedTrials": 0,
+        "prunedCandidates": 0,
+        "templateBuilds": 270,
+        "templateHits": 16
+      }
+    }
+  ],
+  "tests": {
+    "files": 107,
+    "passed": 1191,
+    "failed": 0
+  },
+  "gates": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed"
+  },
+  "core": {
+    "checkedFiles": 72,
+    "changedFiles": [],
+    "allUnchanged": true
+  },
+  "browserLiveVerification": false,
+  "newDevServerStarted": false,
+  "finalTargetedTests": {
+    "files": 4,
+    "passed": 65,
+    "failed": 0
+  },
+  "localOcrPythonSyntax": "passed"
+}

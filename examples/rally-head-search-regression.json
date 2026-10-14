@@ -1,0 +1,96 @@
+{
+  "provenance": "synthetic equal-panel regression, not the user's saved configuration",
+  "trials": 1000,
+  "currentWinRate": 0.035,
+  "manualOpponentHeadWinRate": 0.513,
+  "recommendationWinRate": 0.72,
+  "searchDiagnostics": {
+    "legalHeadCandidateCount": 8,
+    "evaluatedUniqueHeadCandidateCount": 8,
+    "headCoverageRate": 100,
+    "fixedBody": true,
+    "availableBodyCandidateCount": 1,
+    "stage1Trials": 20,
+    "fixedHead": false,
+    "searchDimensions": {
+      "headShield": true,
+      "headLancer": true,
+      "headMarksman": true,
+      "body": false,
+      "troopRatio": true
+    },
+    "availableHeadHeroesByTroop": {
+      "shield": [
+        "hero.s11.eleonora",
+        "hero.s1.nataliya"
+      ],
+      "lancer": [
+        "hero.s11.lloyd",
+        "hero.s1.moli"
+      ],
+      "marksman": [
+        "hero.s11.rufus",
+        "hero.s1.jinman"
+      ]
+    },
+    "shieldCandidateCount": 2,
+    "lancerCandidateCount": 2,
+    "marksmanCandidateCount": 2,
+    "headCandidateCount": 8,
+    "bodyCandidateCount": 1,
+    "ratioCandidateCount": 6,
+    "coarseRatioCandidateCount": 6,
+    "coarseCandidateCount": 80,
+    "totalCandidateCount": 48,
+    "generatedFormationCount": 8,
+    "evaluatedHeadLineups": [
+      {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s11.rufus"
+      },
+      {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s1.jinman"
+      },
+      {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s1.moli",
+        "marksman": "hero.s11.rufus"
+      },
+      {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s1.moli",
+        "marksman": "hero.s1.jinman"
+      },
+      {
+        "shield": "hero.s1.nataliya",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s11.rufus"
+      },
+      {
+        "shield": "hero.s1.nataliya",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s1.jinman"
+      },
+      {
+        "shield": "hero.s1.nataliya",
+        "lancer": "hero.s1.moli",
+        "marksman": "hero.s11.rufus"
+      },
+      {
+        "shield": "hero.s1.nataliya",
+        "lancer": "hero.s1.moli",
+        "marksman": "hero.s1.jinman"
+      }
+    ],
+    "bestHeadLineup": {
+      "shield": "hero.s1.nataliya",
+      "lancer": "hero.s11.lloyd",
+      "marksman": "hero.s11.rufus"
+    },
+    "optimizationTargetSide": "A",
+    "candidateChangedSide": "A"
+  }
+}

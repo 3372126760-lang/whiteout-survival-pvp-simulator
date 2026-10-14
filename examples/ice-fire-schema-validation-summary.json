@@ -1,0 +1,27 @@
+{
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "fullTests": {
+    "total": 1198,
+    "passed": 1198,
+    "failed": 0,
+    "maxWorkers": 2
+  },
+  "targetedTests": {
+    "total": 35,
+    "passed": 35
+  },
+  "coreFilesUnchanged": 72,
+  "failedSeedReproduction": "awaiting actual failing exported configuration",
+  "audit": "ice-fire-schema-audit.json",
+  "syntheticReplay": "ice-fire-synthetic-replay.json",
+  "simultaneousEliminationAudit": {
+    "finalRequested": 5000,
+    "finalCompleted": 4991,
+    "finalFailed": 9,
+    "simultaneousEliminations": 9,
+    "maxRoundHitCount": 0,
+    "userOriginalFailureStatus": "awaiting actual exported configuration"
+  }
+}

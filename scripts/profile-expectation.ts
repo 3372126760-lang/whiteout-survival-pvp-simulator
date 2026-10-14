@@ -1,0 +1,10 @@
+import { performance } from "node:perf_hooks";
+import { rallyHeadSearchFixture, opponentCandidate } from "../src/pvp/tests/fixtures/rallyHeadSearch";
+import { candidateToInput, generateRatioGrid } from "../src/pvp/optimizer/candidateGenerator";
+import { createTheoryTemplateBuilder, defaultTheoryOptions, estimateTheoryCandidate } from "../src/pvp/optimizer/theory";
+const input = candidateToInput(rallyHeadSearchFixture(), opponentCandidate());
+const start = performance.now();
+const template = createTheoryTemplateBuilder(defaultTheoryOptions())(input);
+const built = performance.now();
+for (const r of generateRatioGrid(5)) estimateTheoryCandidate(template, [r.shield,r.lancer,r.marksman]);
+process.stdout.write(JSON.stringify({ buildMs: built-start, scanMs: performance.now()-built, cache: template.expectationProgram?.cacheStatistics() })+"\n");
