@@ -1311,6 +1311,7 @@ function renderStoragePanel(): string {
 }
 
 function renderReportImporter(): string {
+  if (!import.meta.env.DEV) return `<section class="panel report-import"><header class="panel-head"><h2>战报图片识别</h2></header><div class="panel-body"><p>战报图片识别功能暂未在公开 Beta 开放。</p></div></section>`;
   return `<section class="panel report-import"><header class="panel-head"><h2>本地战报识图</h2>
     <span class="tag tag-cyan">属性与特殊加成校对</span></header><div class="panel-body">
     <p class="hint">整图本地中文 OCR，识别攻击、防御、穿透、生命及特殊加成；不识别兵种等级、火晶或兵种图标。兵量与等级由手填或玩法规则确定。按当前玩法归并为 1 / 2 / 4 / 6 / 9 / 12 项；装备锻炉我方9项中攻击、防御独立，穿透/生命按兵种配对。冲突及低置信度值须逐项确认。应用前仅保存在预览中。确认属性与特殊加成后按历史战报公式反推，并一次性应用；正式配置在确认前保持隔离。${reportImportBusy ? "识别中…" : ""}</p>
@@ -1396,6 +1397,7 @@ function updateAttributeReportField(side: SideId, key: string, raw: string): voi
 }
 
 async function importReportImage(target: HTMLInputElement): Promise<void> {
+  if (!import.meta.env.DEV) return;
   const files = [...(target.files ?? [])];
   const kind = target.dataset.importKind;
   const owner = kind === "final" ? null : requireSide(target.dataset.side);

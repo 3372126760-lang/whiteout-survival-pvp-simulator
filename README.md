@@ -23,11 +23,11 @@ npm run dev
 npm run build
 ```
 
-构建后的**网站静态文件**位于 `dist-ui/`；`dist/` 是 TypeScript 引擎的构建输出，不能作为网站发布目录。可将 `dist-ui/` 发布到支持静态文件托管的平台，并配置所有页面路径回退到 `/index.html`，以支持分享链接和刷新。分享阵容的数据保存在 URL 的 `#s=...` 中，打开链接时由浏览器恢复。
+构建后的**网站静态文件**位于 `dist-ui/`；`dist/` 是 TypeScript 引擎的构建输出，不能作为网站发布目录。生产构建使用 `/whiteout-survival-pvp-simulator/` 作为 Vite 资源基础路径；本地开发仍使用 `/`。
 
-使用 Vercel 时，将 GitHub 仓库导入项目，根目录选仓库根目录，框架选 **Vite**，构建命令设为 `npm run build`，输出目录设为 `dist-ui`。仓库中的 [`vercel.json`](vercel.json) 已包含这些设置和单页应用的刷新回退规则。部署不需要生产环境变量；`?dev=1` 仍可打开开发者工具。
+本站使用 GitHub Pages 发布到 <https://3372126760-lang.github.io/whiteout-survival-pvp-simulator/>。推送到 `main` 后，[GitHub Actions 工作流](.github/workflows/deploy-pages.yml)会运行 `npm ci`、`npm run build`，并将 `dist-ui/` 上传和部署到 Pages；也可在 Actions 页面手动运行。首次部署时，在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。无需额外的 SPA 404 回退：模式由查询参数控制，分享阵容保存在 `#s=...` 中，刷新仍访问仓库根页面。例如 `?mode=simple`、`?mode=advanced`、`?mode=advanced&dev=1`。
 
-**Beta 限制：**战报图片 OCR 依赖本地开发服务的 `/api/local-ocr` 接口；单纯部署 `dist-ui/` 到 Vercel 等静态托管平台时，该导入功能不可用。普通/高级模式的手工配置、模拟及分享链接不依赖此接口。
+**Beta 限制：**战报图片 OCR 依赖本地开发服务的 `/api/local-ocr` 接口。GitHub Pages 公开版不提供此接口，页面会显示“战报图片识别功能暂未在公开 Beta 开放。”；本地 `npm run dev` 仍保留 OCR。手工配置、模拟及分享链接不依赖 OCR。
 
 ## 模型与开发资料
 

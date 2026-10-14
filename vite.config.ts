@@ -38,7 +38,8 @@ const localOcr: Connect.NextHandleFunction = (request, response, next) => {
   });
 };
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/whiteout-survival-pvp-simulator/" : "/",
   server: { host: "127.0.0.1", port: 5173, strictPort: true },
   plugins: [{ name: "local-report-ocr", configureServer(server) {
     server.watcher.add(ocrScript);
@@ -72,4 +73,4 @@ export default defineConfig({
     outDir: "dist-ui",
     emptyOutDir: true,
   },
-});
+}));
