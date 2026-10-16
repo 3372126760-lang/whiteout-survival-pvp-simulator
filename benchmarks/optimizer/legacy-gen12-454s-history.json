@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "provenance": "User-supplied historical S12 optimization profiling summary. Full canonical input was not supplied with the summary; do not claim strict same-input A/B against this record.",
+  "headCount": 876,
+  "bodyCount": 57313,
+  "evaluatedHeadBodyCount": 50206188,
+  "objectiveEvaluationCount": 50206188,
+  "kktEvaluationCount": 359118758,
+  "workerCount": 4,
+  "jointPeakElapsedMsApprox": 7675,
+  "jointPreparationElapsedMsApprox": 2776,
+  "totalElapsedMs": 454201.9,
+  "requestedBattles": 71000,
+  "executedBattles": 54000,
+  "reusedBattles": 17000,
+  "cacheHitRateApprox": 0.2394,
+  "avgBattleMsApprox": 10.03,
+  "theoryElapsedMsApprox": 101100,
+  "formalRatioElapsedMsApprox": 104400
+}

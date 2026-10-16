@@ -9,6 +9,7 @@ import { normalizeQueueReportLineage } from "../validationUi/queueReportLineage"
 import { getInnerEarthConfig, normalizeInnerEarthInput } from "../innerEarth/config";
 import type { ParsedBattleReport, ParsedBattleReportSide, RecognizedValue, ReportSourceSide, SpecialBonusCompleteness } from "./types";
 import { specialTotals, deriveRawReportAttribute } from "./mapping";
+import { normalizeHistoricalTree } from "../validationUi/historicalBonuses";
 
 function withoutHistoricalModifiers<T extends { sourceReportAttributes?: unknown; sourceReportBonuses?: unknown; importedReportModifiers?: unknown }>(value: T) {
   const { sourceReportAttributes: _attributes, sourceReportBonuses: _bonuses, importedReportModifiers: _modifiers, ...rest } = value;
@@ -89,7 +90,10 @@ export function applyRecognizedAttributes(input: ValidationBattleInput, parsed: 
 }
 
 /** Confirmed attributes + historical special page are committed as one transaction. Troop OCR stays disabled. */
-export function applyRecognizedAttributeReport(input: ValidationBattleInput, report: ParsedBattleReport,
+export function applyRecognizedAttributeReport(...args: Parameters<typeof applyHistoricalAttributeReport>): ValidationBattleInput {
+  return normalizeHistoricalTree(applyHistoricalAttributeReport(...args));
+}
+function applyHistoricalAttributeReport(input: ValidationBattleInput, report: ParsedBattleReport,
   source: ReportSourceSide, side: SideId, completeness: SpecialBonusCompleteness, queueIndex: 0 | 1 | 2 = 0): ValidationBattleInput {
   const parsed = report[source];
   if (!parsed) throw new Error("所选侧没有识别结果。");

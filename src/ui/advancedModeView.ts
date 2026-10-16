@@ -6,20 +6,24 @@ import type { ThreeQueueBatchResult } from "../pvp/validationUi/threeQueueBatch"
 import type { ThreeQueueScenarioResult } from "../pvp/scenario/threeQueueScenario";
 import { TROOP_TYPES } from "../pvp/types/combat";
 import { renderSimpleDetailsOnly, renderSimpleResults } from "./simpleModeView";
+import { renderInnerEarthModePicker } from "./innerEarthView";
 
 const e = (value: string): string => value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!);
 const n = (value: number): string => value.toLocaleString("zh-CN", { maximumFractionDigits: 1 });
 const names = { shield: "盾兵", lancer: "矛兵", marksman: "射手" };
 export const PLAYER_SCENES = { SINGLE: "单挑", THREE_THREE_THREE: "333", RALLY: "集结", ICE_FIRE_LEAGUE: "冰火战歌", INNER_EARTH: "地心" } as const;
+export function renderAdvancedLineupActions(open: boolean, innerEarth: boolean): string {
+  return `<div class="advanced-actions ${open ? "is-open" : ""}"><button class="btn lineup-actions-toggle" data-action="lineup-actions-toggle" aria-expanded="${open}" aria-controls="lineup-actions">阵容操作 ${open ? "▴" : "▾"}</button><div id="lineup-actions" class="advanced-toolbar"><span class="advanced-autosave" data-storage-status>配置自动保存在本机</span><div class="lineup-primary"><button class="btn btn-small" data-action="save-profile">保存阵容</button><button class="btn btn-small" data-action="import-config">导入配置</button><button class="btn btn-small" data-action="simple-share">分享阵容 ↗</button><button class="btn btn-small" data-action="open-optimizer">配队优化</button></div>${innerEarth ? "" : '<div class="lineup-secondary"><button class="btn btn-small" data-action="copy-a-to-b">A → B 复制配置</button><button class="btn btn-small" data-action="swap-sides">交换 A / B</button></div>'}</div></div>`;
+}
 
 export function renderAdvancedScene(input: ValidationBattleInput): string {
   const scene = input.scenarioType ?? (input.battleContext === "rally" ? "RALLY" : "SINGLE");
-  return `<section class="advanced-scene"><div><p class="simple-kicker">ADVANCED · 认真配队，细致比较</p><h2>为不同战场，找到合适的阵容</h2></div><label>服务器阶段<select data-scope="server-stage">${SERVER_STAGES.map((stage) => `<option value="${stage.id}" ${stage.id === validationStageId(input) ? "selected" : ""}>${stage.label}</option>`).join("")}</select></label><div class="advanced-scene-picker" role="group" aria-label="战斗场景">${Object.entries(PLAYER_SCENES).map(([value, name]) => `<label><input type="radio" name="scenario-type" data-scope="scenario-type" value="${value}" ${scene === value ? "checked" : ""}><span>${name}</span></label>`).join("")}</div></section>`;
+  return `<section class="advanced-scene"><div><p class="simple-kicker">ADVANCED · 认真配队，细致比较</p><h2>为不同战场，找到合适的阵容</h2></div><label>服务器阶段<select data-scope="server-stage">${SERVER_STAGES.map((stage) => `<option value="${stage.id}" ${stage.id === validationStageId(input) ? "selected" : ""}>${stage.label}</option>`).join("")}</select></label><div class="advanced-scene-picker" role="group" aria-label="战斗场景">${Object.entries(PLAYER_SCENES).map(([value, name]) => `<label><input type="radio" name="scenario-type" data-scope="scenario-type" value="${value}" ${scene === value ? "checked" : ""}><span>${name}</span></label>`).join("")}</div>${scene === "INNER_EARTH" ? `<div class="advanced-earth-picker">${renderInnerEarthModePicker(input)}<p>先选择地心玩法，再配置本场阵容。</p></div>` : ""}</section>`;
 }
 
 export function renderAdvancedRun(input: ValidationBattleInput, count: number, running: boolean,
   progress: number, blocked: boolean): string {
-  const fixed = (input.simulationMode ?? "fixedSeed") === "fixedSeed";
+  const fixed = (input.simulationMode ?? "random") === "fixedSeed";
   return `<section class="advanced-run" aria-label="开始模拟"><div><h2>开始模拟</h2><p>用多场真实战斗比较阵容，或运行单场查看表现。</p></div><div class="advanced-run-fields"><label>模拟次数<input data-scope="batch-count" type="number" min="1" max="100000" step="1" value="${count}" ${running ? "disabled" : ""}></label><label>模拟方式<select data-scope="simulation-mode" ${running ? "disabled" : ""}><option value="random" ${!fixed ? "selected" : ""}>随机模拟</option><option value="fixedSeed" ${fixed ? "selected" : ""}>固定种子复现</option></select></label>${fixed ? `<label>复现种子<input data-scope="control" data-field="randomSeed" type="number" step="1" value="${input.randomSeed}" ${running ? "disabled" : ""}></label>` : ""}<button class="btn btn-primary simple-cta" data-action="run-batch" ${running || blocked ? "disabled" : ""}>${running ? `模拟中 ${progress}/${count}` : "开始模拟 →"}</button><button class="btn" data-action="run" ${running || blocked ? "disabled" : ""}>运行单场</button></div>${running ? `<div class="simple-progress" role="status"><progress value="${progress}" max="${count}"></progress><span data-simple-progress>已完成 ${progress} / ${count} 场</span></div>` : ""}${blocked ? '<p class="field-error">请检查配兵比例与待确认的战报输入。</p>' : ""}</section>`;
 }
 

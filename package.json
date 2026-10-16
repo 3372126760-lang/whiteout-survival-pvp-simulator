@@ -1,6 +1,6 @@
 {
   "name": "whiteout-survival-pvp-engine",
-  "version": "0.2.0-beta",
+  "version": "0.3.0-beta",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,14 +20,15 @@
     "verify:optimizer-workers": "node scripts/run-tsx.mjs scripts/verify-optimizer-workers.ts",
     "check": "npm run typecheck && npm run lint && npm run test",
     "benchmark:theory-optimizer": "node scripts/run-tsx.mjs scripts/benchmark-theory-optimizer.ts",
-    "benchmark:basin-optimizer": "node scripts/run-tsx.mjs scripts/benchmark-basin-optimizer.ts",
     "profile:theory-estimator": "node scripts/run-tsx.mjs scripts/profile-expectation.ts",
     "benchmark:optimizer-profiling": "node scripts/run-tsx.mjs scripts/benchmark-optimizer-profiling.ts",
     "benchmark:adaptive-search": "node scripts/run-tsx.mjs scripts/benchmark-adaptive-search.ts",
-    "benchmark:criterion": "node scripts/run-tsx.mjs scripts/benchmark-criterion.ts",
+    "benchmark:joint-rally": "node scripts/run-tsx.mjs scripts/benchmark-joint-optimizer.ts",
+    "benchmark:joint-peak": "node scripts/run-tsx.mjs scripts/benchmark-joint-peak.ts",
     "debug:body-ablation": "node scripts/run-tsx.mjs scripts/run-body-ablation.ts",
     "benchmark:criterion-search": "node scripts/run-tsx.mjs scripts/benchmark-criterion-search.ts",
-    "benchmark:criterion-round3": "node scripts/run-tsx.mjs scripts/benchmark-criterion-search-round3.ts"
+    "benchmark:criterion-round3": "node scripts/run-tsx.mjs scripts/benchmark-criterion-search-round3.ts",
+    "benchmark:joint-recall": "node scripts/run-tsx.mjs scripts/benchmark-joint-optimizer.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",

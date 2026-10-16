@@ -1,5 +1,7 @@
 import type { EvaluationJobResult, OptimizationWorkflow } from "./execution";
 import type { OptimizationProgress } from "./types";
+import type { JointPeakProfile, FormalRatioProfile, FinalCorrelationProfile, RecallAudit } from "./jointPipeline/types";
+import type { BodyEnumerationAudit } from "./criterion/bodyEnumeration";
 
 export type SearchTimingStatus = "running" | "completed" | "cancelled" | "error";
 export interface SearchStageTiming {
@@ -38,6 +40,11 @@ export interface SearchStageTiming {
   readonly status: SearchTimingStatus;
 }
 export interface SearchPerformanceReport {
+  readonly recallAudit?: RecallAudit;
+  readonly bodyEnumerationAudit?: BodyEnumerationAudit;
+  readonly formalRatio?: FormalRatioProfile;
+  readonly finalCorrelation?: FinalCorrelationProfile;
+  readonly jointPeak?: JointPeakProfile;
   readonly status: SearchTimingStatus;
   readonly totalElapsedMs: number;
   readonly stages: readonly SearchStageTiming[];
@@ -63,6 +70,11 @@ export function stageEta(elapsedMs: number, completed: number, total: number): n
 /** Observational only. No seeds, random calls, budgets or ranking inputs. Nested
  * synchronous phases pause the parent so percentages never double-count work. */
 export class OptimizerProfiler {
+  recallAudit?: RecallAudit;
+  bodyEnumerationAudit?: BodyEnumerationAudit;
+  formalRatio?: FormalRatioProfile;
+  finalCorrelation?: FinalCorrelationProfile;
+  jointPeak?: JointPeakProfile;
   private readonly origin: number;
   private readonly rows = new Map<string, MutableStage>();
   private readonly stack: Frame[] = [];
@@ -170,7 +182,7 @@ export class OptimizerProfiler {
     const requestedBattles = stages.reduce((sum, row) => sum + row.requestedBattles, 0);
     const reusedBattles = stages.reduce((sum, row) => sum + row.reusedBattles, 0);
     const executedBattles = stages.reduce((sum, row) => sum + row.executedBattles, 0);
-    return { status: this.status, totalElapsedMs: time, stages, totalBattleEngineCalls,
+    return { ...(this.recallAudit ? { recallAudit: this.recallAudit } : {}), ...(this.bodyEnumerationAudit ? { bodyEnumerationAudit: this.bodyEnumerationAudit } : {}), ...(this.formalRatio ? { formalRatio: this.formalRatio } : {}), ...(this.finalCorrelation ? { finalCorrelation: this.finalCorrelation } : {}), ...(this.jointPeak ? { jointPeak: this.jointPeak } : {}), status: this.status, totalElapsedMs: time, stages, totalBattleEngineCalls,
       requestedBattles, executedBattles, reusedBattles, cacheHitCount: reusedBattles,
       cacheHitRate: requestedBattles ? reusedBattles / requestedBattles : 0,
       totalBattleElapsedMs, overallAvgBattleMs: totalBattleEngineCalls ? totalBattleElapsedMs / totalBattleEngineCalls : null,

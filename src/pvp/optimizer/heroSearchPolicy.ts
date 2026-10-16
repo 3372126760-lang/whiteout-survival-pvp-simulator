@@ -184,6 +184,7 @@ export function optimizerRecentHeadEligible(input: ValidationBattleInput,
     return hero !== undefined && !optimizerHeadHeroAllowed(hero, optimizerServerGeneration(input));
   })) return false;
   const generation = optimizerGeneration(input, side), minimum = Math.max(1, generation - 2);
+  if (generation < 3) return true;
   return TROOP_TYPES.some((troop) => {
     const value = generationByHero.get(head[troop] ?? "") ?? 0;
     return value >= minimum && value <= generation;

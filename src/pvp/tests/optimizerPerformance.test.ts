@@ -1,3 +1,4 @@
+import { withoutOptimizerTimings } from "./fixtures/optimizerTiming";
 import { describe, expect, it, vi } from "vitest";
 import {
   cloneBattleTemplate, compileValidationBattle, createEvaluationExecutor, createValidationBattleCompiler,
@@ -184,13 +185,13 @@ describe("optimizer fast execution", () => {
     const rallyExecute = createEvaluationExecutor();
     const asyncRally = await runRallyOptimizationAsync(rally, config,
       (jobs) => Promise.all(jobs.map(async (job) => rallyExecute(job))));
-    expect(asyncRally).toEqual(runRallyOptimization(rally, config));
+    expect(withoutOptimizerTimings(asyncRally)).toEqual(withoutOptimizerTimings(runRallyOptimization(rally, config)));
     const multiConfig = { ...config, objectiveMode: "minRallies" as const,
       maxWaves: 2, beamTrials: 2, beamWidth: 2, branchWidth: 2 };
     const multiExecute = createEvaluationExecutor();
     const asyncMulti = await runRallyOptimizationAsync(rally, multiConfig,
       (jobs) => Promise.all(jobs.map(async (job) => multiExecute(job))));
-    expect(asyncMulti).toEqual(runRallyOptimization(rally, multiConfig));
+    expect(withoutOptimizerTimings(asyncMulti)).toEqual(withoutOptimizerTimings(runRallyOptimization(rally, multiConfig)));
     expect(asyncMulti.multiWaveTop.every((row) => row.trials === config.verificationTrials)).toBe(true);
     const threeQueue = { ...input, scenarioType: "THREE_QUEUE" as const,
       attributeInputMode: "prediction" as const };

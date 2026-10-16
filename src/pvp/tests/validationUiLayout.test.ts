@@ -53,8 +53,9 @@ describe("validation UI side-by-side layout", () => {
       expect(next).toBeGreaterThan(cursor);
       cursor = next;
     }
-    expect(source).toContain('data-action="copy-a-to-b"');
-    expect(source).toContain('data-action="swap-sides"');
+    const actionView = readFileSync(new URL("../../ui/advancedModeView.ts", import.meta.url), "utf8");
+    expect(actionView).toContain('data-action="copy-a-to-b"');
+    expect(actionView).toContain('data-action="swap-sides"');
     expect(source).toContain('renderSelectedHeroWeapon(scope, sideId, side, selected)');
     expect(source).not.toContain('renderSideSection("专武等级"');
     expect(source).toContain('const sideRole = optimizationTargetLabel(input.scenarioType, sideId)');

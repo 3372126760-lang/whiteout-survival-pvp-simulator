@@ -1,4 +1,5 @@
-﻿import { describe, expect, it } from "vitest";
+import { historicalReportBonuses } from "../validationUi/historicalBonuses";
+import { describe, expect, it } from "vitest";
 import { createDefaultValidationInput } from "../../ui/defaultInput";
 import { applyRecognizedReport } from "../../ui/applyRecognizedReport";
 import { createValidationPreviewState, previewExpectedReportBonuses, toValidationThreeQueueConfig,
@@ -104,7 +105,7 @@ describe("historical versus target report contexts", () => {
     const configured = { ...input, sideA: { ...input.sideA, targetBonusMode: "custom" as const,
       targetBattleBonuses: modifiers(0, 30, 5) } };
     const restored = restorePersistedConfig(createPersistedEnvelope(configured, 1000)).input;
-    expect(restored.sideA.sourceReportBonuses).toEqual(configured.sideA.sourceReportBonuses);
+    expect(restored.sideA.sourceReportBonuses).toEqual(historicalReportBonuses(configured.sideA));
     expect(restored.sideA.targetBattleBonuses).toEqual(configured.sideA.targetBattleBonuses);
     expect(restored.sideA.reportAttributeBasis).toBe("historicalReport");
     expect(createValidationPreviewState(restored).sideA.troops.shield.attack)

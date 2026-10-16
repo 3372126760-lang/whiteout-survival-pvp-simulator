@@ -1,4 +1,5 @@
-import { getBodySkillOptions, presentBodySkill } from "./bodySkillPresentation";
+import { presentBodySkill } from "./bodySkillPresentation";
+import { isHeroAvailableAtStage } from "../pvp/progression";
 import type { BodySkillSelectState } from "./bodySkillSelectView";
 
 const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, (char) =>
@@ -7,14 +8,15 @@ const escapeHtml = (value: string): string => value.replace(/[&<>"']/g, (char) =
 export interface BodySlotCardState extends BodySkillSelectState {
   /** Role belongs to the caller's scenario; the display never infers combat rules. */
   readonly roleLabel?: string;
+  readonly developer?: boolean;
 }
 
 /** One slot owns its filter, selector, selection summary and full description.
  * Existing data-scope/data-side/data-index events are retained without storing UI metadata. */
 export function renderBodySlotCardMarkup(state: BodySlotCardState, view: { readonly html: string; readonly status: string }): string {
   if (!Number.isSafeInteger(state.index) || state.index < 0 || state.index > 3) throw new RangeError("车身槽位必须为 1–4。");
-  const selected = getBodySkillOptions(state.stage).some((option) => option.skillId === state.selectedSkillId)
-    ? presentBodySkill(state.selectedSkillId, state.selectedLevel) : undefined;
+  const restored = presentBodySkill(state.selectedSkillId, state.selectedLevel);
+  const selected = restored && isHeroAvailableAtStage(restored.heroId, state.stage) ? restored : undefined;
   const prefix = `member-${state.side}-${state.index}`, slotNumber = state.index + 1;
   const title = `${state.roleLabel ?? `${state.side}方`} · 车身槽位${slotNumber}`;
   const category = selected ? selected.generation === null ? selected.rarity : `${selected.rarity} / S${selected.generation}` : "";
@@ -25,7 +27,7 @@ export function renderBodySlotCardMarkup(state: BodySlotCardState, view: { reado
     </div>` : `<div class="body-slot-current body-slot-empty" data-body-current-summary><span class="body-slot-section-label">当前选中</span><span>不配置车身技能</span></div>`;
   const detail = selected ? `<section class="member-detail body-slot-description" aria-labelledby="${prefix}-detail-title" data-body-description data-side="${state.side}" data-index="${state.index}">
       <h5 id="${prefix}-detail-title">技能说明 · 槽位${slotNumber}</h5>
-      <div class="member-detail-heading"><strong>${escapeHtml(selected.heroName)}</strong><span class="tag">${escapeHtml(category)}</span>${selected.provisional ? '<span class="tag tag-amber">规则待验证</span>' : ""}</div>
+      <div class="member-detail-heading"><strong>${escapeHtml(selected.heroName)}</strong><span class="tag">${escapeHtml(category)}</span>${state.developer && selected.provisional ? '<span class="tag tag-amber">规则待验证</span>' : ""}</div>
       <div>远征一技能：${escapeHtml(selected.skillName)} · Lv${selected.level}</div>
       <div class="member-current-effect">当前等级效果：${escapeHtml(selected.effectSummary)}</div>
       <div>触发：${escapeHtml(selected.timingSummary)}</div>

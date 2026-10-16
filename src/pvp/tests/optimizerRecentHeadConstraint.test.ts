@@ -87,10 +87,10 @@ describe("hard recent generation head candidate constraint", () => {
       next = workflow.next(next.value.map(execute));
     }
     expect(requests).toBeGreaterThan(0);
-    expect(requests).toBeGreaterThanOrEqual(231);
+    expect(next.value.searchDiagnostics.jointPipeline!.peak).toMatchObject({ headCount: 1, bodyCount: 1, evaluatedHeadBodyCount: 1 });
     expect(next.value.searchDiagnostics.legalHeadCandidateCount).toBe(1);
-    expect(next.value.searchDiagnostics.criterionAudit).toMatchObject({ratioCount:231,headTemplateCount:1,theoreticalEvaluationCount:231});
-    expect(next.value.searchDiagnostics.localExpansionCount).toBe(0);
+    expect(next.value.searchDiagnostics.jointPipeline!.recallAudit).toMatchObject({ perHeadProtectedK: 1, mergedRecallCount: 1 });
+    expect(next.value.searchDiagnostics.jointPipeline!.criterionEvaluations).toBeGreaterThan(0);
     expect(next.value.searchDiagnostics.bodyCandidateCount).toBe(1);
     expect(next.value.current.candidate.leaderHeroIds).toEqual(OLD_HEAD);
   });

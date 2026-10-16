@@ -62,8 +62,7 @@ describe("OCR preview and applied three-queue data chain", () => {
     expect(formal.sideA.threeQueues[0].attributes!.lancer.attack).toBe(300.2);
     expect(applied.sideA.threeQueues?.[0].attributes?.lancer.attack)
       .toBeCloseTo(2612.8, 10);
-    expect(applied.sideA.threeQueues?.[0].importedReportModifiers?.lancer.attack.additive)
-      .toBe(0);
+    expect(applied.sideA.threeQueues?.[0].sourceReportBonuses).toEqual(expect.objectContaining({ attack: expect.objectContaining({ additive: 0 }) }));
     expect(applied.sideA.troops).toEqual(formal.sideA.troops);
     expect(applied.sideA.threeQueues?.[1].attributes).toEqual(queues[1].attributes);
     expect(applied.sideA.threeQueues?.[2].attributes).toEqual(queues[2].attributes);

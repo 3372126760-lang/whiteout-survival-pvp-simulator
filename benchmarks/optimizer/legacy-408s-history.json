@@ -1,0 +1,26 @@
+{
+  "provenance": "User-supplied historical profiling summary. Complete canonical A/B input was not saved. This is not a strict same-input comparator.",
+  "strictSameInputAB": false,
+  "totalElapsedMs": 408053.8,
+  "requestedBattles": 40505,
+  "executedBattles": 30765,
+  "reusedBattles": 9740,
+  "cacheHitRate": 0.2405,
+  "overallAvgBattleMs": 15.85,
+  "stages": [
+    { "stage": "H0", "elapsedMsApprox": 106 },
+    { "stage": "B0", "elapsedMsApprox": 1232 },
+    { "stage": "C0", "evaluations": 202356, "elapsedMsApprox": 34526 },
+    { "stage": "C1", "evaluations": 39016978, "elapsedMsApprox": 66123 },
+    { "stage": "C2", "evaluations": 48048, "elapsedMsApprox": 5061 },
+    { "stage": "C3", "candidates": 4002, "elapsedMsApprox": 18382 },
+    { "stage": "M1a", "executedBattles": 7505, "elapsedMsApprox": 81112 },
+    { "stage": "M1b", "executedBattles": 4500, "elapsedMsApprox": 41357 },
+    { "stage": "M2", "executedBattles": 2460, "elapsedMsApprox": 23588 },
+    { "stage": "M3", "executedBattles": 1300, "elapsedMsApprox": 11430 },
+    { "stage": "M4", "executedBattles": 2200, "elapsedMsApprox": 19513 },
+    { "stage": "1% Theory refinement", "elapsedMsApprox": 457 },
+    { "stage": "M4 basin formal", "executedBattles": 7200, "elapsedMsApprox": 61359 },
+    { "stage": "Final", "executedBattles": 5600, "elapsedMsApprox": 42953 }
+  ]
+}

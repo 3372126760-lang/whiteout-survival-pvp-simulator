@@ -1,3 +1,4 @@
+import { sourceReportBonuses } from "../validationUi/reportBonusContexts";
 import { describe, expect, it } from "vitest";
 import { TROOP_TYPES } from "../types/combat";
 import { previewReportContextAttribute } from "../battleReportRecognition/mapping";
@@ -56,7 +57,7 @@ describe("independent historical report contexts", () => {
       debuffDecimal: 0, rawPercent: 2612.8, receivedDebuffContributions: [] });
     const applied = applyRecognizedReport(createDefaultValidationInput(), context, "left", "A", "explicitZero");
     expect(applied.sideA.troops.lancer.attack).toBe(2612.8);
-    expect(applied.sideA.importedReportModifiers?.lancer.attack).toEqual({ additive: 0, buff: 0, debuff: 0 });
+    expect(sourceReportBonuses(applied.sideA).lancer.attack).toEqual({ additive: 0, buff: 0, debuff: 0 });
   });
 
   it("uses A's right historical opponent even when B has never uploaded", () => {
@@ -77,7 +78,7 @@ describe("independent historical report contexts", () => {
     expect(JSON.stringify(input)).toBe(before);
     const applied = applyRecognizedReport(input, state.A.reportContext!, "left", "A", "complete");
     expect(applied.sideB).toBe(input.sideB);
-    expect(applied.sideA.importedReportModifiers?.lancer.attack.debuff).toBe(20);
+    expect(sourceReportBonuses(applied.sideA).lancer.attack.debuff).toBe(20);
     expect(JSON.stringify(input)).toBe(before);
   });
 

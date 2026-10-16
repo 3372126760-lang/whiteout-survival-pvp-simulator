@@ -3,6 +3,7 @@ import { getValidationCatalog } from "../pvp/validationUi/catalog";
 import { highestConfiguredTroopLevel } from "../pvp/scenario/scenarioTypes";
 import { toThreeQueueBasisPoints } from "../pvp/scenario/threeQueueRatios";
 import { CURRENT_CONFIG_SCHEMA_VERSION } from "./storageTypes";
+import { normalizeHistoricalTree } from "../pvp/validationUi/historicalBonuses";
 
 type JsonObject = Record<string, unknown>;
 
@@ -190,6 +191,7 @@ export function migratePersistedConfig(raw: unknown): {
     migrated = true;
   }
   const scene = migrateLegacyScene(envelope);
-  return { envelope: scene.envelope, migrated: migrated || scene.sceneMigrated,
+  const historical = normalizeHistoricalTree(scene.envelope);
+  return { envelope: historical, migrated: migrated || scene.sceneMigrated || JSON.stringify(historical) !== JSON.stringify(scene.envelope),
     queueAttributesMigrated, sceneMigrated: scene.sceneMigrated };
 }

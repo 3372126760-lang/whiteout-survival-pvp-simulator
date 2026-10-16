@@ -1,14 +1,11 @@
 import { CONFIRMED_HERO_SKILL_DEFINITIONS, EXPEDITION_HERO_DATA,
   type HeroSkillDefinition, type HeroSkillEffect } from "../pvp/heroSkills";
-import { getAvailableMemberSkills } from "../pvp/validationUi/catalog";
+import { CanonicalBodyEffectRegistry, BODY_CATEGORIES, BODY_CATEGORY_LABELS } from "../pvp/bodyEffects/canonicalRegistry";
 import { heroSGeneration, heroCategoryLabel } from "../pvp/validationUi/heroCategory";
 import type { ServerStageId } from "../pvp/progression";
 import type { TroopType } from "../pvp/types";
 
-export const BODY_EFFECT_CATEGORIES = [
-  "攻击类", "防御类", "穿透类", "生命类", "增伤类", "减伤类",
-  "易伤 / 抗性类", "守城 / 集结 / 场景特化类", "控制 / 概率 / 特殊机制类",
-] as const;
+export const BODY_EFFECT_CATEGORIES = BODY_CATEGORIES.map((c) => BODY_CATEGORY_LABELS[c]);
 export type BodyEffectCategory = typeof BODY_EFFECT_CATEGORIES[number];
 export interface BodySkillPresentation {
   readonly skillId: string;
@@ -80,8 +77,7 @@ function contextText(definition: HeroSkillDefinition): string {
 }
 
 function effectCategory(definition: HeroSkillDefinition): BodyEffectCategory {
-  if (definition.battleContexts?.length) return "守城 / 集结 / 场景特化类";
-  if (definition.actionMechanic) return "控制 / 概率 / 特殊机制类";
+  if (definition.actionMechanic?.kind === "targetBoundMark" || definition.levelValues[5]?.effects.some((e) => e.kind === "extraDamage")) return "技能伤害类";
   const effect = definition.levelValues[5]?.effects[0];
   if (effect?.kind === "attributeModifier" || effect?.kind === "attributeReduction")
     return ({ attack: "攻击类", defense: "防御类", penetration: "穿透类", life: "生命类" } as const)[effect.attribute];
@@ -89,8 +85,8 @@ function effectCategory(definition: HeroSkillDefinition): BodyEffectCategory {
   if (effect?.kind === "damageIncrease" || effect?.kind === "extraDamage") return "增伤类";
   if (effect?.kind === "damageReduction" || effect?.kind === "outgoingDamageReduction") return "减伤类";
   if (effect?.kind === "incomingDamageIncrease" || effect?.kind === "oneUseIncomingDamageIncrease" ||
-    effect?.kind === "markedTargetDamageIncrease") return "易伤 / 抗性类";
-  return "控制 / 概率 / 特殊机制类";
+    effect?.kind === "markedTargetDamageIncrease") return "易伤类";
+  return "减伤类";
 }
 
 function triggerText(definition: HeroSkillDefinition, level: number): string {
@@ -154,8 +150,8 @@ export function presentBodySkill(skillId: string, level = 5): BodySkillPresentat
 
 export function getBodySkillOptions(stageId: ServerStageId): readonly BodySkillPresentation[] {
   const cached = optionCache.get(stageId); if (cached) return cached;
-  const options = getAvailableMemberSkills(stageId).flatMap((group) => group.sourceSkillIds.flatMap((skillId) =>
-    presentBodySkill(skillId) ?? [])).sort((a, b) =>
+  const options = new CanonicalBodyEffectRegistry(undefined, stageId).effects.flatMap((row) =>
+    presentBodySkill(row.representative.id) ?? []).sort((a, b) =>
     BODY_EFFECT_CATEGORIES.indexOf(a.category) - BODY_EFFECT_CATEGORIES.indexOf(b.category) ||
     a.effectSummary.localeCompare(b.effectSummary, "zh-CN") ||
     (a.generation ?? 0) - (b.generation ?? 0) || a.heroName.localeCompare(b.heroName, "zh-CN"));

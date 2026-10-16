@@ -23,6 +23,6 @@
 6. `06-mobile-simple-390x844.png`
 7. `07-mobile-advanced-390x844.png`
 
-补充截图 `advanced-player-statistics.png` 展示高级模式的玩家统计抽屉。`preview.html` 可打开带同一示例阵容的高级模式。`verification.json` 记录浏览器验收。命令：`G:\Node.js\node.exe scripts/preview-advanced-mode.mjs`。
+补充截图 `advanced-player-statistics.png` 展示高级模式的玩家统计抽屉。`preview.html` 可打开带同一示例阵容的高级模式。`verification.json` 记录浏览器验收。命令：`node scripts/preview-advanced-mode.mjs`。
 
 验收复用了修改前的 `example-config.json` 和 1000 次模拟输出。三个入口的真实 Worker 请求使用相同的规范化输入、次数和种子；结果逐字段与修改前一致：A 胜 477、B 胜 521、平局 2、回合上限 0，平均 16.283 回合。场景切换、随机/固定种子显示、抽屉内部字段隔离和手机横向溢出也经过浏览器检查。

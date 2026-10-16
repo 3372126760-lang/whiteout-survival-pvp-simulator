@@ -14,10 +14,10 @@ import { rallyHeadSearchFixture, opponentCandidate } from "./fixtures/rallyHeadS
 import type { TROOP_TYPES } from "../types";
 
 describe("optimizer-only hero policy and conservative proof", () => {
-  it("keeps R/SR below server S3 while excluding them from S3+ head search only", () => {
+  it("excludes R/SR from automatic head search at every generation", () => {
     for (const rarity of ["R", "SR"]) {
-      expect(optimizerRarityAllowed({ rarity }, 1)).toBe(true);
-      expect(optimizerRarityAllowed({ rarity }, 2)).toBe(true);
+      expect(optimizerRarityAllowed({ rarity }, 1)).toBe(false);
+      expect(optimizerRarityAllowed({ rarity }, 2)).toBe(false);
       expect(optimizerRarityAllowed({ rarity }, 3)).toBe(false);
       expect(optimizerRarityAllowed({ rarity, generation: 4 }, 11)).toBe(false);
       expect(optimizerRarityAllowed({ rarity, generation: 3 }, 11)).toBe(false);
@@ -106,12 +106,12 @@ describe("formal multiple-basin ratio refinement", () => {
     const run = () => searchSingleWave({ ...rallyHeadSearchFixture(), maxRounds: 1 }, config, undefined, (candidate, seeds) => seeds.map(() => ({
       outcome: "A" as const, rounds: 1, self: { shield: 10000 - (candidate.ratios.shield - 47) ** 2 - (candidate.ratios.lancer - 18) ** 2,
         lancer: 0, marksman: 0 }, enemy: { shield: 0, lancer: 0, marksman: 0 } })));
-    const result = run(); expect(run()).toEqual(result);
-    expect(result.searchDiagnostics.ratioSearchAudit?.fineBasinCount).toBeGreaterThanOrEqual(2);
-    expect(result.searchDiagnostics.ratioSearchAudit?.generatedFineRatios).toBeGreaterThan(0);
-    expect(result.top.every((row) => row.trials === 11)).toBe(true);
-    expect(result.searchDiagnostics.battleSelections?.some((row) => row.selectionReasons.includes("fineSearch"))).toBe(true);
-    expect(result.searchDiagnostics.battleSelections?.some((row) => row.selectionReasons.includes("protectedReference"))).toBe(true);
+    const result = run(); expect(run().top).toEqual(result.top);
+    expect(result.searchDiagnostics.jointPipeline?.formalRatio?.lineupCount).toBeGreaterThan(0);
+    expect(result.searchDiagnostics.jointPipeline?.formalRatio?.generatedRatioCount).toBeGreaterThan(0);
+    expect(result.top.every((row) => row.trials === 1000)).toBe(true);
+    expect(result.top.some((row) => row.candidate.formalBestRatio !== undefined)).toBe(true);
+    expect(result.searchDiagnostics.jointPipeline?.recallAudit?.finalistRecallSources.some((row) => row.recalledBy.includes("protectedReference"))).toBe(true);
   });
 });
 

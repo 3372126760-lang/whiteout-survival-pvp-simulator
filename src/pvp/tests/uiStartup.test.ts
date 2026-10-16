@@ -16,8 +16,15 @@ import { createEmptyHeadCandidate, resolveSearchDimensions } from "../optimizer/
 import type { InnerEarthOptimizationResult } from "../optimizer/innerEarthOptimizer";
 import type { ThreeQueueOptimizationResult, ThreeQueueOptimizationState } from "../optimizer/threeQueueOptimizer";
 import { toThreeQueueBasisPoints } from "../scenario/threeQueueRatios";
+import { initializeOptimizationHeroPool, serverHeroIds } from "../optimizer/heroPools";
 
-afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.resetModules(); });
+afterEach(() => {
+  if (vi.isFakeTimers()) {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+  }
+  vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.resetModules();
+});
 
 /** Exercise main's delegated events and persisted state without a browser dependency. */
 async function mountStartup(input: ValidationBattleInput, config?: OptimizationConfig,
@@ -179,7 +186,10 @@ describe("controlled preset dialogs without native prompt/confirm", () => {
       ui.click("delete-profile",{profileId:id});ui.click("dialog-cancel");expect(ui.profiles()).toHaveLength(1);
       ui.click("delete-profile",{profileId:id});ui.click("dialog-confirm");expect(ui.profiles()).toHaveLength(0);
       expect(ui.app.innerHTML).not.toContain("prompt() is not supported");
-    } finally {vi.useRealTimers();}
+      await vi.runOnlyPendingTimersAsync();
+      expect(vi.getTimerCount()).toBe(0);
+      expect(ui.workers).toHaveLength(0);
+    } finally { vi.clearAllTimers(); vi.useRealTimers(); }
   });
   it("keeps invalid names inside the dialog, with no configuration update",async()=>{
     vi.useFakeTimers();try{
@@ -303,7 +313,7 @@ describe("UI startup with restored prediction config", () => {
       expect(select.innerHTML).toContain('value="hero-skill.shuyun.attack" selected');
       target.value = "";
       listeners.get("input")!({ target } as unknown as Event);
-      expect(select.innerHTML).toContain("布拉德利（S7）");
+    expect(select.innerHTML).not.toContain("布拉德利（S7）");
       listeners.get("change")!({ target: new SelectInput() } as unknown as Event);
       await vi.runOnlyPendingTimersAsync();
       expect(app.innerHTML).toContain('value="hero-skill.buladeli.veterans-pride" selected');
@@ -354,12 +364,12 @@ describe("UI startup with restored prediction config", () => {
     try {
       const saved = JSON.stringify(createPersistedEnvelope(createDefaultValidationInput(), 1000));
       const listeners = new Map<string, EventListener>();
-      const label = { textContent: "" }, body = { innerHTML: "" };
+      const label = { textContent: "", closest: () => null }, body = { innerHTML: "" };
       const host = { innerHTML: "", querySelector: () => host.innerHTML ? body : null };
       const app = { innerHTML: "", addEventListener: (name: string, listener: EventListener) => listeners.set(name, listener),
         querySelector: (selector: string) => selector === ".optimizer-progress" ? label :
           selector === ".optimizer-performance-host" ? host : null,
-        querySelectorAll: () => [], replaceChildren: vi.fn() };
+        querySelectorAll: (selector: string) => selector === ".optimizer-progress" ? [label] : [], replaceChildren: vi.fn() };
       class Button { dataset: Record<string, string> = { action: "open-optimizer" }; closest() { return this; } }
       const workers: WorkerStub[] = [];
       class WorkerStub {
@@ -401,6 +411,82 @@ describe("UI startup with restored prediction config", () => {
 });
 
 describe("main UI optimization side integration", () => {
+  it("Head pool S12: restores legacy available heroes with current canonical S12 and shows migration notice", async () => {
+    vi.useFakeTimers();
+    try {
+      const base = distinctRallyInput();
+      const ui = await mountStartup({ ...base, serverStage: "s12", availableHeroIds: serverHeroIds(base),
+        sideA: { ...base.sideA, leaderHeroIds: { shield: "hero.s12.hervor", lancer: "hero.s12.karol", marksman: "hero.s12.ligeia" } } });
+      expect(ui.app.innerHTML).toContain("已将旧英雄可用列表迁移为我的英雄");
+      ui.click("open-optimizer");
+      expect(ui.app.innerHTML).toContain("参与优化：37 / 可用 37");
+      expect(ui.open("head-pool-audit")).toContain('&quot;canonicalSelectedHeroesExcluded&quot;: []');
+      expect(ui.workers).toHaveLength(0);
+    } finally { vi.useRealTimers(); }
+  });
+  it("Head pool S12: expands an open S11 theoretical pool and exposes H0 without starting Workers", async () => {
+    vi.useFakeTimers();
+    try {
+      const ui = await mountStartup(initializeOptimizationHeroPool(distinctRallyInput()));
+      ui.click("open-optimizer");
+      expect(ui.app.innerHTML).toContain("参与优化：34 / 可用 34");
+      ui.change({ scope: "server-stage" }, "s12");
+      expect(ui.app.innerHTML).toContain("参与优化：37 / 可用 37");
+      const html = ui.open("hero-pool");
+      for (const [id, name] of [["hervor", "赫尔薇尔"], ["karol", "加罗尔"], ["ligeia", "丽姬娅"]]) {
+        expect(html).toContain(`data-scope="hero-pool" data-hero-id="hero.s12.${id}" type="checkbox" checked`);
+        expect(html).toContain(`${name} S12`);
+      }
+      expect(html.indexOf("鲁弗斯 S11")).toBeLessThan(html.indexOf("赫尔薇尔 S12"));
+      const audit = ui.open("head-pool-audit");
+      expect(audit).toContain('&quot;effectiveN&quot;: 12');
+      expect(audit).toContain('&quot;finalLegalHeadCount&quot;: 1062');
+      ui.change({ scope: "hero-pool", heroId: "hero.s12.karol" }, "", false);
+      expect(ui.app.innerHTML).toContain("参与优化：36 / 可用 37");
+      ui.change({ scope: "hero-pool-side" }, "B");
+      expect(ui.app.innerHTML).toContain("参与优化：37 / 可用 37");
+      expect(ui.workers).toHaveLength(0);
+    } finally { vi.useRealTimers(); }
+  });
+
+  it("Head pool S12: preserves owned S11, explains selected unowned S12 and offers explicit reconciliation", async () => {
+    vi.useFakeTimers();
+    try {
+      const base = distinctRallyInput();
+      const owned = serverHeroIds(base);
+      const ui = await mountStartup({ ...base, serverStage: "s12", ownedHeroIds: owned,
+        sideA: { ...base.sideA, leaderHeroIds: { shield: "hero.s12.hervor", lancer: "hero.s12.karol", marksman: "hero.s12.ligeia" } } });
+      ui.click("open-optimizer");
+      expect(ui.app.innerHTML).toContain("参与优化：34 / 可用 34");
+      expect(ui.open("hero-pool")).toContain("赫尔薇尔（未标记拥有）");
+      expect(ui.open("head-pool-audit")).toContain("S12 server stage but no S12 SSR is eligible for Head optimization");
+      await vi.runOnlyPendingTimersAsync();
+      expect(ui.restoreSaved().input.ownedHeroIds).toEqual(owned);
+      ui.click("hero-pool-own-current");
+      expect(ui.app.innerHTML).toContain("参与优化：37 / 可用 37");
+      expect(ui.open("head-pool-audit")).toContain('&quot;canonicalSelectedHeroesExcluded&quot;: []');
+      expect(ui.workers).toHaveLength(0);
+    } finally { vi.useRealTimers(); }
+  });
+
+  it("Head pool S12: manual hero selection updates actual ownership, and all-available mode is explicit", async () => {
+    vi.useFakeTimers();
+    try {
+      const base = distinctRallyInput();
+      const ui = await mountStartup({ ...base, serverStage: "s12", ownedHeroIds: serverHeroIds(base) });
+      ui.click("open-optimizer");
+      ui.change({ scope: "leader", side: "A", troop: "shield" }, "hero.s12.hervor");
+      expect(ui.app.innerHTML).toContain("参与优化：35 / 可用 35");
+      await vi.runOnlyPendingTimersAsync();
+      expect(ui.restoreSaved().input.ownedHeroIds).toContain("hero.s12.hervor");
+      ui.change({ scope: "hero-ownership-scope" }, "allAvailable");
+      expect(ui.app.innerHTML).toContain("参与优化：37 / 可用 37");
+      await vi.runOnlyPendingTimersAsync();
+      expect(ui.restoreSaved().input.ownedHeroIds).toBeUndefined();
+      expect(ui.restoreSaved().input.availableHeroIds).toBeUndefined();
+      expect(ui.workers).toHaveLength(0);
+    } finally { vi.useRealTimers(); }
+  });
   it.each(["SINGLE", "THREE_THREE_THREE", "RALLY"] as const)("hides hero search controls for final-report %s and restores them in prediction", async (scenarioType) => {
     vi.useFakeTimers();
     try {

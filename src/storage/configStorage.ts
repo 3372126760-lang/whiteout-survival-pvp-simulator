@@ -43,6 +43,7 @@ function readProfile(value: unknown): SavedBattleProfile {
     schemaVersion: CURRENT_CONFIG_SCHEMA_VERSION, data: envelope.data,
     ...(restored.queueAttributesMigrated ? { queueAttributesMigrated: true } : {}),
     ...(restored.optimizerRacingMigrated ? { optimizerRacingMigrated: true } : {}),
+    ...(restored.headPoolOwnershipMigrated ? { headPoolOwnershipMigrated: true } : {}),
     ...(restored.sceneMigrationWarnings === undefined ? {} : {
       sceneMigrationWarnings: restored.sceneMigrationWarnings }) };
 }

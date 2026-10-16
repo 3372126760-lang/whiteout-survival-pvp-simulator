@@ -61,7 +61,8 @@ export interface ValidationSideInput {
   readonly queueOrder?: readonly [number, number, number];
   readonly troops: Readonly<Record<TroopType, ValidationTroopInput>>;
   /** Historical context only. Never implicitly applied to a new battle. */
-  readonly sourceReportBonuses?: ValidationReportBonusMatrix;
+  readonly sourceReportBonuses?: ValidationHistoricalBonuses | ValidationReportBonusMatrix;
+  readonly historicalBonusMigration?: HistoricalBonusMigration;
   readonly sourceReportAttributes?: ValidationQueueAttributes;
   /** OCR imports are already reversed; manual history can be reversed at the boundary. */
   readonly reportAttributeBasis?: "raw" | "historicalReport";
@@ -130,7 +131,8 @@ export interface ValidationQueueConfig {
   readonly attributes?: ValidationQueueAttributes;
   /** OCR-confirmed special bonuses for this queue only. */
   readonly importedReportModifiers?: ValidationSideInput["importedReportModifiers"];
-  readonly sourceReportBonuses?: ValidationReportBonusMatrix;
+  readonly sourceReportBonuses?: ValidationHistoricalBonuses | ValidationReportBonusMatrix;
+  readonly historicalBonusMigration?: HistoricalBonusMigration;
   readonly sourceReportAttributes?: ValidationQueueAttributes;
   readonly reportAttributeBasis?: ValidationSideInput["reportAttributeBasis"];
   readonly targetBonusMode?: ValidationSideInput["targetBonusMode"];
@@ -152,6 +154,15 @@ export type ValidationQueueAttributes = Readonly<Record<TroopType,
 
 /** All three values use percentage points (20 means 20%), not decimal factors. */
 export type ValidationReportBonusMatrix = NonNullable<ValidationSideInput["importedReportModifiers"]>;
+/** Canonical historical bonuses are attribute-wide, measured in percentage points.
+ * The matrix union above exists only to accept legacy callers; persistence migrates it. */
+export type ValidationHistoricalBonuses = Readonly<Record<"attack" | "defense" | "penetration" | "life",
+  { readonly additive: number; readonly buff: number; readonly debuff: number }>>;
+export interface HistoricalBonusMigration {
+  readonly strategy: "preserveRawAttributes";
+  readonly conflicts: readonly { readonly attribute: keyof ValidationHistoricalBonuses;
+    readonly field: "additive" | "buff" | "debuff"; readonly values: Readonly<Record<TroopType, number>> }[];
+}
 
 export interface ActualRoundDamageInput {
   readonly round: number;
@@ -174,11 +185,12 @@ export interface ValidationBattleInput {
     readonly originalSideB: ValidationSideInput;
     readonly warnings: readonly string[];
   };
+  /** Explicit player ownership. Omitted together with availableHeroIds means all stage-unlocked heroes. */
   readonly ownedHeroIds?: readonly string[];
   readonly optimizerHeroPool?: Readonly<Partial<Record<SideId, Readonly<Record<string, OptimizerHeroPoolEntry>>>>>;
   readonly rallyBodyPoolIds?: readonly string[];
   readonly serverStage?: ServerStageId;
-  /** User-owned hero pool. Undefined means every stage-eligible hero. */
+  /** Legacy ownership/run-selection alias. ownedHeroIds takes precedence. */
   readonly availableHeroIds?: readonly string[];
   readonly sideA: ValidationSideInput;
   readonly sideB: ValidationSideInput;

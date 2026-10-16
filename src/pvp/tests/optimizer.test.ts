@@ -123,8 +123,8 @@ describe("rally optimization", () => {
         enemy: zeros, rounds: 2,
       }));
     });
-    expect(calls[0]).toEqual(calls[1]);
-    expect(result.top.every((row) => row.trials === 5)).toBe(true);
+    expect(calls[0]).toEqual(createStageSeeds(91, 20));
+    expect(result.top.every((row) => row.trials === 1000)).toBe(true);
     expect(result.top[0]?.winRate).toBe(1);
     expect(JSON.stringify(input)).toBe(before);
     expect(createStageSeeds(91, 3)).toEqual([91, 92, 93]);
@@ -292,8 +292,8 @@ describe("rally optimization", () => {
     };
     const result = runRallyOptimization(input, config);
     expect(result.singleWaveTop.length).toBeGreaterThan(0);
-    expect(result.singleWaveTop.every((entry) => entry.trials === 2)).toBe(true);
-    expect(result.currentEvaluation.trials).toBe(2);
+    expect(result.singleWaveTop.every((entry) => entry.trials === 1000)).toBe(true);
+    expect(result.currentEvaluation.trials).toBe(1000);
     expect(result.singleWaveTop[0]!.winRate)
       .toBeGreaterThanOrEqual(result.currentEvaluation.winRate);
     expect(result.status).toBe("success");

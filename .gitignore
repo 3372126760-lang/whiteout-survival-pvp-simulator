@@ -28,6 +28,7 @@ __pycache__/
 Thumbs.db
 
 # Test captures and local diagnostics (may contain absolute machine paths)
+/test-failures.txt
 artifacts/
 test-results/
 playwright-report/
@@ -41,4 +42,10 @@ playwright-report/
 /*-preview.png
 /*-screenshot.png
 examples/*.txt
+examples/*-test-results.json
+examples/*-tests.json
+examples/*-targeted-results.json
+# Complete optimizer run outputs; keep input fixtures and compact summaries.
+/benchmarks/optimizer/*-profile.json
+/benchmarks/optimizer/*-audit.json
 scripts/preview-*.mjs

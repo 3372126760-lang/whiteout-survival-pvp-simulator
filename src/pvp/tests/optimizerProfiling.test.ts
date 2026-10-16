@@ -1,3 +1,4 @@
+import { withoutOptimizerTimings } from "./fixtures/optimizerTiming";
 import { describe, expect, it, vi } from "vitest";
 import { OptimizerProfiler, stageEta, stopPerformanceReport, profileOptimizationWorkflow,
   defaultOptimizationConfig, runRallyOptimization, runRallyOptimizationAsync,
@@ -60,8 +61,8 @@ describe("optimizer internal stage profiling", () => {
   });
   it("keeps real fixed-seed rally candidates, sample counts and full diagnostics identical", () => {
     const config = quickConfig();
-    const baseline = runRallyOptimization(rallyHeadSearchFixture(), config);
-    const observed = runRallyOptimization(rallyHeadSearchFixture(), { ...config, profiling: true });
+    const baseline = runRallyOptimization({ ...rallyHeadSearchFixture(), maxRounds: 1 }, config);
+    const observed = runRallyOptimization({ ...rallyHeadSearchFixture(), maxRounds: 1 }, { ...config, profiling: true });
     const { searchPerformanceReport, ...withoutTiming } = observed;
     const stripStageElapsed = (value: typeof baseline) => ({ ...value, searchDiagnostics: { ...value.searchDiagnostics,
       criterionAudit: value.searchDiagnostics?.criterionAudit ? {...value.searchDiagnostics.criterionAudit,
@@ -69,14 +70,14 @@ describe("optimizer internal stage profiling", () => {
       searchIntegrityReport: value.searchDiagnostics?.searchIntegrityReport === undefined ? undefined : {
         ...value.searchDiagnostics.searchIntegrityReport,
         perStage: value.searchDiagnostics.searchIntegrityReport.perStage.map((row) => ({ ...row, elapsedMs: 0 })) } } });
-    expect(stripStageElapsed(withoutTiming)).toEqual(stripStageElapsed(baseline)); validReport(searchPerformanceReport!);
+    expect(withoutOptimizerTimings(stripStageElapsed(withoutTiming))).toEqual(withoutOptimizerTimings(stripStageElapsed(baseline))); validReport(searchPerformanceReport!);
     expect(searchPerformanceReport!.totalBattleEngineCalls).toBe(observed.performance.simulatedTrials);
     expect(searchPerformanceReport!.executedBattles).toBe(searchPerformanceReport!.totalBattleEngineCalls);
     expect(searchPerformanceReport!.requestedBattles).toBe(searchPerformanceReport!.executedBattles + searchPerformanceReport!.reusedBattles);
     expect(searchPerformanceReport!.cacheHitCount).toBe(searchPerformanceReport!.reusedBattles);
     expect(searchPerformanceReport!.cacheHitRate).toBeGreaterThan(0);
     const names = searchPerformanceReport!.stages.map((row) => row.stage);
-    for (const prefix of ["H0", "B0", "C0", "C1", "C2", "C3", "M1a", "M1b", "M2", "M3", "Final"])
+    for (const prefix of ["H0", "B0", "J Preparation", "J Peak", "Recall Merge", "Criterion", "Theory", "Formal", "Final"])
       expect(names.some((name) => name.startsWith(prefix))).toBe(true);
     expect(observed.searchDimensionAudit?.headSearchEnabled).toBe(false);
     expect(names.some((name) => name.startsWith("英雄目录") || name.startsWith("严格支配"))).toBe(false);
@@ -124,7 +125,7 @@ describe("optimizer internal stage profiling", () => {
       .rejects.toThrow("test executor failure");
     const report = events.at(-1)!.performanceReport!;
     expect(report.status).toBe("error");
-    expect(report.stages.find((row) => row.stage.startsWith("M1"))!.status).toBe("error");
+    expect(report.stages.find((row) => row.stage.startsWith("J Peak"))!.status).toBe("error");
     expect(report.stages.find((row) => row.stage.startsWith("H0"))!.status).toBe("completed");
     expect(renderOptimizerPerformance(report)).toContain("复制性能报告 JSON");
   });

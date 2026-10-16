@@ -5,4 +5,4 @@ export * from "./deterministicBattleEstimator";
 export * from "./ratioPeakDetector";
 export * from "./theoryPreFilter";
 export * from "./templateBuilder";
-export * from "./rallyPreFilter";
+export * from "./headKey";

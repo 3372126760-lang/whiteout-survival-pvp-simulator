@@ -1,0 +1,852 @@
+{
+  "schema": 2,
+  "kind": "compact-historical-prefreeze-ab-summary",
+  "strictSameInputAB": true,
+  "historical408SecondsIsStrictSameInput": false,
+  "inputSha256": "ac86eacd7600af27aa98170c539d78e58e5228726acafe5043e687c5b9bf4cb1",
+  "sameHeroPool": true,
+  "sameWeapons": true,
+  "sameTroopTiers": true,
+  "samePanelsAndBuffs": true,
+  "commonSeedPolicy": "20/50/100/300 shared screening prefix; Final 1000 = prefix 300 + 700 independently derived seeds, same firstSeed",
+  "finalTrials": 1000,
+  "oldTotalElapsedMs": 492782.84170000005,
+  "newTotalElapsedMs": 153341.81329999998,
+  "speedup": 3.2136234148732354,
+  "oldBattleEngineCalls": 37195,
+  "newBattleEngineCalls": 19360,
+  "oldFinalWinRate": 1,
+  "newFinalWinRate": 1,
+  "baselineIdentical": true,
+  "historicalPerformanceRatio": 2.661073266439585,
+  "historicalGen12IsStrictSameInput": false,
+  "historicalGen12ElapsedMs": 454202,
+  "historicalGen12RuntimeReductionFraction": 0.6623929148264429,
+  "historicalGen12BattleReductionFraction": 0.6414814814814815,
+  "historicalPerformanceRatioMeaning": "Historical elapsed time divided by this new measured elapsed; different input and environment, not A/B speedup.",
+  "inputFixture": "benchmarks/optimizer/joint-rally-gen12-pre-freeze-input.json",
+  "oldCandidateCounts": {
+    "Head": 876,
+    "Body": 30040,
+    "Criterion": 48048,
+    "Theory": 4002,
+    "Formal": 1501
+  },
+  "newCandidateCounts": {
+    "criterionPairs": 10000,
+    "criterionEvaluations": 102532,
+    "averageLocal5PercentRatios": 10.2532,
+    "criterionFinePairs": 1500,
+    "criterionFineEvaluations": 69003,
+    "theoryPairs": 500,
+    "theoryEvaluations": 17240,
+    "formalPairs": 200,
+    "formalRatioCandidates": 75,
+    "finalOptimizerCandidates": 5,
+    "comparisonCandidates": 3,
+    "finalTrials": 1000
+  },
+  "oldFinalRecommendations": [
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.ligeia.steel-fang-gnaw"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 45,
+          "lancer": 10,
+          "marksman": 45
+        },
+        "selectionReasons": [
+          "criterionTop",
+          "bodyScreening"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 45,
+          "lancer": 10,
+          "marksman": 45
+        },
+        "selectionReasons": [
+          "criterionTop",
+          "bodyScreening"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.gregory.blazing-sun-army"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 45,
+          "lancer": 5,
+          "marksman": 50
+        },
+        "selectionReasons": [
+          "criterionTop",
+          "uncertaintyExploration",
+          "bodyScreening"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.ligeia.steel-fang-gnaw"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 45,
+          "lancer": 5,
+          "marksman": 50
+        },
+        "selectionReasons": [
+          "criterionTop",
+          "uncertaintyExploration",
+          "bodyScreening"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 45,
+          "lancer": 5,
+          "marksman": 50
+        },
+        "selectionReasons": [
+          "criterionTop",
+          "uncertaintyExploration",
+          "bodyScreening"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.gregory.blazing-sun-army"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 47,
+          "lancer": 5,
+          "marksman": 48
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.ligeia.steel-fang-gnaw"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 47,
+          "lancer": 7,
+          "marksman": 46
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 47,
+          "lancer": 7,
+          "marksman": 46
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.ligeia.steel-fang-gnaw"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 47,
+          "lancer": 5,
+          "marksman": 48
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ]
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 47,
+          "lancer": 5,
+          "marksman": 48
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ]
+      }
+    }
+  ],
+  "newFinalRecommendations": [
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "protectedReference"
+        ],
+        "initialJRank": null,
+        "formalBestRatio": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        }
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 999,
+      "winRate": 0.999,
+      "wilson95": [
+        0.9943574414020421,
+        0.9998234536293739
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "selectionReasons": [
+          "currentConfig"
+        ],
+        "initialJRank": null,
+        "formalBestRatio": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        }
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s7.buladeli"
+        },
+        "memberSkillIds": [
+          "hero-skill.jiexi.penetration",
+          "hero-skill.gedun.poisoned-blade",
+          "hero-skill.jiatuo.golden-guard",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s7.buladeli": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "initialJRank": 1661,
+        "jMax": 12454949335.499355,
+        "jPeakRatio": {
+          "shield": 66.162274597871,
+          "lancer": 29.704526278321147,
+          "marksman": 4.133199123807842
+        },
+        "formalBestRatio": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "jAtFormalRatio": 11621244169.652157,
+        "jRetentionRatio": 0.9330623398466219,
+        "jLoss": 0.0669376601533781
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s7.buladeli"
+        },
+        "memberSkillIds": [
+          "hero-skill.gedun.poisoned-blade",
+          "hero-skill.jiatuo.golden-guard",
+          "hero-skill.s8.hengdelike.defense-reduction",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s7.buladeli": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "initialJRank": 3102,
+        "jMax": 11980475075.09938,
+        "jPeakRatio": {
+          "shield": 66.162274597871,
+          "lancer": 29.704526278321147,
+          "marksman": 4.1331991238078425
+        },
+        "formalBestRatio": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "jAtFormalRatio": 11178530106.04636,
+        "jRetentionRatio": 0.9330623398466218,
+        "jLoss": 0.06693766015337821
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s7.buladeli"
+        },
+        "memberSkillIds": [
+          "hero-skill.shuyun.attack",
+          "hero-skill.gedun.poisoned-blade",
+          "hero-skill.jiatuo.golden-guard",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s7.buladeli": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "initialJRank": 3103,
+        "jMax": 11980475075.09938,
+        "jPeakRatio": {
+          "shield": 66.162274597871,
+          "lancer": 29.704526278321147,
+          "marksman": 4.1331991238078425
+        },
+        "formalBestRatio": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "jAtFormalRatio": 11178530106.04636,
+        "jRetentionRatio": 0.9330623398466218,
+        "jLoss": 0.06693766015337821
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s7.buladeli"
+        },
+        "memberSkillIds": [
+          "hero-skill.feilande.fitness-secret",
+          "hero-skill.gedun.poisoned-blade",
+          "hero-skill.jiatuo.golden-guard",
+          "hero-skill.s8.hengdelike.defense-reduction"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s7.buladeli": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 60,
+          "lancer": 39,
+          "marksman": 1
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "initialJRank": 2854,
+        "jMax": 12044550376.836489,
+        "jPeakRatio": {
+          "shield": 65.97489159627348,
+          "lancer": 29.89487792641051,
+          "marksman": 4.130230477316024
+        },
+        "formalBestRatio": {
+          "shield": 60,
+          "lancer": 39,
+          "marksman": 1
+        },
+        "jAtFormalRatio": 11747370884.546339,
+        "jRetentionRatio": 0.9753266429221242,
+        "jLoss": 0.024673357077875768
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s11.lloyd",
+          "marksman": "hero.s7.buladeli"
+        },
+        "memberSkillIds": [
+          "hero-skill.jiexi.penetration",
+          "hero-skill.shuyun.attack",
+          "hero-skill.gedun.poisoned-blade",
+          "hero-skill.jiatuo.golden-guard"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s11.lloyd": 10,
+          "hero.s7.buladeli": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "initialJRank": 3202,
+        "jMax": 11956751362.07938,
+        "jPeakRatio": {
+          "shield": 66.162274597871,
+          "lancer": 29.704526278321147,
+          "marksman": 4.133199123807842
+        },
+        "formalBestRatio": {
+          "shield": 60,
+          "lancer": 40,
+          "marksman": 0
+        },
+        "jAtFormalRatio": 11156394402.866072,
+        "jRetentionRatio": 0.933062339846622,
+        "jLoss": 0.06693766015337799
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "protectedReference"
+        ],
+        "initialJRank": null,
+        "formalBestRatio": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        }
+      }
+    }
+  ],
+  "sourceSummarySha256": "ab4359b6ddc0afb098f82b34a04dabe07318d7d676bda4a860e1659c90740137",
+  "legacyRerunnableWithCurrentCode": false
+}

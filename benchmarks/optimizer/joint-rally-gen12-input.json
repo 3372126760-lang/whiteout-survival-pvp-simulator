@@ -1,0 +1,3229 @@
+{
+  "schema": 2,
+  "frozen": true,
+  "input": {
+    "serverStage": "s12",
+    "sideA": {
+      "troops": {
+        "shield": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "lancer": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "marksman": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC10",
+          "levelMode": "single",
+          "t12Level": 0
+        }
+      },
+      "reportHeroIds": [],
+      "reportHeroByTroop": {
+        "shield": null,
+        "lancer": null,
+        "marksman": null
+      },
+      "reportWeaponLevels": {},
+      "leaderHeroId": null,
+      "leaderHeroIds": {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s3.miya",
+        "marksman": "hero.s11.rufus"
+      },
+      "selectedMemberSkillIds": [
+        "hero-skill.wuming.wind-shelter",
+        "hero-skill.wuming.wind-shelter",
+        "hero-skill.nuola.multi-troop-combat",
+        "hero-skill.nuola.multi-troop-combat"
+      ],
+      "simulationWeaponLevels": {
+        "hero.s11.eleonora": 10,
+        "hero.s3.miya": 10,
+        "hero.s11.rufus": 10
+      },
+      "externalBuffs": {
+        "town": {
+          "attack": "none",
+          "defense": "none",
+          "penetration": "none",
+          "life": "none",
+          "enemyAttackReduction": "none",
+          "enemyDefenseReduction": "none"
+        },
+        "pet": {
+          "attackLevel": 0,
+          "defenseLevel": 0,
+          "penetrationLevel": 0,
+          "lifeLevel": 0,
+          "enemyDefenseReductionLevel": 0,
+          "enemyPenetrationReductionLevel": 0,
+          "enemyLifeReductionLevel": 0
+        },
+        "expert": {
+          "garethFourthSkillLevel": 0
+        }
+      },
+      "rallyDeployment": {
+        "totalTroops": 36000,
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        }
+      },
+      "threeQueues": [
+        {
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 33,
+            "lancer": 33,
+            "marksman": 34
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 10,
+            "lancer": 20,
+            "marksman": 70
+          },
+          "leaderHeroIds": {}
+        }
+      ],
+      "bodySkills": [
+        {
+          "heroId": "hero.s6.wuming",
+          "heroDefinitionId": "hero.s6.wuming",
+          "runtimeInstanceId": "A-body-0",
+          "skillId": "hero-skill.wuming.wind-shelter",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        },
+        {
+          "heroId": "hero.s6.wuming",
+          "heroDefinitionId": "hero.s6.wuming",
+          "runtimeInstanceId": "A-body-1",
+          "skillId": "hero-skill.wuming.wind-shelter",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        },
+        {
+          "heroId": "hero.s5.nuola",
+          "heroDefinitionId": "hero.s5.nuola",
+          "runtimeInstanceId": "A-body-2",
+          "skillId": "hero-skill.nuola.multi-troop-combat",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        },
+        {
+          "heroId": "hero.s5.nuola",
+          "heroDefinitionId": "hero.s5.nuola",
+          "runtimeInstanceId": "A-body-3",
+          "skillId": "hero-skill.nuola.multi-troop-combat",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        }
+      ]
+    },
+    "sideB": {
+      "troops": {
+        "shield": {
+          "count": 12000,
+          "attack": 220,
+          "defense": 220,
+          "penetration": 220,
+          "life": 220,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "lancer": {
+          "count": 12000,
+          "attack": 220,
+          "defense": 220,
+          "penetration": 220,
+          "life": 220,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "marksman": {
+          "count": 12000,
+          "attack": 220,
+          "defense": 220,
+          "penetration": 220,
+          "life": 220,
+          "troopLevel": "T10-FC10",
+          "levelMode": "single",
+          "t12Level": 0
+        }
+      },
+      "reportHeroIds": [],
+      "reportHeroByTroop": {
+        "shield": null,
+        "lancer": null,
+        "marksman": null
+      },
+      "reportWeaponLevels": {},
+      "leaderHeroId": null,
+      "leaderHeroIds": {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s11.rufus"
+      },
+      "selectedMemberSkillIds": [],
+      "simulationWeaponLevels": {
+        "hero.s11.eleonora": 10,
+        "hero.s11.lloyd": 10,
+        "hero.s11.rufus": 10
+      },
+      "externalBuffs": {
+        "town": {
+          "attack": "none",
+          "defense": "none",
+          "penetration": "none",
+          "life": "none",
+          "enemyAttackReduction": "none",
+          "enemyDefenseReduction": "none"
+        },
+        "pet": {
+          "attackLevel": 0,
+          "defenseLevel": 0,
+          "penetrationLevel": 0,
+          "lifeLevel": 0,
+          "enemyDefenseReductionLevel": 0,
+          "enemyPenetrationReductionLevel": 0,
+          "enemyLifeReductionLevel": 0
+        },
+        "expert": {
+          "garethFourthSkillLevel": 0
+        }
+      },
+      "rallyDeployment": {
+        "totalTroops": 36000,
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        }
+      },
+      "threeQueues": [
+        {
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 33,
+            "lancer": 33,
+            "marksman": 34
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 10,
+            "lancer": 20,
+            "marksman": 70
+          },
+          "leaderHeroIds": {}
+        }
+      ]
+    },
+    "postBattleCasualtyMode": "NORMAL",
+    "maxRounds": 300,
+    "randomSeed": 12345,
+    "battleContext": "rally",
+    "simulationMode": "fixedSeed",
+    "attributeInputMode": "prediction",
+    "triggerOverrides": {},
+    "disabledSkillIds": [],
+    "actualRounds": [],
+    "scenarioType": "RALLY",
+    "optimizerHeroPool": {
+      "A": {
+        "hero.s1.heluonimo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.nataliya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.moli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.jinman": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.head.fulinte": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.feilande": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.alongsuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.luogen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.miya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.gelaige": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.ahemosi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.lingnai": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.linen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.heketuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.nuola": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.gewen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.wuming": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.ruini": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.weien": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.aidisi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.gedun": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.buladeli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.jiatuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.suoniya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.hengdelike": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.magenusi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.fuleide": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.xiula": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.gregory": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.freya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.blanchette": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.eleonora": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.lloyd": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.rufus": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s12.hervor": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.karol": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.ligeia": {
+          "enabled": false,
+          "weaponLevel": 10
+        }
+      },
+      "B": {
+        "hero.s1.heluonimo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.nataliya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.moli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.jinman": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.head.fulinte": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.feilande": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.alongsuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.luogen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.miya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.gelaige": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.ahemosi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.lingnai": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.linen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.heketuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.nuola": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.gewen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.wuming": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.ruini": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.weien": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.aidisi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.gedun": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.buladeli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.jiatuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.suoniya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.hengdelike": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.magenusi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.fuleide": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.xiula": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.gregory": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.freya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.blanchette": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.eleonora": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.lloyd": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.rufus": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s12.hervor": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.karol": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.ligeia": {
+          "enabled": false,
+          "weaponLevel": 10
+        }
+      }
+    },
+    "ownedHeroIds": [
+      "hero.r.youjin",
+      "hero.r.shimisi",
+      "hero.r.chali",
+      "hero.r.kelaoruisi",
+      "hero.sr.xieergai",
+      "hero.sr.patelike",
+      "hero.sr.baxiti",
+      "hero.body.jiexi",
+      "hero.body.shuyun",
+      "hero.body.jiesaier",
+      "hero.sr.lumubogen",
+      "hero.sr.lingshuang",
+      "hero.sr.jina",
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s9.magenusi",
+      "hero.s9.fuleide",
+      "hero.s9.xiula",
+      "hero.s10.gregory",
+      "hero.s10.freya",
+      "hero.s10.blanchette",
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus",
+      "hero.s12.hervor",
+      "hero.s12.karol",
+      "hero.s12.ligeia"
+    ],
+    "rallyBodyPoolIds": [
+      "hero.sr.xieergai",
+      "hero.sr.baxiti",
+      "hero.s9.xiula",
+      "hero.s12.karol",
+      "hero.sr.patelike",
+      "hero.s11.eleonora",
+      "hero.body.jiexi",
+      "hero.body.jiesaier",
+      "hero.s10.blanchette",
+      "hero.s12.hervor",
+      "hero.body.shuyun",
+      "hero.s7.buladeli",
+      "hero.s9.magenusi",
+      "hero.s11.rufus",
+      "hero.sr.lumubogen",
+      "hero.s9.fuleide",
+      "hero.s11.lloyd",
+      "hero.sr.lingshuang",
+      "hero.s3.luogen",
+      "hero.s10.freya",
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s12.ligeia",
+      "hero.s10.gregory"
+    ]
+  },
+  "canonicalBattleConfig": {
+    "serverStage": "s12",
+    "sideA": {
+      "troops": {
+        "shield": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "lancer": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "marksman": {
+          "count": 12000,
+          "attack": 240,
+          "defense": 240,
+          "penetration": 240,
+          "life": 240,
+          "troopLevel": "T10-FC10",
+          "levelMode": "single",
+          "t12Level": 0
+        }
+      },
+      "reportHeroIds": [],
+      "reportHeroByTroop": {
+        "shield": null,
+        "lancer": null,
+        "marksman": null
+      },
+      "reportWeaponLevels": {},
+      "leaderHeroId": null,
+      "leaderHeroIds": {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s3.miya",
+        "marksman": "hero.s11.rufus"
+      },
+      "selectedMemberSkillIds": [
+        "hero-skill.wuming.wind-shelter",
+        "hero-skill.wuming.wind-shelter",
+        "hero-skill.nuola.multi-troop-combat",
+        "hero-skill.nuola.multi-troop-combat"
+      ],
+      "simulationWeaponLevels": {
+        "hero.s11.eleonora": 10,
+        "hero.s3.miya": 10,
+        "hero.s11.rufus": 10
+      },
+      "externalBuffs": {
+        "town": {
+          "attack": "none",
+          "defense": "none",
+          "penetration": "none",
+          "life": "none",
+          "enemyAttackReduction": "none",
+          "enemyDefenseReduction": "none"
+        },
+        "pet": {
+          "attackLevel": 0,
+          "defenseLevel": 0,
+          "penetrationLevel": 0,
+          "lifeLevel": 0,
+          "enemyDefenseReductionLevel": 0,
+          "enemyPenetrationReductionLevel": 0,
+          "enemyLifeReductionLevel": 0
+        },
+        "expert": {
+          "garethFourthSkillLevel": 0
+        }
+      },
+      "rallyDeployment": {
+        "totalTroops": 36000,
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        }
+      },
+      "threeQueues": [
+        {
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 33,
+            "lancer": 33,
+            "marksman": 34
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 10,
+            "lancer": 20,
+            "marksman": 70
+          },
+          "leaderHeroIds": {}
+        }
+      ],
+      "bodySkills": [
+        {
+          "heroId": "hero.s6.wuming",
+          "heroDefinitionId": "hero.s6.wuming",
+          "runtimeInstanceId": "A-body-0",
+          "skillId": "hero-skill.wuming.wind-shelter",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        },
+        {
+          "heroId": "hero.s6.wuming",
+          "heroDefinitionId": "hero.s6.wuming",
+          "runtimeInstanceId": "A-body-1",
+          "skillId": "hero-skill.wuming.wind-shelter",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        },
+        {
+          "heroId": "hero.s5.nuola",
+          "heroDefinitionId": "hero.s5.nuola",
+          "runtimeInstanceId": "A-body-2",
+          "skillId": "hero-skill.nuola.multi-troop-combat",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        },
+        {
+          "heroId": "hero.s5.nuola",
+          "heroDefinitionId": "hero.s5.nuola",
+          "runtimeInstanceId": "A-body-3",
+          "skillId": "hero-skill.nuola.multi-troop-combat",
+          "expeditionSkillSlot": 1,
+          "skillLevel": 5
+        }
+      ]
+    },
+    "sideB": {
+      "troops": {
+        "shield": {
+          "count": 12000,
+          "attack": 220,
+          "defense": 220,
+          "penetration": 220,
+          "life": 220,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "lancer": {
+          "count": 12000,
+          "attack": 220,
+          "defense": 220,
+          "penetration": 220,
+          "life": 220,
+          "troopLevel": "T10-FC8",
+          "levelMode": "single",
+          "t12Level": 0
+        },
+        "marksman": {
+          "count": 12000,
+          "attack": 220,
+          "defense": 220,
+          "penetration": 220,
+          "life": 220,
+          "troopLevel": "T10-FC10",
+          "levelMode": "single",
+          "t12Level": 0
+        }
+      },
+      "reportHeroIds": [],
+      "reportHeroByTroop": {
+        "shield": null,
+        "lancer": null,
+        "marksman": null
+      },
+      "reportWeaponLevels": {},
+      "leaderHeroId": null,
+      "leaderHeroIds": {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s11.lloyd",
+        "marksman": "hero.s11.rufus"
+      },
+      "selectedMemberSkillIds": [],
+      "simulationWeaponLevels": {
+        "hero.s11.eleonora": 10,
+        "hero.s11.lloyd": 10,
+        "hero.s11.rufus": 10
+      },
+      "externalBuffs": {
+        "town": {
+          "attack": "none",
+          "defense": "none",
+          "penetration": "none",
+          "life": "none",
+          "enemyAttackReduction": "none",
+          "enemyDefenseReduction": "none"
+        },
+        "pet": {
+          "attackLevel": 0,
+          "defenseLevel": 0,
+          "penetrationLevel": 0,
+          "lifeLevel": 0,
+          "enemyDefenseReductionLevel": 0,
+          "enemyPenetrationReductionLevel": 0,
+          "enemyLifeReductionLevel": 0
+        },
+        "expert": {
+          "garethFourthSkillLevel": 0
+        }
+      },
+      "rallyDeployment": {
+        "totalTroops": 36000,
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        }
+      },
+      "threeQueues": [
+        {
+          "ratios": {
+            "shield": 50,
+            "lancer": 20,
+            "marksman": 30
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 33,
+            "lancer": 33,
+            "marksman": 34
+          },
+          "leaderHeroIds": {}
+        },
+        {
+          "ratios": {
+            "shield": 10,
+            "lancer": 20,
+            "marksman": 70
+          },
+          "leaderHeroIds": {}
+        }
+      ]
+    },
+    "postBattleCasualtyMode": "NORMAL",
+    "maxRounds": 300,
+    "randomSeed": 12345,
+    "battleContext": "rally",
+    "simulationMode": "fixedSeed",
+    "attributeInputMode": "prediction",
+    "triggerOverrides": {},
+    "disabledSkillIds": [],
+    "actualRounds": [],
+    "scenarioType": "RALLY",
+    "optimizerHeroPool": {
+      "A": {
+        "hero.s1.heluonimo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.nataliya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.moli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.jinman": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.head.fulinte": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.feilande": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.alongsuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.luogen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.miya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.gelaige": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.ahemosi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.lingnai": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.linen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.heketuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.nuola": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.gewen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.wuming": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.ruini": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.weien": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.aidisi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.gedun": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.buladeli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.jiatuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.suoniya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.hengdelike": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.magenusi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.fuleide": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.xiula": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.gregory": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.freya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.blanchette": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.eleonora": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.lloyd": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.rufus": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s12.hervor": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.karol": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.ligeia": {
+          "enabled": false,
+          "weaponLevel": 10
+        }
+      },
+      "B": {
+        "hero.s1.heluonimo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.nataliya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.moli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s1.jinman": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.head.fulinte": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.feilande": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s2.alongsuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.luogen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.miya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s3.gelaige": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.ahemosi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.lingnai": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s4.linen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.heketuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.nuola": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s5.gewen": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.wuming": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.ruini": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s6.weien": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.aidisi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.gedun": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s7.buladeli": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.jiatuo": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.suoniya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s8.hengdelike": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.magenusi": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.fuleide": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s9.xiula": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.gregory": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.freya": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s10.blanchette": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.eleonora": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.lloyd": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s11.rufus": {
+          "enabled": true,
+          "weaponLevel": 10
+        },
+        "hero.s12.hervor": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.karol": {
+          "enabled": false,
+          "weaponLevel": 10
+        },
+        "hero.s12.ligeia": {
+          "enabled": false,
+          "weaponLevel": 10
+        }
+      }
+    },
+    "ownedHeroIds": [
+      "hero.r.youjin",
+      "hero.r.shimisi",
+      "hero.r.chali",
+      "hero.r.kelaoruisi",
+      "hero.sr.xieergai",
+      "hero.sr.patelike",
+      "hero.sr.baxiti",
+      "hero.body.jiexi",
+      "hero.body.shuyun",
+      "hero.body.jiesaier",
+      "hero.sr.lumubogen",
+      "hero.sr.lingshuang",
+      "hero.sr.jina",
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.luogen",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s7.buladeli",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s9.magenusi",
+      "hero.s9.fuleide",
+      "hero.s9.xiula",
+      "hero.s10.gregory",
+      "hero.s10.freya",
+      "hero.s10.blanchette",
+      "hero.s11.eleonora",
+      "hero.s11.lloyd",
+      "hero.s11.rufus",
+      "hero.s12.hervor",
+      "hero.s12.karol",
+      "hero.s12.ligeia"
+    ],
+    "rallyBodyPoolIds": [
+      "hero.sr.xieergai",
+      "hero.sr.baxiti",
+      "hero.s9.xiula",
+      "hero.s12.karol",
+      "hero.sr.patelike",
+      "hero.s11.eleonora",
+      "hero.body.jiexi",
+      "hero.body.jiesaier",
+      "hero.s10.blanchette",
+      "hero.s12.hervor",
+      "hero.body.shuyun",
+      "hero.s7.buladeli",
+      "hero.s9.magenusi",
+      "hero.s11.rufus",
+      "hero.sr.lumubogen",
+      "hero.s9.fuleide",
+      "hero.s11.lloyd",
+      "hero.sr.lingshuang",
+      "hero.s3.luogen",
+      "hero.s10.freya",
+      "hero.s1.heluonimo",
+      "hero.s1.nataliya",
+      "hero.s1.moli",
+      "hero.s1.jinman",
+      "hero.head.fulinte",
+      "hero.s2.feilande",
+      "hero.s2.alongsuo",
+      "hero.s3.miya",
+      "hero.s3.gelaige",
+      "hero.s4.ahemosi",
+      "hero.s4.lingnai",
+      "hero.s4.linen",
+      "hero.s5.heketuo",
+      "hero.s5.nuola",
+      "hero.s5.gewen",
+      "hero.s6.wuming",
+      "hero.s6.ruini",
+      "hero.s6.weien",
+      "hero.s7.aidisi",
+      "hero.s7.gedun",
+      "hero.s8.jiatuo",
+      "hero.s8.suoniya",
+      "hero.s8.hengdelike",
+      "hero.s12.ligeia",
+      "hero.s10.gregory"
+    ]
+  },
+  "engineScenario": {
+    "id": "pvp-validation-ui",
+    "sideA": {
+      "shield": {
+        "count": 12240,
+        "attack": 2.4,
+        "defense": 2.4,
+        "penetration": 2.4,
+        "life": 2.4,
+        "troopLevel": "T10-FC8",
+        "troopConstant": 10.863199999999999,
+        "levelComposition": [
+          {
+            "level": "T10-FC8",
+            "aliveCount": 12240
+          }
+        ],
+        "damageCoefficient": 1,
+        "t12Level": 0
+      },
+      "lancer": {
+        "count": 11880,
+        "attack": 2.4,
+        "defense": 2.4,
+        "penetration": 2.4,
+        "life": 2.4,
+        "troopLevel": "T10-FC8",
+        "troopConstant": 10.8632,
+        "levelComposition": [
+          {
+            "level": "T10-FC8",
+            "aliveCount": 11880
+          }
+        ],
+        "damageCoefficient": 3,
+        "t12Level": 0
+      },
+      "marksman": {
+        "count": 11880,
+        "attack": 2.4,
+        "defense": 2.4,
+        "penetration": 2.4,
+        "life": 2.4,
+        "troopLevel": "T10-FC10",
+        "troopConstant": 11.9766,
+        "levelComposition": [
+          {
+            "level": "T10-FC10",
+            "aliveCount": 11880
+          }
+        ],
+        "damageCoefficient": 4,
+        "t12Level": 0
+      },
+      "attributeInputMode": "prediction",
+      "reportAttributeModifiers": {
+        "selfBuffs": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "receivedDebuffs": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "targetBattleBonuses": {
+        "shield": {
+          "attack": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "defense": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "penetration": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "life": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          }
+        },
+        "lancer": {
+          "attack": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "defense": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "penetration": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "life": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          }
+        },
+        "marksman": {
+          "attack": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "defense": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "penetration": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "life": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          }
+        }
+      },
+      "reportHeroes": [],
+      "heroes": [
+        {
+          "heroId": "hero.s11.eleonora",
+          "position": "leader",
+          "weaponLevel": 10,
+          "skillLevels": {}
+        },
+        {
+          "heroId": "hero.s3.miya",
+          "position": "leader",
+          "weaponLevel": 10,
+          "skillLevels": {}
+        },
+        {
+          "heroId": "hero.s11.rufus",
+          "position": "leader",
+          "weaponLevel": 10,
+          "skillLevels": {}
+        },
+        {
+          "heroId": "hero.s6.wuming",
+          "heroDefinitionId": "hero.s6.wuming",
+          "runtimeInstanceId": "A-body-0",
+          "position": "member",
+          "selectedMemberSkillId": "hero-skill.wuming.wind-shelter",
+          "skillLevels": {
+            "hero-skill.wuming.wind-shelter": 5
+          }
+        },
+        {
+          "heroId": "hero.s6.wuming",
+          "heroDefinitionId": "hero.s6.wuming",
+          "runtimeInstanceId": "A-body-1",
+          "position": "member",
+          "selectedMemberSkillId": "hero-skill.wuming.wind-shelter",
+          "skillLevels": {
+            "hero-skill.wuming.wind-shelter": 5
+          }
+        },
+        {
+          "heroId": "hero.s5.nuola",
+          "heroDefinitionId": "hero.s5.nuola",
+          "runtimeInstanceId": "A-body-2",
+          "position": "member",
+          "selectedMemberSkillId": "hero-skill.nuola.multi-troop-combat",
+          "skillLevels": {
+            "hero-skill.nuola.multi-troop-combat": 5
+          }
+        },
+        {
+          "heroId": "hero.s5.nuola",
+          "heroDefinitionId": "hero.s5.nuola",
+          "runtimeInstanceId": "A-body-3",
+          "position": "member",
+          "selectedMemberSkillId": "hero-skill.nuola.multi-troop-combat",
+          "skillLevels": {
+            "hero-skill.nuola.multi-troop-combat": 5
+          }
+        }
+      ]
+    },
+    "sideB": {
+      "shield": {
+        "count": 12240,
+        "attack": 2.2,
+        "defense": 2.2,
+        "penetration": 2.2,
+        "life": 2.2,
+        "troopLevel": "T10-FC8",
+        "troopConstant": 10.863199999999999,
+        "levelComposition": [
+          {
+            "level": "T10-FC8",
+            "aliveCount": 12240
+          }
+        ],
+        "damageCoefficient": 1,
+        "t12Level": 0
+      },
+      "lancer": {
+        "count": 11880,
+        "attack": 2.2,
+        "defense": 2.2,
+        "penetration": 2.2,
+        "life": 2.2,
+        "troopLevel": "T10-FC8",
+        "troopConstant": 10.8632,
+        "levelComposition": [
+          {
+            "level": "T10-FC8",
+            "aliveCount": 11880
+          }
+        ],
+        "damageCoefficient": 3,
+        "t12Level": 0
+      },
+      "marksman": {
+        "count": 11880,
+        "attack": 2.2,
+        "defense": 2.2,
+        "penetration": 2.2,
+        "life": 2.2,
+        "troopLevel": "T10-FC10",
+        "troopConstant": 11.9766,
+        "levelComposition": [
+          {
+            "level": "T10-FC10",
+            "aliveCount": 11880
+          }
+        ],
+        "damageCoefficient": 4,
+        "t12Level": 0
+      },
+      "attributeInputMode": "prediction",
+      "reportAttributeModifiers": {
+        "selfBuffs": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        },
+        "receivedDebuffs": {
+          "attack": 0,
+          "defense": 0,
+          "penetration": 0,
+          "life": 0
+        }
+      },
+      "targetBattleBonuses": {
+        "shield": {
+          "attack": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "defense": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "penetration": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "life": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          }
+        },
+        "lancer": {
+          "attack": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "defense": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "penetration": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "life": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          }
+        },
+        "marksman": {
+          "attack": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "defense": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "penetration": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          },
+          "life": {
+            "additive": 0,
+            "buff": 0,
+            "debuff": 0
+          }
+        }
+      },
+      "reportHeroes": [],
+      "heroes": [
+        {
+          "heroId": "hero.s11.eleonora",
+          "position": "leader",
+          "weaponLevel": 10,
+          "skillLevels": {}
+        },
+        {
+          "heroId": "hero.s11.lloyd",
+          "position": "leader",
+          "weaponLevel": 10,
+          "skillLevels": {}
+        },
+        {
+          "heroId": "hero.s11.rufus",
+          "position": "leader",
+          "weaponLevel": 10,
+          "skillLevels": {}
+        }
+      ]
+    },
+    "maxRounds": 300,
+    "battleContext": "rally"
+  },
+  "engineScenarioSha256": "a26b8f155901d1e5feaa0f30a1031766cf6aa823752654ff25a5d0c14395f32e",
+  "optimizerConfig": {
+    "candidateSide": "A",
+    "useSimpleRatioPrior": false,
+    "objectiveMode": "singleWin",
+    "constraints": {
+      "equivalentMemberPositions": true
+    },
+    "stages": [
+      {
+        "ratioStep": 5,
+        "trials": 20,
+        "keep": 3000,
+        "maxCandidates": 300
+      },
+      {
+        "ratioStep": 5,
+        "trials": 50,
+        "keep": 500,
+        "maxCandidates": 100
+      },
+      {
+        "ratioStep": 1,
+        "trials": 100,
+        "keep": 50,
+        "maxCandidates": 60
+      }
+    ],
+    "theory": {
+      "ratioStep": 5,
+      "localPeaksPerLineup": 3,
+      "minSurvivorsPerLineup": 1,
+      "randomExploration": 1,
+      "diversityExploration": 1,
+      "uncertaintyExploration": 1,
+      "uncertaintyWeight": 1,
+      "deterministicRounds": 24,
+      "probabilityEquivalentCoefficient": 1,
+      "calibratedEquivalents": {}
+    },
+    "criterion": {
+      "racingVersion": 3,
+      "enabled": true,
+      "representativesPerHead": 6,
+      "headRatioLimit": 2000,
+      "headRatioFraction": 0.01,
+      "smallSpaceHeadRatioFloor": 24,
+      "potentialMainShare": 0.75,
+      "potentialProtectionShare": 0.15,
+      "potentialDiversityShare": 0.1,
+      "theoryCandidateLimit": 4000,
+      "theoryCandidateFraction": 0.125,
+      "smallSpaceTheoryFloor": 24,
+      "formalCandidateLimit": 1500,
+      "formalCandidateFraction": 0.375,
+      "smallSpaceFormalFloor": 16,
+      "roughBodyTop": 16,
+      "bodyDiversity": 3,
+      "bodyUncertainty": 2,
+      "bodySpecial": 2,
+      "bodyExploration": 1,
+      "matrixBodiesPerRatio": 24,
+      "theoryCandidatesPerRatio": 8,
+      "minimumHeadRuns": 20,
+      "uncertainHeadRuns": 40,
+      "uncertaintyThreshold": 0.35,
+      "screeningTrials": [
+        5,
+        20,
+        50,
+        100,
+        300
+      ],
+      "screeningKeep": [
+        300,
+        80,
+        25,
+        10,
+        5
+      ],
+      "probeLaneShares": {
+        "theory": 0.4,
+        "matrix": 0.2,
+        "paired": 0.2,
+        "uncertainty": 0.08,
+        "special": 0.04,
+        "disagreement": 0.08
+      },
+      "finalHeadBasins": 4,
+      "finalBodyBasinsPerHead": 2,
+      "fineRadius": 3,
+      "finePerBasin": 4,
+      "c0TheoryRounds": 4
+    },
+    "initialBattleTrials": 5,
+    "verificationTrials": 1000,
+    "verificationTop": 10,
+    "topN": 10,
+    "firstSeed": 12345,
+    "targetDefeatProbability": 0.9,
+    "maxWaves": 3,
+    "beamWidth": 3,
+    "branchWidth": 3,
+    "beamTrials": 50,
+    "singleFightThresholdLow": 0.05,
+    "singleFightThresholdHigh": 0.95,
+    "profiling": true,
+    "jointPipeline": {
+      "criterionKeep": 1500,
+      "criterionFineKeep": 500,
+      "theoryKeep": 200,
+      "criterionRadius": 10,
+      "theoryRadius": 5,
+      "formalRatioRadius": 1,
+      "formalRatioTrials": 100,
+      "formalRatioKeep": 8,
+      "formalStages": [
+        {
+          "trials": 20,
+          "keep": 80
+        },
+        {
+          "trials": 50,
+          "keep": 30
+        },
+        {
+          "trials": 100,
+          "keep": 15
+        },
+        {
+          "trials": 300,
+          "keep": 5
+        }
+      ]
+    },
+    "adaptiveSearch": {
+      "enabled": true,
+      "m4Checkpoints": [
+        50,
+        100,
+        150
+      ],
+      "finalCheckpoints": [
+        300,
+        500,
+        1000
+      ],
+      "minimumRunsBeforeElimination": 30,
+      "highUncertaintyMinimumRuns": 100,
+      "uncertaintyThreshold": 0.35,
+      "tolerance": 0.005,
+      "familyErrorRate": 0.01,
+      "minimumFinalRuns": 1000,
+      "basinPatience": 2,
+      "twoPercentRounds": 3,
+      "onePercentRounds": 3
+    },
+    "basinSearch": {
+      "maxBasins": 4,
+      "maxBasinsPerHead": 2,
+      "maxClimbRounds": 6,
+      "fineBasins": 4,
+      "fineRadius": 5,
+      "separation": 10
+    },
+    "monteCarloStages": [
+      {
+        "trials": 5,
+        "keep": 300
+      },
+      {
+        "trials": 20,
+        "keep": 80
+      },
+      {
+        "trials": 50,
+        "keep": 25
+      },
+      {
+        "trials": 100,
+        "keep": 10
+      },
+      {
+        "trials": 300,
+        "keep": 5
+      }
+    ]
+  },
+  "inputSha256": "7c246a65d82211be091efffd97d216cf5a7c7f0967ad8ed636a9be7f58d74da9",
+  "optimizerConfigSha256": "007a50ded51b2d9b0ce1c491c9c397572136f611afccd3d53929a000530dfe64",
+  "optimizerConfigSha256ExcludingFlag": "adcbe7e686312d5e5dbb2efa52e160dace3cd443cb36a48adb38ae0f24befcf9",
+  "seedPolicy": {
+    "firstSeed": 12345,
+    "strategy": "shared screening prefix 300 + independently derived validation seeds at offset 500000; common Final 1000",
+    "screeningSeeds": [
+      12345,
+      12346,
+      12347,
+      12348,
+      12349,
+      12350,
+      12351,
+      12352,
+      12353,
+      12354,
+      12355,
+      12356,
+      12357,
+      12358,
+      12359,
+      12360,
+      12361,
+      12362,
+      12363,
+      12364,
+      12365,
+      12366,
+      12367,
+      12368,
+      12369,
+      12370,
+      12371,
+      12372,
+      12373,
+      12374,
+      12375,
+      12376,
+      12377,
+      12378,
+      12379,
+      12380,
+      12381,
+      12382,
+      12383,
+      12384,
+      12385,
+      12386,
+      12387,
+      12388,
+      12389,
+      12390,
+      12391,
+      12392,
+      12393,
+      12394,
+      12395,
+      12396,
+      12397,
+      12398,
+      12399,
+      12400,
+      12401,
+      12402,
+      12403,
+      12404,
+      12405,
+      12406,
+      12407,
+      12408,
+      12409,
+      12410,
+      12411,
+      12412,
+      12413,
+      12414,
+      12415,
+      12416,
+      12417,
+      12418,
+      12419,
+      12420,
+      12421,
+      12422,
+      12423,
+      12424,
+      12425,
+      12426,
+      12427,
+      12428,
+      12429,
+      12430,
+      12431,
+      12432,
+      12433,
+      12434,
+      12435,
+      12436,
+      12437,
+      12438,
+      12439,
+      12440,
+      12441,
+      12442,
+      12443,
+      12444,
+      12445,
+      12446,
+      12447,
+      12448,
+      12449,
+      12450,
+      12451,
+      12452,
+      12453,
+      12454,
+      12455,
+      12456,
+      12457,
+      12458,
+      12459,
+      12460,
+      12461,
+      12462,
+      12463,
+      12464,
+      12465,
+      12466,
+      12467,
+      12468,
+      12469,
+      12470,
+      12471,
+      12472,
+      12473,
+      12474,
+      12475,
+      12476,
+      12477,
+      12478,
+      12479,
+      12480,
+      12481,
+      12482,
+      12483,
+      12484,
+      12485,
+      12486,
+      12487,
+      12488,
+      12489,
+      12490,
+      12491,
+      12492,
+      12493,
+      12494,
+      12495,
+      12496,
+      12497,
+      12498,
+      12499,
+      12500,
+      12501,
+      12502,
+      12503,
+      12504,
+      12505,
+      12506,
+      12507,
+      12508,
+      12509,
+      12510,
+      12511,
+      12512,
+      12513,
+      12514,
+      12515,
+      12516,
+      12517,
+      12518,
+      12519,
+      12520,
+      12521,
+      12522,
+      12523,
+      12524,
+      12525,
+      12526,
+      12527,
+      12528,
+      12529,
+      12530,
+      12531,
+      12532,
+      12533,
+      12534,
+      12535,
+      12536,
+      12537,
+      12538,
+      12539,
+      12540,
+      12541,
+      12542,
+      12543,
+      12544,
+      12545,
+      12546,
+      12547,
+      12548,
+      12549,
+      12550,
+      12551,
+      12552,
+      12553,
+      12554,
+      12555,
+      12556,
+      12557,
+      12558,
+      12559,
+      12560,
+      12561,
+      12562,
+      12563,
+      12564,
+      12565,
+      12566,
+      12567,
+      12568,
+      12569,
+      12570,
+      12571,
+      12572,
+      12573,
+      12574,
+      12575,
+      12576,
+      12577,
+      12578,
+      12579,
+      12580,
+      12581,
+      12582,
+      12583,
+      12584,
+      12585,
+      12586,
+      12587,
+      12588,
+      12589,
+      12590,
+      12591,
+      12592,
+      12593,
+      12594,
+      12595,
+      12596,
+      12597,
+      12598,
+      12599,
+      12600,
+      12601,
+      12602,
+      12603,
+      12604,
+      12605,
+      12606,
+      12607,
+      12608,
+      12609,
+      12610,
+      12611,
+      12612,
+      12613,
+      12614,
+      12615,
+      12616,
+      12617,
+      12618,
+      12619,
+      12620,
+      12621,
+      12622,
+      12623,
+      12624,
+      12625,
+      12626,
+      12627,
+      12628,
+      12629,
+      12630,
+      12631,
+      12632,
+      12633,
+      12634,
+      12635,
+      12636,
+      12637,
+      12638,
+      12639,
+      12640,
+      12641,
+      12642,
+      12643,
+      12644
+    ],
+    "finalSeeds": [
+      12345,
+      12346,
+      12347,
+      12348,
+      12349,
+      12350,
+      12351,
+      12352,
+      12353,
+      12354,
+      12355,
+      12356,
+      12357,
+      12358,
+      12359,
+      12360,
+      12361,
+      12362,
+      12363,
+      12364,
+      12365,
+      12366,
+      12367,
+      12368,
+      12369,
+      12370,
+      12371,
+      12372,
+      12373,
+      12374,
+      12375,
+      12376,
+      12377,
+      12378,
+      12379,
+      12380,
+      12381,
+      12382,
+      12383,
+      12384,
+      12385,
+      12386,
+      12387,
+      12388,
+      12389,
+      12390,
+      12391,
+      12392,
+      12393,
+      12394,
+      12395,
+      12396,
+      12397,
+      12398,
+      12399,
+      12400,
+      12401,
+      12402,
+      12403,
+      12404,
+      12405,
+      12406,
+      12407,
+      12408,
+      12409,
+      12410,
+      12411,
+      12412,
+      12413,
+      12414,
+      12415,
+      12416,
+      12417,
+      12418,
+      12419,
+      12420,
+      12421,
+      12422,
+      12423,
+      12424,
+      12425,
+      12426,
+      12427,
+      12428,
+      12429,
+      12430,
+      12431,
+      12432,
+      12433,
+      12434,
+      12435,
+      12436,
+      12437,
+      12438,
+      12439,
+      12440,
+      12441,
+      12442,
+      12443,
+      12444,
+      12445,
+      12446,
+      12447,
+      12448,
+      12449,
+      12450,
+      12451,
+      12452,
+      12453,
+      12454,
+      12455,
+      12456,
+      12457,
+      12458,
+      12459,
+      12460,
+      12461,
+      12462,
+      12463,
+      12464,
+      12465,
+      12466,
+      12467,
+      12468,
+      12469,
+      12470,
+      12471,
+      12472,
+      12473,
+      12474,
+      12475,
+      12476,
+      12477,
+      12478,
+      12479,
+      12480,
+      12481,
+      12482,
+      12483,
+      12484,
+      12485,
+      12486,
+      12487,
+      12488,
+      12489,
+      12490,
+      12491,
+      12492,
+      12493,
+      12494,
+      12495,
+      12496,
+      12497,
+      12498,
+      12499,
+      12500,
+      12501,
+      12502,
+      12503,
+      12504,
+      12505,
+      12506,
+      12507,
+      12508,
+      12509,
+      12510,
+      12511,
+      12512,
+      12513,
+      12514,
+      12515,
+      12516,
+      12517,
+      12518,
+      12519,
+      12520,
+      12521,
+      12522,
+      12523,
+      12524,
+      12525,
+      12526,
+      12527,
+      12528,
+      12529,
+      12530,
+      12531,
+      12532,
+      12533,
+      12534,
+      12535,
+      12536,
+      12537,
+      12538,
+      12539,
+      12540,
+      12541,
+      12542,
+      12543,
+      12544,
+      12545,
+      12546,
+      12547,
+      12548,
+      12549,
+      12550,
+      12551,
+      12552,
+      12553,
+      12554,
+      12555,
+      12556,
+      12557,
+      12558,
+      12559,
+      12560,
+      12561,
+      12562,
+      12563,
+      12564,
+      12565,
+      12566,
+      12567,
+      12568,
+      12569,
+      12570,
+      12571,
+      12572,
+      12573,
+      12574,
+      12575,
+      12576,
+      12577,
+      12578,
+      12579,
+      12580,
+      12581,
+      12582,
+      12583,
+      12584,
+      12585,
+      12586,
+      12587,
+      12588,
+      12589,
+      12590,
+      12591,
+      12592,
+      12593,
+      12594,
+      12595,
+      12596,
+      12597,
+      12598,
+      12599,
+      12600,
+      12601,
+      12602,
+      12603,
+      12604,
+      12605,
+      12606,
+      12607,
+      12608,
+      12609,
+      12610,
+      12611,
+      12612,
+      12613,
+      12614,
+      12615,
+      12616,
+      12617,
+      12618,
+      12619,
+      12620,
+      12621,
+      12622,
+      12623,
+      12624,
+      12625,
+      12626,
+      12627,
+      12628,
+      12629,
+      12630,
+      12631,
+      12632,
+      12633,
+      12634,
+      12635,
+      12636,
+      12637,
+      12638,
+      12639,
+      12640,
+      12641,
+      12642,
+      12643,
+      12644,
+      512345,
+      512346,
+      512347,
+      512348,
+      512349,
+      512350,
+      512351,
+      512352,
+      512353,
+      512354,
+      512355,
+      512356,
+      512357,
+      512358,
+      512359,
+      512360,
+      512361,
+      512362,
+      512363,
+      512364,
+      512365,
+      512366,
+      512367,
+      512368,
+      512369,
+      512370,
+      512371,
+      512372,
+      512373,
+      512374,
+      512375,
+      512376,
+      512377,
+      512378,
+      512379,
+      512380,
+      512381,
+      512382,
+      512383,
+      512384,
+      512385,
+      512386,
+      512387,
+      512388,
+      512389,
+      512390,
+      512391,
+      512392,
+      512393,
+      512394,
+      512395,
+      512396,
+      512397,
+      512398,
+      512399,
+      512400,
+      512401,
+      512402,
+      512403,
+      512404,
+      512405,
+      512406,
+      512407,
+      512408,
+      512409,
+      512410,
+      512411,
+      512412,
+      512413,
+      512414,
+      512415,
+      512416,
+      512417,
+      512418,
+      512419,
+      512420,
+      512421,
+      512422,
+      512423,
+      512424,
+      512425,
+      512426,
+      512427,
+      512428,
+      512429,
+      512430,
+      512431,
+      512432,
+      512433,
+      512434,
+      512435,
+      512436,
+      512437,
+      512438,
+      512439,
+      512440,
+      512441,
+      512442,
+      512443,
+      512444,
+      512445,
+      512446,
+      512447,
+      512448,
+      512449,
+      512450,
+      512451,
+      512452,
+      512453,
+      512454,
+      512455,
+      512456,
+      512457,
+      512458,
+      512459,
+      512460,
+      512461,
+      512462,
+      512463,
+      512464,
+      512465,
+      512466,
+      512467,
+      512468,
+      512469,
+      512470,
+      512471,
+      512472,
+      512473,
+      512474,
+      512475,
+      512476,
+      512477,
+      512478,
+      512479,
+      512480,
+      512481,
+      512482,
+      512483,
+      512484,
+      512485,
+      512486,
+      512487,
+      512488,
+      512489,
+      512490,
+      512491,
+      512492,
+      512493,
+      512494,
+      512495,
+      512496,
+      512497,
+      512498,
+      512499,
+      512500,
+      512501,
+      512502,
+      512503,
+      512504,
+      512505,
+      512506,
+      512507,
+      512508,
+      512509,
+      512510,
+      512511,
+      512512,
+      512513,
+      512514,
+      512515,
+      512516,
+      512517,
+      512518,
+      512519,
+      512520,
+      512521,
+      512522,
+      512523,
+      512524,
+      512525,
+      512526,
+      512527,
+      512528,
+      512529,
+      512530,
+      512531,
+      512532,
+      512533,
+      512534,
+      512535,
+      512536,
+      512537,
+      512538,
+      512539,
+      512540,
+      512541,
+      512542,
+      512543,
+      512544,
+      512545,
+      512546,
+      512547,
+      512548,
+      512549,
+      512550,
+      512551,
+      512552,
+      512553,
+      512554,
+      512555,
+      512556,
+      512557,
+      512558,
+      512559,
+      512560,
+      512561,
+      512562,
+      512563,
+      512564,
+      512565,
+      512566,
+      512567,
+      512568,
+      512569,
+      512570,
+      512571,
+      512572,
+      512573,
+      512574,
+      512575,
+      512576,
+      512577,
+      512578,
+      512579,
+      512580,
+      512581,
+      512582,
+      512583,
+      512584,
+      512585,
+      512586,
+      512587,
+      512588,
+      512589,
+      512590,
+      512591,
+      512592,
+      512593,
+      512594,
+      512595,
+      512596,
+      512597,
+      512598,
+      512599,
+      512600,
+      512601,
+      512602,
+      512603,
+      512604,
+      512605,
+      512606,
+      512607,
+      512608,
+      512609,
+      512610,
+      512611,
+      512612,
+      512613,
+      512614,
+      512615,
+      512616,
+      512617,
+      512618,
+      512619,
+      512620,
+      512621,
+      512622,
+      512623,
+      512624,
+      512625,
+      512626,
+      512627,
+      512628,
+      512629,
+      512630,
+      512631,
+      512632,
+      512633,
+      512634,
+      512635,
+      512636,
+      512637,
+      512638,
+      512639,
+      512640,
+      512641,
+      512642,
+      512643,
+      512644,
+      512645,
+      512646,
+      512647,
+      512648,
+      512649,
+      512650,
+      512651,
+      512652,
+      512653,
+      512654,
+      512655,
+      512656,
+      512657,
+      512658,
+      512659,
+      512660,
+      512661,
+      512662,
+      512663,
+      512664,
+      512665,
+      512666,
+      512667,
+      512668,
+      512669,
+      512670,
+      512671,
+      512672,
+      512673,
+      512674,
+      512675,
+      512676,
+      512677,
+      512678,
+      512679,
+      512680,
+      512681,
+      512682,
+      512683,
+      512684,
+      512685,
+      512686,
+      512687,
+      512688,
+      512689,
+      512690,
+      512691,
+      512692,
+      512693,
+      512694,
+      512695,
+      512696,
+      512697,
+      512698,
+      512699,
+      512700,
+      512701,
+      512702,
+      512703,
+      512704,
+      512705,
+      512706,
+      512707,
+      512708,
+      512709,
+      512710,
+      512711,
+      512712,
+      512713,
+      512714,
+      512715,
+      512716,
+      512717,
+      512718,
+      512719,
+      512720,
+      512721,
+      512722,
+      512723,
+      512724,
+      512725,
+      512726,
+      512727,
+      512728,
+      512729,
+      512730,
+      512731,
+      512732,
+      512733,
+      512734,
+      512735,
+      512736,
+      512737,
+      512738,
+      512739,
+      512740,
+      512741,
+      512742,
+      512743,
+      512744,
+      512745,
+      512746,
+      512747,
+      512748,
+      512749,
+      512750,
+      512751,
+      512752,
+      512753,
+      512754,
+      512755,
+      512756,
+      512757,
+      512758,
+      512759,
+      512760,
+      512761,
+      512762,
+      512763,
+      512764,
+      512765,
+      512766,
+      512767,
+      512768,
+      512769,
+      512770,
+      512771,
+      512772,
+      512773,
+      512774,
+      512775,
+      512776,
+      512777,
+      512778,
+      512779,
+      512780,
+      512781,
+      512782,
+      512783,
+      512784,
+      512785,
+      512786,
+      512787,
+      512788,
+      512789,
+      512790,
+      512791,
+      512792,
+      512793,
+      512794,
+      512795,
+      512796,
+      512797,
+      512798,
+      512799,
+      512800,
+      512801,
+      512802,
+      512803,
+      512804,
+      512805,
+      512806,
+      512807,
+      512808,
+      512809,
+      512810,
+      512811,
+      512812,
+      512813,
+      512814,
+      512815,
+      512816,
+      512817,
+      512818,
+      512819,
+      512820,
+      512821,
+      512822,
+      512823,
+      512824,
+      512825,
+      512826,
+      512827,
+      512828,
+      512829,
+      512830,
+      512831,
+      512832,
+      512833,
+      512834,
+      512835,
+      512836,
+      512837,
+      512838,
+      512839,
+      512840,
+      512841,
+      512842,
+      512843,
+      512844,
+      512845,
+      512846,
+      512847,
+      512848,
+      512849,
+      512850,
+      512851,
+      512852,
+      512853,
+      512854,
+      512855,
+      512856,
+      512857,
+      512858,
+      512859,
+      512860,
+      512861,
+      512862,
+      512863,
+      512864,
+      512865,
+      512866,
+      512867,
+      512868,
+      512869,
+      512870,
+      512871,
+      512872,
+      512873,
+      512874,
+      512875,
+      512876,
+      512877,
+      512878,
+      512879,
+      512880,
+      512881,
+      512882,
+      512883,
+      512884,
+      512885,
+      512886,
+      512887,
+      512888,
+      512889,
+      512890,
+      512891,
+      512892,
+      512893,
+      512894,
+      512895,
+      512896,
+      512897,
+      512898,
+      512899,
+      512900,
+      512901,
+      512902,
+      512903,
+      512904,
+      512905,
+      512906,
+      512907,
+      512908,
+      512909,
+      512910,
+      512911,
+      512912,
+      512913,
+      512914,
+      512915,
+      512916,
+      512917,
+      512918,
+      512919,
+      512920,
+      512921,
+      512922,
+      512923,
+      512924,
+      512925,
+      512926,
+      512927,
+      512928,
+      512929,
+      512930,
+      512931,
+      512932,
+      512933,
+      512934,
+      512935,
+      512936,
+      512937,
+      512938,
+      512939,
+      512940,
+      512941,
+      512942,
+      512943,
+      512944,
+      512945,
+      512946,
+      512947,
+      512948,
+      512949,
+      512950,
+      512951,
+      512952,
+      512953,
+      512954,
+      512955,
+      512956,
+      512957,
+      512958,
+      512959,
+      512960,
+      512961,
+      512962,
+      512963,
+      512964,
+      512965,
+      512966,
+      512967,
+      512968,
+      512969,
+      512970,
+      512971,
+      512972,
+      512973,
+      512974,
+      512975,
+      512976,
+      512977,
+      512978,
+      512979,
+      512980,
+      512981,
+      512982,
+      512983,
+      512984,
+      512985,
+      512986,
+      512987,
+      512988,
+      512989,
+      512990,
+      512991,
+      512992,
+      512993,
+      512994,
+      512995,
+      512996,
+      512997,
+      512998,
+      512999,
+      513000,
+      513001,
+      513002,
+      513003,
+      513004,
+      513005,
+      513006,
+      513007,
+      513008,
+      513009,
+      513010,
+      513011,
+      513012,
+      513013,
+      513014,
+      513015,
+      513016,
+      513017,
+      513018,
+      513019,
+      513020,
+      513021,
+      513022,
+      513023,
+      513024,
+      513025,
+      513026,
+      513027,
+      513028,
+      513029,
+      513030,
+      513031,
+      513032,
+      513033,
+      513034,
+      513035,
+      513036,
+      513037,
+      513038,
+      513039,
+      513040,
+      513041,
+      513042,
+      513043,
+      513044
+    ],
+    "finalSeedsSha256": "753a1029805f9da875800c0ccaf60e6704f7e8e31742325202da1cc1b26a64f0",
+    "finalScreeningPrefix": 300
+  },
+  "weaponPolicy": {
+    "mode": "per-hero optimizerHeroPool weaponLevel; exact current simulationWeaponLevels for protected baseline",
+    "currentA": {
+      "hero.s11.eleonora": 10,
+      "hero.s3.miya": 10,
+      "hero.s11.rufus": 10
+    },
+    "currentB": {
+      "hero.s11.eleonora": 10,
+      "hero.s11.lloyd": 10,
+      "hero.s11.rufus": 10
+    }
+  },
+  "historicalBodyCount": 57313,
+  "currentReproducibleBodyCount": 56859,
+  "difference": -454,
+  "historicalInputAvailable": false,
+  "historicalTotalElapsedMs": 454201.9,
+  "provenance": "Frozen S12 Rally benchmark. Full A/B canonical input, explicit ownership/optimization/Body pools, per-hero weapons, tier/T12/attributes/Buffs, resolved optimizer options and exact common seeds. Historical 57313/454201.9ms had no full input and is not claimed as reproduced.",
+  "previousInputSha256": "ac86eacd7600af27aa98170c539d78e58e5228726acafe5043e687c5b9bf4cb1",
+  "freezingPreservedFormalScenario": true,
+  "freezingPreservedHeadCount": 876,
+  "freezingPreservedOldJBodyCount": 56859
+}

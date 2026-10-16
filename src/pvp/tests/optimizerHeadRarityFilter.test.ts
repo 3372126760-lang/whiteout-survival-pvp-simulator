@@ -37,17 +37,17 @@ describe("hero category and server-stage head boundary", () => {
       else { expect(hero.generation).toBeNull(); expect(hero.sGeneration).toBeUndefined(); }
     }
   });
-  it("keeps R/SR at S2 and excludes every R/SR from S3/S11 head search", () => {
+  it("excludes R/SR at every generation without removing manual heroes", () => {
     for (const rarity of ["R", "SR"] as const) {
       for (const generation of [null, 1, 3, 11, 16]) {
-        expect(optimizerHeadHeroAllowed({ rarity, generation }, 2)).toBe(true);
+        expect(optimizerHeadHeroAllowed({ rarity, generation }, 2)).toBe(false);
         expect(optimizerHeadHeroAllowed({ rarity, generation }, 3)).toBe(false);
         expect(optimizerHeadHeroAllowed({ rarity, generation }, 11)).toBe(false);
       }
     }
     expect(optimizerHeadHeroAllowed({ rarity: "SSR", generation: 1 }, 11)).toBe(true);
     for (const stage of ["s2_fc3", "s3_fc3", "s11"] as const) {
-      const input = inputFor(undefined, stage), allowed = stage === "s2_fc3";
+      const input = inputFor(undefined, stage), allowed = false;
       for (const id of [baseR, baseSr]) {
         expect(visibleOptimizationHeroIds(input).includes(id)).toBe(allowed);
         expect(ownedOptimizationHeroIds(input).includes(id)).toBe(allowed);
@@ -131,6 +131,6 @@ describe("hero category and server-stage head boundary", () => {
     const later = initializeOptimizationHeroPool({ ...early, serverStage: "s11" });
     expect(later.optimizerHeroPool!.A![baseSr]).toEqual(early.optimizerHeroPool!.A![baseSr]);
     expect(optimizationHeroIds(later)).not.toContain(baseSr);
-    expect(optimizationHeroIds({ ...later, serverStage: "s2_fc3" })).toContain(baseSr);
+    expect(optimizationHeroIds({ ...later, serverStage: "s2_fc3" })).not.toContain(baseSr);
   });
 });

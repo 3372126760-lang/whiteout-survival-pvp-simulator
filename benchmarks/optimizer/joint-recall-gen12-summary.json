@@ -1,0 +1,967 @@
+{
+  "schema": 1,
+  "kind": "compact-historical-recall-summary",
+  "inputFixture": "benchmarks/optimizer/joint-recall-gen12-input.json",
+  "sourceInputFixture": "benchmarks/optimizer/head-pool-s12-all-available-input.json",
+  "inputSha256": "1ea73d061bac6487e4788599ad0bbb406d28bee90a2a663854f47e49ee5df9cf",
+  "optimizerConfigSha256": "13bd38f1cfd1a174eafaa35b206952095a12bfaaf05f4b6f1672f72665fe5ea7",
+  "engineScenarioSha256": "a26b8f155901d1e5feaa0f30a1031766cf6aa823752654ff25a5d0c14395f32e",
+  "seedPolicySha256": "9c9cb9121383640dbf031d17a2f98a27a0959dac34eb9b8f71d501523ad84936",
+  "node": "v24.20.0",
+  "cpu": "AMD Ryzen 7 5800H with Radeon Graphics         ",
+  "workerCount": 4,
+  "interpretation": "Current supplied fixture only. Historical 65.2% input unavailable; no claim of reproducing it.",
+  "totalElapsedMs": 108698.3515,
+  "profile": {
+    "status": "completed",
+    "totalElapsedMs": 108696.8653,
+    "totalBattleEngineCalls": 20200,
+    "requestedBattles": 26500,
+    "executedBattles": 20200,
+    "reusedBattles": 6300,
+    "cacheHitCount": 6300,
+    "cacheHitRate": 0.23773584905660378,
+    "totalBattleElapsedMs": 151328.70319999952,
+    "overallAvgBattleMs": 7.491519960396016,
+    "unaccountedElapsedMs": 293.1985000000277,
+    "stages": [
+      {
+        "stage": "H0 · 合法车头生成",
+        "wallElapsedMs": 128.0130999999999,
+        "candidateCount": 1,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "B0 · canonical 车身效果与无序组合",
+        "wallElapsedMs": 557.1379999999999,
+        "candidateCount": 1,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "J Preparation · 静态签名与免伤状态预计算",
+        "wallElapsedMs": 1226.3950999999997,
+        "candidateCount": 11247,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "J Peak · Head×Body 峰值搜索",
+        "wallElapsedMs": 1397.0392000000002,
+        "candidateCount": 10000,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "Recall Merge · 全局 Top10000 ∪ 每 Head TopK",
+        "wallElapsedMs": 7.402900000000045,
+        "candidateCount": 11062,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "Criterion · 局部 5% 粗筛",
+        "wallElapsedMs": 10886.98,
+        "candidateCount": 11056,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "Criterion · 局部 1% 细筛",
+        "wallElapsedMs": 4892.5142,
+        "candidateCount": 1500,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "Theory · 局部 1% 细筛",
+        "wallElapsedMs": 8504.5988,
+        "candidateCount": 500,
+        "requestedBattles": 0,
+        "executedBattles": 0,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "Formal 20 · 累计正式战斗",
+        "wallElapsedMs": 16339.419100000003,
+        "candidateCount": 200,
+        "requestedBattles": 4000,
+        "executedBattles": 4000,
+        "reusedBattles": 0,
+        "cacheHitRate": 0,
+        "status": "completed"
+      },
+      {
+        "stage": "Formal 50 · 累计正式战斗",
+        "wallElapsedMs": 8858.992599999998,
+        "candidateCount": 80,
+        "requestedBattles": 4000,
+        "executedBattles": 2400,
+        "reusedBattles": 1600,
+        "cacheHitRate": 0.4,
+        "status": "completed"
+      },
+      {
+        "stage": "Formal 100 · 累计正式战斗",
+        "wallElapsedMs": 5345.284299999999,
+        "candidateCount": 30,
+        "requestedBattles": 3000,
+        "executedBattles": 1500,
+        "reusedBattles": 1500,
+        "cacheHitRate": 0.5,
+        "status": "completed"
+      },
+      {
+        "stage": "Formal Ratio A · 共同 20 场保留 Top2 比例",
+        "wallElapsedMs": 7026.532499999994,
+        "candidateCount": 105,
+        "requestedBattles": 2100,
+        "executedBattles": 1800,
+        "reusedBattles": 300,
+        "cacheHitRate": 0.14285714285714285,
+        "status": "completed"
+      },
+      {
+        "stage": "Formal Ratio B · Top2 累计 100 场",
+        "wallElapsedMs": 8133.881199999989,
+        "candidateCount": 30,
+        "requestedBattles": 3000,
+        "executedBattles": 2400,
+        "reusedBattles": 600,
+        "cacheHitRate": 0.2,
+        "status": "completed"
+      },
+      {
+        "stage": "Formal 300 · 累计正式战斗",
+        "wallElapsedMs": 6023.325899999996,
+        "candidateCount": 8,
+        "requestedBattles": 2400,
+        "executedBattles": 1600,
+        "reusedBattles": 800,
+        "cacheHitRate": 0.3333333333333333,
+        "status": "completed"
+      },
+      {
+        "stage": "Final 1000 · common seeds 复验",
+        "wallElapsedMs": 29076.14989999999,
+        "candidateCount": 8,
+        "requestedBattles": 8000,
+        "executedBattles": 6500,
+        "reusedBattles": 1500,
+        "cacheHitRate": 0.1875,
+        "status": "completed"
+      }
+    ],
+    "jointPeak": {
+      "headCount": 1062,
+      "bodyCount": 10185,
+      "evaluatedHeadBodyCount": 10816470,
+      "objectiveEvaluationCount": 10816470,
+      "kktEvaluationCount": 70564473,
+      "avgObjectiveCallsPerHeadBody": 1,
+      "elapsedMs": 1396.9693000000002,
+      "preparationElapsedMs": 1226.3894,
+      "evaluatedHeadBodyPerSecond": 7742811.5277837515,
+      "workerCount": 4,
+      "retainedCount": 10000,
+      "top10000CutoffJ": 23683486867.926834,
+      "rankCheckpoints": [
+        {
+          "rank": 1,
+          "j": 34625506476.20227,
+          "relativeToBest": 1,
+          "lossFromBest": 0,
+          "headKey": "hero.s12.hervor|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.patelike.life@Lv5|hero-skill.nuola.multi-troop-combat@Lv5|hero-skill.gewen.eagle-vision@Lv5|hero-skill.jiatuo.golden-guard@Lv5",
+          "peakRatio": {
+            "shield": 66.14366565436858,
+            "lancer": 2.6277213640574124,
+            "marksman": 31.228612981574024
+          }
+        },
+        {
+          "rank": 10,
+          "j": 33722232394.214375,
+          "relativeToBest": 0.9739130434782606,
+          "lossFromBest": 0.026086956521739424,
+          "headKey": "hero.s12.hervor|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.shuyun.attack@Lv5|hero-skill.nuola.multi-troop-combat@Lv5|hero-skill.gewen.eagle-vision@Lv5|hero-skill.jiatuo.golden-guard@Lv5",
+          "peakRatio": {
+            "shield": 66.14366565436856,
+            "lancer": 2.6277213640574124,
+            "marksman": 31.228612981574024
+          }
+        },
+        {
+          "rank": 100,
+          "j": 32758492288.598595,
+          "relativeToBest": 0.9460798013485563,
+          "lossFromBest": 0.05392019865144371,
+          "headKey": "hero.s12.hervor|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.shuyun.attack@Lv5|hero-skill.gewen.eagle-vision@Lv5|hero-skill.jiatuo.golden-guard@Lv5|hero-skill.s8.hengdelike.defense-reduction@Lv5",
+          "peakRatio": {
+            "shield": 66.25147119081582,
+            "lancer": 3.5063194954026518,
+            "marksman": 30.242209313781522
+          }
+        },
+        {
+          "rank": 1000,
+          "j": 30755808894.78327,
+          "relativeToBest": 0.8882414157875611,
+          "lossFromBest": 0.1117585842124389,
+          "headKey": "hero.s12.hervor|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.feilande.fitness-secret@Lv5|hero-skill.jiatuo.golden-guard@Lv5|hero-skill.s8.hengdelike.defense-reduction@Lv5|hero-skill.s8.hengdelike.defense-reduction@Lv5",
+          "peakRatio": {
+            "shield": 66.13797046359558,
+            "lancer": 3.5235933707457994,
+            "marksman": 30.338436165658607
+          }
+        },
+        {
+          "rank": 2000,
+          "j": 29451715984.99534,
+          "relativeToBest": 0.8505786335641669,
+          "lossFromBest": 0.14942136643583315,
+          "headKey": "hero.s12.hervor|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.jiexi.penetration@Lv5|hero-skill.lumubogen.penetration-reduction@Lv5|hero-skill.lingshuang.attack-reduction@Lv5|hero-skill.lingshuang.attack-reduction@Lv5",
+          "peakRatio": {
+            "shield": 64.66730852071625,
+            "lancer": 3.7516295626622953,
+            "marksman": 31.581061916621454
+          }
+        },
+        {
+          "rank": 5000,
+          "j": 26401062913.784832,
+          "relativeToBest": 0.7624744184443913,
+          "lossFromBest": 0.23752558155560866,
+          "headKey": "hero.s12.hervor|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.ruini.dream-mark@Lv5|hero-skill.ruini.dream-mark@Lv5|hero-skill.jiatuo.golden-guard@Lv5|hero-skill.jiatuo.golden-guard@Lv5",
+          "peakRatio": {
+            "shield": 65.91646788049728,
+            "lancer": 14.633795301526922,
+            "marksman": 19.4497368179758
+          }
+        },
+        {
+          "rank": 10000,
+          "j": 23683486867.926834,
+          "relativeToBest": 0.6839896156957078,
+          "lossFromBest": 0.3160103843042922,
+          "headKey": "hero.s11.eleonora|hero.s12.karol|hero.s12.ligeia",
+          "bodyKey": "hero-skill.xieergai.guardian-power@Lv5|hero-skill.lingshuang.attack-reduction@Lv5|hero-skill.nuola.multi-troop-combat@Lv5|hero-skill.gewen.eagle-vision@Lv5",
+          "peakRatio": {
+            "shield": 59.078491866103974,
+            "lancer": 2.8571784422511173,
+            "marksman": 38.0643296916449
+          }
+        }
+      ]
+    },
+    "formalRatio": {
+      "lineupCount": 15,
+      "generatedRatioCount": 105,
+      "stageASamplesPerRatio": 20,
+      "stageARequestedBattles": 2100,
+      "stageAExecutedBattles": 1800,
+      "stageAReusedBattles": 300,
+      "stageARetainedRatioCount": 30,
+      "stageBSamplesPerRatio": 100,
+      "stageBRequestedBattles": 3000,
+      "stageBExecutedBattles": 2400,
+      "stageBReusedBattles": 600,
+      "elapsedMs": 15163.014900000002
+    },
+    "finalCorrelation": {
+      "finalistJRanks": [
+        3521,
+        3522,
+        3149,
+        3683,
+        3684,
+        null,
+        null,
+        null
+      ],
+      "finalistJRetentionRatios": [
+        0.9741456541509181,
+        0.9741456541509181,
+        0.9760582101572202,
+        0.9760744058255011,
+        0.9760744058255011,
+        0.9596029864512443,
+        0.5716667313822186,
+        0.9654267078487405
+      ],
+      "bestFormalInitialJRank": 3521,
+      "maxInitialJRankAmongTop5": 3684
+    },
+    "recallAudit": {
+      "globalTopJCount": 10000,
+      "perHeadProtectedK": 1,
+      "perHeadRawCount": 1062,
+      "perHeadUniqueCount": 1062,
+      "overlapWithGlobalTopJ": 6,
+      "mergedRecallCount": 11056,
+      "addedOnlyByPerHeadCount": 1056,
+      "rankDiagnosticPeakEvaluations": 36936,
+      "addedOnlyCriterionElapsedMs": 1484.8877999999968,
+      "bestFormalRecallSource": [
+        "globalTopJ"
+      ]
+    }
+  },
+  "candidateCounts": {
+    "criterionPairs": 11056,
+    "criterionEvaluations": 113012,
+    "averageLocal5PercentRatios": 10.22178002894356,
+    "criterionFinePairs": 1500,
+    "criterionFineEvaluations": 88376,
+    "theoryPairs": 500,
+    "theoryEvaluations": 18523,
+    "formalPairs": 200,
+    "formalRatioCandidates": 105,
+    "finalOptimizerCandidates": 5,
+    "comparisonCandidates": 3,
+    "finalTrials": 1000
+  },
+  "finalRecommendations": [
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "memberSkillIds": [
+          "hero-skill.patelike.life",
+          "hero-skill.lingshuang.attack-reduction",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s12.hervor": 10,
+          "hero.s12.karol": 10,
+          "hero.s12.ligeia": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "recalledBy": [
+          "globalTopJ"
+        ],
+        "initialJRank": 3521,
+        "initialGlobalJRank": 3521,
+        "bodyRankWithinHead": 3513,
+        "headRankWithinBody": 1,
+        "jMax": 27627031022.380833,
+        "jPeakRatio": {
+          "shield": 64.59584916223619,
+          "lancer": 2.774308467949995,
+          "marksman": 32.629842369813815
+        },
+        "formalBestRatio": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "jAtFormalRatio": 26912752207.544884,
+        "jRetentionRatio": 0.9741456541509181,
+        "jLoss": 0.02585434584908186
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "memberSkillIds": [
+          "hero-skill.patelike.life",
+          "hero-skill.lumubogen.penetration-reduction",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s12.hervor": 10,
+          "hero.s12.karol": 10,
+          "hero.s12.ligeia": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "recalledBy": [
+          "globalTopJ"
+        ],
+        "initialJRank": 3522,
+        "initialGlobalJRank": 3522,
+        "bodyRankWithinHead": 3514,
+        "headRankWithinBody": 1,
+        "jMax": 27627031022.380833,
+        "jPeakRatio": {
+          "shield": 64.59584916223619,
+          "lancer": 2.774308467949995,
+          "marksman": 32.629842369813815
+        },
+        "formalBestRatio": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "jAtFormalRatio": 26912752207.544884,
+        "jRetentionRatio": 0.9741456541509181,
+        "jLoss": 0.02585434584908186
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "memberSkillIds": [
+          "hero-skill.patelike.life",
+          "hero-skill.shuyun.attack",
+          "hero-skill.ahemosi.viper-phalanx",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s12.hervor": 10,
+          "hero.s12.karol": 10,
+          "hero.s12.ligeia": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 5,
+          "marksman": 41
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "recalledBy": [
+          "globalTopJ"
+        ],
+        "initialJRank": 3149,
+        "initialGlobalJRank": 3149,
+        "bodyRankWithinHead": 3143,
+        "headRankWithinBody": 1,
+        "jMax": 28027422776.328377,
+        "jPeakRatio": {
+          "shield": 64.59584916223619,
+          "lancer": 2.774308467949995,
+          "marksman": 32.62984236981381
+        },
+        "formalBestRatio": {
+          "shield": 54,
+          "lancer": 5,
+          "marksman": 41
+        },
+        "jAtFormalRatio": 27356396110.382782,
+        "jRetentionRatio": 0.9760582101572202,
+        "jLoss": 0.023941789842779837
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "memberSkillIds": [
+          "hero-skill.patelike.life",
+          "hero-skill.lingshuang.attack-reduction",
+          "hero-skill.feilande.fitness-secret",
+          "hero-skill.ahemosi.viper-phalanx"
+        ],
+        "headWeaponLevels": {
+          "hero.s12.hervor": 10,
+          "hero.s12.karol": 10,
+          "hero.s12.ligeia": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "recalledBy": [
+          "globalTopJ"
+        ],
+        "initialJRank": 3683,
+        "initialGlobalJRank": 3683,
+        "bodyRankWithinHead": 3667,
+        "headRankWithinBody": 1,
+        "jMax": 27507684106.03275,
+        "jPeakRatio": {
+          "shield": 64.72041122357038,
+          "lancer": 3.7432580384442486,
+          "marksman": 31.536330737985374
+        },
+        "formalBestRatio": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "jAtFormalRatio": 26849546419.431496,
+        "jRetentionRatio": 0.9760744058255011,
+        "jLoss": 0.02392559417449891
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "memberSkillIds": [
+          "hero-skill.patelike.life",
+          "hero-skill.lumubogen.penetration-reduction",
+          "hero-skill.feilande.fitness-secret",
+          "hero-skill.ahemosi.viper-phalanx"
+        ],
+        "headWeaponLevels": {
+          "hero.s12.hervor": 10,
+          "hero.s12.karol": 10,
+          "hero.s12.ligeia": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "fineSearch"
+        ],
+        "recalledBy": [
+          "globalTopJ"
+        ],
+        "initialJRank": 3684,
+        "initialGlobalJRank": 3684,
+        "bodyRankWithinHead": 3668,
+        "headRankWithinBody": 1,
+        "jMax": 27507684106.03275,
+        "jPeakRatio": {
+          "shield": 64.72041122357038,
+          "lancer": 3.7432580384442486,
+          "marksman": 31.536330737985374
+        },
+        "formalBestRatio": {
+          "shield": 54,
+          "lancer": 6,
+          "marksman": 40
+        },
+        "jAtFormalRatio": 26849546419.431496,
+        "jRetentionRatio": 0.9760744058255011,
+        "jLoss": 0.02392559417449891
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "protectedReference"
+        ],
+        "recalledBy": [
+          "protectedReference"
+        ],
+        "initialJRank": null,
+        "initialGlobalJRank": null,
+        "bodyRankWithinHead": 1926,
+        "headRankWithinBody": 141,
+        "jMax": 8318406821.423262,
+        "jPeakRatio": {
+          "shield": 66.41611905457033,
+          "lancer": 0.1423386980127536,
+          "marksman": 33.44154224741692
+        },
+        "formalBestRatio": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "jAtFormalRatio": 7982368028.354164,
+        "jRetentionRatio": 0.9596029864512443,
+        "jLoss": 0.04039701354875569
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 999,
+      "losses": 1,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 0.999,
+      "wilson95": [
+        0.9943574414020421,
+        0.9998234536293739
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s11.eleonora",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s11.eleonora": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "bodySkillLevels": [
+          5,
+          5,
+          5,
+          5
+        ],
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        },
+        "ratios": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "selectionReasons": [
+          "currentConfig"
+        ],
+        "recalledBy": [
+          "currentConfig"
+        ],
+        "initialJRank": null,
+        "initialGlobalJRank": null,
+        "bodyRankWithinHead": 1926,
+        "headRankWithinBody": 141,
+        "jMax": 8318406821.423262,
+        "jPeakRatio": {
+          "shield": 66.41611905457033,
+          "lancer": 0.1423386980127536,
+          "marksman": 33.44154224741692
+        },
+        "formalBestRatio": {
+          "shield": 34,
+          "lancer": 33,
+          "marksman": 33
+        },
+        "jAtFormalRatio": 4755356437.910586,
+        "jRetentionRatio": 0.5716667313822186,
+        "jLoss": 0.4283332686177814
+      }
+    },
+    {
+      "trials": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "draws": 0,
+      "timeouts": 0,
+      "winRate": 1,
+      "wilson95": [
+        0.996173241514445,
+        1
+      ],
+      "candidate": {
+        "leaderHeroIds": {
+          "shield": "hero.s10.gregory",
+          "lancer": "hero.s3.miya",
+          "marksman": "hero.s11.rufus"
+        },
+        "memberSkillIds": [
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.wuming.wind-shelter",
+          "hero-skill.nuola.multi-troop-combat",
+          "hero-skill.nuola.multi-troop-combat"
+        ],
+        "headWeaponLevels": {
+          "hero.s10.gregory": 10,
+          "hero.s3.miya": 10,
+          "hero.s11.rufus": 10
+        },
+        "ratios": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "selectionReasons": [
+          "protectedReference"
+        ],
+        "recalledBy": [
+          "protectedReference"
+        ],
+        "initialJRank": null,
+        "initialGlobalJRank": null,
+        "bodyRankWithinHead": 2131,
+        "headRankWithinBody": 174,
+        "jMax": 7505362236.471874,
+        "jPeakRatio": {
+          "shield": 65.20305253407712,
+          "lancer": 0.17711001846371324,
+          "marksman": 34.619837447459176
+        },
+        "formalBestRatio": {
+          "shield": 57,
+          "lancer": 3,
+          "marksman": 40
+        },
+        "jAtFormalRatio": 7245877155.169302,
+        "jRetentionRatio": 0.9654267078487405,
+        "jLoss": 0.03457329215125948
+      }
+    }
+  ],
+  "currentEvaluation": {
+    "trials": 1000,
+    "wins": 999,
+    "losses": 1,
+    "draws": 0,
+    "timeouts": 0,
+    "winRate": 0.999,
+    "wilson95": [
+      0.9943574414020421,
+      0.9998234536293739
+    ],
+    "candidate": {
+      "leaderHeroIds": {
+        "shield": "hero.s11.eleonora",
+        "lancer": "hero.s3.miya",
+        "marksman": "hero.s11.rufus"
+      },
+      "memberSkillIds": [
+        "hero-skill.wuming.wind-shelter",
+        "hero-skill.wuming.wind-shelter",
+        "hero-skill.nuola.multi-troop-combat",
+        "hero-skill.nuola.multi-troop-combat"
+      ],
+      "headWeaponLevels": {
+        "hero.s11.eleonora": 10,
+        "hero.s3.miya": 10,
+        "hero.s11.rufus": 10
+      },
+      "bodySkillLevels": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "troopLevels": {
+        "shield": "T10-FC8",
+        "lancer": "T10-FC8",
+        "marksman": "T10-FC10"
+      },
+      "ratios": {
+        "shield": 34,
+        "lancer": 33,
+        "marksman": 33
+      },
+      "selectionReasons": [
+        "currentConfig"
+      ],
+      "recalledBy": [
+        "currentConfig"
+      ],
+      "initialJRank": null,
+      "initialGlobalJRank": null,
+      "bodyRankWithinHead": 1926,
+      "headRankWithinBody": 141,
+      "jMax": 8318406821.423262,
+      "jPeakRatio": {
+        "shield": 66.41611905457033,
+        "lancer": 0.1423386980127536,
+        "marksman": 33.44154224741692
+      },
+      "formalBestRatio": {
+        "shield": 34,
+        "lancer": 33,
+        "marksman": 33
+      },
+      "jAtFormalRatio": 4755356437.910586,
+      "jRetentionRatio": 0.5716667313822186,
+      "jLoss": 0.4283332686177814
+    }
+  },
+  "sourceProfile": {
+    "path": "artifacts/benchmarks/optimizer/archive-staged/joint-recall-gen12-profile.json",
+    "stagedSha256": "ce96465bf76f81aede186756b6c70abe0bfb7a63f52f7734edbf8d6b71080b4d"
+  }
+}

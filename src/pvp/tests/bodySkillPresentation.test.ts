@@ -5,6 +5,7 @@ import { getAvailableMemberSkills, resolveBodySkillConfigs } from "../validation
 import { CONFIRMED_HERO_SKILL_DEFINITIONS } from "../heroSkills";
 import { createDefaultValidationInput } from "../../ui/defaultInput";
 import { createPersistedEnvelope, restorePersistedConfig } from "../../storage";
+import { CanonicalBodyEffectRegistry } from "../bodyEffects/canonicalRegistry";
 
 const SHUYUN = "hero-skill.shuyun.attack";
 const BRADLEY = "hero-skill.buladeli.veterans-pride";
@@ -12,7 +13,7 @@ const state: BodySkillSelectState = { side: "A", index: 0, stage: "s11",
   selectedSkillId: SHUYUN, selectedLevel: 5, query: "" };
 
 describe("effect-first body skill presentation", () => {
-  it("shows the same effect with separate exact hero identities and original skill IDs", () => {
+  it("preserves original identities for restored configurations but lists only the earliest representative", () => {
     const book = presentBodySkill(SHUYUN)!, bradley = presentBodySkill(BRADLEY)!;
     expect(book.displayLabel).toBe("书允（SR）｜全军攻击提升25%｜常驻生效");
     expect(bradley.displayLabel).toBe("布拉德利（S7）｜全军攻击提升25%｜常驻生效");
@@ -21,8 +22,8 @@ describe("effect-first body skill presentation", () => {
     expect(book.skillName).toBe("征伐的战鼓");
     expect(book.skillDescription).toBe("全军攻击力提升25%。");
     const options = getBodySkillOptions("s11");
-    expect(options.findIndex((entry) => entry.skillId === BRADLEY)).toBe(
-      options.findIndex((entry) => entry.skillId === SHUYUN) + 1);
+    expect(options.some((entry) => entry.skillId === BRADLEY)).toBe(false);
+    expect(options.some((entry) => entry.skillId === SHUYUN)).toBe(true);
   });
 
   it("uses actual level values, probability, targets and timing rather than max-level catalog labels", () => {
@@ -39,7 +40,9 @@ describe("effect-first body skill presentation", () => {
   it("keeps manual R/SR availability and server-stage limits; includes slot 1 only", () => {
     const available = getAvailableMemberSkills("s11").flatMap((entry) => entry.sourceSkillIds);
     const options = getBodySkillOptions("s11");
-    expect(options.map((entry) => entry.skillId).sort()).toEqual([...available].sort());
+    const registry = new CanonicalBodyEffectRegistry(undefined, "s11");
+    expect(options.map((entry) => entry.skillId).sort()).toEqual(registry.effects.map((e) => e.representative.id).sort());
+    expect(available.every((id) => registry.forSkill(id))).toBe(true);
     expect(options.some((entry) => entry.rarity === "SR")).toBe(true);
     expect(getBodySkillOptions("s2_t10").some((entry) => entry.skillId === BRADLEY)).toBe(false);
     for (const option of getBodySkillOptions("s16")) {
@@ -69,7 +72,7 @@ describe("effect-first body skill presentation", () => {
     expect(html).toContain("书允（SR）｜全军攻击提升15%｜常驻生效");
     expect(html).toContain("远征一技能：征伐的战鼓 · Lv3");
     expect(html).toContain("技能说明：全军攻击力提升25%。");
-    expect(html).toContain("布拉德利（S7）｜全军攻击提升25%｜常驻生效");
+    expect(html).not.toContain("布拉德利（S7）｜全军攻击提升25%｜常驻生效");
     expect(html).toContain('data-scope="member"');
     expect(html).toContain('data-scope="member-search"');
     expect(html).toContain(`value="${SHUYUN}" selected`);

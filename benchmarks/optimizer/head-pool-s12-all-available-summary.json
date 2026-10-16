@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "kind": "compact-historical-head-summary",
+  "inputFixture": "benchmarks/optimizer/head-pool-s12-all-available-input.json",
+  "inputSha256": "f45427a33de8ed50ad1c8f2d248f66b77d4b449e5afb8d601e826b99d357e691",
+  "totalBattleEngineCalls": 0,
+  "verifiedFormalSourceFiles": 124,
+  "generatedHeadCount": 1062,
+  "stagesExecuted": [
+    "Head Pool Audit",
+    "H0"
+  ],
+  "headPoolAudit": {
+    "serverStage": "s12",
+    "side": "A",
+    "ownershipMode": "allAvailable",
+    "serverUnlockedHeroCount": 50,
+    "serverUnlockedSSRHeadCount": 37,
+    "ownedHeroCount": 50,
+    "availableSSRHeadHeroCount": 37,
+    "optimizationEnabledHeroCount": 37,
+    "eligibleHeadHeroCount": 37,
+    "maxServerGeneration": 12,
+    "maxOwnedGeneration": 12,
+    "maxOptimizationGeneration": 12,
+    "effectiveN": 12,
+    "warning": null,
+    "headSearchEnabled": true,
+    "headFixedReason": null,
+    "finalLegalHeadCount": 1062,
+    "heroCountByTroop": {
+      "shield": 13,
+      "lancer": 12,
+      "marksman": 12
+    },
+    "recentGenerationWindow": [
+      10,
+      11,
+      12
+    ],
+    "eligibleS12HeadHeroIds": [
+      "hero.s12.hervor",
+      "hero.s12.karol",
+      "hero.s12.ligeia"
+    ]
+  },
+  "previousFrozenPerformanceFixture": {
+    "path": "benchmarks/optimizer/joint-rally-gen12-input.json",
+    "inputSha256": "7c246a65d82211be091efffd97d216cf5a7c7f0967ad8ed636a9be7f58d74da9",
+    "interpretation": "Performance evidence only. S12 explicitly disabled; no conclusion about optimal S12 heroes.",
+    "headPoolAudit": {
+      "serverStage": "s12",
+      "side": "A",
+      "ownershipMode": "owned",
+      "serverUnlockedHeroCount": 50,
+      "serverUnlockedSSRHeadCount": 37,
+      "ownedHeroCount": 50,
+      "availableSSRHeadHeroCount": 37,
+      "optimizationEnabledHeroCount": 34,
+      "eligibleHeadHeroCount": 34,
+      "maxServerGeneration": 12,
+      "maxOwnedGeneration": 12,
+      "maxOptimizationGeneration": 11,
+      "effectiveN": 11,
+      "warning": "S12 server stage but no S12 SSR is eligible for Head optimization",
+      "headSearchEnabled": true,
+      "headFixedReason": null,
+      "finalLegalHeadCount": 876,
+      "heroCountByTroop": {
+        "shield": 12,
+        "lancer": 11,
+        "marksman": 11
+      },
+      "recentGenerationWindow": [
+        9,
+        10,
+        11
+      ],
+      "eligibleS12HeadHeroIds": []
+    }
+  },
+  "sourceAudit": {
+    "path": "artifacts/benchmarks/optimizer/archive-staged/head-pool-s12-all-available-audit.json",
+    "stagedSha256": "52ad6090be92e89b9426bfd6c2f145c195c0660d174947d4a37d67c9efe07ca4"
+  },
+  "regeneration": "node scripts/run-tsx.mjs scripts/audit-head-pool.ts"
+}

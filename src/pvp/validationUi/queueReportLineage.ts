@@ -4,6 +4,7 @@ import { calculateHeroStatCorrection } from "../heroSkills/heroStatCorrection";
 import { deriveRawReportAttribute } from "../battleReportRecognition/mapping";
 import type { ValidationBattleInput, ValidationQueueAttributes, ValidationQueueConfig } from "./types";
 import { normalizeIceFireShared } from "./iceFireContext";
+import { sourceReportBonuses } from "./reportBonusContexts";
 
 type HeroMap = ValidationQueueConfig["leaderHeroIds"];
 const stats = ["attack", "defense", "penetration", "life"] as const;
@@ -89,7 +90,7 @@ function hasBoundOrPlausibleQueueHistory(queue: ValidationQueueConfig): boolean 
   // Legacy low base-panel numbers cannot be a report containing a later hero's
   // larger static contribution. Never turn that unbound metadata into history.
   return TROOP_TYPES.every((troop) => stats.every((stat) => {
-    const bonus = queue.sourceReportBonuses?.[troop][stat];
+    const bonus = sourceReportBonuses(queue)[troop][stat];
     const raw = queue.reportAttributeBasis !== "historicalReport" ? queue.attributes![troop][stat] :
       deriveRawReportAttribute({ reportPercent: queue.attributes![troop][stat], additivePercent: bonus?.additive ?? 0,
         buffDecimal: (bonus?.buff ?? 0) / 100, debuffDecimal: (bonus?.debuff ?? 0) / 100 });
@@ -120,7 +121,7 @@ export function changeIceFireReportAttribute(queue: ValidationQueueConfig, troop
   const report = queue.sourceReportAttributes ?? queue.attributes!;
   const reportAttributes = { ...report, [troop]: { ...report[troop], [stat]: value } };
   const attributes = Object.fromEntries(TROOP_TYPES.map((type) => [type, Object.fromEntries(stats.map((field) => {
-    const bonus = queue.sourceReportBonuses?.[type][field] ?? queue.importedReportModifiers?.[type][field];
+    const bonus = sourceReportBonuses(queue)[type][field];
     return [field, deriveRawReportAttribute({ reportPercent: reportAttributes[type][field],
       additivePercent: bonus?.additive ?? 0, buffDecimal: (bonus?.buff ?? 0) / 100,
       debuffDecimal: (bonus?.debuff ?? 0) / 100 })];
@@ -137,7 +138,7 @@ export function changeQueueAttribute(queue: ValidationQueueConfig, troop: TroopT
   // the other eleven. Source report snapshots are discarded with the manual edit.
   const attributes = queue.reportAttributeBasis !== "historicalReport" ? queue.attributes :
     Object.fromEntries(TROOP_TYPES.map((type) => [type, Object.fromEntries(stats.map((field) => {
-      const bonus = queue.sourceReportBonuses?.[type][field] ?? queue.importedReportModifiers?.[type][field];
+      const bonus = sourceReportBonuses(queue)[type][field];
       return [field, deriveRawReportAttribute({ reportPercent: queue.attributes![type][field],
         additivePercent: bonus?.additive ?? 0, buffDecimal: (bonus?.buff ?? 0) / 100,
         debuffDecimal: (bonus?.debuff ?? 0) / 100 })];

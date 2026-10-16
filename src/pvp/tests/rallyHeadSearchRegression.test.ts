@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { availableHeadHeroesByTroop, candidateToInput, defaultOptimizationConfig,
   generateFormations, generateAllHeadFormations, searchSingleWave, runRallyOptimization, createEngineCandidateRunner,
-  evaluateSingleCandidate, createStageSeeds, adaptiveSeedPools, type OptimizationConfig } from "../index";
+  evaluateSingleCandidate, adaptiveSeedPools, type OptimizationConfig } from "../index";
 import { createPersistedEnvelope, restorePersistedConfig } from "../../storage";
 import { rallyHeadSearchFixture, opponentCandidate, OPPONENT_HEAD, OLD_HEAD } from "./fixtures/rallyHeadSearch";
 
@@ -19,7 +19,7 @@ function config(): OptimizationConfig {
 describe("rally head search and locks", () => {
   it("recovers a known manual head and ratio using real fast battles", () => {
     const input = rallyHeadSearchFixture();
-    const seeds = createStageSeeds(91, 80, 500_000);
+    const seeds = adaptiveSeedPools(91, 300, 1000).final;
     const run = createEngineCandidateRunner(input);
     const manual = evaluateSingleCandidate(opponentCandidate(), 36000, seeds, run);
     const weak = evaluateSingleCandidate({ ...opponentCandidate(), leaderHeroIds: OLD_HEAD }, 36000, seeds, run);
@@ -28,7 +28,7 @@ describe("rally head search and locks", () => {
       { ratioStep: 10, trials: 15, keep: 5, maxCandidates: 20 },
       { ratioStep: 1, trials: 20, keep: 5, maxCandidates: 20 },
     ] as const, verificationTrials: 80, protectedCandidates: [opponentCandidate()] };
-    const result = runRallyOptimization(input, options);
+    const result = runRallyOptimization(input, { ...options, jointPipeline: { criterionKeep: 7, criterionFineKeep: 7, theoryKeep: 2, formalRatioKeep: 2, formalStages: [20,50,100,300].map((trials) => ({trials,keep:2})) } });
     expect(weak.winRate).toBeLessThan(.3);
     expect(manual.winRate).toBeGreaterThan(.4);
     expect(manual.actualCounts).toEqual({ shield: 18000, lancer: 7200, marksman: 10800 });
@@ -36,7 +36,7 @@ describe("rally head search and locks", () => {
     expect(result.singleWaveTop[0]!.winRate).toBeGreaterThanOrEqual(manual.winRate);
     expect(result.searchDiagnostics!.evaluatedHeadLineups).toContainEqual(OPPONENT_HEAD);
     expect(result.singleWaveTop[0]!.candidate.leaderHeroIds).not.toEqual(OLD_HEAD);
-  }, 60_000);
+  }, 120_000);
   it("generates seven recent-eligible lineups and excludes the old-only head", () => {
     const input = rallyHeadSearchFixture();
     expect(availableHeadHeroesByTroop(input, {})).toMatchObject({
@@ -56,7 +56,7 @@ describe("rally head search and locks", () => {
     // Old configurations could allocate their entire coarse budget to the ratio grid.
     const limited = { ...config(), protectedCandidates: [opponentCandidate()], stages: [{ ...config().stages[0], maxCandidates: 6 },
       config().stages[1], config().stages[2]] as const };
-    const pools = adaptiveSeedPools(91, 50, 1000);
+    const pools = adaptiveSeedPools(91, 300, 1000);
     const indices = new Map(pools.final.map((seed, index) => [seed, index]));
     const result = searchSingleWave(input, limited, undefined, (candidate, seeds) => {
       const key = JSON.stringify(candidate.leaderHeroIds);

@@ -5,8 +5,6 @@ export * from "./solver";
 export * from "./signatures";
 export * from "./compiler";
 export * from "./searchTypes";
-export * from "./jointPreFilter";
-export * from "./jointSearch";
 export * from "./threeQueue";
 export * from "./bodyAblation";
 export * from "./queueSearch";

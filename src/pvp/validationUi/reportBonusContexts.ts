@@ -2,6 +2,7 @@ import { deriveRawReportAttribute } from "../battleReportRecognition/mapping";
 import { resolveBattleReportModifiers } from "../externalBuffs";
 import { TROOP_TYPES } from "../types";
 import type { ValidationSideInput, ValidationReportBonusMatrix } from "./types";
+import { expandHistoricalBonuses, type HistoricalBonusSource } from "./historicalBonuses";
 
 export const REPORT_STATS = ["attack", "defense", "penetration", "life"] as const;
 export function zeroReportBonuses(): ValidationReportBonusMatrix {
@@ -10,8 +11,8 @@ export function zeroReportBonuses(): ValidationReportBonusMatrix {
       { additive: 0, buff: 0, debuff: 0 }]))])) as ValidationReportBonusMatrix;
 }
 
-export function sourceReportBonuses(side: ValidationSideInput): ValidationReportBonusMatrix {
-  return side.sourceReportBonuses ?? side.importedReportModifiers ?? zeroReportBonuses();
+export function sourceReportBonuses(side: HistoricalBonusSource): ValidationReportBonusMatrix {
+  return expandHistoricalBonuses(side.sourceReportBonuses ?? side.importedReportModifiers ?? zeroReportBonuses());
 }
 
 /** Existing explicitly configured external controls count as a custom target.

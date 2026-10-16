@@ -26,6 +26,9 @@
 .simple-section-heading h2 > span, .step-number { color: #637d90; font: 12px/1.4 ui-monospace, Consolas, monospace; margin-right: 9px; }
 .simple-section-heading p { margin: 0; color: #637d90; font-size: 11px; }
 .simple-editor, .simple-shell fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.simple-shell .simple-global-stage { display: grid; grid-template-columns: auto minmax(180px, 300px); align-items: center; gap: 14px; margin: 0 0 16px; padding: 12px 16px; border: 1px solid #284252; border-radius: 9px; background: #10212e; }
+.simple-shell .simple-stage.simple-global-stage select { width: 100%; margin-left: 0; }
+@media (max-width: 600px) { .simple-shell .simple-global-stage { grid-template-columns: 1fr; gap: 7px; } }
 .simple-side-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
 .simple-side { border-radius: 13px; overflow: visible; background: #10202d; box-shadow: 0 8px 24px #00000012; min-width: 0; }
 .simple-side-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-radius: 13px 13px 0 0; background: linear-gradient(100deg, #4e382530, #15222d); border-bottom: 1px solid #ffffff05; }

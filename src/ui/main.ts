@@ -1,3 +1,6 @@
+import { renderHistoricalBonusTable } from "./historicalBonusView";
+import { historicalReportBonuses } from "../pvp/validationUi/historicalBonuses";
+import { parseConfigurationImport } from "./configImport";
 import { renderExpertSkillOptions, renderExpertSkillDescription } from "./expertSkillView";
 import { renderIceFireSide, renderIceFirePermutationMetrics, renderIceFireCandidateConversion } from "./iceFireView";
 import { renderReportSpecialBonuses, renderReportRawAttributePreview } from "./reportSpecialBonusView";
@@ -14,13 +17,19 @@ import { createOptimizationContext, optimizationContextAudit } from "../pvp/opti
 import "./styles.css";
 import "./simpleMode.css";
 import "./advancedMode.css";
-import { resolveEditorLayers, playerOptimizerProgress } from "./editorLayers";
-import { renderAdvancedScene, renderAdvancedRun, renderAdvancedBatch, renderAdvancedStatistics, renderPlayerSingle,
+import { resolveEditorLayers } from "./editorLayers";
+import { playerOptimizationProgress } from "./optimizerProgressView";
+import { rallyRecommendationDetails } from "./rallyRecommendationView";
+import { createOptimizerBenchmarkFixture, restoreOptimizerBenchmarkFixture } from "./optimizerBenchmarkFixture";
+import { resolveJointPipelineOptions } from "../pvp/optimizer/jointPipeline/types";
+import { jointHeadPolicy } from "../pvp/optimizer/jointPipeline/domain";
+import { renderAdvancedLineupActions, renderAdvancedScene, renderAdvancedRun, renderAdvancedBatch, renderAdvancedStatistics, renderPlayerSingle,
   renderPlayerSingleDrawer, renderAdvancedBatchDrawer } from "./advancedModeView";
 import { EDITOR_MODE_KEY, copySimpleAttributes, setSimpleCounts,
   setSimpleRatios, simpleTroopRatios, simpleTroopTotal, validSimpleRatios, type EditorMode } from "./simpleMode";
 import { renderModeHeader, renderSimpleMode, renderSimpleDetailsOnly, renderSimpleHero } from "./simpleModeView";
 import { encodeSimpleShare, decodeSimpleShare } from "./simpleShare";
+import { createPlayerDefaultInput, normalizePlayerHeroLevels } from "./playerConfig";
 import type { RallyTroopRatios } from "../pvp/validationUi/rallyDeployment";
 import { perfMark, perfMeasure, timeUiSection, recordOcrBackend } from "./startupPerformance";
 import { renderFatalError } from "./startupErrors";
@@ -43,7 +52,7 @@ import { resolveBodySkillConfigs } from "../pvp/validationUi/bodySkillConfig";
 import { sourceReportBonuses, zeroReportBonuses, rawReportSide } from "../pvp/validationUi/reportBonusContexts";
 import { changeIceFireExpectedHero, changeIceFireReportHero, changeIceFireReportAttribute, captureQueueReportBaseline, changeQueueHero, changeQueueAttribute, normalizeIceFireReportLineage,
   createQueueReportLineageAudit } from "../pvp/validationUi/queueReportLineage";
-import { availableHeadHeroesByTroop, generateRatioGrid, headFormationGenerationAudit } from "../pvp/optimizer/candidateGenerator";
+import { availableHeadHeroesByTroop, headFormationGenerationAudit } from "../pvp/optimizer/candidateGenerator";
 import { deriveFinalReportAttribute } from "../pvp/battleReportRecognition/mapping";
 import { getActiveSkillUniverse } from "../pvp/validationUi/activeSkillUniverse";
 import { prepareValidationRunInput, replayValidationSeed } from "../pvp/validationUi/randomMode";
@@ -60,7 +69,6 @@ import type { RoundBattleTrace, RoundDamageEventTrace } from "../pvp/logging/bat
 import type { PostBattleCasualtyResult } from "../pvp/postBattle/casualtyResolver";
 import { defaultTheoryOptions, type TheoryCoverage } from "../pvp/optimizer/theory";
 import { defaultOptimizationConfig } from "../pvp/optimizer/index";
-import { rallyCriterionSettings, updateRallyCriterionSetting } from "./rallyOptimizerSettings";
 import { defaultSimpleScenarioOptimizationOptions, applySimpleScenarioCandidate, type SimpleScenarioOptimizationOptions, type SimpleScenarioOptimizationResult } from "../pvp/optimizer/scenarioOptimizer";
 import { defaultThreeQueueOptimizationOptions, applyThreeQueueCandidate, type ThreeQueueOptimizationOptions, type ThreeQueueOptimizationResult } from "../pvp/optimizer/threeQueueOptimizer";
 import { candidateToInput, candidateKey } from "../pvp/optimizer/candidateGenerator";
@@ -71,13 +79,11 @@ import { refreshReportDiagnostics } from "../pvp/battleReportRecognition/reportD
 import { resolveParsedTroopSetup } from "../pvp/battleReportRecognition/troopResolution";
 import { matchSpecialBonusLabel } from "../pvp/battleReportRecognition/specialBonusRegistry";
 import type { ParsedBattleReport, ParsedBattleReportSide, OcrBox, ReportSourceSide } from "../pvp/battleReportRecognition/types";
-import { createDefaultValidationInput } from "./defaultInput";
 import {
   LocalStorageConfigStorage,
   copySavedProfile,
   createSavedProfile,
   exportPersistedJson,
-  parsePersistedJson,
   renameSavedProfile,
   restorePersistedConfig,
   type RestoredBattleSetup,
@@ -94,8 +100,10 @@ import {
 } from "./resultRevision";
 import { swapIceFireQueues, copySideAToB, swapBattleSides } from "./sideConfigActions";
 import { initializeOptimizerWeaponLevels } from "./optimizerWeaponDefaults";
+import { createHeadPoolAudit } from "../pvp/optimizer/headPoolAudit";
 import { optimizationHeroIds, ownedHeroIds, ownedOptimizationHeroIds, optimizerHeadHeroAllowed,
-  optimizerWeaponLevel, setOptimizationPoolEnabled, setOwnedHero, optimizerServerGeneration } from "../pvp/optimizer/heroPools";
+  optimizerWeaponLevel, setOptimizationPoolEnabled, setOwnedHero, optimizerServerGeneration,
+  configuredHeadHeroIds, heroOwnershipScope, setHeroOwnershipScope } from "../pvp/optimizer/heroPools";
 import { resolveSearchDimensions, type SearchDimensionsAudit } from "../pvp/optimizer/searchDimensions";
 import { isThreeQueueBattleInput, battleSceneLabel } from "../pvp/scenario/scenePolicy";
 import { normalizeInnerEarthInput, getInnerEarthConfig, getInnerEarthRule, assertInnerEarthInput, sanitizeInnerEarthForStage,
@@ -133,7 +141,8 @@ perfMark("main loaded");
 perfMark("app init start");
 
 const catalog = getValidationCatalog();
-let input = createDefaultValidationInput();
+const headPoolOwnershipMigrationNotice = "已将旧英雄可用列表迁移为我的英雄，并补充当前手动阵容已选英雄；其他新解锁英雄请确认拥有。已有参与开关和专武等级保留。";
+let input = createPlayerDefaultInput();
 let editorMode: EditorMode = "simple";
 let developerToolsEnabled = new URLSearchParams(location.search).get("dev") === "1";
 try { const layers = resolveEditorLayers(location.search, window.localStorage);
@@ -143,6 +152,7 @@ const simpleTroopModes: Record<SideId, "count" | "ratio"> = { A: "count", B: "co
 const simpleRatioDrafts: Record<SideId, RallyTroopRatios | null> = { A: null, B: null };
 let simpleDetailsOpen = false;
 let playerSingleDetailsOpen = false;
+let lineupActionsOpen = false;
 let appDialog: AppDialog | null = null;
 let recognitionState = createReportRecognitionState();
 const specialWarningsAcknowledged: Record<SideId, boolean> = { A: false, B: false };
@@ -215,6 +225,7 @@ try {
     if (restored.adjusted || restored.migrated) {
       storageNotice = restored.queueAttributesMigrated
         ? "旧三队列配置已复制为三个队伍相同属性，请根据实际战报调整。"
+        : restored.headPoolOwnershipMigrated ? headPoolOwnershipMigrationNotice
         : "已迁移旧配置；旧版本可能自动保存了固定车头，已重置为不固定，请按需重新勾选。";
     }
     if (restored.sceneMigrationWarnings?.length) storageNotice = [storageNotice, ...restored.sceneMigrationWarnings].filter(Boolean).join(" ");
@@ -265,8 +276,14 @@ app.addEventListener("change", (event) => {
   if (target.dataset.scope === "member-search") return;
   captureExpandedSections();
   const scope = target.dataset.scope;
+  if (scope === "optimizer-fixture-file" && target instanceof HTMLInputElement && developerToolsEnabled) {
+    const file = target.files?.[0];
+    if (file) void file.text().then((text) => importOptimizerFixture(text, false));
+    return;
+  }
   if (!developerToolsEnabled && (scope === "developer" || scope === "override" || scope === "disable" ||
     scope === "actual" || scope === "trace-range" || scope === "attribute-input-mode" || scope === "casualty-mode" ||
+    scope === "leader-skill-level" || scope === "queue-skill-level" ||
     scope === "control" && target.dataset.field === "maxRounds")) return;
   if (scope === "dialog-name") { if (appDialog !== null) appDialog.name = target.value; return; }
   if (scope === "import-file" && target instanceof HTMLInputElement) {
@@ -382,6 +399,7 @@ app.addEventListener("change", (event) => {
       const previousEarth = input.innerEarth;
       input = sanitized.input.scenarioType === "INNER_EARTH" ? sanitizeInnerEarthForStage(sanitized.input, stage) : sanitized.input;
       input = normalizeIceFireReportLineage(input);
+      input = initializeOptimizerWeaponLevels(input, catalog.leaderHeroes);
       stageNotice = sanitized.changed || JSON.stringify(previousEarth) !== JSON.stringify(input.innerEarth)
         ? "服务器阶段已调整，部分超阶段英雄/兵种配置已重置。" : null;
       optimizationConfig = defaultOptimizationConfig(input.randomSeed);
@@ -414,6 +432,7 @@ app.addEventListener("change", (event) => {
     if (scope === "owned-hero") {
       input = setOwnedHero(input, target.dataset.heroId!, (target as HTMLInputElement).checked);
     }
+    if (scope === "hero-ownership-scope") input = setHeroOwnershipScope(input, target.value === "allAvailable" ? "allAvailable" : "owned");
     if (scope === "hero-pool-side") heroPoolSide = input.scenarioType === "INNER_EARTH" ? "A" : target.value === "B" ? "B" : "A";
     if (scope === "owned-weapon") updateOwnedWeapon(target as HTMLSelectElement);
     if (scope === "override") updateOverride(target as HTMLSelectElement);
@@ -438,6 +457,10 @@ app.addEventListener("change", (event) => {
 
 app.addEventListener("input", (event) => {
   const target = event.target;
+  if (typeof HTMLTextAreaElement !== "undefined" && target instanceof HTMLTextAreaElement && target.dataset.scope === "import-config-text") {
+    if (appDialog !== null) appDialog.importText = target.value;
+    return;
+  }
   if (target instanceof HTMLInputElement && target.dataset.scope === "dialog-name") {
     if (appDialog !== null) appDialog.name = target.value;
     return;
@@ -535,7 +558,7 @@ app.addEventListener("keydown", (event) => {
     event.preventDefault(); app.querySelector<HTMLButtonElement>('[data-action="dialog-confirm"]')?.click();
   }
   if (keyboard.key === "Tab") {
-    const fields = [...app.querySelectorAll<HTMLElement>('.app-dialog input, .app-dialog button')];
+    const fields = [...app.querySelectorAll<HTMLElement>('.app-dialog input, .app-dialog textarea, .app-dialog button')];
     const first = fields[0], last = fields.at(-1);
     if (keyboard.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
     else if (!keyboard.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
@@ -548,7 +571,21 @@ app.addEventListener("click", (event) => {
   const actionTarget = target.closest<HTMLElement>("[data-action]");
   const action = actionTarget?.dataset.action;
   if (action === undefined) return;
-  if (!developerToolsEnabled && ["disable-random", "auto-random", "copy-input", "copy-trace", "copy-result", "copy-optimizer-performance", "export-config", "import-config", "export-profile"].includes(action)) return;
+  if (["download-optimizer-fixture", "copy-optimizer-fixture", "import-optimizer-fixture", "import-run-optimizer-fixture"].includes(action)) {
+    if (!developerToolsEnabled || optimizationRunning) return;
+    if (action === "download-optimizer-fixture" || action === "copy-optimizer-fixture") {
+      void createOptimizerBenchmarkFixture(input, optimizationConfig, batchCount).then(async (fixture) => {
+        const json = JSON.stringify(fixture, null, 2);
+        if (action === "download-optimizer-fixture") downloadConfig(json, "完整优化BenchmarkFixture");
+        else await navigator.clipboard.writeText(json);
+        showToast(action === "download-optimizer-fixture" ? "完整优化 Benchmark Fixture 已下载" : "完整优化 Benchmark Fixture 已复制");
+      }).catch((error) => { errorMessage = error instanceof Error ? error.message : String(error); render(); });
+    } else appDialog = { title: "导入完整优化 Benchmark Fixture", importText: "", confirmLabel: action === "import-run-optimizer-fixture" ? "导入并复跑" : "校验并导入",
+      onConfirm: (text) => { void importOptimizerFixture(text, action === "import-run-optimizer-fixture"); } };
+    render(); return;
+  }
+  if (!developerToolsEnabled && ["disable-random", "auto-random", "copy-input", "copy-trace", "copy-result", "copy-optimizer-performance"].includes(action)) return;
+  if (action === "lineup-actions-toggle") { lineupActionsOpen = !lineupActionsOpen; render(); return; }
   if (action === "editor-mode") {
     captureExpandedSections();
     editorMode = actionTarget?.dataset.mode === "advanced" ? "advanced" : "simple";
@@ -610,7 +647,7 @@ app.addEventListener("click", (event) => {
   if (action === "dialog-cancel") { appDialog = null; render(); return; }
   if (action === "dialog-confirm" && appDialog !== null) {
     const current = appDialog;
-    try { current.onConfirm(current.name ?? ""); if (appDialog === current) appDialog = null;
+    try { current.onConfirm(current.importText ?? current.name ?? ""); if (appDialog === current) appDialog = null;
       refreshSavedProfiles(); errorMessage = null;
     } catch (error) { current.error = error instanceof Error ? error.message : String(error); }
     render(); return;
@@ -737,8 +774,16 @@ app.addEventListener("click", (event) => {
     render();
     return;
   }
+  if (action === "hero-pool-own-current") {
+    for (const id of configuredHeadHeroIds(input).filter((id) => isHeroAvailableAtStage(id, validationStageId(input))))
+      input = setOwnedHero(input, id, true);
+    revisionState = markValidationInputChanged(revisionState);
+    render();
+    return;
+  }
   if (action === "import-config") {
-    app.querySelector<HTMLInputElement>('[data-scope="import-file"]')?.click();
+    appDialog = { title: "导入阵容配置", importText: "", confirmLabel: "解析并预览", onConfirm: (text) => previewConfigurationImport(text) };
+    render();
     return;
   }
   if (action === "open-optimizer") {
@@ -777,7 +822,8 @@ app.addEventListener("click", (event) => {
       if (action === "load-profile" && actionTarget !== null) {
         const profile = profileByAction(actionTarget);
         const loaded = restorePersistedConfig(profileEnvelope(profile));
-        const restored = { ...loaded, ...(profile.optimizerRacingMigrated ? { optimizerRacingMigrated: true } : {}), queueAttributesMigrated:
+        const restored = { ...loaded, ...(profile.optimizerRacingMigrated ? { optimizerRacingMigrated: true } : {}),
+          ...(profile.headPoolOwnershipMigrated ? { headPoolOwnershipMigrated: true } : {}), queueAttributesMigrated:
           profile.queueAttributesMigrated === true || loaded.queueAttributesMigrated };
         appDialog = { title: "载入方案", message: importPreview(restored), confirmLabel: "载入", onConfirm: () => applyRestoredSetup(restored, "方案") };
       }
@@ -862,7 +908,7 @@ app.addEventListener("click", (event) => {
       storageStatus = "error";
       storageNotice = error instanceof Error ? error.message : "清除自动存档失败。";
     }
-    input = createDefaultValidationInput();
+    input = createPlayerDefaultInput();
     result = null;
     batchCount = DEFAULT_BATCH_SIMULATION_COUNT;
     batchResult = null;
@@ -1048,9 +1094,22 @@ function applyRestoredSetup(restored: RestoredBattleSetup, source: string): void
     : `${source}已载入${restored.migrated ? "，旧版本已迁移；固定车头已重置为不固定，请按需重新勾选" : ""}。`;
   if (restored.sceneMigrationWarnings?.length) storageNotice = [storageNotice, ...restored.sceneMigrationWarnings].filter(Boolean).join(" ");
   if (restored.optimizerRacingMigrated) storageNotice += ` ${optimizerRacingMigrationNotice}`;
+  if (restored.headPoolOwnershipMigrated) storageNotice += ` ${headPoolOwnershipMigrationNotice}`;
   errorMessage = null;
   lastQueuedStorageSnapshot = "";
   render();
+}
+
+async function importOptimizerFixture(text: string, rerun: boolean): Promise<void> {
+  if (optimizationRunning) return;
+  try {
+    const restored = await restoreOptimizerBenchmarkFixture(text);
+    applyRestoredSetup(restored, "完整优化 Benchmark Fixture");
+    optimizerPanelOpen = true;
+    storageNotice = "已校验完整 Fixture；Head/Body 空间、共同种子和全部优化参数已恢复。";
+    render();
+    if (rerun) await runOptimizer();
+  } catch (error) { errorMessage = error instanceof Error ? error.message : String(error); render(); }
 }
 
 function requireConfigStorage(): LocalStorageConfigStorage {
@@ -1093,6 +1152,12 @@ function downloadConfig(json: string, name: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+function previewConfigurationImport(text: string): void {
+  const restored = parseConfigurationImport(text, batchCount);
+  appDialog = { title: "导入阵容配置", message: importPreview(restored), confirmLabel: "载入阵容", onConfirm: () => applyRestoredSetup(restored, "导入配置") };
+  render();
+}
+
 function importPreview(restored: RestoredBattleSetup): string {
   const stage = getServerStage(validationStageId(restored.input));
   const scenario = restored.input.scenarioType ?? "SINGLE";
@@ -1106,9 +1171,7 @@ function importPreview(restored: RestoredBattleSetup): string {
 async function importConfigFile(file: File | null): Promise<void> {
   if (file === null) return;
   try {
-    const restored = parsePersistedJson(await file.text());
-    appDialog = { title: "导入配置", message: importPreview(restored), confirmLabel: "载入", onConfirm: () => applyRestoredSetup(restored, "导入配置") };
-    render();
+    previewConfigurationImport(await file.text());
   } catch (error) {
     errorMessage = error instanceof Error ? `导入失败：${error.message}` : "导入失败。";
     render();
@@ -1116,6 +1179,7 @@ async function importConfigFile(file: File | null): Promise<void> {
 }
 
 function render(): void {
+  if (!developerToolsEnabled) input = normalizePlayerHeroLevels(input);
   try { renderApp(); queueMicrotask(scheduleAutosaveIfChanged); }
   catch (error) { console.error("PVP UI render failed", error); renderFatalError(error); }
 }
@@ -1138,7 +1202,7 @@ function renderApp(): void {
         blocked: recognitionPending || (input.battleContext === "rally" && input.attributeInputMode === "prediction" && !rallyDeploymentValid()) ||
           ((isThreeQueueBattleInput(input) || input.scenarioType === "INNER_EARTH") && !threeQueueValid()),
         result: batchResult, troopModes: simpleTroopModes, ratioDrafts: simpleRatioDrafts,
-        detailsOpen: false, renderAttributes: renderAttributeInputs, renderBuffs: renderExternalBuffs,
+        detailsOpen: false, developer: developerToolsEnabled, renderAttributes: renderAttributeInputs, renderBuffs: renderExternalBuffs,
         renderMoreBuffs: renderSimpleMoreBuffs,
         renderFold: (key, summary, body) => lazyDetails.render(key, summary, body, 'class="simple-fold"'),
       })}${developerToolsEnabled ? renderDeveloperTools(preview, resultIsStale) : ""}</main>${simpleDetailsOpen ? renderSimpleResultDrawer() : ""}`;
@@ -1154,16 +1218,13 @@ function renderApp(): void {
       ${stageNotice === null ? "" : `<div class="stage-notice" role="status">${escapeHtml(stageNotice)}</div>`}
       ${storageNotice === null ? "" : `<div class="stage-notice" role="status">${escapeHtml(storageNotice)}</div>`}
       ${errorMessage === null ? "" : `<div class="error-box" role="alert">${escapeHtml(errorMessage)}</div>`}
-      <div class="advanced-toolbar"><span class="advanced-autosave" data-storage-status>配置自动保存在本机</span><button class="btn btn-small" data-action="save-profile">保存阵容</button><button class="btn btn-small" data-action="simple-share">分享阵容 ↗</button><button class="btn btn-small" data-action="open-optimizer">配队优化</button></div>
-      ${input.scenarioType === "INNER_EARTH" ? "" : `<div class="side-transfer-bar advanced-transfer" aria-label="双方配置辅助操作">
-        <button class="btn btn-small" type="button" data-action="copy-a-to-b">A → B 复制配置</button>
-        <button class="btn btn-small" type="button" data-action="swap-sides">交换 A / B</button>
-      </div>`}
+      ${renderAdvancedLineupActions(lineupActionsOpen, input.scenarioType === "INNER_EARTH")}
       ${input.scenarioType === "INNER_EARTH" ? renderInnerEarthForm(input, "player", (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')) : `<section class="config-grid advanced-config" aria-label="双方战斗配置">
         ${renderAdvancedSide("A", input.sideA)}
         ${renderAdvancedSide("B", input.sideB)}
       </section>`}
-      ${lazyDetails.render("player-more-settings", "其他高级设置 · 战报导入与阵容管理", () => `${renderReportImporter()}${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}${renderPlayerProfiles()}`, 'class="advanced-fold advanced-more-settings"')}
+      ${lazyDetails.render("player-report-import", "战报 / 属性导入", renderReportImporter, 'class="advanced-fold advanced-more-settings"')}
+      ${lazyDetails.render("player-profile-management", "阵容与预设管理", () => `${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}${renderPlayerProfiles()}`, 'class="advanced-fold advanced-more-settings"')}
       ${renderAdvancedRun(input, batchCount, batchRunning, batchProgress, playerRunBlocked())}
       ${optimizerPanelOpen ? renderPlayerOptimizer() : ""}
       ${renderAdvancedBatch(batchResult)}
@@ -1191,12 +1252,19 @@ function renderDeveloperTools(preview: ReturnType<typeof safePreview>, resultIsS
           return renderDebugPanel(state === null ? [] : getActiveSkillUniverse(state));
         }, 'class="panel debug-panel" data-expanded-section="advanced-debug"')}
       ${timeUiSection("report importer render", renderReportImporter)}
+      ${isThreeQueueBattleInput(input) || input.scenarioType === "INNER_EARTH" ? "" : `<h3>英雄技能等级覆盖</h3><div class="config-grid">${(["A", "B"] as const).map((side) => `<section><h4>${side}方普通英雄远征技能</h4>${renderPlayerHeroSkills(side, getInputSide(side))}</section>`).join("")}</div>`}
       ${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}
       ${input.scenarioType === "INNER_EARTH" ? renderInnerEarthForm(input) : `<div class="config-grid">${isThreeQueueBattleInput(input) ? renderThreeQueueSide("A", input.sideA) : renderSide("A", input.sideA, preview, null)}${isThreeQueueBattleInput(input) ? renderThreeQueueSide("B", input.sideB) : renderSide("B", input.sideB, preview, null)}</div>`}
     </details>
     <details class="dev-group" data-dev-group="damage"><summary>Damage Debug · 伤害与效果日志</summary>${isThreeQueueBattleInput(input) ? threeQueueResult === null ? '<p class="hint">先运行单场。</p>' : renderThreeQueueResults(threeQueueResult, resultIsStale) : result === null ? '<p class="hint">先运行单场以加载 DamageEvent Trace。</p>' : renderResults(result, resultIsStale)}</details>
     <details class="dev-group" data-dev-group="rng"><summary>RNG Debug · 逐技能随机判定</summary>${result === null ? '<p class="hint">先运行单场。固定判定通过 Skill Debug 中的覆盖选项设置。</p>' : `<pre>${escapeHtml(JSON.stringify(result.trace.rounds.map((round) => ({ round: round.round, troopSkills: round.troopSkills.filter((skill) => skill.probability !== null), heroSkills: round.heroSkills.filter((skill) => skill.probability !== null), procEffectFamilies: round.procEffectFamilies })), null, 2))}</pre>`}</details>
-    <details class="dev-group" data-dev-group="theory"><summary>Theory / Criterion · 优化参数与内部诊断</summary>${optimizerPanelOpen ? renderOptimizer() : '<p class="hint">打开配队优化后，可在此查看和调整原有完整优化参数。</p>'}</details>
+    <details class="dev-group" data-dev-group="theory"><summary>Theory / Criterion · 优化参数与内部诊断</summary>
+      <section class="panel optimizer-fixture-tools"><h3>导出完整优化 Benchmark Fixture</h3><p class="hint">保存双方完整配置、有效候选池、全部优化参数和精确共同种子。导入前校验输入与 Head/Body 空间；复跑使用保存的随机种子。</p>
+      <div class="inline-fields"><button class="btn" data-action="download-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>下载 JSON</button><button class="btn" data-action="copy-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>复制 JSON</button><button class="btn" data-action="import-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>粘贴导入 Fixture</button><button class="btn" data-action="import-run-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>导入并一键复跑</button><label>选择 Fixture 文件<input data-scope="optimizer-fixture-file" type="file" accept="application/json,.json" ${optimizationRunning ? "disabled" : ""}></label></div></section>
+      ${lazyDetails.render("head-pool-audit", "Head Pool Audit + H0（只检查候选池，不运行战斗）", () => {
+      const audit = createHeadPoolAudit(input, input.scenarioType === "RALLY" ? optimizationConfig.constraints : {}, heroPoolSide);
+      return `${audit.warning ? `<p class="error-box">${audit.warning}</p>` : ""}<pre>${escapeHtml(JSON.stringify({ headPoolAudit: audit }, null, 2))}</pre>`;
+    })}${optimizerPanelOpen ? renderOptimizer() : '<p class="hint">打开配队优化后，可在此查看和调整原有完整优化参数。</p>'}</details>
     <details class="dev-group" data-dev-group="raw"><summary>Raw Data · 查看原始调试数据</summary>${renderRuleUnknowns()}${renderStoragePanel()}<details class="mini-details"><summary>canonical config JSON</summary><button class="btn" data-action="copy-input">复制战斗输入</button><pre>${escapeHtml(JSON.stringify(input, null, 2))}</pre></details>${renderBatchStatistics(batchResult)}${result === null ? "" : renderDeveloperMode(result)}
       ${input.scenarioType === "INNER_EARTH" ? lazyDetails.render("inner-earth-audit", "地心玩法审计", () =>
         `<pre>${escapeHtml(JSON.stringify(createInnerEarthAudit(input), null, 2))}</pre>`, 'class="panel"') : ""}
@@ -1214,15 +1282,15 @@ function playerRunBlocked(): boolean {
 
 function renderAdvancedSide(sideId: SideId, side: ValidationSideInput): string {
   if (isThreeQueueBattleInput(input)) {
-    return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方三队阵容</h2><span>每队独立配置 · 容量 ${formatNumber(side.deploymentCapacity ?? TROOP_TYPES.reduce((sum, troop) => sum + side.troops[troop].count, 0))}</span></header><div class="advanced-side-body">${lazyDetails.render(`player-queues-${sideId}`, '三队英雄、兵种与属性设置', () => renderIceFireSide(input, sideId, (index) => renderQueueHeroSkillLevels(sideId, index, getValidationThreeQueues(side)[index]!), false, (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')), 'class="advanced-fold"')}</div></article>`;
+    return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方三队阵容</h2><span>每队独立配置 · 容量 ${formatNumber(side.deploymentCapacity ?? TROOP_TYPES.reduce((sum, troop) => sum + side.troops[troop].count, 0))}</span></header><div class="advanced-side-body">${lazyDetails.render(`player-queues-${sideId}`, '三队英雄、兵种与属性设置', () => renderIceFireSide(input, sideId, undefined, false, (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')), 'class="advanced-fold"')}</div></article>`;
   }
   const is333 = input.scenarioType === "THREE_THREE_THREE";
   const display = is333 ? resolveThreeThreeThreeSide(side) : side;
   const isRally = input.battleContext === "rally" && input.attributeInputMode === "prediction";
-  return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2><b>${sideId}</b> ${sideId === "A" ? "我方阵容" : "对比阵容"}</h2><span>${optimizationTargetLabel(input.scenarioType, sideId)}</span></header><div class="advanced-side-body"><h3>英雄阵容</h3><div class="simple-heroes">${TROOP_TYPES.map((troop) => renderSimpleHero(sideId, side, troop, input)).join("")}</div><div class="advanced-section-title"><h3>兵量与兵种等级</h3><span>总兵力 ${formatNumber(TROOP_TYPES.reduce((sum, troop) => sum + display.troops[troop].count, 0))}</span></div>${is333 ? render333Deployment(sideId, side) : ""}${isRally ? renderRallyDeployment(sideId, side) : ""}<div class="troop-cards advanced-troop-cards">${TROOP_TYPES.map((troop) => renderTroopRow(sideId, troop, display.troops[troop], display, false)).join("")}</div>
-    ${lazyDetails.render(`player-attributes-${sideId}`, '<span>战报属性</span><small>12 项百分数</small>', () => `<label>这些属性来自哪里？<select data-scope="player-attribute-source"><option value="report" ${input.attributeInputMode !== "prediction" ? "selected" : ""}>最终战报 · 已含增益</option><option value="base" ${input.attributeInputMode === "prediction" ? "selected" : ""}>基础面板 · 另行配置增益</option></select></label><p class="hint">${input.attributeInputMode === "prediction" ? "填写基础面板，沿用当前历史阵容与增益设置推算战报属性。" : "填写战报百分数；英雄、专武及外部属性增益已包含，不重复叠加。"}</p>${renderAttributeInputs(sideId, side)}<button class="btn btn-small" data-action="simple-copy-attributes" data-side="${sideId}">复制到另一方</button>`, 'class="advanced-fold"')}
-    ${lazyDetails.render(`player-buffs-${sideId}`, '<span>城镇、宠物与专家 Buff</span><small>完整增益设置</small>', () => `<p class="hint">${input.attributeInputMode === "prediction" ? "当前环境增益通过下面的当前加成设置选择。" : "最终战报已经包含属性增益，下方仅查看已保存的环境配置。"}</p>${input.attributeInputMode === "prediction" ? `<h4>历史战报英雄与专武</h4><div class="hero-slot-grid">${TROOP_TYPES.map((troop) => renderHeroSelect("report-hero", sideId, side, troop)).join("")}</div>${renderBonusContexts(sideId, side)}` : ""}<fieldset ${input.attributeInputMode !== "prediction" || bonusModeForDisplay(side) !== "custom" ? "disabled" : ""}>${renderExternalBuffs(sideId, side)}</fieldset>${input.attributeInputMode === "prediction" ? `<h4>出征容量增益</h4><div class="inline-fields"><label>出征容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="${input.battleContext === "rally" ? "rallyCapacityBonus" : "marchCapacityBonus"}" type="text" inputmode="decimal" value="${((input.battleContext === "rally" ? side.rallyCapacityBonus : side.marchCapacityBonus) ?? 0) * 100}"></label><label>宠物出征容量等级<select data-scope="capacity" data-side="${sideId}" data-field="petMarchCapacityLevel">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === (side.petMarchCapacityLevel ?? 0) ? "selected" : ""}>Lv${level} · +${level * 1500}</option>`).join("")}</select></label></div>` : ""}`, 'class="advanced-fold"')}
-    ${lazyDetails.render(`player-skills-${sideId}`, '<span>英雄及技能详细设置</span><small>远征技能 / T12</small>', () => `${renderPlayerHeroSkills(sideId, side)}<h4>T12技能等级</h4><div class="inline-fields">${TROOP_TYPES.map((troop) => `<label>${troopName(troop)}<select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: 25 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("")}</div>`, 'class="advanced-fold"')}
+  return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2><b>${sideId}</b> ${sideId === "A" ? "我方阵容" : "对比阵容"}</h2><span>${optimizationTargetLabel(input.scenarioType, sideId)}</span></header><div class="advanced-side-body"><h3>英雄阵容</h3><div class="simple-heroes">${TROOP_TYPES.map((troop) => renderSimpleHero(sideId, side, troop, input, developerToolsEnabled)).join("")}</div><div class="advanced-section-title"><h3>兵量与兵种等级</h3><span>总兵力 ${formatNumber(TROOP_TYPES.reduce((sum, troop) => sum + display.troops[troop].count, 0))}</span></div>${is333 ? render333Deployment(sideId, side) : ""}${isRally ? renderRallyDeployment(sideId, side) : ""}<div class="troop-cards advanced-troop-cards">${TROOP_TYPES.map((troop) => renderTroopRow(sideId, troop, display.troops[troop], display, false)).join("")}</div>
+    ${lazyDetails.render(`player-attributes-${sideId}`, '<span>战报属性</span><small>12 项百分数</small>', () => `<label>这些属性来自哪里？<select data-scope="player-attribute-source"><option value="report" ${input.attributeInputMode !== "prediction" ? "selected" : ""}>最终战报 · 已含增益</option><option value="base" ${input.attributeInputMode === "prediction" ? "selected" : ""}>基础面板 · 另行配置增益</option></select></label><p class="hint">${input.attributeInputMode === "prediction" ? "填写基础面板，并单独配置当前战斗增益。历史战报特殊加成只用于反推基础属性，不会自动带入当前战斗。" : "填写战报百分数；英雄、专武及外部属性增益已包含，不重复叠加。"}</p>${renderAttributeInputs(sideId, side)}<button class="btn btn-small" data-action="simple-copy-attributes" data-side="${sideId}">复制到另一方</button>`, 'class="advanced-fold"')}
+    ${lazyDetails.render(`player-buffs-${sideId}`, '<span>城镇、宠物与专家 Buff</span><small>完整增益设置</small>', () => `<p class="hint">${input.attributeInputMode === "prediction" ? "选择城镇、宠物或专家增益后自动用于当前战斗。" : "增益可以编辑并保存。最终战报已含属性增益，当前模拟不再叠加；使用基础面板时按这些设置计算。"}</p>${input.attributeInputMode === "prediction" ? `<h4>历史战报英雄与专武</h4><div class="hero-slot-grid">${TROOP_TYPES.map((troop) => renderHeroSelect("report-hero", sideId, side, troop)).join("")}</div>${renderBonusContexts(sideId, side)}` : ""}${renderExternalBuffs(sideId, side)}${input.attributeInputMode === "prediction" ? `<h4>出征容量增益</h4><div class="inline-fields"><label>出征容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="${input.battleContext === "rally" ? "rallyCapacityBonus" : "marchCapacityBonus"}" type="text" inputmode="decimal" value="${((input.battleContext === "rally" ? side.rallyCapacityBonus : side.marchCapacityBonus) ?? 0) * 100}"></label><label>宠物出征容量等级<select data-scope="capacity" data-side="${sideId}" data-field="petMarchCapacityLevel">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === (side.petMarchCapacityLevel ?? 0) ? "selected" : ""}>Lv${level} · +${level * 1500}</option>`).join("")}</select></label></div>` : ""}`, 'class="advanced-fold"')}
+    ${lazyDetails.render(`player-t12-${sideId}`, '<span>T12兵种技能</span><small>盾兵 / 矛兵 / 射手</small>', () => `<div class="inline-fields">${TROOP_TYPES.map((troop) => `<label>${troopName(troop)}<select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: 25 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("")}</div>`, 'class="advanced-fold"')}
     ${lazyDetails.render(`player-weapons-${sideId}`, '<span>英雄专武</span><small>各英雄独立等级</small>', () => TROOP_TYPES.map((troop) => { const id = side.leaderHeroIds?.[troop]; return id ? renderWeaponLevelInput("simulation-weapon", sideId, id, `${catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? "英雄"}专武`, side.simulationWeaponLevels?.[id] ?? 0) : ""; }).join("") || '<p class="hint">先选择英雄。</p>', 'class="advanced-fold"')}
     ${input.battleContext === "rally" ? lazyDetails.render(`player-rally-${sideId}`, '<span>集结详细设置</span><small>车身英雄 / 容量增益</small>', () => `<h4>车身英雄</h4><div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div><h4>容量增益</h4><div class="inline-fields"><label>集结容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="rallyCapacityBonus" type="text" inputmode="decimal" value="${(side.rallyCapacityBonus ?? 0) * 100}"></label><label>额外固定容量<input data-scope="capacity" data-side="${sideId}" data-field="rallyFixedCapacityBonus" type="number" min="0" value="${side.rallyFixedCapacityBonus ?? 0}"></label></div>`, 'class="advanced-fold"') : ""}
     </div></article>`;
@@ -1235,8 +1303,9 @@ function renderPlayerHeroSkills(sideId: SideId, side: ValidationSideInput): stri
 }
 
 function renderPlayerProfiles(): string {
-  return renderStoragePanel().replace(/<button[^>]*data-action="(?:export-config|import-config|export-profile)"[^>]*>[\s\S]*?<\/button>/g, "")
-    .replace(/<input[^>]*data-scope="import-file"[^>]*>/g, "").replace("选择配置 JSON 文件", "选择阵容文件");
+  return renderStoragePanel().replace(/<button[^>]*data-action="save-profile"[^>]*>[\s\S]*?<\/button>/g, "")
+    .replace("导出配置", "导出阵容").replace("导入配置", "导入阵容")
+    .replace("恢复默认配置", "恢复默认阵容").replace("选择配置 JSON 文件", "选择阵容文件");
 }
 
 function renderPlayerDetailsDrawer(): string {
@@ -1249,11 +1318,11 @@ function renderPlayerOptimizer(): string {
   const field = (scope: string, key: string, value: number, label: string) => `<label>${label}<input data-scope="${scope}" data-field="${key}" type="number" min="1" value="${value}"></label>`;
   const chooseSide = (scope: string, key: string, value: SideId) => `<label>优化哪一方<select data-scope="${scope}" data-field="${key}"><option value="A" ${value === "A" ? "selected" : ""}>${scope === "optimizer" ? "集结进攻方" : "A方"}</option><option value="B" ${value === "B" ? "selected" : ""}>${scope === "optimizer" ? "集结防守方" : "B方"}</option></select></label>`;
   let fields = "";
-  if (route === "rally") fields = `${chooseSide("optimizer", "candidateSide", optimizationConfig.candidateSide ?? "A")}${(optimizationConfig.candidateSide ?? "A") === "A" ? `<label>目标<select data-scope="optimizer" data-field="objectiveMode">${([['auto', '自动选择'], ['singleWin', '最高单波胜率'], ['minRallies', '最少集结击破']] as const).map(([value, name]) => `<option value="${value}" ${optimizationConfig.objectiveMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label>` : ""}${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}${field("optimizer", "verificationTop", optimizationConfig.verificationTop, "最终候选数")}<label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>${input.attributeInputMode === "prediction" ? `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
+  if (route === "rally") fields = `${chooseSide("optimizer", "candidateSide", optimizationConfig.candidateSide ?? "A")}${(optimizationConfig.candidateSide ?? "A") === "A" ? `<label>目标<select data-scope="optimizer" data-field="objectiveMode">${([['auto', '自动选择'], ['singleWin', '最高单波胜率'], ['minRallies', '最少集结击破']] as const).map(([value, name]) => `<option value="${value}" ${optimizationConfig.objectiveMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label>` : ""}${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}<label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>${input.attributeInputMode === "prediction" ? `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
   else if (route === "threeQueue" || route === "innerEarth" && ["HEART_OF_EARTH", "HERO_LAND"].includes(getInnerEarthConfig(input).subMode)) fields = `${route === "innerEarth" ? '<label>优化对象<output>A方</output></label>' : chooseSide("three-queue-optimizer", "side", threeQueueOptimizerOptions.side)}${field("three-queue-optimizer", "finalValidationCount", threeQueueOptimizerOptions.finalValidationCount, "最终复验场次")}${field("three-queue-optimizer", "finalCandidateCount", threeQueueOptimizerOptions.finalCandidateCount, "最终候选数")}<label>对手变阵<select data-scope="three-queue-optimizer" data-field="enemyPermutationMode">${([['fixedCurrent', '当前顺序'], ['allPermutations', '全部六种排列'], ['worstCase', '最不利顺序']] as const).map(([value, name]) => `<option value="${value}" ${threeQueueOptimizerOptions.enemyPermutationMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label><label>固定我方队伍顺序<input data-scope="three-queue-optimizer" data-field="fixedOwnQueueOrder" type="checkbox" ${threeQueueOptimizerOptions.fixedOwnQueueOrder ? "checked" : ""}></label><div class="advanced-queue-locks">${[0, 1, 2].map((index) => `<label>固定第${index + 1}队英雄<input data-scope="three-queue-optimizer" data-field="lockHeroes" data-queue-index="${index}" type="checkbox" ${threeQueueOptimizerOptions.lockHeroes[index] ? "checked" : ""}></label><label>固定第${index + 1}队比例<input data-scope="three-queue-optimizer" data-field="lockRatios" data-queue-index="${index}" type="checkbox" ${threeQueueOptimizerOptions.lockRatios[index] ? "checked" : ""}></label>`).join("")}</div>`;
   else fields = `${route === "innerEarth" ? '<label>优化对象<output>A方兵种比例</output></label>' : chooseSide("simple-optimizer", "side", simpleOptimizerOptions.side)}${field("simple-optimizer", "verificationTrials", simpleOptimizerOptions.verificationTrials, "最终复验场次")}${field("simple-optimizer", "topN", simpleOptimizerOptions.topN, "最终候选数")}${input.attributeInputMode === "prediction" && route !== "innerEarth" ? `<label>固定当前英雄<input data-scope="simple-optimizer" data-field="fixedHeroes" type="checkbox" ${simpleOptimizerOptions.fixedHeroes ? "checked" : ""}></label>` : ""}<label>固定当前配兵<input data-scope="simple-optimizer" data-field="fixedRatio" type="checkbox" ${simpleOptimizerOptions.fixedRatio ? "checked" : ""}></label>`;
   const noHeroes = input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty";
-  return `<section class="panel optimizer-panel player-optimizer"><header class="panel-head"><h2>配队优化</h2><span class="tag tag-cyan">比较合法阵容的战斗表现</span></header><div class="panel-body"><p class="hint">固定对手和已有战报属性，用模拟比较候选阵容。${input.attributeInputMode !== "prediction" ? "当前车头及实际专武固定；保持最终战报的属性含义。" : "可选择参与比较的英雄，或固定当前英雄只优化配兵。"}</p>${noHeroes ? "" : renderHeroPool()}<div class="optimizer-fields">${fields}</div><button class="btn btn-primary" data-action="run-optimizer" ${optimizationRunning || playerRunBlocked() ? "disabled" : ""}>${optimizationRunning ? "搜索中…" : "开始自动配队"}</button>${optimizationRunning ? '<button class="btn" data-action="cancel-optimizer">取消搜索</button>' : ""}<span class="optimizer-progress hint">${optimizationProgress ? playerOptimizerProgress(optimizationProgress.completed, optimizationProgress.total) : ""}</span></div>${renderPlayerOptimizationResults()}</section>`;
+  return `<section class="panel optimizer-panel player-optimizer"><header class="panel-head"><h2>配队优化</h2><span class="tag tag-cyan">比较合法阵容的战斗表现</span></header><div class="panel-body"><p class="hint">固定对手和已有战报属性，用模拟比较候选阵容。${input.attributeInputMode !== "prediction" ? "当前车头及实际专武固定；保持最终战报的属性含义。" : "可选择参与比较的英雄，或固定当前英雄只优化配兵。"}</p>${noHeroes ? "" : renderHeroPool()}<div class="optimizer-fields">${fields}</div><button class="btn btn-primary" data-action="run-optimizer" ${optimizationRunning || playerRunBlocked() ? "disabled" : ""}>${optimizationRunning ? "搜索中…" : "开始自动配队"}</button>${optimizationRunning ? '<button class="btn" data-action="cancel-optimizer">取消搜索</button>' : ""}<span class="optimizer-progress hint">${escapeHtml(playerOptimizationProgress(optimizationProgress, optimizationPerformanceReport))}</span></div>${renderPlayerOptimizationResults()}</section>`;
 }
 
 function renderPlayerOptimizationResults(): string {
@@ -1267,7 +1336,7 @@ function renderPlayerOptimizationResults(): string {
     return `<h3>地心优化结果</h3>${rows.map((row, index) => { const candidate = row.candidate; const ratios = "ratios" in candidate ? candidate.ratios : undefined; return card(index, row.winRate, row.trials, "queues" in candidate ? candidate.queues.map((queue) => heroNames(queue.leaderHeroIds, queue.headWeaponLevels)).join("；") : `${heroNames(candidate.leaderHeroIds, candidate.headWeaponLevels)} · 配比 ${ratios ? TROOP_TYPES.map((troop) => ratios[troop]).join(" / ") : "1:1:1"}`, "apply-inner-earth-optimizer"); }).join("")}`;
   }
   if (isThreeQueueBattleInput(input) && threeQueueOptimizationResult !== null && threeQueueResultRevision === revisionState.inputRevision) return threeQueueOptimizationResult.topCandidates.map((row, index) => card(index, row.winRate, row.trials, row.candidate.queues.map((queue, qi) => `第${qi + 1}队 ${heroNames(queue.leaderHeroIds, queue.headWeaponLevels)} · ${TROOP_TYPES.map((troop) => queue.ratiosBp[troop] / 100).join(" / ")}`).join("；"), "apply-three-queue-optimizer")).join("");
-  if (input.battleContext === "rally" && optimizationResult !== null) return `<h3>集结${(optimizationConfig.candidateSide ?? "A") === "B" ? "防守方" : "进攻方"}优化结果</h3>${optimizationResult.singleWaveTop.map((row, index) => card(index, row.winRate, row.trials, `${heroNames(row.candidate.leaderHeroIds, row.candidate.headWeaponLevels)} · 配比 ${TROOP_TYPES.map((troop) => row.candidate.ratios[troop]).join(" / ")}`, "apply-rally-optimizer")).join("")}${optimizationResult.multiWaveTop.map((plan, index) => `<article class="player-optimization-card"><h3>多波方案 ${index + 1}</h3><p>${plan.targetWaves === null ? "当前验证未达到目标击破概率" : `${plan.targetWaves} 波达到目标击破概率`}</p>${plan.waves.map((wave) => `<p>第${wave.wave}波累计击破 ${formatPercent(wave.defeatProbability)}</p>`).join("")}<button class="btn" data-action="apply-rally-wave" data-index="${index}">应用第1波阵容</button></article>`).join("")}`;
+  if (input.battleContext === "rally" && optimizationResult !== null) return `<h3>集结${(optimizationConfig.candidateSide ?? "A") === "B" ? "防守方" : "进攻方"}优化结果</h3>${optimizationResult.singleWaveTop.map((row, index) => card(index, row.winRate, row.trials, rallyRecommendationDetails(row.candidate, TROOP_TYPES.map((t) => input[(optimizationConfig.candidateSide ?? "A") === "A" ? "sideA" : "sideB"].troops[t].troopLevel), developerToolsEnabled), "apply-rally-optimizer")).join("")}${optimizationResult.multiWaveTop.map((plan, index) => `<article class="player-optimization-card"><h3>多波方案 ${index + 1}</h3><p>${plan.targetWaves === null ? "当前验证未达到目标击破概率" : `${plan.targetWaves} 波达到目标击破概率`}</p>${plan.waves.map((wave) => `<p>第${wave.wave}波累计击破 ${formatPercent(wave.defeatProbability)}</p>`).join("")}<button class="btn" data-action="apply-rally-wave" data-index="${index}">应用第1波阵容</button></article>`).join("")}`;
   if (simpleOptimizationResult !== null && simpleResultRevision === revisionState.inputRevision) return simpleOptimizationResult.topCandidates.map((row, index) => card(index, row.winRate, row.trials, `${heroNames(row.candidate.leaderHeroIds, row.candidate.headWeaponLevels)} · 配比 ${row.candidate.ratios ? TROOP_TYPES.map((troop) => row.candidate.ratios![troop]).join(" / ") : "1:1:1"}`, "apply-simple-optimizer")).join("");
   return "";
 }
@@ -1322,23 +1391,30 @@ function renderHeroPool(): string {
   if (input.attributeInputMode !== "prediction" && !isIceFireInput(input)) return "";
   if (input.scenarioType === "INNER_EARTH") heroPoolSide = "A";
   const owned = new Set(ownedOptimizationHeroIds(input));
-  const heroes = catalog.leaderHeroes.filter((hero) => owned.has(hero.heroId));
+  const heroes = catalog.leaderHeroes.filter((hero) => owned.has(hero.heroId))
+    .sort((a, b) => (a.generation ?? 0) - (b.generation ?? 0));
   const selected = new Set(optimizationHeroIds(input, heroPoolSide));
+  const excludedCurrent = configuredHeadHeroIds(input).filter((id) => !selected.has(id));
+  const unownedCurrent = excludedCurrent.filter((id) => !ownedHeroIds(input).includes(id));
+  const currentNotice = excludedCurrent.length ? `<p class="hint">当前手动阵容中未参与自动 Head 搜索的英雄：${excludedCurrent.map((id) => `${escapeHtml(catalog.leaderHeroes.find((h) => h.heroId === id)?.name ?? id)}（${unownedCurrent.includes(id) ? "未标记拥有" : owned.has(id) ? "未勾选参与" : "R/SR 不参与 Head"}）`).join("、")}。手动阵容独立保留。</p>${unownedCurrent.length ? '<button class="btn btn-small" data-action="hero-pool-own-current">确认当前阵容英雄已拥有</button>' : ""}` : "";
+  const stageWarning = developerToolsEnabled && validationStageId(input) === "s12" && !heroes.some((hero) => hero.generation === 12 && selected.has(hero.heroId))
+    ? '<p class="error-box">S12 server stage but no S12 SSR is eligible for Head optimization</p>' : "";
   const weaponLevels = heroes.filter((hero) => selected.has(hero.heroId)).map((hero) => optimizerWeaponLevel(input, hero.heroId, heroPoolSide));
   const weaponSummary = `专武：Lv10 × ${weaponLevels.filter((level) => level === 10).length} · 自定义等级 × ${weaponLevels.filter((level) => level !== null && level !== 10).length} · 无专武 × ${weaponLevels.filter((level) => level === null).length}`;
   return lazyDetails.render("hero-pool", `<h2>本次优化英雄池</h2><span>参与优化：${selected.size} / 可用 ${owned.size}（已拥有且当前合法） · ${weaponSummary}</span>`, () =>
-    `<div class="panel-body"><p class="hint">此处只设置本次参与优化与优化专武等级；长期拥有情况在“我的英雄”中维护。服务器达到 S3 后，R/SR 不进入车头优化池，手动配置与车身池继续保留。近三代只用于生成新车头。全选 / 全不选保留拥有情况与专武等级。</p>
-    <div class="inline-fields"><button class="btn btn-small" data-action="hero-pool-all">全选</button><button class="btn btn-small" data-action="hero-pool-none">全不选</button>
+    `<div class="panel-body"><p class="hint">此处只设置本次参与优化与优化专武等级；长期拥有情况在“我的英雄”中维护。R/SR 不进入车头自动优化池，手动配置与车身池继续保留。近三代只用于生成新车头。全选 / 全不选保留拥有情况与专武等级。</p>
+    ${currentNotice}${stageWarning}<p class="hint">拥有范围：${heroOwnershipScope(input) === "allAvailable" ? "理论全部可用（随服务器阶段开放新英雄）" : "我的英雄（新解锁英雄需确认拥有）"}</p><div class="inline-fields"><button class="btn btn-small" data-action="hero-pool-all">全选</button><button class="btn btn-small" data-action="hero-pool-none">全不选</button>
       ${input.scenarioType === "INNER_EARTH" ? '<label>英雄池侧<output>我方 A</output></label>' : `<label>编辑英雄池侧<select data-scope="hero-pool-side"><option value="A" ${heroPoolSide === "A" ? "selected" : ""}>A 方</option><option value="B" ${heroPoolSide === "B" ? "selected" : ""}>B 方</option></select></label>`}</div>
     <div class="hero-pool-grid">${heroes.map((hero) => `<div class="hero-pool-row"><label><input data-scope="hero-pool" data-hero-id="${escapeAttr(hero.heroId)}" type="checkbox" ${selected.has(hero.heroId) ? "checked" : ""}>参与优化</label><span>${escapeHtml(hero.name)} ${heroCategoryLabel(hero)}</span>
       ${hero.weaponMaxStat === null ? "<span>无专武等级</span>" : `<label>专武<select data-scope="owned-weapon" data-hero-id="${escapeAttr(hero.heroId)}" data-side="${heroPoolSide}">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === optimizerWeaponLevel(input, hero.heroId, heroPoolSide) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`}</div>`).join("")}</div></div>`, 'class="hero-pool"');
 }
 
 function renderOwnedHeroes(): string {
-  const heroes = catalog.leaderHeroes.filter((hero) => isHeroAvailableAtStage(hero, validationStageId(input)));
+  const heroes = catalog.leaderHeroes.filter((hero) => isHeroAvailableAtStage(hero, validationStageId(input)))
+    .sort((a, b) => (a.generation ?? 0) - (b.generation ?? 0));
   const owned = new Set(ownedHeroIds(input));
   return lazyDetails.render("owned-heroes", `<h2>我的英雄</h2><span>已拥有：${owned.size} / 当前阶段 ${heroes.length}</span>`, () =>
-    `<div class="panel-body"><p class="hint">长期玩家资料；取消拥有会关闭双方对此英雄的优化参与状态，保留专武等级。此处包含可用于手动配置及车身的 R / SR 英雄。</p><div class="hero-pool-grid">${heroes.map((hero) =>
+    `<div class="panel-body"><label>拥有范围<select data-scope="hero-ownership-scope"><option value="allAvailable" ${heroOwnershipScope(input) === "allAvailable" ? "selected" : ""}>理论全部可用</option><option value="owned" ${heroOwnershipScope(input) === "owned" ? "selected" : ""}>我的英雄</option></select></label><p class="hint">理论全部可用随服务器阶段开放新英雄；我的英雄仅使用明确拥有的英雄。取消拥有会关闭双方对此英雄的优化参与状态，保留专武等级。手动选择新英雄会将其加入我的英雄，已有的参与开关保持不变。此处包含可用于手动配置及车身的 R / SR 英雄。</p><div class="hero-pool-grid">${heroes.map((hero) =>
       `<label class="owned-hero-row"><input data-scope="owned-hero" data-hero-id="${escapeAttr(hero.heroId)}" type="checkbox" ${owned.has(hero.heroId) ? "checked" : ""}>拥有 ${escapeHtml(hero.name)} ${heroCategoryLabel(hero)}</label>`).join("")}</div></div>`, 'class="owned-heroes"');
 }
 
@@ -1988,14 +2064,12 @@ function renderSimpleOptimizer(): string {
 function renderRallyOptimizer(): string {
   const candidateSide = optimizationConfig.candidateSide ?? "A";
   const constraints = optimizationConfig.constraints;
-  const criterion = rallyCriterionSettings(optimizationConfig);
-  const stageLabels = ["M1a", "M1b", "M2", "M3", "M4"];
+  const joint = resolveJointPipelineOptions(optimizationConfig.jointPipeline);
   const finalReport = input.attributeInputMode !== "prediction";
-  const fixedHead = !optimizerDimensions().headSearchEnabled;
   return `<section class="panel optimizer-panel">
     <header class="panel-head"><h2>集结自动配队</h2><span class="tag tag-cyan">复用当前战斗配置与引擎</span></header>
     <div class="panel-body">
-      <p class="hint">${fixedHead ? `${finalReport ? "最终战报属性模式下，" : "固定 / 空车头模式下，"}当前车头及实际专武固定，仅优化兵种比例${constraints.fixedBodyExact ? "（当前车身固定）" : "与车身"}。无英雄与空车身均为合法固定模板。` : "全局理论筛选：合法车头 × 比例共同竞争 C0 名额，弱车头可以整体淘汰，没有每车头保底。"} C3 与 MatrixCriterion 高排名、不确定性、特殊机制和共同种子探针共同分配 M1a 晋级预算；累计 20/40 场后才允许相应置信淘汰。</p>
+      <p class="hint">合法 Head × canonical Body 完整求 J 峰值；Global Top10000 ∪ 每 Head Top1 召回，局部 5% Criterion → 1% Criterion → Theory → Formal20/50/100 → 比例复核 A/B → Formal300 → Final 至少1000 场共同种子复验。</p>
       <div class="optimizer-fields">
         <label>优化对象<select data-scope="optimizer" data-field="candidateSide"><option value="A" ${candidateSide === "A" ? "selected" : ""}>集结进攻方</option><option value="B" ${candidateSide === "B" ? "selected" : ""}>集结防守方</option></select></label>
         ${candidateSide === "B" ? '<label>目标<output>最高防守方胜率</output></label>' : `<label>目标<select data-scope="optimizer" data-field="objectiveMode">
@@ -2003,9 +2077,9 @@ function renderRallyOptimizer(): string {
           <option value="singleWin" ${optimizationConfig.objectiveMode === "singleWin" ? "selected" : ""}>最高单波胜率</option>
           <option value="minRallies" ${optimizationConfig.objectiveMode === "minRallies" ? "selected" : ""}>最少集结击破</option>
         </select></label>`}
-        <label>C0 全局保留 HeadRatio<input data-scope="optimizer" data-field="criterion-headRatioLimit" type="number" min="1" value="${criterion.headRatioLimit}"></label>
-        ${criterion.screeningKeep.map((keep, index) => `<label>${stageLabels[index] ?? `阶段${index + 1}`} ${criterion.screeningTrials[index]}场${index === 0 ? "探针" : ""}保留<input data-scope="optimizer" data-field="criterion-keep-${index}" type="number" min="1" value="${keep}"></label>`).join("")}
-        <label>Final 最终入围数<input data-scope="optimizer" data-field="verificationTop" type="number" min="1" value="${optimizationConfig.verificationTop}"></label>
+        <label>J 全局保留<output>Top10000 Head × Body</output></label>
+        ${([ ["perHeadProtectedK", "每 Head 保护 TopK", joint.perHeadProtectedK], ["criterionKeep", "5% Criterion 保留", joint.criterionKeep], ["criterionFineKeep", "1% Criterion 保留", joint.criterionFineKeep], ["theoryKeep", "Theory 保留", joint.theoryKeep], ["formalRatioKeep", "比例复核后进入 300 场", joint.formalRatioKeep] ] as const).map(([field,label,value]) => `<label>${label}<input data-scope="optimizer" data-field="joint-${field}" type="number" min="1" ${field === "perHeadProtectedK" ? "" : 'max="10000"'} value="${value}"></label>`).join("")}
+        ${joint.formalStages.map((stage,i) => `<label>${stage.trials} 场后保留<input data-scope="optimizer" data-field="joint-formal-keep-${i}" type="number" min="1" value="${stage.keep}"></label>`).join("")}
         ${candidateSide === "B" || optimizationConfig.objectiveMode === "singleWin" ? "" : `
           <label>目标击破概率 %<input data-scope="optimizer" data-field="targetDefeatProbability" type="text" inputmode="decimal" value="${optimizationConfig.targetDefeatProbability * 100}"></label>
           <label>最多集结波数<input data-scope="optimizer" data-field="maxWaves" type="number" min="1" max="10" step="1" value="${optimizationConfig.maxWaves}"></label>
@@ -2017,11 +2091,7 @@ function renderRallyOptimizer(): string {
         ${finalReport ? "" : `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${TROOP_TYPES.every((troop) => constraints.fixedLeaders?.[troop] !== undefined) ? "checked" : ""}></label>`}
         <label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${constraints.fixedBodyExact ? "checked" : ""}></label>
       </div>
-      <details><summary>高级设置 · 累计样本与置信淘汰保护</summary><div class="optimizer-fields">
-        ${criterion.screeningTrials.map((trials, index) => `<label>${stageLabels[index] ?? `阶段${index + 1}`} 累计场次<input data-scope="optimizer" data-field="criterion-trials-${index}" type="number" min="1" max="100000" value="${trials}"></label>`).join("")}
-        <label>普通候选置信淘汰最低样本<input data-scope="optimizer" data-field="criterion-minimumHeadRuns" type="number" min="20" value="${criterion.minimumHeadRuns}"></label>
-        <label>高不确定性候选最低样本<input data-scope="optimizer" data-field="criterion-uncertainHeadRuns" type="number" min="40" value="${criterion.uncertainHeadRuns}"></label>
-      </div></details>
+
       ${candidateSide === "A" && optimizationConfig.objectiveMode === "auto" ? `<p class="hint">自动选择：最终复验最佳单波胜率不高于 ${formatPercent(optimizationConfig.singleFightThresholdLow)} 时进入多波搜索，否则优先单波。</p>` : ""}
       <button class="btn btn-primary" data-action="run-optimizer" ${!rallyDeploymentValid() || optimizationRunning ? "disabled" : ""}>${optimizationRunning ? "搜索中…" : "开始自动配队"}</button>
       <span class="hint optimizer-progress">${escapeHtml(optimizerProgressText(optimizationProgress, optimizationPerformanceReport))}</span>
@@ -2221,7 +2291,7 @@ function renderSide(
       )}
       ${input.battleContext === "rally" ? renderSideSection(
         "车身技能",
-        `<p class="hint">按效果分类选择；可搜索英雄、效果、数值或赛季。未选技能按默认 Lv5 展示，当前选择按实际等级展示。同效果英雄分别保留身份，四个车身槽可重复选择。</p><div class="member-grid" aria-label="车身技能">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div>`,
+        `<p class="hint">按效果分类选择；可搜索英雄、效果、数值或赛季。未选技能按默认 Lv5 展示，当前选择按实际等级展示。同效果只列出最早代代表，四个车身槽可重复选择。</p><div class="member-grid" aria-label="车身技能">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div>`,
       ) : ""}
       ${renderSideSection(
         "T12 兵种技能等级",
@@ -2475,7 +2545,7 @@ function renderTroopRow(
     <div class="troop-fields">
       ${isRally ? `<label>比例 %<input class="compact-input" data-scope="rally" data-side="${side}" data-field="${troop}" type="text" inputmode="decimal" value="${sideInput.rallyDeployment?.ratios[troop] ?? (troop === "shield" ? 34 : 33)}"></label>` : ""}
       ${isRally || is333 ? "" : `<label>等级模式<select data-scope="troop-level-mode" data-side="${side}" data-troop="${troop}"><option value="single" ${levelMode === "single" ? "selected" : ""}>单等级</option><option value="mixed" ${levelMode === "mixed" ? "selected" : ""}>混等级</option></select></label>`}
-      ${levelMode === "single" && !is333 ? `${isRally ? "" : `<label>数量${numberField("count", "1")}</label>`}<label>等级<select data-scope="troop" data-side="${side}" data-troop="${troop}" data-field="troopLevel">${getAvailableTroopLevels(validationStageId(input), troop).map((level) => `<option value="${level}" ${level === value.troopLevel ? "selected" : ""}>${level}</option>`).join("")}</select></label>` : ""}
+      ${levelMode === "single" && !is333 ? `${isRally ? "" : `<label>数量${numberField("count", "1")}</label>`}<label>${internals ? "等级" : "兵种等级"}<select data-scope="troop" data-side="${side}" data-troop="${troop}" data-field="troopLevel">${getAvailableTroopLevels(validationStageId(input), troop).map((level) => `<option value="${level}" ${level === value.troopLevel ? "selected" : ""}>${level}</option>`).join("")}</select></label>` : ""}
     </div>
     ${levelMode === "mixed" ? `<div class="mixed-composition"><div class="mixed-composition-head"><strong>${troopName(troop)}等级构成</strong><button class="btn btn-small" type="button" data-action="add-mixed-level" data-side="${side}" data-troop="${troop}" ${composition.length >= getAvailableTroopLevels(validationStageId(input), troop).length ? "disabled" : ""}>+ 添加等级</button></div>${composition.map((entry, index) => `<div class="mixed-level-row"><select aria-label="混等级兵种等级" data-scope="mixed-level" data-side="${side}" data-troop="${troop}" data-index="${index}">${getAvailableTroopLevels(validationStageId(input), troop).map((level) => `<option value="${level}" ${level === entry.level ? "selected" : ""} ${level !== entry.level && composition.some((candidate) => candidate.level === level) ? "disabled" : ""}>${level}</option>`).join("")}</select><input aria-label="该等级兵数" data-scope="mixed-count" data-side="${side}" data-troop="${troop}" data-index="${index}" type="number" min="0" step="1" value="${entry.aliveCount}"><button class="btn btn-small" type="button" data-action="remove-mixed-level" data-side="${side}" data-troop="${troop}" data-index="${index}" ${composition.length === 1 ? "disabled" : ""}>移除</button></div>`).join("")}</div>` : ""}
     ${internals ? `<div class="readonly-grid">
@@ -2571,7 +2641,7 @@ function bonusModeForDisplay(side: ValidationSideInput | ValidationQueueConfig):
 
 function renderBonusContexts(sideId: SideId, side: ValidationSideInput | ValidationQueueConfig,
   queueIndex?: number): string {
-  const history = side.sourceReportBonuses ?? side.importedReportModifiers ?? zeroReportBonuses();
+  const history = sourceReportBonuses(side);
   const target = side.targetBattleBonuses ?? zeroReportBonuses();
   const key = `${sideId}-${queueIndex ?? "side"}`;
   const location = `data-side="${sideId}" ${queueIndex === undefined ? "" : `data-queue-index="${queueIndex}"`}`;
@@ -2580,7 +2650,7 @@ function renderBonusContexts(sideId: SideId, side: ValidationSideInput | Validat
     `<div class="table-scroll"><table class="data-table"><thead><tr><th>属性</th><th>官职加算 %</th><th>Buff %</th><th>受到 Debuff %</th></tr></thead><tbody>${TROOP_TYPES.flatMap((troop) => reportAttributes.map((stat) =>
       `<tr><td>${troopName(troop)}${attributeName(stat)}</td>${(["additive", "buff", "debuff"] as const).map((field) => `<td><input type="text" inputmode="decimal" data-scope="bonus-context" ${location} data-context="${context}" data-troop="${troop}" data-stat="${stat}" data-field="${field}" value="${(context === "sourceReportBonuses" ? history : target)[troop][stat][field]}" ${context === "sourceReportBonuses" && side.reportAttributeBasis !== "historicalReport" ? "readonly" : ""}></td>`).join("")}</tr>`)).join("")}</tbody></table></div>`;
   return `<div class="bonus-contexts"><label>属性输入含义<select data-scope="bonus-context" ${location} data-field="reportAttributeBasis"><option value="raw" ${side.reportAttributeBasis !== "historicalReport" ? "selected" : ""}>原始 / 本队基础属性</option><option value="historicalReport" ${side.reportAttributeBasis === "historicalReport" ? "selected" : ""}>手动输入历史最终战报</option></select></label>
-    ${lazyDetails.render(`source-bonuses-${key}`, "历史特殊加成 · 仅用于反推", () => `${table("sourceReportBonuses")}<p class="hint">OCR 只复制属性数值。历史最终战报须选择上方对应含义，并手动提供该战报的官职、增益和受到的减益；不沿用旧识图来源。</p>`, 'class="mini-details"')}
+    ${lazyDetails.render(`source-bonuses-${key}`, "历史特殊加成 · 仅用于反推", () => `${renderHistoricalBonusTable(sideId, side, queueIndex)}<p class="hint">历史战报特殊加成只用于从历史战报反推基础属性，不会自动带入当前战斗。同一属性的加成分别用于盾、矛、射的对应战报项；三兵种属性仍各自独立。</p>${developerToolsEnabled && side.historicalBonusMigration ? `<p class="notice warning">旧历史特殊加成存在兵种间冲突：已保留逐项反推的基础属性，冲突项在四属性表中置零，未任意选取某个兵种。${side.historicalBonusMigration.conflicts.length} 项冲突。</p><pre>${escapeHtml(JSON.stringify(side.historicalBonusMigration, null, 2))}</pre>` : ""}`, 'class="mini-details"')}
     <label>当前预期战斗特殊加成<select data-scope="bonus-context" ${location} data-field="targetBonusMode"><option value="none" ${mode === "none" ? "selected" : ""}>不沿用原战报特殊加成（默认）</option><option value="reuseSource" ${mode === "reuseSource" ? "selected" : ""}>沿用原战报特殊加成</option><option value="custom" ${mode === "custom" ? "selected" : ""}>自定义</option></select></label>
     ${mode === "custom" ? lazyDetails.render(`target-bonuses-${key}`, "自定义当前加成", () => `${table("targetBattleBonuses")}<p class="hint">当前官职、其他 Buff 和受到的 Debuff；下方城镇、宠物、专家配置另行合并。只影响新战斗。</p>`, 'class="mini-details"') : ""}
     ${side.targetBonusMode === undefined && mode === "custom" ? '<p class="hint">兼容旧原始面板配置：下方已手动配置的外部增益仍生效；选择“不沿用”可清零当前环境。</p>' : ""}</div>`;
@@ -2614,12 +2684,17 @@ function updateBonusContext(target: HTMLInputElement | HTMLSelectElement): void 
     const context = target.dataset.context;
     const troop = target.dataset.troop as TroopType;
     const stat = target.dataset.stat as typeof reportAttributes[number];
-    if ((context !== "sourceReportBonuses" && context !== "targetBattleBonuses") || !TROOP_TYPES.includes(troop) || !reportAttributes.includes(stat) ||
+    if ((context !== "sourceReportBonuses" && context !== "targetBattleBonuses") || !reportAttributes.includes(stat) ||
+      (context === "targetBattleBonuses" && !TROOP_TYPES.includes(troop)) ||
       (field !== "additive" && field !== "buff" && field !== "debuff")) throw new Error("无效加成字段。");
-    const matrix = context === "sourceReportBonuses" ? current.sourceReportBonuses ?? current.importedReportModifiers ?? zeroReportBonuses() : current.targetBattleBonuses ?? zeroReportBonuses();
     const value = readManualPercent(target as HTMLInputElement);
-    next = { ...current, [context]: { ...matrix, [troop]: { ...matrix[troop], [stat]: { ...matrix[troop][stat], [field]: value } } },
-      ...(context === "targetBattleBonuses" ? { targetBonusMode: "custom" as const } : {}) };
+    if (context === "sourceReportBonuses") {
+      const history = historicalReportBonuses(current);
+      next = { ...current, sourceReportBonuses: { ...history, [stat]: { ...history[stat], [field]: value } } };
+    } else {
+      const matrix = current.targetBattleBonuses ?? zeroReportBonuses();
+      next = { ...current, targetBattleBonuses: { ...matrix, [troop]: { ...matrix[troop], [stat]: { ...matrix[troop][stat], [field]: value } } }, targetBonusMode: "custom" as const };
+    }
   }
   if (queues === undefined) setInputSide(sideId, next as ValidationSideInput);
   else { queues[index] = next as ValidationQueueConfig; setInputSide(sideId, { ...side,
@@ -2701,6 +2776,7 @@ function renderMemberSelect(sideId: SideId, side: ValidationSideInput, index: nu
     side.selectedMemberSkillIds[index] ?? "";
   const selectedLevel = side.bodySkills?.[index]?.skillLevel ?? 5;
   return renderBodySlotCard({ side: sideId, index, stage: validationStageId(input),
+    developer: developerToolsEnabled,
     roleLabel: optimizationTargetLabel(input.scenarioType, sideId),
     selectedSkillId: selected, selectedLevel, query: memberSearchQueries.get(`${sideId}:${index}`) ?? "" });
 }
@@ -3375,9 +3451,8 @@ async function runOptimizer(): Promise<void> {
   const inputAtStart = input;
   const route = optimizerRoute(input.scenarioType);
   const refreshTiming = () => {
-    const label = app.querySelector<HTMLElement>(".optimizer-progress");
-    if (label !== null) label.textContent = label.closest?.(".player-optimizer") && optimizationProgress
-      ? playerOptimizerProgress(optimizationProgress.completed, optimizationProgress.total)
+    for (const label of app.querySelectorAll<HTMLElement>(".optimizer-progress")) label.textContent = label.closest(".player-optimizer")
+      ? playerOptimizationProgress(optimizationProgress, optimizationPerformanceReport, performance.now() - optimizationProgressReceivedAt)
       : optimizerProgressText(optimizationProgress, optimizationPerformanceReport, performance.now() - optimizationProgressReceivedAt);
     const host = app.querySelector<HTMLElement>(".optimizer-performance-host");
     if (host !== null && optimizationPerformanceReport !== null) {
@@ -3392,16 +3467,11 @@ async function runOptimizer(): Promise<void> {
   try {
   if (route === "rally") {
     const candidateSide=configAtStart.candidateSide??"A";
-    const dimensions = resolveSearchDimensions(inputAtStart, { side: candidateSide,
-      fixedHead: TROOP_TYPES.every((troop) => configAtStart.constraints.fixedLeaders?.[troop] !== undefined),
-      fixedBody: configAtStart.constraints.fixedBodyExact === true });
-    const choices = dimensions.headSearchEnabled ? availableHeadHeroesByTroop(inputAtStart, configAtStart.constraints, undefined, candidateSide) : null;
-    const criterionSettings = rallyCriterionSettings(configAtStart);
-    const ratioCandidateCount = generateRatioGrid(criterionSettings.enabled ? 5 :
-      (configAtStart.theory ?? defaultTheoryOptions()).ratioStep).length;
-    const headAudit = dimensions.headSearchEnabled ? headFormationGenerationAudit(inputAtStart, configAtStart.constraints, undefined, candidateSide) : null;
+    const policy = jointHeadPolicy(inputAtStart, configAtStart), dimensions = policy.dimensions;
+    const settings = resolveJointPipelineOptions(configAtStart.jointPipeline);
+    const choices = dimensions.headSearchEnabled ? availableHeadHeroesByTroop(inputAtStart, policy.headConstraints, undefined, candidateSide) : null;
+    const headAudit = dimensions.headSearchEnabled ? headFormationGenerationAudit(inputAtStart, policy.headConstraints, undefined, candidateSide) : null;
     const headCandidateCount = headAudit?.recentEligibleHeadCount ?? 1;
-    const coarseRatioCandidateCount = ratioCandidateCount;
     console.info("Rally optimizer search start", {
       ...optimizationContextAudit(createOptimizationContext(inputAtStart,candidateSide)),
       ...headAudit,
@@ -3410,14 +3480,13 @@ async function runOptimizer(): Promise<void> {
       availableHeadHeroesByTroop: choices,
       shieldCandidateCount: choices?.shield.length ?? 0, lancerCandidateCount: choices?.lancer.length ?? 0,
       marksmanCandidateCount: choices?.marksman.length ?? 0,
-      headCandidateCount, ratioCandidateCount, coarseRatioCandidateCount,
+      headCandidateCount, globalTopJLimit: 10000, perHeadProtectedK: settings.perHeadProtectedK,
       legalHeadCandidateCount: headCandidateCount,
-      stage1Trials: criterionSettings.screeningTrials[0],
-      fixedBody: configAtStart.constraints.fixedBodyExact === true,
+      stage1Trials: settings.formalStages[0]!.trials, formalStages: settings.formalStages,
+      fixedBody: !dimensions.bodySearchEnabled,
       availableBodyCandidateCount: "reportedByWorkerAfterEnumeration",
-      theoryCandidateCount: headCandidateCount * ratioCandidateCount,
       theoryOptions: configAtStart.theory ?? defaultTheoryOptions(),
-      stage1RepresentativeRatios: "global potential + global uncertainty / special / disagreement / diversity lanes",
+      recall: "Global Top10000 union PerHead TopK",
       optimizationTargetSide: candidateSide, candidateChangedSide: candidateSide,
     });
   }
@@ -3597,10 +3666,12 @@ function updateOptimizerField(target: HTMLInputElement | HTMLSelectElement): voi
     else if (field === "maxWaves") optimizationConfig = { ...current, maxWaves: value };
     else if (field === "beamTrials") optimizationConfig = { ...current, beamTrials: value };
     else if (field === "beamWidth") optimizationConfig = { ...current, beamWidth: value };
-    else if (field === "verificationTrials") optimizationConfig = { ...current, verificationTrials: value };
+    else if (field === "verificationTrials") optimizationConfig = { ...current, verificationTrials: Math.max(1000, value) };
     else if (field === "firstSeed") optimizationConfig = { ...current, firstSeed: value };
     else if (field === "verificationTop") optimizationConfig = { ...current, verificationTop: value };
-    else if (field.startsWith("criterion-")) optimizationConfig = updateRallyCriterionSetting(current, field, value);
+    else if (field.startsWith("joint-formal-keep-")) optimizationConfig = { ...current, jointPipeline: { ...current.jointPipeline,
+      formalStages: resolveJointPipelineOptions(current.jointPipeline).formalStages.map((s, i) => i === Number(field.slice("joint-formal-keep-".length)) ? { ...s, keep: value } : s) } };
+    else if (field.startsWith("joint-")) optimizationConfig = { ...current, jointPipeline: { ...current.jointPipeline, [field.slice(6)]: value } };
   }
   optimizationResult = null;
 }
@@ -3804,9 +3875,9 @@ function updateSimpleTroops(target: HTMLInputElement | HTMLSelectElement): void 
 function renderSimpleMoreBuffs(sideId: SideId, side: ValidationSideInput): string {
   const prediction = input.attributeInputMode === "prediction";
   return `${prediction ? `<h4>历史战报与当前增益</h4>${renderBonusContexts(sideId, side)}<div class="hero-slot-grid">${TROOP_TYPES.map((troop) => renderHeroSelect("report-hero", sideId, side, troop)).join("")}</div>` : '<p class="hint">最终战报属性已包含外部增益与专武静态属性。</p>'}
-    <h4>英雄专武</h4>${prediction ? TROOP_TYPES.map((troop) => {
-      const id = side.leaderHeroIds?.[troop]; return id ? renderSelectedHeroWeapon("leader", sideId, side, id) : "";
-    }).join("") || '<p class="hint">选择英雄后可设置专武。</p>' : '<p class="hint">当前输入模式沿用战报中的专武属性。</p>'}
+    <h4>英雄专武</h4>${TROOP_TYPES.map((troop) => {
+      const id = side.leaderHeroIds?.[troop]; return id ? renderWeaponLevelInput("simulation-weapon", sideId, id, `${catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? "英雄"}专武`, side.simulationWeaponLevels?.[id] ?? 0) : "";
+    }).join("") || '<p class="hint">选择英雄后可设置专武。</p>'}
     <h4>车身英雄</h4>${input.battleContext === "rally" ? `<div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div>` : '<p class="hint">车身英雄仅在集结场景中生效。</p>'}
     <button class="simple-text-button" data-action="editor-mode" data-mode="advanced">其他配置，在高级模式中查看 →</button>`;
 }
@@ -4326,6 +4397,8 @@ function updateLeader(target: HTMLSelectElement): void {
     ...side,
     leaderHeroIds: { ...side.leaderHeroIds, [troop]: target.value || null },
   });
+  if (target.value && heroOwnershipScope(input) === "owned" && !ownedHeroIds(input).includes(target.value))
+    input = setOwnedHero(input, target.value, true);
 }
 
 function updateMember(target: HTMLSelectElement): void {

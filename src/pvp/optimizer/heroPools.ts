@@ -7,8 +7,9 @@ const catalog = getValidationCatalog();
 const heroById = new Map(catalog.leaderHeroes.map((hero) => [hero.heroId, hero]));
 
 /** Head search policy only. Registry, manual formations and teammate body pools stay intact. */
-export function optimizerHeadHeroAllowed(hero: HeroCategorySource, serverGeneration: number): boolean {
-  return serverGeneration < 3 || heroCategory(hero) === "S";
+export function optimizerHeadHeroAllowed(hero: HeroCategorySource, _serverGeneration: number): boolean {
+  void _serverGeneration;
+  return heroCategory(hero) === "S";
 }
 export function optimizerServerGeneration(input: ValidationBattleInput): number {
   return getServerStage(validationStageId(input)).maxHeroGeneration;
@@ -19,6 +20,23 @@ export function serverHeroIds(input: ValidationBattleInput): string[] {
 export function ownedHeroIds(input: ValidationBattleInput): string[] {
   const owned = input.ownedHeroIds ?? input.availableHeroIds ?? serverHeroIds(input);
   return serverHeroIds(input).filter((id) => owned.includes(id));
+}
+export function heroOwnershipScope(input: ValidationBattleInput): "allAvailable" | "owned" {
+  return input.ownedHeroIds === undefined && input.availableHeroIds === undefined ? "allAvailable" : "owned";
+}
+/** Current manually configured leaders, not historical report heroes or Body sources. */
+export function configuredHeadHeroIds(input: ValidationBattleInput): string[] {
+  return [...new Set([input.sideA, input.sideB].flatMap((side) => [side.leaderHeroId,
+    ...Object.values(side.leaderHeroIds ?? {}),
+    ...(side.threeQueues?.flatMap((queue) => Object.values(queue.leaderHeroIds)) ?? []),
+  ]).filter((id): id is string => !!id))];
+}
+/** Legacy availableHeroIds served both ownership and run selection. Only selected
+ * current leaders are evidence of ownership; never promote every unlocked hero. */
+export function reconcileLegacyHeroOwnership(input: ValidationBattleInput): ValidationBattleInput {
+  if (input.ownedHeroIds !== undefined || input.availableHeroIds === undefined) return input;
+  const selected = configuredHeadHeroIds(input).filter((id) => serverHeroIds(input).includes(id));
+  return { ...input, ownedHeroIds: [...new Set([...input.availableHeroIds, ...selected])] };
 }
 /** UI, owned range and enabled candidates all use the same server-stage Head filter. */
 export function visibleOptimizationHeroIds(input: ValidationBattleInput): string[] {
@@ -34,13 +52,9 @@ function enabledOwnedHeroIds(input: ValidationBattleInput, side: SideId): string
   return ownedHeroIds(input).filter((id) => {
     const entry = pool?.[id];
     if (entry !== undefined) return entry.enabled;
-    const legacyEnabled = input.availableHeroIds === undefined || input.availableHeroIds.includes(id);
-    // Hidden R/SR entries are intentionally not materialized by pool initialization.
-    // Preserve their legacy enabled status in the pre-filter audit so initialization
-    // cannot erase the reason/count of a server-stage exclusion. The Head filter
-    // below still rejects them; missing visible S entries remain disabled.
-    return legacyEnabled && (pool === undefined ||
-      !optimizerHeadHeroAllowed(heroById.get(id)!, optimizerServerGeneration(input)));
+    // Missing is an uninitialized default, not an explicit opt-out. This must
+    // match initializeOptimizationHeroPool when a newer server stage is selected.
+    return input.ownedHeroIds !== undefined || input.availableHeroIds === undefined || input.availableHeroIds.includes(id);
   });
 }
 export function optimizationHeroIds(input: ValidationBattleInput, side: SideId = "A"): string[] {
@@ -67,8 +81,8 @@ export function optimizationHeroPoolFilterAudit(input: ValidationBattleInput, si
   };
   const allLegalHeadCountBeforeRecentRule = TROOP_TYPES.reduce((product, troop) => product * byTroop[troop], 1);
   const oldHeads = TROOP_TYPES.reduce((product, troop) => product * after.filter((hero) => hero.troopType === troop && !inRecent(hero)).length, 1);
-  const excludedRByServerStage = before.filter((hero) => serverGeneration >= 3 && heroCategory(hero) === "R").length;
-  const excludedSRByServerStage = before.filter((hero) => serverGeneration >= 3 && heroCategory(hero) === "SR").length;
+  const excludedRByServerStage = before.filter((hero) => heroCategory(hero) === "R").length;
+  const excludedSRByServerStage = before.filter((hero) => heroCategory(hero) === "SR").length;
   return {
     serverGeneration,
     // These category counts describe the stage-available registry. Exclusions and
@@ -107,7 +121,9 @@ export function optimizerHeadWeaponLevels(input: ValidationBattleInput,
 }
 export function initializeOptimizationHeroPool(input: ValidationBattleInput): ValidationBattleInput {
   const ids = ownedOptimizationHeroIds(input);
-  const owned = new Set(input.ownedHeroIds ?? input.availableHeroIds ?? serverHeroIds(input));
+  // A temporarily lower stage must not rewrite future unlocked heroes as user
+  // opt-outs. Server availability is applied when reading candidates instead.
+  const owned = new Set(input.ownedHeroIds ?? input.availableHeroIds ?? catalog.leaderHeroes.map((hero) => hero.heroId));
   const pool = { ...input.optimizerHeroPool };
   let changed = false;
   for (const side of ["A", "B"] as const) {
@@ -117,13 +133,21 @@ export function initializeOptimizationHeroPool(input: ValidationBattleInput): Va
       changed = true;
     }
     for (const id of ids) if (next[id] === undefined) {
-      next[id] = { enabled: input.availableHeroIds === undefined || input.availableHeroIds.includes(id),
+      next[id] = { enabled: input.ownedHeroIds !== undefined || input.availableHeroIds === undefined || input.availableHeroIds.includes(id),
         weaponLevel: catalog.leaderHeroes.find((hero) => hero.heroId === id)?.weaponMaxStat === null ? null : 10 };
       changed = true;
     }
     pool[side] = next;
   }
   return changed ? { ...input, optimizerHeroPool: pool } : input;
+}
+export function setHeroOwnershipScope(input: ValidationBattleInput, scope: "allAvailable" | "owned"): ValidationBattleInput {
+  const next = { ...input };
+  if (scope === "allAvailable") {
+    delete next.ownedHeroIds;
+    delete next.availableHeroIds;
+  } else next.ownedHeroIds = ownedHeroIds(input);
+  return initializeOptimizationHeroPool(next);
 }
 export function setOptimizationPoolEnabled(input: ValidationBattleInput, side: SideId,
   enabled: boolean, heroId?: string): ValidationBattleInput {

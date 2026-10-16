@@ -1,6 +1,7 @@
 import { SUPPORTED_TROOP_LEVELS } from "../data/troopConstants";
 import type { ReportAttribute } from "../externalBuffs";
 import { TROOP_TYPES, type SideId, type TroopType } from "../types/combat";
+import { normalizeHistoricalTree } from "../validationUi/historicalBonuses";
 import type { ValidationBattleInput, ValidationSideInput } from "../validationUi/types";
 import type { ParsedBattleReport, ParsedBattleReportSide, ParsedSpecialBonus,
   RecognizedValue, ReportSourceSide, SpecialBonusCompleteness } from "./types";
@@ -278,8 +279,8 @@ export function mapReportSide(input: ValidationBattleInput,
     } : {
       reportWeaponLevels: {}, simulationWeaponLevels: {},
     }) };
-  return { ...input, attributeInputMode: mode,
-    ...(targetSide === "A" ? { sideA: nextSide } : { sideB: nextSide }) };
+  return normalizeHistoricalTree({ ...input, attributeInputMode: mode,
+    ...(targetSide === "A" ? { sideA: nextSide } : { sideB: nextSide }) });
 }
 
 export function mapReportContextSide(input: ValidationBattleInput,

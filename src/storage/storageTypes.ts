@@ -59,6 +59,7 @@ export interface SavedBattleProfile {
   /** In-memory notice when this profile was read from pre-v2 queue attributes. */
   readonly queueAttributesMigrated?: boolean;
   readonly optimizerRacingMigrated?: boolean;
+  readonly headPoolOwnershipMigrated?: boolean;
   readonly sceneMigrationWarnings?: readonly string[];
 }
 
@@ -73,6 +74,7 @@ export interface RestoredBattleSetup {
   readonly queueAttributesMigrated: boolean;
   /** Only legacy persisted Rally budgets are upgraded; direct API schedules are preserved. */
   readonly optimizerRacingMigrated?: boolean;
+  readonly headPoolOwnershipMigrated?: boolean;
   readonly sceneMigrated?: boolean;
   readonly sceneMigrationWarnings?: readonly string[];
 }

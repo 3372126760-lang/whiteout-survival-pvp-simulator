@@ -83,8 +83,7 @@ describe("versioned battle config storage", () => {
     new LocalStorageConfigStorage(backend).saveAutosave(input, 100,
       defaultOptimizationConfig(1));
     const restored = new LocalStorageConfigStorage(backend).loadAutosave()!;
-    expect(restored.input.sideA.threeQueues?.[0].importedReportModifiers
-      ?.lancer.attack.additive).toBe(5);
+    expect(restored.input.sideA.threeQueues?.[0].historicalBonusMigration?.conflicts).toContainEqual({ attribute: "attack", field: "additive", values: { shield: 0, lancer: 5, marksman: 0 } });
     expect(restored.input.sideA.threeQueues?.[1].importedReportModifiers)
       .toBeUndefined();
   });

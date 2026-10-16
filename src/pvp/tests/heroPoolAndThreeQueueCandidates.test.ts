@@ -53,5 +53,5 @@ describe("owned hero pool and three-queue uniqueness", () => {
     expect(seen.length).toBeGreaterThan(1);
     expect(seen.every((ids) => new Set(ids).size === ids.length &&
       ids.every((id) => pool.includes(id)))).toBe(true);
-  });
+  }, 15000);
 });

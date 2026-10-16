@@ -39,5 +39,5 @@ UI每个兵种显示攻击、防御、穿透/生命三个输入。公共 `attrib
 验证结果：锻炉专项19项通过；相关三文件45项通过；typecheck、lint、build通过；单进程全量109文件、1216项通过。首次全量有一个候选生成测试失败，单独复验和最终全量复验均通过，未改测试超时或搜索逻辑。72个正式战斗相关文件哈希均未变化。
 
 - [检查摘要](../examples/equipment-forge-schema-validation-summary.json)
-- [全量测试结果](../examples/equipment-forge-schema-test-results.json)
+- 全量测试的原始JSON含本机路径，已归档至被Git忽略的 `artifacts/release-0.3.0-beta/archived-test-reports/`；验收结论保留在本文。
 - [核心边界哈希核对](../examples/equipment-forge-core-boundary-audit.json)

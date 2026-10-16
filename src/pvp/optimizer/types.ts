@@ -13,6 +13,7 @@ import type { BatchMetricDistribution } from "../validationUi";
 import type { RallyTroopRatios, ValidationBattleInput } from "../validationUi";
 import type { OptimizationPerformance } from "./execution";
 import type { TheoryOptions, TheoryCoverage, TheoryEstimate, SelectionReason } from "./theory";
+import type { JointPipelineOptions, JointPipelineAudit, JointJLineage } from "./jointPipeline/types";
 
 export interface SearchConstraint {
   readonly minGeneration?: number;
@@ -37,6 +38,9 @@ export interface OptimizationStage {
 }
 
 export interface OptimizationConfig {
+  readonly jointPipeline?: Partial<JointPipelineOptions>;
+  /** Observational only; these candidates receive ranks, never protected promotion. */
+  readonly jointDebugCandidates?: readonly RallyCandidate[];
   /** Formal rally inputs retain A=attacker, B=defender. */
   readonly candidateSide?: SideId;
   readonly adaptiveSearch?: Partial<AdaptiveSearchOptions>;
@@ -65,7 +69,9 @@ export interface OptimizationConfig {
   readonly singleFightThresholdHigh: number;
 }
 
-export interface RallyCandidate {
+export interface RallyCandidate extends JointJLineage {
+  readonly bodySkillLevels?: readonly number[];
+  readonly troopLevels?: Readonly<Record<TroopType, string>>;
   readonly headMode?: SearchDimensionsAudit["headMode"];
   /** Criterion's numerical a/b lanes are candidate/opponent for joint search. */
   readonly criterionPerspectiveSide?: SideId;
@@ -121,6 +127,7 @@ export interface OptimizationProgress {
 }
 
 export interface RallySearchDiagnostics {
+  readonly jointPipeline?: JointPipelineAudit;
   readonly searchDimensionAudit?: SearchDimensionsAudit;
   /** Criterion-disabled workflows still use B0 template preprocessing; raw ordered counts remain separate. */
   readonly bodyEnumerationAudit?: BodyEnumerationAudit;

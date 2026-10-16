@@ -10,16 +10,23 @@ import { decodeSimpleShare, encodeSimpleShare } from "./simpleShare";
 import { DISPLAY_MODEL_VERSION, renderSimpleDetailsOnly, simpleDifferences } from "./simpleModeView";
 import { resolveEditorLayers } from "./editorLayers";
 import { renderAdvancedStatistics } from "./advancedModeView";
+import { createPlayerDefaultInput, normalizePlayerHeroLevels } from "./playerConfig";
+import { CONFIRMED_HERO_SKILL_DEFINITIONS } from "../pvp/heroSkills/definitions/simpleHeroes";
+import { createValidationPreviewState, getValidationThreeQueues } from "../pvp/validationUi/adapter";
+import { getValidationCatalog } from "../pvp/validationUi/catalog";
+import { getBodySkillOptions } from "./bodySkillPresentation";
+import { renderBodySlotCard } from "./bodySkillSelectView";
 
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.resetModules(); });
 
-async function mount(mode?: string, dev = false) {
+async function mount(mode?: string, dev = false, override?: ValidationBattleInput, fresh = false) {
   vi.useFakeTimers();
   const base = createDefaultValidationInput();
-  const configured: ValidationBattleInput = { ...base, randomSeed: 721, maxRounds: 317,
+  const configured: ValidationBattleInput = override ?? { ...base, randomSeed: 721, maxRounds: 317,
     triggerOverrides: { "ui-test-preserved": "AUTO" },
     sideA: { ...base.sideA, leaderHeroIds: { ...base.sideA.leaderHeroIds, lancer: "hero.s3.miya" } } };
   const storage = new Map([[AUTOSAVE_STORAGE_KEY, JSON.stringify(createPersistedEnvelope(configured, 1000, undefined, 0))]]);
+  if (fresh) storage.delete(AUTOSAVE_STORAGE_KEY);
   if (mode) storage.set(EDITOR_MODE_KEY, mode);
   const listeners = new Map<string, EventListener[]>();
   const dispatch = (name: string, target: object) => listeners.get(name)!.forEach((listener) => listener({ target } as unknown as Event));
@@ -182,6 +189,178 @@ describe("shared canonical config through actual editor events", () => {
     await ui.click("simple-details"); expect(ui.app.innerHTML).toContain('role="dialog"');
     await ui.click("editor-mode", { mode: "advanced" });
     expect(ui.results).toHaveLength(2);
+  });
+});
+
+describe("player UI product controls", () => {
+  const selectedValue = (html: string, dataset: Record<string, string>, value: string) => {
+    const select = [...html.matchAll(/<select\b[^>]*>[\s\S]*?<\/select>/g)].map((match) => match[0])
+      .find((markup) => Object.entries(dataset).every(([key, item]) =>
+        markup.slice(0, markup.indexOf(">") + 1).includes(`data-${key}="${item}"`)));
+    expect(select).toBeDefined();
+    expect(select).toContain(`<option value="${value}" selected`);
+  };
+
+  it("edits all Simple town/pet/expert buffs in canonical config, with no disabled fieldset", async () => {
+    const ui = await mount(), beforeB = ui.current().sideB;
+    expect(ui.open("simple-buffs-A")).not.toMatch(/<fieldset[^>]*disabled/);
+    const towns = ["attack", "defense", "penetration", "life", "enemyAttackReduction", "enemyDefenseReduction"];
+    const pets = ["attackLevel", "defenseLevel", "penetrationLevel", "lifeLevel", "enemyDefenseReductionLevel", "enemyPenetrationReductionLevel", "enemyLifeReductionLevel"];
+    for (const field of towns) await ui.change({ scope: "external", side: "A", section: "town", field }, "large");
+    for (const field of pets) await ui.change({ scope: "external", side: "A", section: "pet", field }, "1");
+    await ui.change({ scope: "external", side: "A", section: "expert", field: "garethFourthSkillLevel" }, "1");
+    const simple = ui.current();
+    const external = simple.sideA.externalBuffs!;
+    for (const field of towns) expect(external.town[field as keyof typeof external.town]).toBe("large");
+    for (const field of pets) expect(external.pet[field as keyof typeof external.pet]).toBe(1);
+    expect(simple.sideA.externalBuffs?.expert.garethFourthSkillLevel).toBe(1);
+    expect(simple.sideA.targetBonusMode).toBe("custom");
+    expect(simple.sideB).toEqual(beforeB);
+    await ui.click("editor-mode", { mode: "advanced" });
+    expect(ui.current()).toEqual(simple);
+    selectedValue(ui.open("player-buffs-A"), { scope: "external", side: "A", section: "town", field: "attack" }, "large");
+    await ui.click("editor-mode", { mode: "simple" });
+    expect(ui.current()).toEqual(simple);
+    selectedValue(ui.app.innerHTML, { scope: "external", side: "A", section: "pet", field: "attackLevel" }, "1");
+  });
+
+  it("echoes Advanced buffs and Simple weapon edits across modes", async () => {
+    const ui = await mount("advanced");
+    expect(ui.open("player-buffs-B")).not.toMatch(/<fieldset[^>]*disabled/);
+    await ui.change({ scope: "external", side: "B", section: "pet", field: "enemyLifeReductionLevel" }, "2");
+    await ui.change({ scope: "external", side: "B", section: "town", field: "defense" }, "small");
+    await ui.change({ scope: "leader", side: "B", troop: "shield" }, "hero.s5.heketuo");
+    await ui.click("editor-mode", { mode: "simple" });
+    const html = ui.open("simple-buffs-B");
+    selectedValue(html, { scope: "external", side: "B", section: "town", field: "defense" }, "small");
+    selectedValue(html, { scope: "external", side: "B", section: "pet", field: "enemyLifeReductionLevel" }, "2");
+    expect(ui.open("simple-more-buffs-B")).toContain('data-scope="simulation-weapon"');
+    await ui.change({ scope: "simulation-weapon", side: "B", hero: "hero.s5.heketuo" }, "7");
+    await ui.click("editor-mode", { mode: "advanced" });
+    selectedValue(ui.open("player-weapons-B"), { scope: "simulation-weapon", side: "B", hero: "hero.s5.heketuo" }, "7");
+  });
+
+  it("keeps one global server stage and updates hero/troop restrictions on both sides", async () => {
+    const ui = await mount();
+    expect(ui.app.innerHTML.match(/data-scope="server-stage"/g)).toHaveLength(1);
+    await ui.change({ scope: "leader", side: "B", troop: "shield" }, "hero.s5.heketuo");
+    await ui.change({ scope: "server-stage" }, "s1_t10");
+    const current = ui.current();
+    expect(current.serverStage).toBe("s1_t10");
+    expect(current.sideA.leaderHeroIds?.lancer).not.toBe("hero.s3.miya");
+    expect(current.sideB.leaderHeroIds?.shield).not.toBe("hero.s5.heketuo");
+    for (const side of [current.sideA, current.sideB]) {
+      expect(side).not.toHaveProperty("serverStage");
+      expect(Object.values(side.troops).every((troop) => troop.troopLevel === "T10")).toBe(true);
+    }
+    await ui.click("editor-mode", { mode: "advanced" });
+    expect(ui.app.innerHTML.match(/data-scope="server-stage"/g)).toHaveLength(1);
+    expect(ui.app.innerHTML).not.toContain("hero.s5.heketuo");
+  });
+
+  it("hides evidence metadata and hero levels publicly while retaining editable T12 levels", async () => {
+    const ui = await mount();
+    expect(ui.app.innerHTML).not.toContain("simple-confidence");
+    expect(ui.app.innerHTML).not.toMatch(/TENTATIVE|CODE_CONFIRMED|CONFLICT|BATTLE_CONFIRMED/);
+    await ui.click("editor-mode", { mode: "advanced" });
+    const t12 = ui.open("player-t12-A");
+    expect(t12.match(/data-scope="t12"/g)).toHaveLength(3);
+    expect(ui.app.innerHTML).not.toContain('data-scope="leader-skill-level"');
+    expect(ui.app.innerHTML).not.toContain("英雄及技能详细设置");
+    await ui.change({ scope: "t12", side: "A", troop: "shield" }, "17");
+    expect(ui.current().sideA.troops.shield.t12Level).toBe(17);
+    await ui.change({ scope: "leader-skill-level", side: "A", skillId: CONFIRMED_HERO_SKILL_DEFINITIONS.find((skill) => skill.heroId === "hero.s3.miya")!.id }, "1");
+    expect(ui.current().sideA.leaderSkillLevels).toBeUndefined();
+  });
+
+  it("normalizes stored public overrides to Lv5 but keeps Developer overrides editable", async () => {
+    const base = createDefaultValidationInput();
+    const definition = CONFIRMED_HERO_SKILL_DEFINITIONS.find((skill) => skill.positionRule.kind !== "exclusiveWeapon" && skill.levelValues[4] && skill.levelValues[5])!;
+    const skillId = definition.id;
+    const hero = getValidationCatalog().leaderHeroes.find((entry) => entry.heroId === definition.heroId)!;
+    const low: ValidationBattleInput = { ...base, sideA: { ...base.sideA,
+      leaderHeroIds: { ...base.sideA.leaderHeroIds, [hero.troopType]: hero.heroId }, leaderSkillLevels: { [skillId]: 4 } } };
+    const ui = await mount("advanced", false, low);
+    expect(ui.current().sideA.leaderSkillLevels?.[skillId]).toBe(5);
+    const state = createValidationPreviewState(ui.current());
+    expect(state.sideA.heroStates.find((entry) => entry.heroId === hero.heroId)!.skillStates.every((skill) => skill.level === 5)).toBe(true);
+    vi.resetModules();
+    const dev = await mount("advanced", true, low);
+    expect(dev.app.innerHTML).toContain('data-scope="leader-skill-level"');
+    expect(dev.app.innerHTML).toContain('data-field="maxRounds"');
+    expect(dev.app.innerHTML).toContain("simple-confidence");
+    await dev.change({ scope: "leader-skill-level", side: "A", skillId }, "5");
+    expect(dev.current().sideA.leaderSkillLevels?.[skillId]).toBe(5);
+    await dev.change({ scope: "leader-skill-level", side: "A", skillId }, "4");
+    expect(dev.current().sideA.leaderSkillLevels?.[skillId]).toBe(4);
+    await dev.click("editor-mode", { mode: "simple" });
+    expect(dev.current().sideA.leaderSkillLevels?.[skillId]).toBe(4);
+  });
+
+  it("keeps omitted hero levels at the existing engine default and covers queue/body overrides", () => {
+    const base = createDefaultValidationInput();
+    const input = { ...base, sideA: { ...base.sideA, leaderHeroIds: { lancer: "hero.s3.miya" } } };
+    expect(normalizePlayerHeroLevels(input)).toBe(input);
+    expect(createValidationPreviewState(input).sideA.heroStates[0]!.skillStates.every((skill) => skill.level === 5)).toBe(true);
+    const queues = getValidationThreeQueues(base.sideA).map((queue) => ({ ...queue, heroSkillLevels: { example: 2 } })) as unknown as NonNullable<typeof base.sideA.threeQueues>;
+    const normalized = normalizePlayerHeroLevels({ ...base, sideA: { ...base.sideA, threeQueues: queues!,
+      bodySkills: [{ heroId: "hero.s3.miya", skillId: "example", skillLevel: 3, expeditionSkillSlot: 1 }] } });
+    expect(normalized.sideA.threeQueues?.every((queue) => queue.heroSkillLevels?.example === 5)).toBe(true);
+    expect(normalized.sideA.bodySkills?.[0]?.skillLevel).toBe(5);
+  });
+
+  it("puts the Earth mode picker before team fields and renders the chosen mode", async () => {
+    const ui = await mount("advanced");
+    await ui.change({ scope: "scenario-type" }, "INNER_EARTH");
+    expect(ui.app.innerHTML.indexOf('data-scope="inner-earth-mode"')).toBeLessThan(ui.app.innerHTML.indexOf('class="panel inner-earth-panel"'));
+    expect(ui.app.innerHTML.match(/data-scope="inner-earth-mode"/g)).toHaveLength(1);
+    await ui.change({ scope: "inner-earth-mode" }, "GEM_MINE");
+    expect(ui.current().innerEarth?.subMode).toBe("GEM_MINE");
+    expect(ui.app.innerHTML).toContain("地心模式 · 宝石矿洞");
+  });
+
+  it("starts fresh players randomly and shows seed only for fixed reproduction", async () => {
+    expect(createPlayerDefaultInput().simulationMode).toBe("random");
+    const ui = await mount("advanced", false, undefined, true);
+    expect(ui.app.innerHTML).not.toContain('data-field="randomSeed"');
+    await ui.change({ scope: "simulation-mode" }, "fixedSeed");
+    expect(ui.app.innerHTML).toContain('data-field="randomSeed"');
+    await ui.change({ scope: "control", field: "randomSeed" }, "6789");
+    await ui.change({ scope: "simulation-mode" }, "random");
+    expect(ui.app.innerHTML).not.toContain('data-field="randomSeed"');
+    expect(ui.current().randomSeed).toBe(6789);
+  });
+
+  it("separates import and profile management without duplicating save/share controls", async () => {
+    const ui = await mount("advanced");
+    expect(ui.app.innerHTML).toContain("战报 / 属性导入");
+    expect(ui.app.innerHTML).toContain("阵容与预设管理");
+    expect(ui.app.innerHTML).not.toContain("其他高级设置 · 战报导入与阵容管理");
+    const management = ui.open("player-profile-management");
+    expect(management).toContain("导入阵容");
+    expect(management).not.toContain('data-action="save-profile"');
+    expect(management).not.toContain('data-action="simple-share"');
+    await ui.click("lineup-actions-toggle");
+    expect(ui.app.innerHTML).toContain('class="advanced-actions is-open"');
+    expect(ui.app.innerHTML).not.toContain('data-mode="developer"');
+  });
+
+  it("keeps public IceFire queue T12 controls and hides its hero level editors", async () => {
+    const ui = await mount("advanced");
+    await ui.change({ scope: "scenario-type" }, "ICE_FIRE_LEAGUE");
+    const queues = ui.open("player-queues-A");
+    expect(queues).not.toContain('data-scope="queue-skill-level"');
+    expect(queues.match(/data-scope="queue-t12"/g)).toHaveLength(9);
+    await ui.change({ scope: "queue-t12", side: "A", queueIndex: "0", troop: "shield" }, "12");
+    expect(ui.current().sideA.threeQueues?.[0]?.t12Levels?.shield).toBe(12);
+  });
+
+  it("shows body skill validation metadata only when Developer is enabled", () => {
+    const skill = getBodySkillOptions("s16").find((option) => option.provisional)!;
+    expect(skill).toBeDefined();
+    const state = { side: "A" as const, index: 0, stage: "s16" as const, selectedSkillId: skill.skillId, selectedLevel: 5, query: "" };
+    expect(renderBodySlotCard(state)).not.toContain("规则待验证");
+    expect(renderBodySlotCard({ ...state, developer: true })).toContain("规则待验证");
   });
 });
 

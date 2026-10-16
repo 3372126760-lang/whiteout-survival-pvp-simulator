@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-15T03:08:51.444Z",
+  "node": "v24.20.0",
+  "cpu": "AMD Ryzen 7 5800H with Radeon Graphics         ",
+  "provenance": "876 × 3368 requested-size microbenchmark with current canonical S11 signatures. Body signatures sampled evenly from the full legal B0 pool; the full optimizer never uses this subset.",
+  "actualSpace": {
+    "heads": 876,
+    "bodies": 39408,
+    "pairs": 34521408
+  },
+  "benchmarkSpace": {
+    "heads": 876,
+    "bodies": 3368,
+    "pairs": 2950368
+  },
+  "preparationElapsedMs": 4774.249,
+  "serialElapsedMs": 1166.0241000000005,
+  "workerElapsedMs": 475.3894,
+  "workerComputeAndCloneElapsedMs": 464.4842000000008,
+  "workerStartupMs": 1069.3537999999999,
+  "workerCount": 4,
+  "serialHeadBodyPerSecond": 2530280.46332833,
+  "workerHeadBodyPerSecond": 6206213.264326045,
+  "objectiveEvaluationCount": 2950368,
+  "avgObjectiveCallsPerHeadBody": 1,
+  "kktEvaluationCount": 19211487,
+  "avgKktEvaluationsPerHeadBody": 6.511556185533466,
+  "retainedCount": 10000,
+  "top10000CutoffJ": 9489881265.476347,
+  "serialWorkerEquivalent": true,
+  "memory": {
+    "before": {
+      "rss": 997564416,
+      "heapTotal": 890793984,
+      "heapUsed": 789457336,
+      "external": 17143285,
+      "arrayBuffers": 14555775
+    },
+    "after": {
+      "rss": 996388864,
+      "heapTotal": 889077760,
+      "heapUsed": 755280448,
+      "external": 17274725,
+      "arrayBuffers": 14621639
+    },
+    "lifetimePeakRssBytes": 1202675712,
+    "note": "Node process lifetime maxRSS includes signature preparation and Worker hosting; it is not isolated per-stage heap peak."
+  },
+  "gcObservedMs": 1.1766999959945679,
+  "gcNote": "PerformanceObserver GC durations for coordinator process; Worker-local GC not included."
+}

@@ -1,5 +1,7 @@
 import { DEFAULT_CRITERION_SEARCH, resolveCriterionSearchOptions } from "../pvp/optimizer/criterion/searchTypes";
 import { resolveJointRacingSchedule } from "../pvp/optimizer/criterion/racingSchedule";
+import { resolveJointPipelineOptions } from "../pvp/optimizer/jointPipeline/types";
+import { normalizeHistoricalTree } from "../pvp/validationUi/historicalBonuses";
 import { resolveBasinSearchOptions } from "../pvp/optimizer/basinSearch";
 import { DEFAULT_EXTERNAL_BUFF_CONFIG, STANDARD_PET_LEVELS, PET_DEFENSE_REDUCTION_LEVELS, PET_PENETRATION_REDUCTION_LEVELS, PET_LIFE_REDUCTION_LEVELS } from "../pvp/externalBuffs/data";
 import { MAX_BATCH_SIMULATION_COUNT, MIN_BATCH_SIMULATION_COUNT } from "../pvp/validationUi/batchSimulation";
@@ -14,14 +16,15 @@ import { defaultThreeQueueOptimizationOptions, type ThreeQueueOptimizationOption
 import { getValidationCatalog, getAvailableMemberSkills } from "../pvp/validationUi/catalog";
 import { resolveBodySkillConfigs, validateBodySkillConfigs, type BodySkillConfig } from "../pvp/validationUi/bodySkillConfig";
 import { sanitizeConfigForStage } from "../pvp/validationUi/stageConfig";
+import { reconcileLegacyHeroOwnership } from "../pvp/optimizer/heroPools";
 import { normalizeIceFireReportLineage } from "../pvp/validationUi/queueReportLineage";
 import { toThreeQueueBasisPoints, type TroopRatioBasisPoints } from "../pvp/scenario/threeQueueRatios";
 import { DEFAULT_THREE_QUEUE_MODE, THREE_QUEUE_MODES, resolveThreeQueueMode } from "../pvp/scenario/threeQueueScheduler";
 import { isThreeQueueBattleInput } from "../pvp/scenario/scenePolicy";
 import { assertInnerEarthInput, normalizeInnerEarthInput,
   type InnerEarthConfig } from "../pvp/innerEarth";
-import type { OptimizationConfig, SearchConstraint } from "../pvp/optimizer/types";
-import type { ValidationBattleInput, ValidationQueueConfig, ValidationQueueAttributes, ValidationSideInput, ValidationTroopInput } from "../pvp/validationUi/types";
+import type { OptimizationConfig, SearchConstraint, RallyCandidate } from "../pvp/optimizer/types";
+import type { ValidationBattleInput, ValidationQueueConfig, ValidationQueueAttributes, ValidationSideInput, ValidationTroopInput, ValidationHistoricalBonuses, HistoricalBonusMigration } from "../pvp/validationUi/types";
 import { migratePersistedConfig } from "./configMigration";
 import {
   CURRENT_CONFIG_SCHEMA_VERSION,
@@ -263,7 +266,8 @@ function importedModifiers(value: unknown, label: string):
 function bonusContexts(raw: Record<string, unknown>, label: string) {
   return {
     ...(raw.sourceReportBonuses === undefined ? {} : { sourceReportBonuses:
-      importedModifiers(raw.sourceReportBonuses, `${label}.sourceReportBonuses`) }),
+      readHistoricalBonuses(raw.sourceReportBonuses, `${label}.sourceReportBonuses`) }),
+    ...(raw.historicalBonusMigration === undefined ? {} : { historicalBonusMigration: readHistoricalBonusMigration(raw.historicalBonusMigration) }),
     ...(raw.sourceReportAttributes === undefined ? {} : { sourceReportAttributes:
       queueAttributes(raw.sourceReportAttributes, `${label}.sourceReportAttributes`) }),
     ...(raw.reportAttributeBasis === undefined ? {} : { reportAttributeBasis:
@@ -274,9 +278,26 @@ function bonusContexts(raw: Record<string, unknown>, label: string) {
       importedModifiers(raw.targetBattleBonuses, `${label}.targetBattleBonuses`) }),
   };
 }
+function readHistoricalBonuses(value: unknown, label: string) {
+  const raw = record(value, label);
+  return Object.fromEntries((["attack", "defense", "penetration", "life"] as const).map((stat) => {
+    const row = record(raw[stat], `${label}.${stat}`);
+    return [stat, { additive: finite(row.additive, "additive"), buff: finite(row.buff, "buff"), debuff: finite(row.debuff, "debuff") }];
+  })) as ValidationHistoricalBonuses;
+}
+function readHistoricalBonusMigration(value: unknown): HistoricalBonusMigration {
+  const raw = record(value, "historicalBonusMigration");
+  return { strategy: oneOf(raw.strategy, ["preserveRawAttributes"] as const, "historicalBonusMigration.strategy"),
+    conflicts: array(raw.conflicts, "historicalBonusMigration.conflicts").map((entry) => {
+      const row = record(entry, "conflict"), values = record(row.values, "conflict.values");
+      return { attribute: oneOf(row.attribute, ["attack", "defense", "penetration", "life"] as const, "conflict.attribute"),
+        field: oneOf(row.field, ["additive", "buff", "debuff"] as const, "conflict.field"),
+        values: Object.fromEntries(TROOP_TYPES.map((t) => [t, finite(values[t], `conflict.values.${t}`)])) as Record<TroopType, number> };
+    }) };
+}
 
 function persistBonusContexts(side: ValidationSideInput | ValidationQueueConfig) {
-  return Object.fromEntries(["sourceReportBonuses", "sourceReportAttributes", "reportAttributeBasis",
+  return Object.fromEntries(["sourceReportBonuses", "historicalBonusMigration", "sourceReportAttributes", "reportAttributeBasis",
     "targetBonusMode", "targetBattleBonuses"].flatMap((key) => {
       const value = side[key as keyof typeof side];
       return value === undefined ? [] : [[key, value]];
@@ -495,6 +516,23 @@ function readRallyCriterion(value: unknown, migrateLegacyRacing: boolean) {
   });
 }
 
+function readOptimizerCandidates(value: unknown, label: string): RallyCandidate[] {
+  return array(value, label).map((entry, i) => {
+    const row = record(entry, `${label}[${i}]`), leaderHeroIds = heroMap(row.leaderHeroIds, `${label}.leaderHeroIds`);
+    const memberSkillIds = array(row.memberSkillIds, `${label}.memberSkillIds`).map((id) => {
+      const skill = string(id, "memberSkillId");
+      if (!KNOWN_MEMBER_SKILL_IDS.has(skill)) throw new Error(`未知车身技能：${skill}。`);
+      return skill;
+    });
+    if (memberSkillIds.length > 4) throw new Error("优化候选最多四个车身技能。");
+    const bodySkillLevels = row.bodySkillLevels === undefined ? undefined : array(row.bodySkillLevels, "bodySkillLevels").map((n) => integer(n, "bodySkillLevel", 1, 5));
+    if (bodySkillLevels && bodySkillLevels.length !== memberSkillIds.length) throw new Error("车身技能等级数量不一致。");
+    return { leaderHeroIds, memberSkillIds, ratios: ratiosPercent(row.ratios, `${label}.ratios`),
+      ...(row.headWeaponLevels === undefined ? {} : { headWeaponLevels: weaponLevels(row.headWeaponLevels, "headWeaponLevels") }),
+      ...(bodySkillLevels === undefined ? {} : { bodySkillLevels }),
+      ...(row.troopLevels === undefined ? {} : { troopLevels: Object.fromEntries(TROOP_TYPES.map((troop) => [troop, level(record(row.troopLevels, "troopLevels")[troop], "troopLevel")])) as NonNullable<RallyCandidate["troopLevels"]> }) };
+  });
+}
 function readOptimizationConfig(value: unknown, seed: number,
   stageId: ServerStageId, migrateLegacyRacing = false): OptimizationConfig {
   const fallback = defaultOptimizationConfig(seed);
@@ -606,6 +644,7 @@ function readOptimizationConfig(value: unknown, seed: number,
     ...fallback,
     ...numeric,
     candidateSide: oneOf(raw.candidateSide ?? "A", ["A", "B"] as const, "optimizationConfig.candidateSide"),
+    ...(raw.jointPipeline === undefined ? {} : { jointPipeline: resolveJointPipelineOptions(record(raw.jointPipeline, "optimizationConfig.jointPipeline")) }),
     ...(racingMigrated ? { verificationTop: fallback.verificationTop } : {}),
     objectiveMode: oneOf(raw.objectiveMode, ["singleWin", "minRallies", "auto"] as const,
       "optimizationConfig.objectiveMode"),
@@ -617,19 +656,9 @@ function readOptimizationConfig(value: unknown, seed: number,
     initialBattleTrials: racingMigrated ? DEFAULT_CRITERION_SEARCH.screeningTrials[0]! :
       integer(raw.initialBattleTrials ?? 5, "optimizationConfig.initialBattleTrials", 1, 100_000),
     ...(monteCarloStages === undefined ? {} : { monteCarloStages }),
-    ...(raw.protectedCandidates === undefined ? {} : { protectedCandidates:
-      array(raw.protectedCandidates, "optimizationConfig.protectedCandidates").map((entry, i) => {
-        const row = record(entry, `protectedCandidates[${i}]`);
-        const leaderHeroIds = heroMap(row.leaderHeroIds, `protectedCandidates[${i}].leaderHeroIds`);
-        const memberSkillIds = array(row.memberSkillIds, `protectedCandidates[${i}].memberSkillIds`).map((id) => {
-          const skill = string(id, "protectedCandidate.memberSkillId");
-          if (!KNOWN_MEMBER_SKILL_IDS.has(skill)) throw new Error(`未知车身技能：${skill}。`);
-          return skill;
-        });
-        if (memberSkillIds.length > 4) throw new Error("保护候选最多四个车身技能。");
-        return { leaderHeroIds, memberSkillIds, ratios: ratiosPercent(row.ratios, `protectedCandidates[${i}].ratios`) };
-      }).filter((row) => Object.values(row.leaderHeroIds).every((id) => id === null || isHeroAvailableAtStage(id, stageId)) &&
-        row.memberSkillIds.every((id) => memberIds.has(id))) }),
+    ...(raw.protectedCandidates === undefined ? {} : { protectedCandidates: readOptimizerCandidates(raw.protectedCandidates, "protectedCandidates")
+      .filter((row) => Object.values(row.leaderHeroIds).every((id) => id === null || isHeroAvailableAtStage(id, stageId)) && row.memberSkillIds.every((id) => memberIds.has(id))) }),
+    ...(raw.jointDebugCandidates === undefined ? {} : { jointDebugCandidates: readOptimizerCandidates(raw.jointDebugCandidates, "jointDebugCandidates") }),
     targetDefeatProbability: probability(raw.targetDefeatProbability,
       "optimizationConfig.targetDefeatProbability"),
     singleFightThresholdLow: thresholdLow,
@@ -701,7 +730,8 @@ function readThreeQueueOptimizerOptions(value: unknown, seed: number):
 function readInnerEarthReportHistory(value: unknown) {
   const raw = record(value, "innerEarth.reportHistory");
   return { reportAttributes: queueAttributes(raw.reportAttributes, "innerEarth.reportHistory.reportAttributes"),
-    bonuses: importedModifiers(raw.bonuses, "innerEarth.reportHistory.bonuses"),
+    bonuses: readHistoricalBonuses(raw.bonuses, "innerEarth.reportHistory.bonuses"),
+    ...(raw.historicalBonusMigration === undefined ? {} : { historicalBonusMigration: readHistoricalBonusMigration(raw.historicalBonusMigration) }),
     ...(raw.recognizedSpecialBonuses === undefined ? {} : { recognizedSpecialBonuses: readRecognizedSpecialBonuses(raw.recognizedSpecialBonuses) }) };
 }
 function readInnerEarth(value: unknown): InnerEarthConfig {
@@ -937,7 +967,7 @@ export function createPersistedEnvelope(
     MAX_BATCH_SIMULATION_COUNT);
   if (input.scenarioType === "INNER_EARTH") assertInnerEarthInput(input);
   const stageId = input.serverStage ?? "s16";
-  const sanitized = sanitizeConfigForStage(normalizeIceFireReportLineage(input), stageId);
+  const sanitized = sanitizeConfigForStage(normalizeIceFireReportLineage(normalizeHistoricalTree(input)), stageId);
   const scenarioType = sanitized.input.scenarioType ??
     (sanitized.input.battleContext === "rally" ? "RALLY" : "SINGLE");
   const normalized: ValidationBattleInput = normalizeIceFireReportLineage({ ...sanitized.input, scenarioType,
@@ -982,7 +1012,9 @@ export function restorePersistedConfig(raw: unknown,
   const data = record(envelope.data, "data");
   const input = readInput(record(data.input, "data.input"));
   const stageSanitized = sanitizeConfigForStage(input, input.serverStage!);
-  const sanitized = { ...stageSanitized, input: normalizeIceFireReportLineage(stageSanitized.input) };
+  const normalized = normalizeIceFireReportLineage(stageSanitized.input);
+  const reconciled = reconcileLegacyHeroOwnership(normalized);
+  const sanitized = { input: reconciled, changed: stageSanitized.changed || reconciled !== normalized };
   if (options.validateBattleState !== false) validateScenario(sanitized.input);
   const optimizationConfig = readOptimizationConfig(data.optimizationConfig,
     sanitized.input.randomSeed, sanitized.input.serverStage!, true);
@@ -1003,6 +1035,7 @@ export function restorePersistedConfig(raw: unknown,
     ...(input.legacySceneMigration === undefined ? {} : {
       sceneMigrationWarnings: input.legacySceneMigration.warnings }),
     ...(hasLegacyRallyRacing(data.optimizationConfig) ? { optimizerRacingMigrated: true } : {}),
+    ...(reconciled !== normalized ? { headPoolOwnershipMigrated: true } : {}),
     queueAttributesMigrated: migrated.queueAttributesMigrated };
 }
 

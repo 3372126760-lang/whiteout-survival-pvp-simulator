@@ -1,6 +1,6 @@
 import type { PetExternalBuffConfig } from "../externalBuffs/types";
 import type { TroopType } from "../types/combat";
-import type { ValidationQueueAttributes, ValidationReportBonusMatrix } from "../validationUi/types";
+import type { ValidationQueueAttributes, ValidationReportBonusMatrix, ValidationHistoricalBonuses, HistoricalBonusMigration } from "../validationUi/types";
 import type { ParsedBattleReportSide } from "../battleReportRecognition/types";
 import type { RallyTroopRatios } from "../validationUi/rallyDeployment";
 
@@ -12,7 +12,8 @@ export type InnerEarthEnemyRatioPreset = typeof INNER_EARTH_ENEMY_PRESETS[number
 export type InnerEarthHeroMap = Readonly<Partial<Record<TroopType, string | null>>>;
 export interface InnerEarthReportHistory {
   readonly reportAttributes: ValidationQueueAttributes;
-  readonly bonuses: ValidationReportBonusMatrix;
+  readonly bonuses: ValidationHistoricalBonuses | ValidationReportBonusMatrix;
+  readonly historicalBonusMigration?: HistoricalBonusMigration;
   readonly recognizedSpecialBonuses?: ParsedBattleReportSide["specialBonuses"];
 }
 export interface InnerEarthAllyQueue {

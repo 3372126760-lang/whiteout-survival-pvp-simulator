@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 import { createDefaultValidationInput } from "../../ui/defaultInput";
-import { candidateKey, candidateToInput, defaultOptimizationConfig,
-  generateRatioGrid, searchSingleWave, optimizeSimpleScenario, applySimpleScenarioCandidate } from "../optimizer";
+import { candidateToInput,
+  generateRatioGrid, optimizeSimpleScenario, applySimpleScenarioCandidate } from "../optimizer";
 import { createRatioAdjacency, createTheoryTemplateBuilder, defaultTheoryOptions,
   detectRatioLocalPeaks, estimateDeterministicBattle, estimateTheoryCandidate,
-  preFilterRallyCandidates, ratioKey, ratioNeighbors, ratioRegion, scanLineupRatios,
+  ratioKey, ratioNeighbors, ratioRegion, scanLineupRatios,
   type TheoryEstimate } from "../optimizer/theory";
 import { CONFIRMED_HERO_SKILL_DEFINITIONS } from "../heroSkills";
 import { CONFIRMED_TROOP_SKILL_DEFINITIONS } from "../troopSkills";
@@ -22,14 +22,6 @@ const estimate = (theoryScore: number, uncertainty = 0): TheoryEstimate => ({
   theoryScore, uncertainty, staticTheoryScore: theoryScore, deterministicScore: theoryScore,
   metrics: { initialDps: [1, 1], ehp: [1, 1], firstTargetTtk: [1, 1],
     shieldSurvivalRounds: [1, 1], marksmanOutputWindow: [1, 1] },
-});
-const minimalConfig = () => ({ ...defaultOptimizationConfig(91),
-  adaptiveSearch: { enabled: false },
-  objectiveMode: "singleWin" as const, constraints: { fixedBodyExact: true, fixedMemberSkillIds: [] },
-  protectedCandidates: [opponentCandidate()],
-  monteCarloStages: [{ trials: 2, keep: 2 }, { trials: 3, keep: 1 },
-    { trials: 4, keep: 1 }, { trials: 5, keep: 1 }],
-  verificationTrials: 7, verificationTop: 1, topN: 2,
 });
 
 describe("standalone multi-peak theory prefilter", () => {
@@ -79,17 +71,7 @@ describe("standalone multi-peak theory prefilter", () => {
       expect(mathRandom).not.toHaveBeenCalled();
     } finally { mathRandom.mockRestore(); }
   });
-  it("scans every legal lineup, preserves manual reference and leaves inputs unchanged", () => {
-    const input = rallyHeadSearchFixture(), before = JSON.stringify(input);
-    const scan = preFilterRallyCandidates(input, minimalConfig());
-    expect(scan.formations).toHaveLength(7);
-    expect(scan.theoryCandidateCount).toBe(1617);
-    expect(scan.lineups.every((row) => row.scannedRatios === 231 && row.selectedRatios >= 3)).toBe(true);
-    const known = scan.candidates.find((row) => candidateKey(row) === candidateKey(opponentCandidate()));
-    expect(known?.selectionReasons).toContain("protectedReference");
-    expect(scan.protectedKeys.has(candidateKey(opponentCandidate()))).toBe(true);
-    expect(JSON.stringify(input)).toBe(before);
-  }, 30_000);
+
   it("materializes final-report ratios into actual Engine counts with fixed total and attributes", () => {
     const base = rallyHeadSearchFixture();
     const input = { ...base, attributeInputMode: "finalReport" as const,
@@ -103,18 +85,7 @@ describe("standalone multi-peak theory prefilter", () => {
     for (const troop of TROOP_TYPES) for (const stat of ["attack", "defense", "penetration", "life"] as const)
       expect(converted.sideA.troops[troop][stat]).toBe(input.sideA.troops[troop][stat]);
   });
-  it("honors explicit manual references without bypassing fixed body or legal hero constraints", () => {
-    const input = rallyHeadSearchFixture();
-    const manual = { ...opponentCandidate(), ratios: { shield: 52, lancer: 38, marksman: 10 } };
-    const scan = preFilterRallyCandidates(input, { ...minimalConfig(), protectedCandidates: [manual] });
-    expect(scan.protectedKeys.has(candidateKey(manual))).toBe(true);
-    expect(() => preFilterRallyCandidates(input, { ...minimalConfig(), protectedCandidates: [
-      { ...manual, leaderHeroIds: { shield: "hero.s16.hank" } },
-    ] })).toThrow(/legal hero pool/);
-    expect(() => preFilterRallyCandidates(input, { ...minimalConfig(), protectedCandidates: [
-      { ...manual, memberSkillIds: ["hero-skill.heluonimo.penetration"] },
-    ] })).toThrow(/fixed body constraints/);
-  }, 30_000);
+
   it("covers all seven recent-eligible single lineups on side B while preserving attributes and the opponent", () => {
     const input = { ...rallyHeadSearchFixture(), scenarioType: "SINGLE" as const,
       battleContext: "challenge" as const, maxRounds: 1 };
@@ -200,32 +171,5 @@ describe("standalone multi-peak theory prefilter", () => {
     expect(deterministic).toEqual(estimateDeterministicBattle(template, [50.01,19.99,30]));
     expect(deterministic).not.toHaveProperty("trace");
   });
-  it("lets formal simulation overrule theory and protects manual/current through every common-seed stage", () => {
-    const input = rallyHeadSearchFixture(), config = minimalConfig();
-    const manual = opponentCandidate(), calls: { candidate: string; seeds: readonly number[] }[] = [];
-    const result = searchSingleWave(input, config, undefined, (candidate, seeds) => {
-      const wins = candidateKey(candidate) === candidateKey(manual);
-      calls.push({ candidate: candidateKey(candidate), seeds });
-      return seeds.map(() => ({ outcome: wins ? "A" as const : "B" as const, rounds: 1,
-        self: { shield: wins ? 100 : 0, lancer: 0, marksman: 0 },
-        enemy: { shield: wins ? 0 : 100, lancer: 0, marksman: 0 } }));
-    });
-    expect(candidateKey(result.top[0]!.candidate)).toBe(candidateKey(manual));
-    expect(result.top[0]!.winRate).toBe(1);
-    expect(result.top.every((row) => row.trials === config.verificationTrials)).toBe(true);
-    // The theoretical funnel may now discard complete heads; formal coverage
-    // is measured on retained candidates and does not promise every legal head.
-    const coverage = result.searchDiagnostics.theoryCoverage!;
-    expect(coverage.battleHeroCoverage).toBeGreaterThan(0);
-    expect(coverage.battleHeroCoverage).toBeLessThanOrEqual(100);
-    expect(coverage.battleHeroCoverage).toBe(coverage.heroLineupsEnteringBattleEngine / coverage.legalHeroLineupCount * 100);
-    expect(result.searchDiagnostics.localExpansionCount).toBeGreaterThan(0);
-    const pairs=calls.flatMap((row)=>row.seeds.map((seed)=>`${row.candidate}:${seed}`));
-    expect(new Set(pairs).size).toBe(pairs.length);
-    const audit=result.searchDiagnostics.searchIntegrityReport!;
-    expect(audit.perStage.every((s)=>s.requestedBattles===s.executedBattles+s.reusedBattles)).toBe(true);
-    expect(audit.perStage.at(-1)!.stage).toContain("Final");
-    expect(calls.some((row)=>row.candidate===candidateKey(manual))).toBe(true);
-    expect(result.searchDiagnostics.battleSelections?.every((row) => row.selectionReasons.length > 0)).toBe(true);
-  }, 30_000);
+
 });

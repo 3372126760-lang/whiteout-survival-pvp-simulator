@@ -98,7 +98,7 @@ attributeRecognitionRemaining = true
 - typecheck、lint、build通过。构建有既有大分块提示，不影响成功状态。
 - 对上一轮基线比较：**72 个核心文件全部哈希未变**。BattleEngine、Damage/HP公式、N0、行动/索敌、rounding、overflow、已确认英雄和兵种技能以及正式三队调度文件均未修改。
 - 本轮没有启动额外 Vite 实例，没有改服务器端口。
-- 结果：[验收汇总](../examples/inner-earth-ui-search-validation-summary.json)、[完整测试JSON](../examples/inner-earth-full-test-results.json)、[核心核对](../examples/inner-earth-ui-core-boundary-audit.json)。
+- 结果：[验收汇总](../examples/inner-earth-ui-search-validation-summary.json)、[核心核对](../examples/inner-earth-ui-core-boundary-audit.json)。完整测试原始JSON含本机路径，已归档至被Git忽略的 `artifacts/release-0.3.0-beta/archived-test-reports/`。
 
 复现：
 

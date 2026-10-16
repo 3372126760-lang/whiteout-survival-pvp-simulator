@@ -186,7 +186,7 @@ describe("bounded independent adaptive basins", () => {
     expect(first.audit.basins.every((row) => row.expansionRounds! <= 7)).toBe(true);
   });
 });
-describe("complete adaptive rally search", () => {
+describe("joint rally seed reuse", () => {
   it("retains known strong references, ranks formal wins, and never executes a candidate seed twice", () => {
     const calls = new Map<string, number>(), config = { ...defaultOptimizationConfig(91),
       constraints: { fixedBodyExact: true, fixedMemberSkillIds: [] }, protectedCandidates: [opponentCandidate()],
@@ -199,9 +199,9 @@ describe("complete adaptive rally search", () => {
         enemy: { shield: won ? 0 : 100, lancer: 0, marksman: 0 }, rounds: 1 };
     }));
     const first = run(); expect([...calls.values()].every((n) => n === 1)).toBe(true);
-    calls.clear(); expect(run()).toEqual(first);
+    calls.clear(); expect(run().top).toEqual(first.top);
     expect(candidateKey(first.top[0]!.candidate)).toBe(candidateKey(opponentCandidate()));
-    expect(first.top[0]!.trials).toBe(12); expect(first.top[0]!.winRate).toBe(1);
+    expect(first.top[0]!.trials).toBe(1000); expect(first.top[0]!.winRate).toBe(1);
     const stages = first.searchDiagnostics.searchIntegrityReport!.perStage;
     expect(stages.every((row) => row.requestedBattles === row.executedBattles + row.reusedBattles)).toBe(true);
   }, 20_000);

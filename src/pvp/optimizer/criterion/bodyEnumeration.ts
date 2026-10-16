@@ -6,6 +6,9 @@ import type { OptimizationInput, RallyCandidate, SearchConstraint } from "../typ
 import type { SideId } from "../../types";
 import { createOptimizationContext, skillRoleApplicability, type OptimizationContext, type SkillRoleApplicability } from "../optimizationContext";
 import { createEffectSignature } from "./signatures";
+import { canonicalSkillFamilies, probabilityBodyDominatedBy } from "../jointPipeline/bodyPolicy";
+import type { CanonicalBodyAudit } from "../jointPipeline/canonicalBodies";
+import { canonicalBodySemanticKey } from "../../bodyEffects/canonicalRegistry";
 import { createBodySkillSignature, createBodyComboSignature, dominatesBodySkill, paretoBodyRows,
   type BodySkillEffectSignature, type BodySkillDominance, type PreprocessedBodyRow } from "./bodyPreprocess";
 
@@ -31,6 +34,7 @@ export interface BodyEnumerationDomain {
   readonly optimizationContext?: OptimizationContext;
 }
 export interface BodyEnumerationOptions {
+  readonly jointPolicy?: boolean;
   readonly preprocess?: boolean;
   /** Numeric aliases/permutations are optimizer template lanes, never formal runtime IDs. */
   readonly semanticRepresentatives?: boolean;
@@ -41,6 +45,11 @@ export interface BodyEnumerationOptions {
   readonly candidateSide?: SideId;
 }
 export interface BodyEnumerationAudit {
+  canonical?: CanonicalBodyAudit;
+  legacyTrace?: { bodyHeroCount: number; canonicalEffectCount: number; numericAliasRepresentativeCount: number; rawOrderedCombinationCount: number; rawUnorderedCombinationCount: number;
+    rejectedByProbabilityDominance: number; rejectedByExplicitOptimizerExclusion: number; rejectedByMultiplicityLimit: number;
+    deduplicatedByCanonicalEffect: number; deduplicatedByPermutation: number; deduplicatedBySemanticIdentity: number;
+    orderedAfterNumericAliases: number; finalBodyCount: number; traceAppliesToUnconstrainedFourSlots: boolean };
   rawBodyCombinationCount: number;
   rejectedDuringGenerationBySameEffectFamily: number;
   rejectedBySameEffectFamily: number;
@@ -70,7 +79,7 @@ export interface BodyEnumerationAudit {
   inactiveBodySkillsInCurrentRole:readonly SkillRoleApplicability[];
 }
 export interface EnumeratedBodyRow { readonly memberSkillIds: readonly string[]; readonly bodySlots: readonly OptimizerBodySlot[]; }
-interface Choice { source: BodyEnumerationSource; descriptor: BodySkillEffectSignature; ordinal: number; commutable: boolean; }
+interface Choice { source: BodyEnumerationSource; descriptor: BodySkillEffectSignature; ordinal: number; commutable: boolean; families: readonly string[]; }
 export interface BodyEnumerationResult {
   readonly rows: readonly EnumeratedBodyRow[];
   readonly bodies: readonly PreprocessedBodyRow[];
@@ -122,7 +131,7 @@ function countDomain(lanes: readonly (readonly Choice[])[], required: readonly s
     const grouped = new Map<string, { choice: Choice; count: number; bit: number }>();
     for (const choice of lane) {
       const bit = requiredBits.get(choice.source.heroId) ?? 0;
-      const key = JSON.stringify([maxFamily < lanes.length ? choice.descriptor.effectFamily : "", bit]);
+      const key = JSON.stringify([maxFamily < lanes.length ? choice.families : "", bit]);
       const old = grouped.get(key); if (old) old.count++; else grouped.set(key, { choice, count: 1, bit });
     }
     return [...grouped.values()];
@@ -133,11 +142,11 @@ function countDomain(lanes: readonly (readonly Choice[])[], required: readonly s
     const cached = memo.get(key); if (cached !== undefined) return cached;
     let total = 0;
     for (const { choice, count, bit } of groups[slot]!) {
-      const family = choice.descriptor.effectFamily, oldCount = families.get(family) ?? 0;
-      if (oldCount >= maxFamily) continue;
-      if (maxFamily < lanes.length) families.set(family, oldCount + 1);
+      const oldCounts = choice.families.map((family) => families.get(family) ?? 0);
+      if (oldCounts.some((n) => n >= maxFamily)) continue;
+      if (maxFamily < lanes.length) choice.families.forEach((family, i) => families.set(family, oldCounts[i]! + 1));
       total += count * walk(slot + 1, mask | bit);
-      if (maxFamily < lanes.length) { if (oldCount) families.set(family, oldCount); else families.delete(family); }
+      if (maxFamily < lanes.length) choice.families.forEach((family, i) => { if (oldCounts[i]) families.set(family, oldCounts[i]!); else families.delete(family); });
     }
     memo.set(key, total); return total;
   };
@@ -161,9 +170,14 @@ export function enumerateBodyCombinations(domain: BodyEnumerationDomain, options
   };
   const lanes: Choice[][] = Array.from({ length: slots }, (_, slot) => {
     const choices = slot < fixed.length ? sources.filter((source) => source.skillId === fixed[slot]) : sources;
-    return choices.map((source, ordinal) => ({ source, descriptor: descriptorFor(source, slot), ordinal, commutable: false }));
+    return choices.map((source, ordinal) => {
+      const descriptor = descriptorFor(source, slot);
+      return { source, descriptor, ordinal, commutable: false,
+        families: options.jointPolicy ? canonicalSkillFamilies(descriptor.definition, descriptor.skillLevel) : [descriptor.effectFamily] };
+    });
   });
-  const count = (choices: readonly (readonly Choice[])[], family = 2) => countDomain(choices, domain.requiredBodyHeroIds, family);
+  const maximumFamily = options.jointPolicy && domain.fixedBodyExact ? Math.max(4, slots) : 2;
+  const count = (choices: readonly (readonly Choice[])[], family = maximumFamily) => countDomain(choices, domain.requiredBodyHeroIds, family);
   const rawBodyCombinationCount = count(lanes, Math.max(4, slots));
   const afterSameEffectMax2 = count(lanes);
   const roleRows=domain.optimizationContext?lanes.flatMap((lane)=>lane.map((choice)=>
@@ -180,7 +194,9 @@ export function enumerateBodyCombinations(domain: BodyEnumerationDomain, options
   const preprocess = options.preprocess ?? false;
   const filterDominance = (input: readonly (readonly Choice[])[], reason: BodySkillDominance) => input.map((lane, slot) => lane.filter((choice) => {
     if (!preprocess || slot < fixed.length || protectedSkills.has(choice.source.skillId) || domain.disabledSkillIds.includes(choice.source.skillId)) return true;
-    const proof = lane.find((other) => !domain.disabledSkillIds.includes(other.source.skillId) && dominatesBodySkill(choice.descriptor, other.descriptor) === reason);
+    if (options.jointPolicy && reason === "skillDominance") return true;
+    const proof = lane.find((other) => !domain.disabledSkillIds.includes(other.source.skillId) &&
+      (options.jointPolicy ? probabilityBodyDominatedBy(choice.descriptor, other.descriptor) : dominatesBodySkill(choice.descriptor, other.descriptor) === reason));
     if (!proof) return true;
     if (!skillDominance.some((row) => row.skillId === choice.source.skillId && row.skillLevel === choice.descriptor.skillLevel && row.dominatedBy === proof.source.skillId && row.reason === reason && row.slot === slot))
       skillDominance.push({ skillId: choice.source.skillId, skillLevel: choice.descriptor.skillLevel, dominatedBy: proof.source.skillId, reason, slot });
@@ -236,12 +252,12 @@ export function enumerateBodyCombinations(domain: BodyEnumerationDomain, options
     if (options.limit !== undefined && rows.length >= options.limit) return;
     if (slot === selected.length) { add(combo); return; }
     for (const choice of selected[slot]!) {
-      const family = choice.descriptor.effectFamily, old = familyCounts.get(family) ?? 0;
-      if (old >= 2) continue;
+      const oldCounts = choice.families.map((family) => familyCounts.get(family) ?? 0);
+      if (oldCounts.some((n) => n >= maximumFamily)) continue;
       if (choice.commutable && choice.ordinal < minimumSimpleOrdinal) continue;
-      familyCounts.set(family, old + 1); combo.push(choice);
+      choice.families.forEach((family, i) => familyCounts.set(family, oldCounts[i]! + 1)); combo.push(choice);
       walk(slot + 1, choice.commutable ? choice.ordinal : minimumSimpleOrdinal);
-      combo.pop(); if (old) familyCounts.set(family, old); else familyCounts.delete(family);
+      combo.pop(); choice.families.forEach((family, i) => { if (oldCounts[i]) familyCounts.set(family, oldCounts[i]!); else familyCounts.delete(family); });
     }
   };
   if (afterSameEffectMax2) walk(0, -1);
@@ -255,11 +271,22 @@ export function enumerateBodyCombinations(domain: BodyEnumerationDomain, options
     if ([...counts.values()].some((value) => value > 2)) continue;
     add(complete);
   }
-  const pareto = preprocess ? paretoBodyRows(bodies, protectedBodies) : { bodies, rejected: 0 };
+  const pareto = preprocess && !options.jointPolicy ? paretoBodyRows(bodies, protectedBodies) : { bodies, rejected: 0 };
   const finalBodies = pareto.bodies, retainedKeys = new Set(finalBodies.map((body) => body.ids.join("|")));
   const finalRows = preprocess ? rows.filter((row) => retainedKeys.has(row.memberSkillIds.join("|"))) : rows;
   const finalCount = finalRows.length, semanticCount = rows.length;
+  const orderedAfterNumericAliases = count(selected);
   const audit: BodyEnumerationAudit = { rawBodyCombinationCount,
+    legacyTrace: { bodyHeroCount: sources.length,
+      canonicalEffectCount: new Set(lanes.flatMap((lane) => lane.map((c) => canonicalBodySemanticKey(c.descriptor.definition, c.descriptor.skillLevel)))).size,
+      numericAliasRepresentativeCount: selected[0]?.length ?? 0, rawOrderedCombinationCount: rawBodyCombinationCount,
+      rawUnorderedCombinationCount: sources.length * (sources.length + 1) * (sources.length + 2) * (sources.length + 3) / 24,
+      rejectedByProbabilityDominance: afterStrictDominance - afterProbabilityDominance, rejectedByExplicitOptimizerExclusion: 0,
+      rejectedByMultiplicityLimit: rawBodyCombinationCount - afterSameEffectMax2,
+      deduplicatedByCanonicalEffect: afterProbabilityDominance - orderedAfterNumericAliases,
+      orderedAfterNumericAliases, deduplicatedByPermutation: orderedAfterNumericAliases - semanticCount,
+      deduplicatedBySemanticIdentity: pareto.rejected, finalBodyCount: finalCount,
+      traceAppliesToUnconstrainedFourSlots: slots === 4 && !fixed.length && !domain.requiredBodyHeroIds.length },
     rejectedDuringGenerationBySameEffectFamily: rawBodyCombinationCount - afterSameEffectMax2,
     rejectedBySameEffectFamily: rawBodyCombinationCount - afterSameEffectMax2, afterSameEffectMax2,
     rejectedByStrictDominance: afterRoleApplicability - afterStrictDominance,

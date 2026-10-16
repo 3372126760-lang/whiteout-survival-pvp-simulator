@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "kind": "compact-historical-body-summary",
+  "inputFixture": "benchmarks/optimizer/joint-rally-gen12-input.json",
+  "inputSha256": "7c246a65d82211be091efffd97d216cf5a7c7f0967ad8ed636a9be7f58d74da9",
+  "headCount": 876,
+  "historicalBodyCount": 57313,
+  "historicalInputAvailable": false,
+  "currentReproducibleBodyCount": 56859,
+  "difference": -454,
+  "historicalCountReproduced": false,
+  "discrepancy": -454,
+  "interpretation": "The historical input was not supplied. These are measured stages of the saved reproducible fixture, not an invented reconstruction of 57313. Raw unordered hero count is a reference universe; legacy actually prunes multiplicity in ordered slots, then numeric aliases, then selected commuting permutations.",
+  "legacyAudit": {
+    "rawBodyCombinationCount": 4100625,
+    "rejectedDuringGenerationBySameEffectFamily": 90885,
+    "rejectedBySameEffectFamily": 90885,
+    "afterSameEffectMax2": 4009740,
+    "rejectedByStrictDominance": 0,
+    "rejectedBySkillDominance": 0,
+    "rejectedByProbabilityDominance": 0,
+    "afterStrictDominance": 4009740,
+    "afterProbabilityDominance": 4009740,
+    "rejectedBySemanticEquivalence": 3952881,
+    "semanticBodyCombinationCount": 56859,
+    "rejectedByParetoDominance": 0,
+    "afterPareto": 56859,
+    "afterMarginalStacking": 56859,
+    "finalPreprocessedBodyCount": 56859,
+    "preprocessedBodyCount": 56859,
+    "sourceSkillCount": 45,
+    "sourcesAfterStrictDominance": 45,
+    "sourcesAfterProbabilityDominance": 45,
+    "formalSeedOrderEquivalenceClaimed": false,
+    "bodiesRejectedAsInactiveInCurrentRole": 0,
+    "bodyCombinationsRejectedAsInactiveInCurrentRole": 0,
+    "afterRoleApplicability": 4009740,
+    "legacyTrace": {
+      "bodyHeroCount": 45,
+      "canonicalEffectCount": 25,
+      "numericAliasRepresentativeCount": 33,
+      "rawOrderedCombinationCount": 4100625,
+      "rawUnorderedCombinationCount": 194580,
+      "rejectedByProbabilityDominance": 0,
+      "rejectedByExplicitOptimizerExclusion": 0,
+      "rejectedByMultiplicityLimit": 90885,
+      "deduplicatedByCanonicalEffect": 2840544,
+      "orderedAfterNumericAliases": 1169196,
+      "deduplicatedByPermutation": 1112337,
+      "deduplicatedBySemanticIdentity": 0,
+      "finalBodyCount": 56859,
+      "traceAppliesToUnconstrainedFourSlots": true
+    }
+  },
+  "canonicalAudit": {
+    "bodyHeroCount": 45,
+    "canonicalEffectCount": 25,
+    "automaticEffectCount": 21,
+    "canonicalEffectCountBefore": 45,
+    "canonicalEffectCountAfter": 25,
+    "rawOrderedCombinationCount": 4100625,
+    "rawUnorderedCombinationCount": 194580,
+    "rejectedByProbabilityDominance": 0,
+    "rejectedByExplicitOptimizerExclusion": 9849,
+    "rejectedByMultiplicityLimit": 441,
+    "deduplicatedByPermutation": 3906045,
+    "deduplicatedByCanonicalEffect": 174105,
+    "deduplicatedBySemanticIdentity": 0,
+    "rejectedByAdditionalConstraints": 0,
+    "additionalConstraints": [
+      "explicit rallyBodyPoolIds"
+    ],
+    "finalBodyCount": 10185,
+    "stages": [
+      {
+        "stage": "eligible hero ordered universe",
+        "count": 4100625,
+        "unit": "ordered four slots before constraints"
+      },
+      {
+        "stage": "unordered hero multisets",
+        "count": 194580,
+        "unit": "multisets"
+      },
+      {
+        "stage": "complete semantic canonicalization",
+        "count": 20475,
+        "unit": "canonical multisets"
+      },
+      {
+        "stage": "four explicit optimizer exclusions",
+        "count": 10626,
+        "unit": "canonical multisets"
+      },
+      {
+        "stage": "canonical multiplicity <=2",
+        "count": 10185,
+        "unit": "canonical multisets"
+      },
+      {
+        "stage": "actual constraints",
+        "count": 10185,
+        "unit": "materialized legal Bodies"
+      }
+    ]
+  },
+  "categoryCounts": {
+    "attack": 3,
+    "defense": 3,
+    "penetration": 3,
+    "life": 1,
+    "damageIncrease": 5,
+    "skillDamage": 3,
+    "damageReduction": 5,
+    "vulnerability": 2
+  },
+  "automaticCategoryCounts": {
+    "attack": 3,
+    "defense": 3,
+    "penetration": 2,
+    "life": 1,
+    "damageIncrease": 3,
+    "skillDamage": 3,
+    "damageReduction": 4,
+    "vulnerability": 2
+  },
+  "sourceAudit": {
+    "path": "artifacts/benchmarks/optimizer/archive-staged/joint-rally-gen12-body-audit.json",
+    "stagedSha256": "cdf912b41ea586ecdd195d6ef08ca9e06da394633a37012de12be514b119d43b"
+  },
+  "regeneration": "node scripts/run-tsx.mjs scripts/audit-joint-body.ts"
+}

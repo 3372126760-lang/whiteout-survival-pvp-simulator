@@ -4,8 +4,8 @@ import { candidateToInput, compileValidationBattle, createStageSeeds, currentRal
   defaultOptimizationConfig, generateAllHeadFormations, resolveBodySkillConfigs,
   runRallyOptimization, runRallyOptimizationAsync, runValidationBattle, verifyRallyCandidate,
   type OptimizationConfig, type ValidationBattleInput } from "../../pvp";
-import { createJointSingleWaveSearchWorkflow } from "../optimizer/criterion/jointSearch";
-import { knownRallyStructureReferences } from "../optimizer/criterion/jointPreFilter";
+import { createPeakJointWorkflow } from "../optimizer/jointPipeline/workflow";
+import { knownRallyStructureReferences } from "../optimizer/jointPipeline/references";
 import { createEvaluationExecutor, runOptimizationWorkflow, type EvaluationJobResult } from "../optimizer/execution";
 import { OptimizerProfiler } from "../optimizer/profiling";
 import { createDefaultValidationInput } from "../../ui/defaultInput";
@@ -47,8 +47,9 @@ describe("rally defender uses the complete original-side joint optimizer", () =>
       .toEqual([OPPONENT_HEAD]);
     expect(currentRallyRatios(input, "B")).toEqual({ shield: 60, lancer: 10, marksman: 30 });
     const onProgress=(progress:{stage:string})=>observedStages.push(progress.stage),profiler=new OptimizerProfiler(onProgress);
-    const result = runOptimizationWorkflow(createJointSingleWaveSearchWorkflow(input, config,
+    const result = runOptimizationWorkflow(createPeakJointWorkflow(input, config,
       onProgress,profiler), (job): EvaluationJobResult => {
+      if (job.kind === "jointPeak") return createEvaluationExecutor()(job);
       expect(job.side).toBe("B");
       expect(job.input.sideA).toEqual(input.sideA);
       expect(job.input.sideB.leaderHeroIds).toEqual(OPPONENT_HEAD);
@@ -72,14 +73,9 @@ describe("rally defender uses the complete original-side joint optimizer", () =>
     });
     const audit = result.searchDiagnostics.criterionAudit!, recommendation = result.top[0]!;
     expect(audit).toMatchObject({ battleScenario: "rally", candidateSide: "B", candidateRole: "defender",
-      fixedOpponentSide: "A", optimizationObjective: "candidateSideWinRate", m1aBattlePerCandidate: 5,
-      candidatesEliminatedByConfidenceWith5Samples: 0 });
-    for (const stage of ["C0", "C1", "C2", "Theory", "M1a", "M1b", "M2", "M3", "M4", "Final"])
-      expect(audit.stageCoverage[stage]).toBeDefined();
-    expect(observedStages.some((name) => name.startsWith("H0"))).toBe(true);
-    expect(observedStages.some((name) => name.startsWith("B0"))).toBe(true);
-    expect(observedStages.some((name) => name.startsWith("1%"))).toBe(true);
-    expect(observedStages.some((name) => name.includes("联合盆地正式复筛"))).toBe(true);
+      fixedOpponentSide: "A", optimizationObjective: "candidateSideWinRate" });
+    for (const prefix of ["H0", "B0", "J Preparation", "J Peak", "Recall Merge", "Criterion", "Theory", "Formal 20", "Formal 50", "Formal 100", "Formal Ratio A", "Formal Ratio B", "Formal 300", "Final 1000"])
+      expect(observedStages.some((name) => name.startsWith(prefix))).toBe(true);
     expect(recommendation.trials).toBe(1000);
     expect(recommendation.draws + recommendation.timeouts).toBeGreaterThan(0);
     expect(recommendation.winRate).toBe(recommendation.wins / 1000);
@@ -115,7 +111,7 @@ describe("rally defender uses the complete original-side joint optimizer", () =>
     const syncResult = runRallyOptimization(input, config, (progress) => syncStages.push(progress.stage));
     const execute = createEvaluationExecutor();
     const asyncResult = await runRallyOptimizationAsync(input, config, async (jobs) => jobs.map((job) => {
-      expect(job.kind).toBe("battle");
+      expect(["battle", "jointPeak"]).toContain(job.kind);
       expect(job.side).toBe("B");
       expect(job.input.sideA).toEqual(input.sideA);
       return execute(job);
@@ -129,16 +125,15 @@ describe("rally defender uses the complete original-side joint optimizer", () =>
       expect(result.requestedMode).toBe(mode);
       expect(result.selectedMode).toBe("singleWin");
       expect(result.multiWaveTop).toEqual([]);
-      expect(result.currentEvaluation.trials).toBe(6);
-      expect(result.currentEvaluation.timeouts).toBe(6);
+      expect(result.currentEvaluation.trials).toBe(1000);
+      expect(result.currentEvaluation.timeouts).toBe(1000);
       const audit = result.searchDiagnostics!.criterionAudit!;
       expect(audit).toMatchObject({ candidateSide: "B", candidateRole: "defender", fixedOpponentSide: "A" });
-      for (const stage of ["C0", "C1", "C2", "Theory", "M1a", "M1b", "M2", "M3", "M4", "Final"])
-        expect(audit.stageCoverage[stage]).toBeDefined();
-      expect(result.singleWaveTop.every((row) => row.trials === 6)).toBe(true);
+      expect(result.searchDiagnostics!.jointPipeline!.recallAudit!.perHeadUniqueCount).toBeGreaterThan(0);
+      expect(result.singleWaveTop.every((row) => row.trials === 1000)).toBe(true);
     }
     for (const stages of [syncStages, asyncStages]) {
-      for (const prefix of ["H0", "B0", "1%", "Final"])
+      for (const prefix of ["H0", "B0", "J Preparation", "J Peak", "Recall Merge", "Formal", "Final"])
         expect(stages.some((name) => name.startsWith(prefix))).toBe(true);
     }
     expect(JSON.stringify(input)).toBe(before);

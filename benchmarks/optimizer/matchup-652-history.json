@@ -1,0 +1,38 @@
+{
+  "kind": "user-reported-historical-observation",
+  "originalCanonicalInputAvailable": false,
+  "strictSameInputRegressionAvailable": false,
+  "provenance": "User profiling observations. The original browser retains the canonical input, but no complete configuration or share was provided. Export the full Benchmark Fixture before claiming a reproduction.",
+  "strongCandidate": {
+    "headHeroIds": {
+      "shield": "hero.s12.hervor",
+      "lancer": "hero.s11.lloyd",
+      "marksman": "hero.s3.gelaige"
+    },
+    "bodyHeroNames": ["玲奈", "哥顿", "加托", "亨德里克"],
+    "formalRatio": { "shield": 64, "lancer": 36, "marksman": 0 },
+    "reportedTrials": 1000,
+    "reportedWinRate": 0.652,
+    "reportedApproximateJMax": 2011664784448.075,
+    "reportedApproximateJPeakRatio": { "shield": 69.06375, "lancer": 25.43620, "marksman": 5.50005 },
+    "reportedHeadRankWithinFixedBody": 161,
+    "reportedHeadCount": 1062,
+    "reportedApproximateJRetention": 0.9127,
+    "bodyRankWithinHead": null,
+    "perHeadTop1RecallSucceeded": null,
+    "minimumPerHeadK": null
+  },
+  "weakerCandidate": {
+    "headHeroIds": {
+      "shield": "hero.s12.hervor",
+      "lancer": "hero.s12.karol",
+      "marksman": "hero.s7.bradley"
+    },
+    "bodyHeroNames": ["玲奈", "哥顿", "加托", "亨德里克"],
+    "formalRatio": { "shield": 66, "lancer": 29, "marksman": 5 },
+    "reportedTrials": 1000,
+    "reportedWinRate": 0.084
+  },
+  "reportedApproximateGlobalTop10000CutoffJ": 3957446969652.563,
+  "conclusion": "Top1 sufficiency and a formal reproduction remain undetermined. Do not infer missing opponent panels, Buffs, troop tiers, T12 skills, capacity, weapons or seeds from these observations."
+}

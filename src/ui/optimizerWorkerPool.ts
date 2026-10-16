@@ -9,6 +9,7 @@ interface WorkerSlot {
 
 /** Affinity keeps each candidate's compiled template in the same worker across stages. */
 function affinity(job: EvaluationJob): number {
+  if (job.kind === "jointPeak") return job.jointPeakJob!.shard;
   const signature = JSON.stringify({ kind: job.kind,
     input: { ...job.input, randomSeed: 0, simulationMode: "fixedSeed" },
     ...(job.kind === "multiWave" ? { sequence: job.sequence } : {}) });
@@ -79,5 +80,6 @@ export function createOptimizerWorkerPool() {
     return result;
   };
   return { workerCount: slots.length,
-    run: (jobs: readonly EvaluationJob[]) => Promise.all(jobs.map(runJob)), close };
+    run: async (jobs: readonly EvaluationJob[]) => (await Promise.all(jobs.map(runJob))).map((row, index) =>
+      jobs[index]?.kind === "jointPeak" ? { ...row, performance: { ...row.performance, workerCount: slots.length } } : row), close };
 }

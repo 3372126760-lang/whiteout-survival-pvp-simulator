@@ -9,11 +9,13 @@ import { createFastThreeQueueCompiler, TemplateCache, type compileFastThreeQueue
 import { shouldEliminate, type EarlyEliminationOptions, type WinSample } from "./earlyElimination";
 import type { MultiWaveEvaluation, RallyCandidate, TroopSurvivors } from "./types";
 import { createEngineWaveRunner, evaluateMultiWaveSequence } from "./multiWaveSearch";
+import { scanJointPeaks, type JointPeakJob, type JointPeakChunk } from "./jointPipeline/peakScan";
 
 export interface EvaluationJob {
   readonly collectTrajectories?: boolean;
   readonly profiling?: boolean;
-  readonly kind: "battle" | "threeQueue" | "multiWave";
+  readonly kind: "battle" | "threeQueue" | "multiWave" | "jointPeak";
+  readonly jointPeakJob?: JointPeakJob;
   readonly input: ValidationBattleInput;
   readonly seeds: readonly number[];
   readonly side: SideId;
@@ -57,6 +59,7 @@ export interface OptimizationPerformance {
   readonly workerCount?: number;
 }
 export interface EvaluationJobResult {
+  readonly jointPeak?: JointPeakChunk;
   readonly timing?: { readonly battleCount: number; readonly battleElapsedMs: number };
   readonly samples: EvaluationSamples;
   readonly performance: OptimizationPerformance;
@@ -88,6 +91,12 @@ export function createEvaluationExecutor(
   let compileQueues: ReturnType<typeof createFastThreeQueueCompiler> | undefined;
   const waves = new TemplateCache<ReturnType<typeof createEngineWaveRunner>>(16);
   return (job: EvaluationJob): EvaluationJobResult => {
+    if (job.kind === "jointPeak") {
+      if (!job.jointPeakJob) throw new Error("Missing joint peak job.");
+      return { jointPeak: scanJointPeaks(job.jointPeakJob),
+        samples: { trials: 0, requestedTrials: 0, wins: 0, losses: 0, failedTrials: 0, pruned: false, outcomes: [] },
+        performance: emptyOptimizationPerformance() };
+    }
     let battleCount = 0, battleElapsedMs = 0;
     const observe = (elapsedMs: number) => { battleCount++; battleElapsedMs += elapsedMs; };
     const timed = <T>(run: () => T): T => {

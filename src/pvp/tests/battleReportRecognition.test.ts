@@ -1,3 +1,4 @@
+import { sourceReportBonuses } from "../validationUi/reportBonusContexts";
 import { normalizeRecognitionResult } from "./fixtures/historicalReportRecognition";
 import { describe, expect, it } from "vitest";
 import { createValidationPreviewState, mapDoubleSidedFinalReport, mapReportSide,
@@ -61,7 +62,7 @@ describe("local report recognition and mapping", () => {
       "left", "A", "prediction", false, undefined, true);
     expect(mapped.sideA.troops.shield.attack).toBeCloseTo(90, 10);
     expect(mapped.sideA.troops.shield.defense).toBe(140);
-    expect(mapped.sideA.importedReportModifiers?.shield.attack).toEqual({
+    expect(sourceReportBonuses(mapped.sideA).shield.attack).toEqual({
       additive: 10, buff: 20, debuff: 0 });
     expect(createValidationPreviewState(mapped).sideA.troops.shield.attack).toBeCloseTo(.9, 10);
     const reuse = { ...mapped, sideA: { ...mapped.sideA, targetBonusMode: "reuseSource" as const } };
@@ -76,7 +77,7 @@ describe("local report recognition and mapping", () => {
     const mapped = mapReportSide(input, report, "left", "A", "prediction",
       false, opponent);
     expect(mapped.sideA.troops.shield.attack).toBeCloseTo(100, 10);
-    expect(mapped.sideA.importedReportModifiers?.shield.attack.debuff).toBe(5);
+    expect(sourceReportBonuses(mapped.sideA).shield.attack.debuff).toBe(5);
   });
   it("reverses B from right independently, and requires a special explanation or explicit zero", () => {
     const parsed = normalizeRecognitionResult(sampleImage());
@@ -212,8 +213,10 @@ describe("local report recognition and mapping", () => {
       { ...report, left: own, right: opponent }, "left", "A", "prediction",
       false, opponent);
     expect(mapped.sideA.troops.shield.attack).toBeCloseTo(raw, 10);
-    expect(mapped.sideA.importedReportModifiers?.shield.attack).toEqual({
-      additive: 5, buff: 30, debuff: 25 });
+    expect(sourceReportBonuses(mapped.sideA).shield.attack).toEqual({
+      additive: 5, buff: 0, debuff: 25 });
+    expect(mapped.sideA.historicalBonusMigration?.conflicts).toContainEqual({ attribute: "attack", field: "buff",
+      values: { shield: 30, lancer: 20, marksman: 20 } });
   });
   it("blocks unknown special rows until they are explicitly resolved", () => {
     const report = withSpecial(normalizeRecognitionResult(sampleImage()));

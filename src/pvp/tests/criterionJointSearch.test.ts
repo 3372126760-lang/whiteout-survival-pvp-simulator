@@ -1,6 +1,7 @@
+import { createEvaluationExecutor } from "../optimizer/execution";
 import { describe,expect,it } from "vitest";
-import { createJointSingleWaveSearchWorkflow } from "../optimizer/criterion/jointSearch";
-import { knownRallyStructureReferences } from "../optimizer/criterion/jointPreFilter";
+import { createPeakJointWorkflow } from "../optimizer/jointPipeline/workflow";
+import { knownRallyStructureReferences } from "../optimizer/jointPipeline/references";
 import { resolveCriterionSearchOptions } from "../optimizer/criterion/searchTypes";
 import { generateAllHeadFormations,generateBodyFormations } from "../optimizer/candidateGenerator";
 import { defaultOptimizationConfig } from "../optimizer";
@@ -20,7 +21,8 @@ describe("Criterion joint search contracts",()=>{
     const config={...defaultOptimizationConfig(19),constraints:{},criterion:{headRatioFraction:1,theoryCandidateFraction:1,theoryCandidateLimit:4000,formalCandidateFraction:1,formalCandidateLimit:4000,matrixBodiesPerRatio:16,fineRadius:0,finalHeadBasins:2,finalBodyBasinsPerHead:2},
       monteCarloStages:[{trials:5,keep:300},{trials:20,keep:80},{trials:50,keep:25}],verificationTrials:1000,verificationTop:1,topN:3};
     const entered=new Set<string>();
-    const result=runOptimizationWorkflow(createJointSingleWaveSearchWorkflow(input,config),(job):EvaluationJobResult=>{
+    const result=runOptimizationWorkflow(createPeakJointWorkflow(input,config),(job):EvaluationJobResult=>{
+      if (job.kind === "jointPeak") return createEvaluationExecutor()(job);
       const c=job.rallyCandidate!,b=c.leaderHeroIds.shield===headB,q=c.memberSkillIds.filter((s)=>s===wuming).length===2&&c.memberSkillIds.filter((s)=>s===nora).length===2;
       entered.add(`${c.leaderHeroIds.shield}:${c.memberSkillIds.join("|")}`);
       // Head A wins 3/4; Head B default loses; only B+Q always wins.
@@ -35,12 +37,9 @@ describe("Criterion joint search contracts",()=>{
     expect(result.top[0]!.candidate.memberSkillIds.slice().sort()).toEqual([wuming,wuming,nora,nora].sort());
     expect(result.top[0]!.winRate).toBe(1);expect(result.top[0]!.trials).toBe(1000);
     const audit=result.searchDiagnostics.criterionAudit!;
-    expect(audit.headsEnteredBodySearch).toBe(2);expect(audit.legalBodyCount).toBeGreaterThanOrEqual(1);
-    expect(audit.rawBodyCombinationCount).toBe(16);expect(audit.afterSameEffectMax2).toBe(6);
-    expect(audit.candidatesEliminatedByConfidenceWith5Samples).toBe(0);
-    for(const stage of ["C0","C1","C2","Theory"])expect(audit.stageCoverage[stage]!.uniqueHeads).toBe(2);
-    expect(audit.m1aAdvancedCount).toBeGreaterThan(1);
-    expect(audit.m1bCandidateCount).toBe(audit.m1aAdvancedCount);
+    expect(result.searchDiagnostics.jointPipeline!.peak.headCount).toBe(2);
+    expect(result.searchDiagnostics.jointPipeline!.recallAudit!.perHeadUniqueCount).toBe(2);
+    expect(result.searchDiagnostics.bodyEnumerationAudit!.canonical!.finalBodyCount).toBe(1);
     expect(result.top[0]!.winRate).toBeGreaterThanOrEqual(result.current.winRate);
     expect(audit.finalists.every((row)=>row.trials===1000)).toBe(true);
     expect(audit.finalists.filter((row)=>row.weaponLevelSource==="optimizerHeroPool").every((row)=>Object.values(row.headWeaponLevels).every((n)=>n===10))).toBe(true);
@@ -62,14 +61,15 @@ describe("Criterion joint search contracts",()=>{
     const config={...defaultOptimizationConfig(19),constraints:{equivalentMemberPositions:true},
       criterion:{headRatioLimit:1,headRatioFraction:0,smallSpaceHeadRatioFloor:1,theoryCandidateLimit:1,theoryCandidateFraction:0,smallSpaceTheoryFloor:1,
         formalCandidateLimit:1,formalCandidateFraction:0,smallSpaceFormalFloor:1,fineRadius:0},monteCarloStages:[{trials:20,keep:1},{trials:40,keep:1}],verificationTrials:1000};
-    const result=runOptimizationWorkflow(createJointSingleWaveSearchWorkflow(input,config),(job):EvaluationJobResult=>{
+    const result=runOptimizationWorkflow(createPeakJointWorkflow(input,config),(job):EvaluationJobResult=>{
+      if (job.kind === "jointPeak") return createEvaluationExecutor()(job);
       const outcomes=job.seeds.map(()=>({outcome:"A" as const,winner:"A" as const,failed:false,rounds:1,roundCount:1,
         remaining:{A:{shield:100,lancer:0,marksman:0},B:{shield:0,lancer:0,marksman:0}},aRemaining:{shield:100,lancer:0,marksman:0},bRemaining:{shield:0,lancer:0,marksman:0},winnerRemaining:{shield:100,lancer:0,marksman:0}}));
       return {samples:{trials:outcomes.length,requestedTrials:outcomes.length,wins:outcomes.length,losses:0,failedTrials:0,pruned:false,outcomes},performance:{simulatedTrials:outcomes.length,skippedTrials:0,prunedCandidates:0,templateBuilds:0,templateHits:0}};
     });
-    const audit=result.searchDiagnostics.criterionAudit!;expect(audit.known89StructureReachedFinal).toBe(true);
-    expect(audit.protectedTheoryReferences).toBe(2);
-    for(const stage of ["C0","C1","C2","Theory","Final"])expect(audit.stageCoverage[stage]!.uniqueHeads).toBeGreaterThanOrEqual(2);
+    const audit=result.searchDiagnostics.criterionAudit!;expect(result.searchDiagnostics.jointPipeline!.recallAudit!.finalistRecallSources.some((row) => row.recalledBy.includes("protectedReference"))).toBe(true);
+    expect(result.searchDiagnostics.jointPipeline!.comparisonCandidates).toBeGreaterThanOrEqual(3);
+    expect(Object.keys(audit.stageCoverage).some((stage) => stage.startsWith("Final 1000"))).toBe(true);
     expect(audit.finalists.every((r)=>r.trials===1000)).toBe(true);
   });
   it("persists optimizer weapon levels independently of actual levels and retains Criterion settings",()=>{

@@ -40,7 +40,7 @@ export function candidateKey(candidate: RallyCandidate, equivalentMemberPosition
   const members = equivalentMemberPositions
     ? [...candidate.memberSkillIds].sort()
     : candidate.memberSkillIds;
-  return `${TROOP_TYPES.map((troop) => candidate.leaderHeroIds[troop] ?? "").join("|")}|${members.join("|")}|${TROOP_TYPES.map((troop) => candidate.ratios[troop]).join("|")}${candidate.headWeaponLevels ? ":w:" + Object.entries(candidate.headWeaponLevels).sort().map(([id, n]) => `${id}=${n}`).join(",") : ""}`;
+  return `${TROOP_TYPES.map((troop) => candidate.leaderHeroIds[troop] ?? "").join("|")}|${members.join("|")}|${TROOP_TYPES.map((troop) => candidate.ratios[troop]).join("|")}${candidate.headWeaponLevels ? ":w:" + Object.entries(candidate.headWeaponLevels).sort().map(([id, n]) => `${id}=${n}`).join(",") : ""}${candidate.bodySkillLevels ? ":bl:" + candidate.bodySkillLevels.join(",") : ""}${candidate.troopLevels ? ":tl:" + TROOP_TYPES.map((t) => candidate.troopLevels![t]).join(",") : ""}`;
 }
 
 export function generateRatioGrid(step: number): readonly RallyTroopRatios[] {
@@ -90,10 +90,10 @@ export function candidateToInput(input: OptimizationInput, candidate: RallyCandi
   const leaderIds = TROOP_TYPES.flatMap((troop) => head[troop] ?? []);
   const bodySkills = resolveBodySkillConfigs(candidate.memberSkillIds, leaderIds,
     validationStageId(input), side).map((body, index) => ({ ...body,
-    skillLevel: own.bodySkills?.[index]?.skillId === body.skillId
+    skillLevel: candidate.bodySkillLevels?.[index] ?? (own.bodySkills?.[index]?.skillId === body.skillId
       ? own.bodySkills[index]!.skillLevel
       : own.bodySkills?.find((old) => old.skillId === body.skillId)
-        ?.skillLevel ?? body.skillLevel }));
+        ?.skillLevel ?? body.skillLevel) }));
   return {
     ...input,
     scenarioType: "RALLY",
@@ -106,8 +106,10 @@ export function candidateToInput(input: OptimizationInput, candidate: RallyCandi
         ...(finalReport ? currentHeadWeaponLevels(input, side) : candidate.headWeaponLevels ?? optimizerHeadWeaponLevels(input, head, side)) },
       selectedMemberSkillIds: candidate.memberSkillIds,
       bodySkills,
-      ...(counts === undefined ? {} : { troops: Object.fromEntries(TROOP_TYPES.map((troop) =>
-        [troop, rescaleTroop(own.troops[troop], counts[troop])])) as Record<TroopType, ValidationTroopInput> }),
+      troops: counts === undefined && candidate.troopLevels === undefined ? own.troops : Object.fromEntries(TROOP_TYPES.map((troop) => [troop, {
+        ...(counts === undefined ? own.troops[troop] : rescaleTroop(own.troops[troop], counts[troop])),
+        ...(candidate.troopLevels ? { troopLevel: candidate.troopLevels[troop] } : {}),
+      }])) as Record<TroopType, ValidationTroopInput>,
       rallyDeployment: { totalTroops, ratios: candidate.ratios },
     },
   };
@@ -366,7 +368,7 @@ export function headFormationGenerationAudit(input: OptimizationInput, constrain
   const recentGenerationWindow = [Math.max(1, effectiveHeroGeneration - 2), effectiveHeroGeneration] as const;
   const recentIds = new Set(catalog.leaderHeroes.filter((hero) => recent.includes(heroSGeneration(hero) ?? 0)).map((hero) => hero.heroId));
   const allLegalHeadCount = TROOP_TYPES.reduce((count, troop) => count * choices[troop].length, 1);
-  const rejectedByRecentGenerationCount = TROOP_TYPES.reduce((count, troop) =>
+  const rejectedByRecentGenerationCount = effectiveHeroGeneration < 3 ? 0 : TROOP_TYPES.reduce((count, troop) =>
     count * choices[troop].filter((id) => id === null || !recentIds.has(id)).length, 1);
   return { allLegalHeadCount, effectiveHeroGeneration, recentGenerationWindow,
     recentEligibleHeadCount: allLegalHeadCount - rejectedByRecentGenerationCount, rejectedByRecentGenerationCount };

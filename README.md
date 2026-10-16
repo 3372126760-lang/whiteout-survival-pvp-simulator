@@ -1,6 +1,6 @@
 # 无尽冬日 PVP 战斗模拟器
 
-**当前版本：v0.2.0-beta**
+**当前版本：v0.3.0-beta** · [版本变更记录](CHANGELOG.md)
 
 这是用于比较《无尽冬日》PVP 阵容与模拟战斗表现的非官方工具。网页提供面向普通玩家的普通模式、包含更多配置的高级模式，以及通过 `?dev=1` 打开的开发者工具。模拟结果用于研究和参考，模型仍在 Beta 阶段，已知规则边界和界面问题会继续完善。
 
@@ -30,6 +30,21 @@ npm run build
 **Beta 限制：**战报图片 OCR 依赖本地开发服务的 `/api/local-ocr` 接口。GitHub Pages 公开版不提供此接口，页面会显示“战报图片识别功能暂未在公开 Beta 开放。”；本地 `npm run dev` 仍保留 OCR。手工配置、模拟及分享链接不依赖 OCR。
 
 ## 模型与开发资料
+
+2026-10-15：集结优化现仅保留一套流程：H0 → B0 → J Preparation → J Peak → Recall Merge（Global Top10000 ∪ 每 Head TopK，默认 K=1）→ Criterion 5% → Criterion 1% → Theory → Formal20/50/100 → Formal Ratio A/B → Formal300 → Final1000。canonical Body 的 25 种效果排除4项后保留21种，四槽无序、同效果最多两份，S12 共10185组。旧 C0/C1/C2/C3 可执行流程及开关已删除，既有性能数据保留为历史记录。
+
+Developer 模式（`?mode=advanced&dev=1`）的 Theory / Criterion 内提供“导出完整优化 Benchmark Fixture”：下载或复制当前双方完整配置、有效池、全部预算和精确共同种子；可粘贴/选择文件导入，或导入并一键复跑。校验输入、正式引擎快照、种子及候选空间后才恢复。
+
+```bash
+npm run benchmark:joint-recall -- --fixture path/to/exported-fixture.json --output artifacts/benchmarks/my-recall-profile.json
+node scripts/run-tsx.mjs scripts/audit-head-pool.ts
+```
+
+未传 `--fixture` 时使用 `benchmarks/optimizer/joint-recall-gen12-input.json` 中独立保存的 S12 实际运行输入，不代表用户65.2%实验的原输入。默认完整profile输出到被忽略的 `artifacts/benchmarks/optimizer/`，仓库只保留输入、必要测试基线和精简摘要。详情见 [双通道召回与 Fixture 验收](docs/dual-channel-recall-review.md)。[此前 S12 报告](docs/pvp-canonical-body-gen12-review.md)和 [旧流水线报告](docs/pvp-joint-pipeline-review.md)仅保留历史口径；不再支持切回旧流程执行 A/B。历史 Body=57313 / 454201.9ms 与可复现旧枚举56859的差额 -454 继续保留，不猜测原因。
+
+长期回归输入与历史实测数据见 [benchmark 目录说明](benchmarks/README.md)。临时输出写入被忽略的 `artifacts/`；历史报告中的版本号记录当时的开发版本，不代表当前页面版本。
+
+2026-10-15：高级模式兵种卡纵向排列、顶部配置导入，以及四属性历史特殊加成和旧配置迁移，见 [高级模式 UI 验收](docs/advanced-ui-import-history-review.md)。
 
 2026-10-07：正式候选筛选接入累计seed/配置缓存、M4与Final置信区间Racing、多basin的5%→2%→1%自适应精搜。完整对照中调用从38,080降至22,750次，最佳方案保留；详细阶段预算、独立验证和限制见 [正式战斗预算验收报告](docs/pvp-adaptive-battle-budget.md)。
 
@@ -125,9 +140,11 @@ npm run build
 npm run example:hero-rule-sync
 ```
 
+`npm test` 使用项目的 `vitest.config.ts`，最多并行运行 2 个测试进程，保留默认进程隔离及 5 秒用例 timeout（已有个别集成测试的独立 timeout 不变）。这样可避免 CPU 密集的优化器测试与 UI 首次模块加载争抢资源。超时排查和实际验证命令见 [测试超时复核](docs/test-timeout-review.md)。
+
 ## 当前优化器：多阶段启发式搜索
 
-单撞、集结、三队列共用数值 Criterion 内核，最终结果由正式 BattleEngine 验证。优化英雄专武池与当前战斗配置独立；旧代与 R/SR 英雄保持合法。阶段、近似边界、实测调用数及缺失的真实对局信息见 [Criterion 联合搜索 audit](docs/pvp-criterion-optimizer-audit.md)。
+单撞、集结、三队列共用数值 Criterion 内核，最终结果由正式 BattleEngine 验证。优化英雄专武池与当前战斗配置独立；手动旧代与 R/SR 阵容保持合法，自动车头候选仅 SSR，并按启用的自有英雄最高代执行近三代规则。阶段、近似边界、实测调用数及缺失的真实对局信息见 [Criterion 联合搜索 audit](docs/pvp-criterion-optimizer-audit.md)。
 
 ```powershell
 npm run benchmark:criterion
