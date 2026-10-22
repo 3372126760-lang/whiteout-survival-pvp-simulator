@@ -195,7 +195,7 @@ describe("S6 battle-report corrections", () => {
     expect(hits).toBe(749);
   });
 
-  it("Renee 2B casualties exit the stack without separate skill attribution", () => {
+  it("keeps Renee's legacy casualty exclusion while preserving its source in the complete report", () => {
     let state = battle({ lancer: 100 }, { shield: 100 }, [hero("hero.s6.ruini", [MARK])], [], 500);
     const options = { heroSkillSystem: system() };
     state = resolveRoundCompact(state, options).stateAfter;
@@ -204,6 +204,12 @@ describe("S6 battle-report corrections", () => {
     const r3 = resolveRoundCompact(state, options);
     expect(r3.stateAfter.sideB.troops.shield.aliveCount).toBeLessThan(before);
     expect(r3.skillCasualtiesBySide.A[MARK]).toBeUndefined();
+    const actual = r3.damageAttribution.bySide.A[MARK]!;
+    const full = resolveRound(state, options);
+    const markCasualties = full.casualties.filter((row) => row.sourceEvents.some((event) => event.sourceSkillId === MARK))
+      .reduce((n, row) => n + row.casualties, 0);
+    expect(actual.exited).toBe(markCasualties);
+    expect(r3.stateAfter).toEqual({ ...full.stateAfter, battleLog: r3.stateAfter.battleLog });
   });
 
   it("Wayne Thunder is due on natural round 4 for each living source troop", () => {

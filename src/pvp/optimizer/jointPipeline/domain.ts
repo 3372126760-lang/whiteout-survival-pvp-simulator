@@ -10,7 +10,7 @@ export function jointHeadPolicy(input: OptimizationInput, config: OptimizationCo
   const dimensions = resolveSearchDimensions(input, { side,
     fixedHead: TROOP_TYPES.every((troop) => config.constraints.fixedLeaders?.[troop] !== undefined),
     fixedBody: config.constraints.fixedBodyExact === true || config.constraints.fixedMemberSkillIds?.length === 4 });
-  const fixedBodyIds = config.constraints.fixedMemberSkillIds ?? own.bodySkills?.map((body) => body.skillId) ?? own.selectedMemberSkillIds;
+  const fixedBodyIds = input.scenarioType === "CITY_DEFENSE" && side === "A" ? [] : config.constraints.fixedMemberSkillIds ?? own.bodySkills?.map((body) => body.skillId) ?? own.selectedMemberSkillIds;
   const fixedBodyHeroes = dimensions.bodySearchEnabled ? [] : resolveBodySkillConfigs(fixedBodyIds, [], validationStageId(input), side).map((body) => body.heroId);
   const headConstraints = dimensions.bodySearchEnabled ? config.constraints : { ...config.constraints,
     fixedBodyExact: true, fixedMemberSkillIds: [],

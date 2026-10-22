@@ -396,7 +396,7 @@ describe("S4 confirmed attack-attempt and dodge order", () => {
     expect(bodyHtml).not.toContain('data-scope="report-weapon"');
     expect(source).toContain("getExclusiveWeaponSkillTier(level)");
     expect(source).not.toContain('renderSideSection("专武等级"');
-    expect(source).toContain("meanSkillCasualties");
+    expect(source).toContain("renderBatchSkillDamageStatistics(value)");
     expect(source).not.toContain("期望退出盾兵");
   });
 

@@ -6,6 +6,8 @@ export interface AttackChannel {
   readonly kind: "normalAttack" | "skillDamage" | "extraDamage" | "additionalAttack";
   readonly coefficient: number;
   readonly target: "priority" | "current" | "all" | "random" | number;
+  readonly markAggregationKey?: string;
+  readonly firstSourcePremium?: number;
   readonly priority?: readonly number[];
   /** Redirect only the main channel; extra channels never consume main probability. */
   readonly redirectProbability?: number;

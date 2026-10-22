@@ -186,3 +186,22 @@
   .simple-footer { flex-direction: column; align-items: center; gap: 7px; text-align: center; font-size: 9px; } .simple-drawer > header { padding: 20px 16px; } .simple-drawer-body { padding: 16px; }
 }
 @media (prefers-reduced-motion:reduce) { .simple-shell *, .simple-drawer * { scroll-behavior: auto !important; } }
+
+/* Locally bundled hero, weapon and expedition skill art. */
+.hero-portrait-art { width:40px; height:40px; flex:none; object-fit:cover; border-radius:8px; border:1px solid #c7ae88; vertical-align:middle; }
+.hero-avatar > .hero-portrait-art { width:100%; height:100%; display:block; border-radius:inherit; border:0; }
+.hero-avatar:has(> .hero-portrait-art) { padding:0; overflow:visible; background:#d8ba80; }
+.hero-avatar > small { z-index:1; }
+.hero-skill-art { width:30px; height:30px; flex:none; object-fit:cover; border-radius:6px; border:1px solid #c6ad86; vertical-align:middle; background:#f5e3c6; }
+.hero-expedition-art { display:flex; gap:6px; align-items:center; justify-content:center; padding-top:6px; }
+.report-pair .simple-hero .hero-expedition-art { grid-column:2; justify-content:flex-start; padding-top:0; }
+.report-pair .simple-hero:has(.hero-expedition-art) .hero-avatar { grid-row:span 2; align-self:center; }
+.hero-weapon-art { width:56px; height:56px; flex:none; object-fit:contain; vertical-align:middle; padding:3px; background:#f6e7cf; border:1px solid #ceb793; border-radius:8px; }
+.weapon-art-field { display:flex; align-items:center; gap:12px; min-width:0; padding:8px 0; }
+.weapon-art-field > label { flex:1; min-width:0; }
+.hero-art-name, .skill-art-name { display:inline-flex; align-items:center; gap:8px; min-width:0; }
+.hero-art-name > .hero-portrait-art { width:36px; height:36px; }
+.hero-art-name > .hero-weapon-art { width:36px; height:36px; }
+.hero-option > .hero-portrait-art { float:left; margin:0 8px 6px 0; }
+.skill-damage-statistics .skill-art-name { white-space:normal; text-align:left; }
+@media(max-width:600px) { .hero-expedition-art { gap:4px; } .hero-expedition-art .hero-skill-art { width:25px; height:25px; } .weapon-art-field { gap:7px; } .hero-weapon-art { width:44px; height:44px; } }

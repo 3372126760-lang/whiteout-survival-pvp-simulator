@@ -275,7 +275,6 @@ export function mapReportSide(input: ValidationBattleInput,
       sourceReportAttributes: Object.fromEntries(TROOP_TYPES.map((troop) => [troop,
         Object.fromEntries(attributes.map((stat) => [stat, parsed.attributes[troop]![stat]!.value]))])) as
           NonNullable<ValidationSideInput["sourceReportAttributes"]>,
-      targetBonusMode: current.targetBonusMode ?? "none",
     } : {
       reportWeaponLevels: {}, simulationWeaponLevels: {},
     }) };

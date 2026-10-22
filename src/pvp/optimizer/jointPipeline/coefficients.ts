@@ -1,4 +1,5 @@
 import { TROOP_TYPES } from "../../types";
+import { targetMarkSourceGroups } from "../../heroSkills/targetMarkStacking";
 import { createValidationPreviewState } from "../../validationUi";
 import { resolveTroopAttribute } from "../../effects";
 import type { EffectLifecycle } from "../../types/effect";
@@ -37,7 +38,7 @@ function activeInRound(lifecycle: EffectLifecycle | undefined, round: number, du
   return round < start + (lifecycle?.durationRounds ?? duration ?? Infinity);
 }
 interface ReductionTerm { id: string; value: number; probabilities: readonly number[]; }
-interface Recipe { linear: Map<string, number>; reductions: Map<string, ReductionTerm[]>; channels: Float64Array; }
+interface Recipe { linear: Map<string, number>; reductions: Map<string, ReductionTerm[]>; channels: Float64Array; markPremiums: Map<string, Float64Array>; }
 interface Route { key: string; lane: number; inverse: boolean; }
 interface ReductionLookup { lane: number; headIds: Uint32Array; bodyIds: Uint32Array; bodyTypes: number; values: Float64Array; }
 export interface JointCoefficientTable {
@@ -46,10 +47,12 @@ export interface JointCoefficientTable {
   headFactors: Float64Array;
   bodyOffsets: Uint32Array; bodyTerms: Uint32Array; bodyValues: Float64Array;
   headChannels: Float64Array; bodyChannels: Float64Array;
+  /** Remove the second first-source premium when a mark family spans Head and Body. */
+  markCorrections?: readonly { head: Float64Array; body: Float64Array }[];
   reductions: readonly ReductionLookup[];
   incomingNormalShare: number;
 }
-function emptyRecipe(): Recipe { return { linear: new Map(), reductions: new Map(), channels: new Float64Array(6) }; }
+function emptyRecipe(): Recipe { return { linear: new Map(), reductions: new Map(), channels: new Float64Array(6), markPremiums: new Map() }; }
 const sharedReceived = new Set(["receivedDamageReduction", "receivedNormalAttackReduction", "receivedSkillDamageReduction"]);
 function groupKey(kind: string, group: string, attribute: string): string {
   if (kind === "damageReduction" && sharedReceived.has(group)) return "receivedSharedDivisor";
@@ -60,19 +63,23 @@ function groupKey(kind: string, group: string, attribute: string): string {
 /** Build once per Head or Body from typed definitions, never from localized descriptions. */
 function compileRecipe(bindings: readonly (SignatureBinding & { enemy?: boolean })[], enemyShares: readonly number[], curves = new Map<string, readonly number[]>()): Recipe {
   const recipe = emptyRecipe();
+  const markBindings = bindings.filter((b) => !b.enemy && b.skill.levelValues[b.level]?.effects.some((e) => e.kind === "targetBoundMark"));
+  for (const group of targetMarkSourceGroups(markBindings)) {
+    const action = group.mechanic;
+    const first = action.schedule.interval + (action.schedule.mode === "nextAttack" ? 1 : 0) + action.damageDelayRounds;
+    const events = Math.max(0, 1 + Math.floor((DAMAGE_HORIZON - first) / action.schedule.interval));
+    const p = Math.max(...group.sources.map((b) => b.skill.levelValues[b.level]?.probability ?? b.skill.probability ?? 1));
+    const premium = new Float64Array(6);
+    for (const [troop, name] of TROOP_TYPES.entries()) if (action.schedule.source === "army" || action.schedule.source === name) {
+      recipe.channels[3 + troop]! += p * group.coefficient * events / DAMAGE_HORIZON;
+      if (action.duplicateSourceStacking) premium[3 + troop] = p * (action.damageCoefficient - action.duplicateSourceStacking.additionalCoefficient) * events / DAMAGE_HORIZON;
+    }
+    if (action.duplicateSourceStacking) recipe.markPremiums.set(group.key, premium);
+  }
   for (const binding of bindings) {
     const skill = binding.skill, level = skill.levelValues[binding.level]; if (!level) continue;
     const p = level.probability ?? skill.probability ?? 1;
     const action = "actionMechanic" in skill ? skill.actionMechanic : undefined;
-    // A delayed mark produces an independent damage event, not a multiplier.
-    // Read its typed schedule once while compiling; the S/O and J formulas and
-    // the formal mark/event mechanism remain unchanged.
-    if (!binding.enemy && action?.kind === "targetBoundMark" && level.effects.some((e) => e.kind === "targetBoundMark" && e.markId === action.markId)) {
-      const first = action.schedule.interval + (action.schedule.mode === "nextAttack" ? 1 : 0) + action.damageDelayRounds;
-      const events = Math.max(0, 1 + Math.floor((DAMAGE_HORIZON - first) / action.schedule.interval));
-      for (const [troop, name] of TROOP_TYPES.entries()) if (action.schedule.source === "army" || action.schedule.source === name)
-        recipe.channels[3 + troop]! += p * action.damageCoefficient * events / DAMAGE_HORIZON;
-    }
     const interval = action?.kind === "attackCountTrigger" ? action.schedule.interval : 1;
     const duration = level.durationRounds ?? skill.durationRounds;
     for (const effect of level.effects) {
@@ -218,6 +225,10 @@ export function createJointCoefficientTable(input: OptimizationInput, config: Op
   return { headCount: heads.length, bodyCount: bodies.length, headBase: base, routes, headValues, headFactors,
     bodyOffsets: Uint32Array.from(offsets), bodyTerms: Uint32Array.from(terms), bodyValues: Float64Array.from(values),
     headChannels: Float64Array.from(headRecipes.flatMap((r) => [...r.channels])), bodyChannels: Float64Array.from(bodyRecipes.flatMap((r) => [...r.channels])),
+    markCorrections: [...new Set([...headRecipes, ...bodyRecipes].flatMap((r) => [...r.markPremiums.keys()]))].map((key) => ({
+      head: Float64Array.from(headRecipes.flatMap((r) => [...r.markPremiums.get(key) ?? new Float64Array(6)])),
+      body: Float64Array.from(bodyRecipes.flatMap((r) => [...r.markPremiums.get(key) ?? new Float64Array(6)])),
+    })),
     reductions, incomingNormalShare: normal / (normal + skill) };
 }
 /** Scratch arrays and compact lookups only on the per-pair hot path. */
@@ -233,7 +244,8 @@ export function combineJointCoefficients(table: JointCoefficientTable, head: num
   for (const r of table.reductions) scratch[r.lane]! *= r.values[r.headIds[head]! * r.bodyTypes + r.bodyIds[body]!]!;
   for (let i = 0; i < 3; i++) {
     const normal = 1 + table.headChannels[head * 6 + i]! + table.bodyChannels[body * 6 + i]!;
-    const skill = table.headChannels[head * 6 + 3 + i]! + table.bodyChannels[body * 6 + 3 + i]!;
+    let skill = table.headChannels[head * 6 + 3 + i]! + table.bodyChannels[body * 6 + 3 + i]!;
+    for (const correction of table.markCorrections ?? []) skill -= Math.min(correction.head[head * 6 + 3 + i]!, correction.body[body * 6 + 3 + i]!);
     s[i] = table.headBase[head * 6 + i]! / (table.incomingNormalShare / scratch[i]! + (1 - table.incomingNormalShare) / scratch[3 + i]!);
     o[i] = table.headBase[head * 6 + 3 + i]! * (normal * scratch[6 + i]! + skill * scratch[9 + i]!);
   }

@@ -7,15 +7,18 @@ import { DEFAULT_ACTION_ORDER, DEFAULT_TARGET_PRIORITY } from "../../constants";
 import { isBattleContextAllowedForSide, TROOP_TYPES, sideFromState, type BattleState, type SideId,
   type ActiveEffect, type EffectDefinition } from "../../types";
 import type { TheoryOptions, ProbabilityEquivalent } from "./types";
+import { targetMarkSourceGroups } from "../../heroSkills/targetMarkStacking";
 
 type Skill = HeroSkillDefinition | TroopSkillDefinition;
 type Effect = HeroSkillEffect | TroopSkillEffect;
 interface Binding { skill: Skill; level: Skill["levelValues"][number]; side: number; troop?: number; key: string; }
 interface Applied { key: string; side: number; holder: number; effect: ActiveEffect; end: number; }
 interface Shield { key: string; side: number; troop: number; hp: number; start: number; end: number; }
+interface PendingMark { key: string; side: number; troop: number; target: number; due: number; coefficient: number; weight: number; }
 export interface ExpectationRuntime {
   counts: number[][]; effects: Applied[]; shields: Shield[]; blocked: number[][]; nextBlocked: number[][];
   lastTriggered: Record<string, number>; triggeredPassive: Set<string>;
+  marks: PendingMark[];
 }
 export interface ExpectedOutput { matrix: readonly [readonly number[], readonly number[]]; total: readonly [number, number]; }
 export interface ExpectationProgram {
@@ -98,7 +101,7 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
       !("actionMechanic" in skill && skill.actionMechanic?.kind === "dodgeNormalAttack")) return false;
     if (!("actionMechanic" in skill) || !skill.actionMechanic) return true;
     const mechanic = skill.actionMechanic;
-    if (mechanic.kind === "targetBoundMark" || mechanic.kind === "skipMainAttack" || mechanic.kind === "dodgeNormalAttack") return false;
+    if (mechanic.kind === "skipMainAttack" || mechanic.kind === "dodgeNormalAttack") return false;
     if (mechanic.kind === "naturalRoundTrigger") return TROOP_TYPES.indexOf(mechanic.source) === troop;
     const schedule = mechanic.schedule;
     if (schedule.source !== "army" && TROOP_TYPES.indexOf(schedule.source) !== troop) return false;
@@ -198,6 +201,7 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
     frames.set(key, result); return result;
   }
   function propagateRound(round: number, counts: readonly (readonly number[])[], fixed: number, runtime: ExpectationRuntime) {
+    runtime.marks = runtime.marks.filter((mark) => mark.due >= round);
     runtime.effects = runtime.effects.filter((entry) => entry.end >= round);
     runtime.shields = runtime.shields.filter((entry) => entry.end >= round);
     runtime.blocked = runtime.nextBlocked; runtime.nextBlocked = [[0, 0, 0], [0, 0, 0]];
@@ -234,6 +238,7 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
       }
       const explicitExtras = [Array<number>(3).fill(0), Array<number>(3).fill(0), Array<number>(3).fill(0)];
       const actionEffects = eligible.filter((binding) => binding.skill.trigger === "beforeAttack" || binding.skill.trigger === "afterNormalAttack");
+      const markGroups = targetMarkSourceGroups(actionEffects);
       for (let target = 0; target < 3; target++) {
         const index = troop * 3 + target;
         let unit = coefficients.normal[side]![index]! * dodge;
@@ -257,6 +262,23 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
       for (const branch of priorities) {
         const target = branch.priority.find((target) => counts[enemy]![target]! > 1e-8);
         if (target === undefined || branch.weight <= 0) continue;
+        for (const group of markGroups) {
+          const key = `${side}:${troop}:${group.key}:${target}:R${round}`;
+          const weight = availability * branch.weight;
+          const existing = runtime.marks.find((mark) => mark.key === key);
+          if (existing) existing.weight = Math.min(1, existing.weight + weight);
+          else runtime.marks.push({ key, side, troop, target, due: round + group.mechanic.damageDelayRounds,
+            coefficient: group.coefficient, weight });
+          // A condition is boolean; additional mark sources do not repeat the leader's conditional bonuses.
+          const related = bindings.filter((binding) => binding.side === side && binding.level.effects.some((effect) =>
+            effect.kind === "markedTargetDamageIncrease" && effect.markId === group.mechanic.markId));
+          for (const binding of [...new Map(related.map((b) => [b.skill.id, b])).values()]) for (const effect of binding.level.effects) {
+            if (effect.kind !== "markedTargetDamageIncrease" || effect.markId !== group.mechanic.markId) continue;
+            applyNumeric(binding, { ...effect, id: `${effect.id}:target:${target}`, kind: "incomingDamageIncrease",
+              scope: { ...effect.scope, target: TROOP_TYPES[target]! },
+              lifecycle: { activationTiming: "nextRound", durationRounds: group.mechanic.markDurationRounds, refreshMode: "replace" } }, round, runtime, undefined, existing?.weight ?? weight);
+          }
+        }
         const amount = (matrix[side]![troop * 3 + target]! - scale * explicitExtras[troop]![target]! * availability) * branch.weight;
         let net = amount;
         for (const shield of runtime.shields) if (shield.side === enemy && shield.troop === target && shield.start <= round && shield.end >= round) {
@@ -311,6 +333,22 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
           }
         }
       }
+      // Settle yesterday's locked target even when today's main chooses another target or is dodged.
+      for (const mark of runtime.marks.filter((mark) => mark.side === side && mark.troop === troop && mark.due === round)) {
+        if (counts[enemy]![mark.target]! <= 1e-8) continue;
+        const parentBase = priorities.reduce((sum, branch) => {
+          const target = branch.priority.find((t) => counts[enemy]![t]! > 1e-8);
+          return sum + (target === undefined ? 0 : coefficients.base[side]![troop * 3 + target]! * branch.weight);
+        }, 0);
+        const index = troop * 3 + mark.target;
+        let net = scale * parentBase * mark.coefficient * mark.weight * availability *
+          coefficients.skill[side]![index]! / Math.max(1e-12, coefficients.base[side]![index]!);
+        matrix[side]![index]! += net;
+        for (const shield of runtime.shields) if (shield.side === enemy && shield.troop === mark.target && shield.start <= round && shield.end >= round) {
+          const absorbed = Math.min(shield.hp, net); shield.hp -= absorbed; net -= absorbed;
+        }
+        damage[enemy]![mark.target]! += net; total[side]! += net; contributions[side]![index]! += net / scale;
+      }
       for (const binding of actionEffects) {
         if (binding.skill.trigger === "afterNormalAttack") for (const effect of binding.level.effects)
           if (sourceMatches(binding, effect, troop)) applyNumeric(binding, effect, round, runtime, troop, availability * (damageDependencyPolicy(binding.skill).requiresMainHit ? dodge : 1));
@@ -321,6 +359,7 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
     return { damage, hp, contributions, output: { matrix: matrix as [number[], number[]], total: total as [number, number] } };
   }
   const cloneRuntime = (runtime: ExpectationRuntime): ExpectationRuntime => ({ counts: runtime.counts.map((counts) => [...counts]),
+    marks: runtime.marks.map((mark) => ({ ...mark })),
     effects: runtime.effects.map((entry) => ({ ...entry })), shields: runtime.shields.map((entry) => ({ ...entry })),
     blocked: runtime.blocked.map((row) => [...row]), nextBlocked: runtime.nextBlocked.map((row) => [...row]),
     lastTriggered: { ...runtime.lastTriggered }, triggeredPassive: new Set(runtime.triggeredPassive) });
@@ -331,7 +370,7 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
     if (!reusable) return propagateRound(round, counts, fixed, runtime);
     const key = `${round}:${counts.map((side) => side.map((n) => n > 1e-8 ? 1 : 0).join("")).join("/")}:${runtime.counts.map((c) => c.join(",")).join("/")}:` +
       runtime.effects.map((e) => `${e.key}:${e.effect.appliedRound}:${e.effect.stackCount}`).join("|") +
-      JSON.stringify([runtime.lastTriggered, runtime.nextBlocked]);
+      JSON.stringify([runtime.lastTriggered, runtime.nextBlocked, runtime.marks]);
     let plan = plans.get(key);
     if (!plan) {
       // Unit populations make cached coefficients independent of scan order / floating troop counts.
@@ -356,7 +395,7 @@ export function createExpectationProgram(initial: BattleState, options: TheoryOp
   }
   return { probabilityEquivalents: equivalents, omittedMechanisms: [...omitted], uncertainty: uncertainty.map((n) => Math.min(.8, n)) as [number, number],
     cacheStatistics: () => ({ coefficientFrames: frames.size, compiledEffects: appliedCache.size, roundPlans: plans.size }),
-    createRuntime: () => ({ counts: [[0, 0, 0], [0, 0, 0]], effects: [], shields: [], blocked: [[0, 0, 0], [0, 0, 0]],
+    createRuntime: () => ({ counts: [[0, 0, 0], [0, 0, 0]], effects: [], shields: [], marks: [], blocked: [[0, 0, 0], [0, 0, 0]],
       nextBlocked: [[0, 0, 0], [0, 0, 0]], lastTriggered: {}, triggeredPassive: new Set() }), runRound,
     nextOutput: (round, counts, fixed, runtime) => runRound(round, counts, fixed, cloneRuntime(runtime)).output };
 }

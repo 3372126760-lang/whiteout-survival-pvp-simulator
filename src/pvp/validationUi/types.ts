@@ -1,5 +1,6 @@
 import type { ParsedBattleReportSide } from "../battleReportRecognition/types";
 import type { ExpectedAttributeAudit } from "./expectedReportAttribute";
+import type { SkillDamageEstimate, SkillDamageStatistics } from "../statistics/skillDamageAttribution";
 import type {
   BattleSimulationResult,
   BattleContext,
@@ -66,7 +67,9 @@ export interface ValidationSideInput {
   readonly sourceReportAttributes?: ValidationQueueAttributes;
   /** OCR imports are already reversed; manual history can be reversed at the boundary. */
   readonly reportAttributeBasis?: "raw" | "historicalReport";
+  /** @deprecated Accepted only for old inputs; ignored and removed at UI/storage boundaries. */
   readonly targetBonusMode?: "none" | "reuseSource" | "custom";
+  /** @deprecated Current custom bonuses no longer participate in battle construction. */
   readonly targetBattleBonuses?: ValidationReportBonusMatrix;
   /** @deprecated Historical import alias, retained for old saved configurations. */
   readonly importedReportModifiers?: Readonly<Record<TroopType,
@@ -197,6 +200,7 @@ export interface ValidationBattleInput {
   readonly scenarioType?: BattleScenarioType;
   /** Missing in legacy configurations means the random challenge activity. */
   readonly threeQueueMode?: ThreeQueueMode;
+  readonly defenderInTerritory?: boolean;
   readonly postBattleCasualtyMode?: PostBattleCasualtyMode;
   readonly maxRounds: number;
   readonly randomSeed: number;
@@ -245,6 +249,8 @@ export interface ValidationExpectedAttributeBreakdown {
 }
 
 export interface ValidationSkillSummaryEntry {
+  /** No direct damage contribution is inferred for attribute/control-only skills. */
+  readonly damageContribution?: SkillDamageEstimate | null;
   readonly side: SideId;
   readonly skillId: string;
   readonly skillName: string;
@@ -326,6 +332,7 @@ export interface ValidationBattleResult {
   readonly heroStatCorrections: Readonly<Partial<Record<SideId, HeroStatCorrection>>>;
   readonly expectedReportBonuses: Readonly<Record<SideId, ValidationExpectedReportBonus>>;
   readonly skillSummary: readonly ValidationSkillSummaryEntry[];
+  readonly skillDamageStatistics?: SkillDamageStatistics;
   readonly postBattleCasualties: Readonly<Record<SideId, PostBattleCasualtyResult>>;
 }
 

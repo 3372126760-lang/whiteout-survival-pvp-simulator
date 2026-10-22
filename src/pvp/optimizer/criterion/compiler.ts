@@ -23,7 +23,12 @@ function compileSide(state: BattleState, side: SideId, signatures: readonly Body
   const priorities = TROOP_TYPES.map(() => DEFAULT_TARGET_PRIORITY.map((t) => TROOP_TYPES.indexOf(t)));
   const channels: AttackChannel[] = TROOP_TYPES.map((_, source) => ({ source, kind: "normalAttack", coefficient: 1, target: "priority" }));
   for (const signature of signatures) {
-    channels.push(...signature.channels);
+    for (const channel of signature.channels) {
+      const previous = channel.markAggregationKey === undefined ? -1 : channels.findIndex((c) => c.source === channel.source && c.markAggregationKey === channel.markAggregationKey);
+      if (previous < 0) channels.push(channel);
+      else channels[previous] = { ...channels[previous]!, coefficient: channels[previous]!.coefficient + channel.coefficient -
+        Math.min(channels[previous]!.firstSourcePremium ?? 0, channel.firstSourcePremium ?? 0) };
+    }
     for (const redirect of signature.redirects) {
       const main = channels.findIndex((c) => c.kind === "normalAttack" && c.source === redirect.source);
       if (main >= 0) channels[main] = { ...channels[main]!, redirectProbability: redirect.probability, redirectPriority: redirect.priority };

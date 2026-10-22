@@ -61,7 +61,10 @@ import { applyInnerEarthLaboratorySkills, materializeInnerEarthInput,
   innerEarthLaboratoryConstant, innerEarthEnemyCounts, innerEarthIsThreeQueue } from "../innerEarth";
 import { isThreeQueueBattleInput } from "../scenario/scenePolicy";
 
-import { currentExternalConfig, rawReportSide, sourceReportBonuses, targetBattleBonuses, targetBonusMode } from "./reportBonusContexts";
+import { currentExternalConfig, sourceReportBonuses, targetBattleBonuses } from "./reportBonusContexts";
+import { normalizeBattleInputPolicy } from "./inputPolicy";
+import { projectSkillDefeats } from "../statistics/skillDamageAttribution";
+import type { RoundResolutionOptions } from "../round/resolveRound";
 
 const ZERO_REPORT_MODIFIERS: BattleReportAttributeModifiers = {
   selfBuffs: { attack: 0, defense: 0, penetration: 0, life: 0 },
@@ -93,6 +96,7 @@ function createValidationSkillTemplate(input: ValidationBattleInput) {
   let currentRandomSource: RandomSource = createSeededRandomSource(input.randomSeed);
   let currentDecisionSink: ((decision: ValidationProbabilityDecision) => void) | undefined;
   let currentReportSink: ((activation: TroopSkillReportActivation) => void) | undefined;
+  let captureSkillTrace = false;
   const sharedRandomSource: RandomSource = {
     next: () => currentRandomSource.next(),
   };
@@ -103,7 +107,7 @@ function createValidationSkillTemplate(input: ValidationBattleInput) {
     definitions: troopDefinitions,
     randomSource: sharedRandomSource,
     triggerOverrides: troop,
-    recordTrace: false,
+    get recordTrace() { return captureSkillTrace; },
     onProbabilityDecision: reportDecision,
     onReportActivation: (activation) => currentReportSink?.(activation),
   });
@@ -111,15 +115,16 @@ function createValidationSkillTemplate(input: ValidationBattleInput) {
     definitions: heroDefinitions,
     randomSource: sharedRandomSource,
     triggerOverrides: hero,
-    recordTrace: false,
+    get recordTrace() { return captureSkillTrace; },
     onProbabilityDecision: reportDecision,
   });
   return { enabledTroopIds, enabledHeroIds, troopSkillSystem, heroSkillSystem,
     reset(seed: number, sink?: (decision: ValidationProbabilityDecision) => void,
-      reportSink?: (activation: TroopSkillReportActivation) => void) {
+      reportSink?: (activation: TroopSkillReportActivation) => void, captureTrace = false) {
       currentRandomSource = createSeededRandomSource(seed);
       currentDecisionSink = sink;
       currentReportSink = reportSink;
+      captureSkillTrace = captureTrace;
     },
   };
 }
@@ -142,6 +147,7 @@ export function compileValidationBattle(input: ValidationBattleInput,
     traceMode: "summary" | "none",
     onProbabilityDecision?: (decision: ValidationProbabilityDecision) => void,
     onReportActivation?: (activation: TroopSkillReportActivation) => void,
+    onSkillTrace?: RoundResolutionOptions["onSkillTrace"],
   ) => CompactBattleSimulationResult;
   /** A new battle: only defender counts carry over; HP, rounds and all skill state reset. */
   readonly runFreshTrial: (
@@ -200,14 +206,15 @@ export function compileValidationBattle(input: ValidationBattleInput,
       return FastBattleMode.run(withDefenderCounts(defenderCounts), {
         maxRounds: input.maxRounds, troopSkillSystem, heroSkillSystem });
     },
-    runTrial(seed, traceMode, onProbabilityDecision, onReportActivation) {
+    runTrial(seed, traceMode, onProbabilityDecision, onReportActivation, onSkillTrace) {
       skillTemplate.reset(seed, traceMode === "summary" ? onProbabilityDecision : undefined,
-        traceMode === "summary" ? onReportActivation : undefined);
+        traceMode === "summary" ? onReportActivation : undefined, traceMode === "summary" && onSkillTrace !== undefined);
       return simulateBattle(initialState, {
         maxRounds: input.maxRounds,
         traceMode,
         troopSkillSystem,
         heroSkillSystem,
+        onSkillTrace: traceMode === "summary" ? onSkillTrace : undefined,
       });
     },
     runFreshTrial(seed, defenderCounts, traceMode = "none") {
@@ -243,6 +250,7 @@ export function decimalToUiPercent(value: number): number {
 export function toEngineScenario(
   input: ValidationBattleInput,
 ): PureTroopBattleScenario {
+  input = normalizeBattleInputPolicy(input);
   if (input.scenarioType === "INNER_EARTH") input = materializeInnerEarthInput(input);
   assertValidationInputStage(input);
   if (!Number.isSafeInteger(input.randomSeed)) {
@@ -254,7 +262,7 @@ export function toEngineScenario(
   if (isThreeQueueBattleInput(input)) {
     throw new Error("多队列场景须通过独立 ScenarioRunner 运行。");
   }
-  const battleContext = input.scenarioType === "RALLY" ? "rally"
+  const battleContext = input.scenarioType === "CITY_DEFENSE" ? "cityDefense" : input.scenarioType === "RALLY" ? "rally"
     : input.scenarioType === "THREE_THREE_THREE" || input.scenarioType === "SINGLE" || input.scenarioType === "INNER_EARTH"
       ? "challenge" : input.battleContext ?? "unspecified";
   const sideA = input.scenarioType === "THREE_THREE_THREE"
@@ -263,10 +271,10 @@ export function toEngineScenario(
     ? resolveThreeThreeThreeSide(input.sideB) : input.sideB;
   return {
     id: "pvp-validation-ui",
-    sideA: withLaboratoryConstants(toScenarioSide(sideA, ZERO_REPORT_MODIFIERS, battleContext,
+    sideA: withLaboratoryConstants(toScenarioSide(sideA, ZERO_REPORT_MODIFIERS, battleContext === "cityDefense" ? "challenge" : battleContext,
       input.attributeInputMode ?? "finalReport", validationStageId(input), "A", targetBattleBonuses(sideA, sideB)), input),
-    sideB: toScenarioSide(sideB, ZERO_REPORT_MODIFIERS, battleContext,
-      input.attributeInputMode ?? "finalReport", validationStageId(input), "B", targetBattleBonuses(sideB, sideA)),
+    sideB: toScenarioSide(sideB, ZERO_REPORT_MODIFIERS, battleContext === "cityDefense" ? "rally" : battleContext,
+      input.attributeInputMode ?? "finalReport", validationStageId(input), "B", targetBattleBonuses(sideB, sideA, input.scenarioType === "CITY_DEFENSE" && input.defenderInTerritory), input.scenarioType === "CITY_DEFENSE"),
     maxRounds: input.maxRounds,
     battleContext,
   };
@@ -332,6 +340,7 @@ export function getValidationThreeQueues(side: ValidationSideInput):
 }
 
 export function toValidationThreeQueueConfig(input: ValidationBattleInput): ThreeQueueScenarioConfig {
+  input = normalizeBattleInputPolicy(input);
   if (input.scenarioType === "INNER_EARTH") input = materializeInnerEarthInput(input);
   input = normalizeIceFireReportLineage(input);
   if (isIceFireInput(input)) input = { ...input, threeQueueMode: "ICE_FIRE_LEAGUE", attributeInputMode: "prediction" };
@@ -486,6 +495,7 @@ export function runValidationThreeQueueScenario(input: ValidationBattleInput): T
 export function runValidationBattle(
   input: ValidationBattleInput,
 ): ValidationBattleResult {
+  input = normalizeBattleInputPolicy(input);
   if (input.scenarioType === "INNER_EARTH") input = materializeInnerEarthInput(input);
   const core = runValidationBattleCore(input);
   const { scenario, initialState, simulation, roundDamage, summary } = core;
@@ -499,6 +509,15 @@ export function runValidationBattle(
           (remaining) => remaining.level === entry.level)?.aliveCount ?? 0,
       }))])) as unknown as PostBattleGradeComposition;
   };
+  const postBattleCasualties = {
+    A: resolvePostBattleCasualties(
+      Object.fromEntries(TROOP_TYPES.map((troop) => [troop, initialState.sideA.troops[troop].initialCount])) as Record<TroopType, number>,
+      summary.remaining.A, input.scenarioType === "CITY_DEFENSE" ? "FURNACE" : input.postBattleCasualtyMode ?? "NORMAL", grades("A")),
+    B: resolvePostBattleCasualties(
+      Object.fromEntries(TROOP_TYPES.map((troop) => [troop, initialState.sideB.troops[troop].initialCount])) as Record<TroopType, number>,
+      summary.remaining.B, input.scenarioType === "CITY_DEFENSE" ? "NORMAL" : input.postBattleCasualtyMode ?? "NORMAL", grades("B")),
+  };
+  const skillDamageStatistics = projectSkillDefeats(simulation.damageAttribution, postBattleCasualties);
   return {
     input,
     scenario,
@@ -512,15 +531,9 @@ export function runValidationBattle(
     activeEffects: collectActiveEffects(simulation),
     heroStatCorrections: simulation.trace.heroStatCorrections ?? {},
     expectedReportBonuses: calculateExpectedReportBonuses(input, initialState),
-    skillSummary: summarizeBattleSkills(simulation.trace),
-    postBattleCasualties: {
-      A: resolvePostBattleCasualties(
-        Object.fromEntries(TROOP_TYPES.map((troop) => [troop, initialState.sideA.troops[troop].initialCount])) as Record<TroopType, number>,
-        summary.remaining.A, input.postBattleCasualtyMode ?? "NORMAL", grades("A")),
-      B: resolvePostBattleCasualties(
-        Object.fromEntries(TROOP_TYPES.map((troop) => [troop, initialState.sideB.troops[troop].initialCount])) as Record<TroopType, number>,
-        summary.remaining.B, input.postBattleCasualtyMode ?? "NORMAL", grades("B")),
-    },
+    skillSummary: summarizeBattleSkills(simulation.trace, skillDamageStatistics),
+    skillDamageStatistics,
+    postBattleCasualties,
   };
 }
 
@@ -620,8 +633,9 @@ function toScenarioSide(
   stageId: ServerStageId,
   sideId: SideId,
   targetBonuses: ValidationSideInput["targetBattleBonuses"],
+  singleDeployment = false,
 ): PureTroopScenarioSideInput {
-  const input = attributeInputMode === "prediction" ? rawReportSide(original) : original;
+  const input = original;
   const leaderIds = input.leaderHeroIds === undefined
     ? (input.leaderHeroId === null ? [] : [input.leaderHeroId])
     : TROOP_TYPES.flatMap((troop) => {
@@ -651,10 +665,11 @@ function toScenarioSide(
       skillLevels: { [skillId]: skillLevel },
     })),
   ]);
-  const counts = resolveValidationTroopCounts(input, battleContext, attributeInputMode);
+  const deploymentContext = singleDeployment ? "challenge" : battleContext;
+  const counts = resolveValidationTroopCounts(input, deploymentContext, attributeInputMode);
   const troops = Object.fromEntries(TROOP_TYPES.map((troop) => {
       const source = input.troops[troop];
-      const composition = battleContext === "rally" && attributeInputMode === "prediction"
+      const composition = deploymentContext === "rally" && attributeInputMode === "prediction"
         ? source.levelMode === "mixed" && source.resolutionSource !== undefined ?
           rescaleComposition(normalizeValidationComposition(source), counts[troop]) :
           [{ level: source.troopLevel, aliveCount: counts[troop] }]
@@ -865,7 +880,7 @@ function expectedForSide(
   finalReport: boolean,
   enemyInput: ValidationSideInput,
 ): ValidationBattleResult["expectedReportBonuses"][SideId] {
-  const rawInput = finalReport ? input : rawReportSide(input);
+  const rawInput = input;
   const historical = sourceReportBonuses(input);
   const target = finalReport ? undefined : targetBattleBonuses(input, enemyInput);
   const side = sideFromState(state, sideId);
@@ -958,8 +973,7 @@ function expectedForSide(
           sourceReportAdditive: `sourceReportBonuses.${troop}.${attribute}.additive (legacy: importedReportModifiers)`,
           sourceReportBuff: `sourceReportBonuses.${troop}.${attribute}.buff (legacy: importedReportModifiers)`,
           sourceReportDebuff: `sourceReportBonuses.${troop}.${attribute}.debuff (legacy: importedReportModifiers)`,
-          target: finalReport ? "finalReport: disabled" : targetBonusMode(input) === "reuseSource" ? "explicit reuseSource" :
-            targetBonusMode(input) === "custom" ? "targetBattleBonuses + current externalBuffs" : "none: zero own bonuses; explicit current opponent debuffs only",
+          target: finalReport ? "finalReport: disabled" : "canonical externalBuffs only; legacy current custom bonuses ignored",
         },
         finalBonus: expected / 100,
       }];

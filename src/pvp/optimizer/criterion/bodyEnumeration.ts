@@ -89,6 +89,7 @@ export interface BodyEnumerationResult {
 
 export function generateBodyEnumerationDomain(input: OptimizationInput, constraints: SearchConstraint,
   head: RallyCandidate["leaderHeroIds"], candidateSide:SideId="A"): BodyEnumerationDomain {
+  if (input.scenarioType === "CITY_DEFENSE" && candidateSide === "A") constraints = { ...constraints, fixedBodyExact: true, fixedMemberSkillIds: [] };
   const catalog = getValidationCatalog(), stage = validationStageId(input);
   const sources = catalog.memberSkills.flatMap((entry) => entry.sourceHeroIds.map((heroId, index) => ({
     heroId, skillId: entry.sourceSkillIds[index]!, effectKey: entry.effectKey,

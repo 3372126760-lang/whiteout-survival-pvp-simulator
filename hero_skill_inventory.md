@@ -1548,7 +1548,7 @@ PVP 注册技能 4 项；以下逐项展开代码中的全部等级、效果和�
 | 远征槽位 | 目录技能名称 | 完整目录描述 | 已录入等级数值 | PVP 关联 |
 | --- | --- | --- | --- | --- |
 | 1 | 正义之剑（`expedition.gelaige.sword-of-justice`） | 每回合一次20%判定；触发当回合全军伤害提升40%，持续3回合，重复触发覆盖并重新计时。 | `{"5":0.4}` | `hero-skill.gelaige.sword-of-justice` |
-| 2 | 律令威慑（`expedition.gelaige.law-deterrence`） | 各兵种攻击时独立20%判定；命中目标栈造成伤害降低50%，立即生效2回合，重复触发覆盖。 | `{"5":0.5}` | `hero-skill.gelaige.law-deterrence` |
+| 2 | 律令震慑（`expedition.gelaige.law-deterrence`） | 盾/矛/射每次主攻击尝试分别20%判定；本次选中目标穿透降低10/20/30/40/50%，立即生效2回合，闪避仍判定，同一目标重复触发覆盖刷新。 | `{"1":0.1,"2":0.2,"3":0.3,"4":0.4,"5":0.5}` | `hero-skill.gelaige.law-deterrence` |
 | 3 | 秩序庇护（`expedition.gelaige.order-protection`） | 全军生命提升25%，开场生效。 | `{"5":0.25}` | `hero-skill.gelaige.order-protection` |
 
 专武目录：基础属性上限 penetration=0.7、life=0.7；技能ID=`hero-weapon-skill.gelaige.rally-life`；已录入阶梯数值=`{"hero-weapon-skill.gelaige.rally-life":{"1":0.05,"2":0.075,"3":0.1,"4":0.125,"5":0.15}}`。
@@ -1577,27 +1577,22 @@ PVP 注册技能 4 项；以下逐项展开代码中的全部等级、效果和�
 | --- | --- | --- | --- |
 | `hero-effect.gelaige.sword-of-justice` | unverified | confirmed | 独立证据：打熊权威文档 docs/v0.4-head-hero-skill-audit.md 与 docs/head-hero-skill-zones.md 明确普通全军/兵种增伤同属 baseDamageIncrease；技能文本可唯一映射到该普通增伤区。 |
 
-#### 2. 律令威慑（`hero-skill.gelaige.law-deterrence`）
+#### 2. 律令震慑（`hero-skill.gelaige.law-deterrence`）
 
-- **实现名/原文**：格雷格·律令威慑；各兵种攻击时独立20%判定；命中目标栈造成伤害降低50%，立即生效2回合，重复触发覆盖。
-- **等级原数值**：`{"5":0.5}`。目录数值可能只概括技能，实际多效果数值见下表。
-- **触发**：`beforeAttack`；主攻判定时点=—；定义概率=`0.2`；行动机制=—；场景=—。
-- **生效/持续**：定义 activationTiming=`"immediate"`；durationRounds=`2`；cooldownRounds=—。逐效果 lifecycle 和逐等级覆盖值见下表；`passive` 在回合快照前挂载，生命属性会在首回合前重算 HP，防御属性仅进入受击伤害分母。
-- **目标范围**：`{"recipient":"enemyArmy","scope":{"source":"army","target":"all","damageType":"all"}}`。
-- **类型**：`reduction`；代码 effect kind=outgoingDamageReduction。
-- **位置**：`{"kind":"expeditionSkillSlot","expeditionSkillSlot":2,"allowedPositions":["leader","member"]}`；**源码**：`src/pvp/heroSkills/definitions/s3Heroes.ts`。
-- **验证状态（战报口径）**：**unverified**；项目内部 ruleStatus=`supported`；verificationStatus=—；项目效果库存状态=confirmed。
-- **元数据**：source=`"confirmed S3 expedition PVP rules, synchronized 2026-09-20"`；templateSource=—；tags=`["S3","expeditionSlot2","hitTargetTroop","perTroopAttack","replaceOnRetrigger"]`。
+2026-10-16 最终确认：盾/矛/射每次主攻击尝试分别20%判定；本次选中目标穿透降低10/20/30/40/50%，立即生效2回合，闪避仍判定，同一目标重复触发覆盖刷新。
 
-| 等级 | 版本 | 概率 | 持续/冷却 | 周期 | 完整 effect 数据（原代码字段，数值为小数） |
+trigger=beforeAttack；triggerTiming=mainAttackAttempt；probability=20%；完全复用鲁弗斯三技能模板。
+穿透属性进入 P/(1+Σ enemyPenetrationReduction)，不进入 outgoing/received damage reduction。
+
+| 等级 | 版本 | 概率 | 持续/冷却 | 周期 | 完整 effect |
 | --- | --- | --- | --- | --- | --- |
-| 5 | Expedition Lv.5 | 20% | duration=2；cooldown=— | period=—；start=— | `{"id":"hero-effect.gelaige.law-deterrence","name":"hero-effect.gelaige.law-deterrence","kind":"outgoingDamageReduction","recipient":"enemyArmy","group":"enemyOutgoingDamageReduction","value":0.5,"scope":{"source":"army","target":"all","damageType":"all"},"lifecycle":{"activationTiming":"immediate","durationRounds":2,"refreshMode":"replace"}}` |
+| 1 | Expedition Lv.1 | 20% | duration=2；cooldown=— | period=— | `{"id":"hero-effect.gelaige.law-deterrence","name":"hero-effect.gelaige.law-deterrence","kind":"attributeReduction","recipient":"enemyArmy","attribute":"penetration","group":"enemyPenetrationReduction","value":0.1,"scope":{"source":"army","target":"currentTarget","damageType":"all"},"lifecycle":{"activationTiming":"immediate","durationRounds":2,"refreshMode":"replace"}}` |
+| 2 | Expedition Lv.2 | 20% | duration=2；cooldown=— | period=— | `{"id":"hero-effect.gelaige.law-deterrence","name":"hero-effect.gelaige.law-deterrence","kind":"attributeReduction","recipient":"enemyArmy","attribute":"penetration","group":"enemyPenetrationReduction","value":0.2,"scope":{"source":"army","target":"currentTarget","damageType":"all"},"lifecycle":{"activationTiming":"immediate","durationRounds":2,"refreshMode":"replace"}}` |
+| 3 | Expedition Lv.3 | 20% | duration=2；cooldown=— | period=— | `{"id":"hero-effect.gelaige.law-deterrence","name":"hero-effect.gelaige.law-deterrence","kind":"attributeReduction","recipient":"enemyArmy","attribute":"penetration","group":"enemyPenetrationReduction","value":0.3,"scope":{"source":"army","target":"currentTarget","damageType":"all"},"lifecycle":{"activationTiming":"immediate","durationRounds":2,"refreshMode":"replace"}}` |
+| 4 | Expedition Lv.4 | 20% | duration=2；cooldown=— | period=— | `{"id":"hero-effect.gelaige.law-deterrence","name":"hero-effect.gelaige.law-deterrence","kind":"attributeReduction","recipient":"enemyArmy","attribute":"penetration","group":"enemyPenetrationReduction","value":0.4,"scope":{"source":"army","target":"currentTarget","damageType":"all"},"lifecycle":{"activationTiming":"immediate","durationRounds":2,"refreshMode":"replace"}}` |
+| 5 | Expedition Lv.5 | 20% | duration=2；cooldown=— | period=— | `{"id":"hero-effect.gelaige.law-deterrence","name":"hero-effect.gelaige.law-deterrence","kind":"attributeReduction","recipient":"enemyArmy","attribute":"penetration","group":"enemyPenetrationReduction","value":0.5,"scope":{"source":"army","target":"currentTarget","damageType":"all"},"lifecycle":{"activationTiming":"immediate","durationRounds":2,"refreshMode":"replace"}}` |
 
-效果级验证依据：
-
-| effectId | 战报口径 | 库存标记 | 依据/缺口 |
-| --- | --- | --- | --- |
-| `hero-effect.gelaige.law-deterrence` | unverified | confirmed | 独立证据：兵种及格雷格规则明确该类为 enemy outgoing damage reduction，区别于直接抵消；阿隆索钢铁意志属于穿透属性减益，不在本组。 |
+确认依据：2026-10-16 用户最终确认：游戏技能截图为穿透降低；触发/目标/闪避/持续刷新完全复用鲁弗斯暴烈震爆，不作用敌军全体。
 
 #### 3. 秩序庇护（`hero-skill.gelaige.order-protection`）
 
@@ -2412,7 +2407,7 @@ PVP 注册技能 4 项；以下逐项展开代码中的全部等级、效果和�
 
 | 远征槽位 | 目录技能名称 | 完整目录描述 | 已录入等级数值 | PVP 关联 |
 | --- | --- | --- | --- | --- |
-| 1 | 惊梦留痕（`expedition.ruini.dream-mark`） | 矛兵每2次主攻击尝试在闪避前标记选定目标；下回合对该目标造成200%独立技能额外伤害。 | `{"5":2}` | `hero-skill.ruini.dream-mark` |
+| 1 | 惊梦留痕（`expedition.ruini.dream-mark`） | 矛兵每2次主攻击尝试标记当前目标，下一回合造成200%B技能伤害；每个重复来源追加100%B（战报支持，暂定），各来源分别计数。 | `{"5":2}` | `hero-skill.ruini.dream-mark` |
 | 2 | 捕梦手（`expedition.ruini.dream-catcher`） | 矛兵对DreamMark目标伤害提升150%。 | `{"5":1.5}` | `hero-skill.ruini.dream-catcher` |
 | 3 | 梦境切片（`expedition.ruini.dream-fragment`） | 全军对DreamMark目标伤害提升75%。 | `{"5":0.75}` | `hero-skill.ruini.dream-fragment` |
 
@@ -2422,25 +2417,14 @@ PVP 注册技能 4 项；以下逐项展开代码中的全部等级、效果和�
 
 #### 1. 惊梦留痕（`hero-skill.ruini.dream-mark`）
 
-- **实现名/原文**：芮妮·惊梦留痕；矛兵每2次主攻击尝试在闪避前标记选定目标；下回合对该目标造成200%独立技能额外伤害。
-- **等级原数值**：`{"5":2}`。目录数值可能只概括技能，实际多效果数值见下表。
-- **触发**：`beforeAttack`；主攻判定时点=—；定义概率=—；行动机制=`{"kind":"targetBoundMark","schedule":{"source":"lancer","interval":2,"mode":"onCompleted"},"markId":"reneeDreamMark","damageDelayRounds":1,"damageCoefficient":2,"markDurationRounds":1}`；场景=—。
-- **生效/持续**：定义 activationTiming=`"immediate"`；durationRounds=—；cooldownRounds=—。逐效果 lifecycle 和逐等级覆盖值见下表；`passive` 在回合快照前挂载，生命属性会在首回合前重算 HP，防御属性仅进入受击伤害分母。
-- **目标范围**：`{"recipient":"enemyArmy","scope":{"source":"lancer","target":"currentTarget","damageType":"all"}}`。
-- **类型**：`mark`；代码 effect kind=targetBoundMark。
-- **位置**：`{"kind":"expeditionSkillSlot","expeditionSkillSlot":1,"allowedPositions":["leader","member"]}`；**源码**：`src/pvp/heroSkills/definitions/s6Heroes.ts`。
-- **验证状态（战报口径）**：**confirmed**；项目内部 ruleStatus=`supported`；verificationStatus=—；项目效果库存状态=confirmed。
-- **元数据**：source=`"confirmed S6 expedition PVP rules and battle reports, 2026-09-25"`；templateSource=—；tags=`["S6","expeditionSlot1","usesAttackCount","hitTargetTroop","targetBoundMark","bearModelSemantic"]`。
+矛兵每2次主攻击尝试标记当前目标，下一回合造成200%B技能伤害；每个重复来源追加100%B（战报支持，暂定），各来源分别计数。
 
-| 等级 | 版本 | 概率 | 持续/冷却 | 周期 | 完整 effect 数据（原代码字段，数值为小数） |
-| --- | --- | --- | --- | --- | --- |
-| 5 | Expedition Lv.5 | — | duration=—；cooldown=— | period=—；start=— | `{"id":"hero-effect.ruini.dream-mark","name":"hero-effect.ruini.dream-mark","kind":"targetBoundMark","recipient":"enemyArmy","markId":"reneeDreamMark","scope":{"source":"lancer","target":"currentTarget","damageType":"all"}}` |
+`actionMechanic`：`{"kind":"targetBoundMark","schedule":{"source":"lancer","interval":2,"mode":"onCompleted"},"markId":"reneeDreamMark","damageDelayRounds":1,"damageCoefficient":2,"markDurationRounds":1,"duplicateSourceStacking":{"additionalCoefficient":1,"evidenceStatus":"BATTLE_REPORT_SUPPORTED","ruleStatus":"PROVISIONAL"}}`
 
-效果级验证依据：
-
-| effectId | 战报口径 | 库存标记 | 依据/缺口 |
-| --- | --- | --- | --- |
-| `hero-effect.ruini.dream-mark` | confirmed | confirmed | S6真实战报确认：pre-dodge偶数次主攻尝试绑定当前目标；下回合整回合生效，独立产生2B skillDamage/extraDamage，目标死亡不转移。 |
+每个 runtime 独立维护偶数次矛攻计数；同侧同次攻击、同目标的一批来源合并为一个延迟 skillDamage/extraDamage。
+系数：m=1..5 → 2/3/4/5/6B；战报次数仍为1500次有效矛攻下的750/1500/2250/3000/3750。
+条件标记一份，捕梦手/梦境切片不按标记来源数增幅。目标绑定、下一回合结算、闪避/眩晕与取整规则不改。
+重复系数证据为 BATTLE_REPORT_SUPPORTED / PROVISIONAL，等待固定N0控制实验。
 
 #### 2. 捕梦手（`hero-skill.ruini.dream-catcher`）
 

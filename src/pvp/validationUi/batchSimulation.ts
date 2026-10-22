@@ -4,6 +4,9 @@ import { getActiveSkillUniverse } from "./activeSkillUniverse";
 import { sortActiveSkillsForUi } from "./activeSkillSorting";
 import { generateValidationRandomSeed } from "./randomMode";
 import type { ValidationBattleInput } from "./types";
+import { resolvePostBattleCasualties, type TroopPopulation } from "../postBattle/casualtyResolver";
+import { averageSkillDamageStatistics, legacySkillCasualties, mergeSkillDamageStatistics, projectSkillDefeats, reportedSkillActivations,
+  type SkillDamageStatistics } from "../statistics/skillDamageAttribution";
 
 export const DEFAULT_BATCH_SIMULATION_COUNT = 1_000;
 export const MIN_BATCH_SIMULATION_COUNT = 1;
@@ -43,8 +46,12 @@ export interface BatchSimulationResult {
   /** Empirical final-result distributions; no per-trial trace is retained. */
   readonly distributions: BatchDistributions;
   readonly skillStatistics: readonly BatchSkillStatistics[];
-  /** Secondary attribution: only casualties caused by explicit skill-damage events. */
+  /** Mean attributed exits, including fractional pool/segment shares; not additional casualties. */
   readonly meanSkillCasualties: Readonly<Record<SideId, Readonly<Record<string, number>>>>;
+  /** Per-trial post-battle conversion FIRST, then mean; no full trial trace retained. */
+  readonly skillDamageStatistics?: SkillDamageStatistics;
+  /** Cumulative report activations, including deterministic skills and duplicate runtimes. */
+  readonly skillActivationCounts?: Readonly<Record<SideId, Readonly<Record<string, number>>>>;
 }
 
 export interface BatchMetricDistribution {
@@ -128,7 +135,8 @@ export function runBatchSimulation(
     : normalizeUint32(input.randomSeed);
   const outcomes = { A: 0, B: 0, draw: 0, timeout: 0 };
   const skills = new Map<string, MutableSkillStatistics>();
-  const skillCasualtyTotals: Record<SideId, Record<string, number>> = { A: {}, B: {} };
+  const skillActivationCounts: Record<SideId, Record<string, number>> = { A: {}, B: {} };
+  let skillDamageTotals: SkillDamageStatistics | undefined;
   const skillOrder = new Map<string, number>();
   let totalRounds = 0;
   let totalDamageA = 0;
@@ -144,6 +152,11 @@ export function runBatchSimulation(
     B: { remaining: emptyMetricSamples(), exited: emptyMetricSamples() },
   };
   const compiled = compileValidationBattle(input);
+  const initialCounts = (side: SideId): TroopPopulation => Object.fromEntries(
+    (["shield", "lancer", "marksman"] as const).map((troop) => [troop,
+      (side === "A" ? compiled.initialState.sideA : compiled.initialState.sideB).troops[troop].initialCount]),
+  ) as TroopPopulation;
+  const initial = { A: initialCounts("A"), B: initialCounts("B") };
   const active = sortActiveSkillsForUi(
     getActiveSkillUniverse(compiled.initialState).filter(
       (skill) => skill.probability !== null,
@@ -171,6 +184,13 @@ export function runBatchSimulation(
       aggregateDecision(skills, decision), (activation) => {
         const skill = skills.get(skillKey(activation.side, activation.skillId));
         if (skill !== undefined) skill.actualActivationCount += activation.count;
+      }, (troop, hero) => {
+        for (const entry of [...troop, ...hero]) {
+          const activations = reportedSkillActivations(entry);
+          if (activations === 0) continue;
+          const totals = skillActivationCounts[entry.side];
+          totals[entry.skillId] = (totals[entry.skillId] ?? 0) + activations;
+        }
       });
     const aliveA = sumAlive(trial.finalState.sideA.troops);
     const aliveB = sumAlive(trial.finalState.sideB.troops);
@@ -181,12 +201,16 @@ export function runBatchSimulation(
     roundSamples.push(trial.roundCount);
     totalDamageA += trial.totalDamage.A;
     totalDamageB += trial.totalDamage.B;
-    for (const side of ["A", "B"] as const) {
-      for (const [skillId, casualties] of Object.entries(trial.skillCasualtiesBySide[side])) {
-        skillCasualtyTotals[side][skillId] =
-          (skillCasualtyTotals[side][skillId] ?? 0) + casualties;
-      }
-    }
+    const survivors = (side: SideId): TroopPopulation => Object.fromEntries(
+      (["shield", "lancer", "marksman"] as const).map((troop) => [troop,
+        (side === "A" ? trial.finalState.sideA : trial.finalState.sideB).troops[troop].aliveCount]),
+    ) as TroopPopulation;
+    const statistics = projectSkillDefeats(trial.damageAttribution, {
+      A: resolvePostBattleCasualties(initial.A, survivors("A"), input.scenarioType === "CITY_DEFENSE" ? "FURNACE" : input.postBattleCasualtyMode ?? "NORMAL"),
+      B: resolvePostBattleCasualties(initial.B, survivors("B"), input.scenarioType === "CITY_DEFENSE" ? "NORMAL" : input.postBattleCasualtyMode ?? "NORMAL"),
+    });
+    if (skillDamageTotals === undefined) skillDamageTotals = statistics;
+    else mergeSkillDamageStatistics(skillDamageTotals, statistics);
     for (const side of ["A", "B"] as const) {
       const remaining = (side === "A" ? trial.finalState.sideA : trial.finalState.sideB).troops;
       totalRemaining[side].shield += remaining.shield.aliveCount;
@@ -233,6 +257,7 @@ export function runBatchSimulation(
       left.skillName.localeCompare(right.skillName)
     );
 
+  const skillDamageStatistics = averageSkillDamageStatistics(skillDamageTotals!, count);
   return {
     simulationCount: count,
     simulationMode,
@@ -258,12 +283,9 @@ export function runBatchSimulation(
       },
     },
     skillStatistics,
-    meanSkillCasualties: {
-      A: Object.fromEntries(Object.entries(skillCasualtyTotals.A).map(
-        ([skillId, total]) => [skillId, total / count])),
-      B: Object.fromEntries(Object.entries(skillCasualtyTotals.B).map(
-        ([skillId, total]) => [skillId, total / count])),
-    },
+    skillDamageStatistics,
+    skillActivationCounts,
+    meanSkillCasualties: legacySkillCasualties(skillDamageStatistics),
   };
 }
 

@@ -5,7 +5,7 @@
   },
   {
     "path": "src/pvp/skillPresentation.ts",
-    "sha256": "ca0ee482284d235c2d1c0b41c7ad67e577f221d88c2e1caf807f72f4094c24fd"
+    "sha256": "9b0a1ad6e0e3d2d1d9ec14a0bf0e701acbbacc0ff3a2e39fb985e6188cf9e08c"
   },
   {
     "path": "src/pvp/battle/createBattleState.ts",
@@ -21,7 +21,7 @@
   },
   {
     "path": "src/pvp/battle/simulateBattle.ts",
-    "sha256": "66c04a59b2c5f0d758a77bcc07b06403ad982aee0614ce522d61d0bd5cead330"
+    "sha256": "9af652e4a702b1f8f962ebfb93c079a429fed4e8c94fe1a353411d3070830a41"
   },
   {
     "path": "src/pvp/casualty/applyDamageToTroopStack.ts",
@@ -173,19 +173,19 @@
   },
   {
     "path": "src/pvp/heroSkills/README.md",
-    "sha256": "7567bce40bcf468c149f107efcea6655429788a55a88db860b071fb047de2f85"
+    "sha256": "f5c8d52d16f65bcfe9796db931b6e5a8e50b68176d1455b83e83e69c67624d44"
   },
   {
     "path": "src/pvp/heroSkills/resolveHeroSkills.ts",
-    "sha256": "9468a297dbba4545e2456b8c65293c5eb5aeec90f8ab51421748613995db895c"
+    "sha256": "37f40049936b7ca4c784d82e6290fb85618f8f7f6813c29976ae4e8caf037c72"
   },
   {
     "path": "src/pvp/heroSkills/runtime.ts",
-    "sha256": "50bc87b8489159ce43cb27ca02fb5621014a6fd6691075ae419daf05ef9cb5f6"
+    "sha256": "c4a51cbb8bd39a116f9e879bc01f3078e8ecccda8c1144b9dbd68ed2a63928a9"
   },
   {
     "path": "src/pvp/heroSkills/types.ts",
-    "sha256": "7fe6f47019a647074830487f7773ec10ac4108267e481ff318a60d4a45be83e9"
+    "sha256": "cc61bf71935ccde1ceb2e160af03f0bfe0fa23f2a08797cc94945f4a89b98762"
   },
   {
     "path": "src/pvp/heroSkills/data/exclusiveWeapons.ts",
@@ -193,7 +193,7 @@
   },
   {
     "path": "src/pvp/heroSkills/data/expeditionHeroes.ts",
-    "sha256": "948d43d317f8ce645444e422a77291b649af45c08aefff81af0b43d60259c266"
+    "sha256": "8161c1b281c43983130fdabfa359e567b57fd8bc2ba439833104a190936c3775"
   },
   {
     "path": "src/pvp/heroSkills/data/generationStats.ts",
@@ -253,7 +253,7 @@
   },
   {
     "path": "src/pvp/heroSkills/definitions/s3Heroes.ts",
-    "sha256": "66b67c7f6d48b8e9b430c777ce9d98c942c5d0406a7477a239009442ba5f0540"
+    "sha256": "8751ae9fd3ce0c22effe391c4a31b3a030dfa18967a078e2941444d3b038129c"
   },
   {
     "path": "src/pvp/heroSkills/definitions/s4Heroes.ts",
@@ -265,7 +265,7 @@
   },
   {
     "path": "src/pvp/heroSkills/definitions/s6Heroes.ts",
-    "sha256": "9c0e98e12f889a95234d5c1a309640107795d2f43bb1efdb7cc7a4b00c9fb2b4"
+    "sha256": "65399cc5dc270343dcb1695800894b6933faf3342765d18e462b4f62ed2f6223"
   },
   {
     "path": "src/pvp/heroSkills/definitions/s7Heroes.ts",
@@ -285,7 +285,7 @@
   },
   {
     "path": "src/pvp/innerEarth/adapter.ts",
-    "sha256": "49d57117ff9fe3202afb1c799b4ffb6b65c469ce4317c4e7ad26e37f5ba28640"
+    "sha256": "20f9dc53fa5f444bb6b78ba7372c3f4ffdd2125eee338bb066bcfe7562c9f904"
   },
   {
     "path": "src/pvp/innerEarth/config.ts",
@@ -297,7 +297,7 @@
   },
   {
     "path": "src/pvp/innerEarth/rules.ts",
-    "sha256": "371122d76632c22a03888cc1bc782f9918cdb0bcfc3604c08309fa955d82de72"
+    "sha256": "3f749633e5cc3681f89e545c924fe0cd3ce915a62569fa8cf04049bd20660494"
   },
   {
     "path": "src/pvp/logging/battleTrace.ts",
@@ -341,7 +341,7 @@
   },
   {
     "path": "src/pvp/round/resolveRound.ts",
-    "sha256": "3eed1edba95aa61c179d2f70e60d6294f7b71c33b46c34838227214d5ee644c1"
+    "sha256": "2c53d17452151b790a5250314b9b337a69000982dcb932c1c3fc821ad1ef9dff"
   },
   {
     "path": "src/pvp/round/snapshot.ts",
@@ -357,11 +357,11 @@
   },
   {
     "path": "src/pvp/scenario/scenarioTypes.ts",
-    "sha256": "bf019519f59b90c56f526ff24aa36c281491d43c83a3bbf9e9bddcca72f9b878"
+    "sha256": "f21b25d210ae136c05bc3155c36b5deb5e98ca92b22689a925110a91f042ccba"
   },
   {
     "path": "src/pvp/scenario/scenePolicy.ts",
-    "sha256": "1b9274a8ca3085c283f8388ecf5c5845b7cb73df16115c242d4b894f797444ca"
+    "sha256": "2619afeb9288f80d0dce42820f5b16381af25d90cec9795a89b3222d8263c529"
   },
   {
     "path": "src/pvp/scenario/threeQueueRatios.ts",
@@ -449,7 +449,7 @@
   },
   {
     "path": "src/pvp/types/combat.ts",
-    "sha256": "1938274a62e10aaf542ada6e899287b16bcca6c67425e3cec71e85c433e6f7c7"
+    "sha256": "8955e75f5de2fbf14f0fd483997c6545d9238f43920e93ff63a25799bdeb897d"
   },
   {
     "path": "src/pvp/types/damage.ts",
@@ -457,7 +457,7 @@
   },
   {
     "path": "src/pvp/types/effect.ts",
-    "sha256": "d0d28d133c249bf323971ec7518bb4ef12eb45205a1ff44f882e3d64484c4c06"
+    "sha256": "be4c9628290e8707f0b0d0c4c21c6a39df1ed18cfb4ba06ffb26acbdc4710970"
   },
   {
     "path": "src/pvp/types/index.ts",
@@ -494,5 +494,9 @@
   {
     "path": "src/pvp/validation/cases/shield-wall.json",
     "sha256": "9722d5826d25561761be07f6f4bbac4a16125659760613f2ed279fd102e304bd"
+  },
+  {
+    "path": "src/pvp/heroSkills/targetMarkStacking.ts",
+    "sha256": "bac08541c23f7c971f8bb2c1dd90dea26fdc9195f3e3c92da3a5a394dc3ad1de"
   }
 ]

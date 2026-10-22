@@ -71,7 +71,7 @@ function effectText(effect: HeroSkillEffect): string {
 }
 
 function contextText(definition: HeroSkillDefinition): string {
-  const names = { unspecified: "未指定场景", challenge: "单撞", rally: "集结", rallyAttack: "集结进攻",
+  const names = { unspecified: "未指定场景", cityDefense: "守城", challenge: "单撞", rally: "集结", rallyAttack: "集结进攻",
     rallyDefense: "集结防守", garrisonDefense: "守城" };
   return definition.battleContexts?.map((context) => names[context]).join(" / ") ?? "";
 }
@@ -140,12 +140,15 @@ export function presentBodySkill(skillId: string, level = 5): BodySkillPresentat
       : definition.triggerTiming === "successfulNormalAttackHit" ? "普通攻击命中后触发" : "",
     definition.actionMechanic?.kind === "targetBoundMark"
       ? `标记后${definition.actionMechanic.damageDelayRounds}回合造成${percent(definition.actionMechanic.damageCoefficient)}附加伤害` : "",
+    definition.actionMechanic?.kind === "targetBoundMark" && definition.actionMechanic.duplicateSourceStacking
+      ? `重复来源每份追加${percent(definition.actionMechanic.duplicateSourceStacking.additionalCoefficient)}B；总系数m+1（战报支持，暂定）` : "",
   ].filter(Boolean).join("；");
   return { skillId, heroId: hero.id, heroName: hero.name, rarity: hero.rarity, generation, identityLabel,
     skillName: skill.name, skillDescription: skill.description, level, category, effectSummary,
     displayLabel: `${hero.name}（${heroCategoryLabel(hero)}）｜${effectSummary}｜${timingSummary}`, timingSummary,
     searchText: `${hero.name} ${hero.rarity} ${generation === null ? "" : `S${generation}`} ${skill.name} ${skill.description} ${effectSummary} ${category}`,
-    provisional: definition.metadata.ruleStatus !== "supported" };
+    provisional: definition.metadata.ruleStatus !== "supported" ||
+      definition.actionMechanic?.kind === "targetBoundMark" && definition.actionMechanic.duplicateSourceStacking?.ruleStatus === "PROVISIONAL" };
 }
 
 export function getBodySkillOptions(stageId: ServerStageId): readonly BodySkillPresentation[] {

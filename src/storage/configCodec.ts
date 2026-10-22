@@ -2,6 +2,7 @@ import { DEFAULT_CRITERION_SEARCH, resolveCriterionSearchOptions } from "../pvp/
 import { resolveJointRacingSchedule } from "../pvp/optimizer/criterion/racingSchedule";
 import { resolveJointPipelineOptions } from "../pvp/optimizer/jointPipeline/types";
 import { normalizeHistoricalTree } from "../pvp/validationUi/historicalBonuses";
+import { normalizeBattleInputPolicy } from "../pvp/validationUi/inputPolicy";
 import { resolveBasinSearchOptions } from "../pvp/optimizer/basinSearch";
 import { DEFAULT_EXTERNAL_BUFF_CONFIG, STANDARD_PET_LEVELS, PET_DEFENSE_REDUCTION_LEVELS, PET_PENETRATION_REDUCTION_LEVELS, PET_LIFE_REDUCTION_LEVELS } from "../pvp/externalBuffs/data";
 import { MAX_BATCH_SIMULATION_COUNT, MIN_BATCH_SIMULATION_COUNT } from "../pvp/validationUi/batchSimulation";
@@ -272,10 +273,6 @@ function bonusContexts(raw: Record<string, unknown>, label: string) {
       queueAttributes(raw.sourceReportAttributes, `${label}.sourceReportAttributes`) }),
     ...(raw.reportAttributeBasis === undefined ? {} : { reportAttributeBasis:
       oneOf(raw.reportAttributeBasis, ["raw", "historicalReport"] as const, `${label}.reportAttributeBasis`) }),
-    ...(raw.targetBonusMode === undefined ? {} : { targetBonusMode:
-      oneOf(raw.targetBonusMode, ["none", "reuseSource", "custom"] as const, `${label}.targetBonusMode`) }),
-    ...(raw.targetBattleBonuses === undefined ? {} : { targetBattleBonuses:
-      importedModifiers(raw.targetBattleBonuses, `${label}.targetBattleBonuses`) }),
   };
 }
 function readHistoricalBonuses(value: unknown, label: string) {
@@ -297,8 +294,7 @@ function readHistoricalBonusMigration(value: unknown): HistoricalBonusMigration 
 }
 
 function persistBonusContexts(side: ValidationSideInput | ValidationQueueConfig) {
-  return Object.fromEntries(["sourceReportBonuses", "historicalBonusMigration", "sourceReportAttributes", "reportAttributeBasis",
-    "targetBonusMode", "targetBattleBonuses"].flatMap((key) => {
+  return Object.fromEntries(["sourceReportBonuses", "historicalBonusMigration", "sourceReportAttributes", "reportAttributeBasis"].flatMap((key) => {
       const value = side[key as keyof typeof side];
       return value === undefined ? [] : [[key, value]];
     }));
@@ -805,7 +801,7 @@ function readInput(value: unknown): ValidationBattleInput {
   const serverStage = oneOf(raw.serverStage, SERVER_STAGES.map((stage) => stage.id),
     "serverStage") as ServerStageId;
   const scenarioType = oneOf(raw.scenarioType,
-    ["SINGLE", "THREE_THREE_THREE", "THREE_QUEUE", "ICE_FIRE_LEAGUE", "INNER_EARTH", "RALLY"] as const,
+    ["SINGLE", "CITY_DEFENSE", "THREE_THREE_THREE", "THREE_QUEUE", "ICE_FIRE_LEAGUE", "INNER_EARTH", "RALLY"] as const,
     "scenarioType");
   const simulationMode = oneOf(raw.simulationMode,
     ["fixedSeed", "random"] as const, "simulationMode");
@@ -853,9 +849,10 @@ function readInput(value: unknown): ValidationBattleInput {
           weaponLevel: entry.weaponLevel === null ? null : integer(entry.weaponLevel, "optimizerHeroPool.weaponLevel", 0, 10) }];
       }))];
     })) }),
-    battleContext: scenarioType === "RALLY" ? "rally" : "challenge",
+    battleContext: scenarioType === "CITY_DEFENSE" ? "cityDefense" : scenarioType === "RALLY" ? "rally" : "challenge",
     simulationMode, attributeInputMode: scenarioType === "THREE_QUEUE"
       ? "prediction" : attributeInputMode, postBattleCasualtyMode,
+    ...(raw.defenderInTerritory === undefined ? {} : { defenderInTerritory: boolean(raw.defenderInTerritory, "defenderInTerritory") }),
     sideA: readSide(raw.sideA, "sideA"),
     sideB: readSide(raw.sideB, "sideB"),
     maxRounds: integer(raw.maxRounds, "maxRounds", 1, 1500),
@@ -865,7 +862,7 @@ function readInput(value: unknown): ValidationBattleInput {
     ? normalizeIceFireReportLineage({ ...parsed, threeQueueMode: "ICE_FIRE_LEAGUE" }) : parsed;
   // Missing data is only supported for the explicitly marked legacy scene migration.
   if (raw.innerEarth === undefined && parsed.legacySceneMigration !== undefined) {
-    const normalized = normalizeInnerEarthInput(parsed);
+    const normalized = normalizeInnerEarthInput(normalizeBattleInputPolicy(parsed));
     const earth = normalized.innerEarth!;
     const queueB1 = getValidationThreeQueues(parsed.sideB)[0];
     const heavy = { shield: 800 / 15, lancer: 400 / 15, marksman: 300 / 15 };
@@ -875,8 +872,9 @@ function readInput(value: unknown): ValidationBattleInput {
         expectedReportStats: queueB1.attributes!,
         troopRatioPreset: isHeavy ? "SHIELD_HEAVY" : "BALANCED" } } } };
   }
-  assertInnerEarthInput(parsed);
-  return parsed;
+  const constrained = normalizeBattleInputPolicy(parsed);
+  assertInnerEarthInput(constrained);
+  return constrained;
 }
 
 function validateScenario(input: ValidationBattleInput): void {
@@ -963,11 +961,12 @@ export function createPersistedEnvelope(
   simpleOptimizerOptions?: SimpleScenarioOptimizationOptions,
   threeQueueOptimizerOptions?: ThreeQueueOptimizationOptions,
 ): PersistedConfigEnvelope {
+  input = normalizeBattleInputPolicy(input);
   integer(simulationCount, "simulationCount", MIN_BATCH_SIMULATION_COUNT,
     MAX_BATCH_SIMULATION_COUNT);
   if (input.scenarioType === "INNER_EARTH") assertInnerEarthInput(input);
   const stageId = input.serverStage ?? "s16";
-  const sanitized = sanitizeConfigForStage(normalizeIceFireReportLineage(normalizeHistoricalTree(input)), stageId);
+  const sanitized = sanitizeConfigForStage(normalizeIceFireReportLineage(normalizeHistoricalTree(normalizeBattleInputPolicy(input))), stageId);
   const scenarioType = sanitized.input.scenarioType ??
     (sanitized.input.battleContext === "rally" ? "RALLY" : "SINGLE");
   const normalized: ValidationBattleInput = normalizeIceFireReportLineage({ ...sanitized.input, scenarioType,
@@ -975,7 +974,7 @@ export function createPersistedEnvelope(
       threeQueueMode: resolveThreeQueueMode(sanitized.input.threeQueueMode) } : {}),
     ...(scenarioType === "ICE_FIRE_LEAGUE" ? {
       threeQueueMode: "ICE_FIRE_LEAGUE" as const } : {}),
-    battleContext: scenarioType === "RALLY" ? "rally" : "challenge",
+    battleContext: scenarioType === "CITY_DEFENSE" ? "cityDefense" : scenarioType === "RALLY" ? "rally" : "challenge",
     simulationMode: sanitized.input.simulationMode ?? "fixedSeed",
     attributeInputMode: sanitized.input.attributeInputMode ?? "finalReport",
     postBattleCasualtyMode: sanitized.input.postBattleCasualtyMode ?? "NORMAL" });
@@ -1010,7 +1009,7 @@ export function restorePersistedConfig(raw: unknown,
   const envelope = record(migrated.envelope, "envelope");
   integer(envelope.savedAt, "savedAt");
   const data = record(envelope.data, "data");
-  const input = readInput(record(data.input, "data.input"));
+  const input = normalizeBattleInputPolicy(readInput(record(data.input, "data.input")));
   const stageSanitized = sanitizeConfigForStage(input, input.serverStage!);
   const normalized = normalizeIceFireReportLineage(stageSanitized.input);
   const reconciled = reconcileLegacyHeroOwnership(normalized);

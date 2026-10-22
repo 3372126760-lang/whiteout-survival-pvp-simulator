@@ -56,6 +56,12 @@ export type HeroSkillActionMechanic =
       readonly damageDelayRounds: number;
       readonly damageCoefficient: number;
       readonly markDurationRounds: number;
+      /** Damage payload merges sources; each runtime still counts its own activation. */
+      readonly duplicateSourceStacking?: {
+        readonly additionalCoefficient: number;
+        readonly evidenceStatus: "BATTLE_REPORT_SUPPORTED";
+        readonly ruleStatus: "PROVISIONAL";
+      };
     };
 
 export interface HeroSkillPositionRule {
@@ -316,6 +322,12 @@ export interface HeroSkillTraceEntry {
   readonly skippedMainAttack?: boolean;
   readonly dodgeResult?: boolean;
   readonly dreamMarkTarget?: TroopType;
+  readonly dreamMarkSourceCount?: number;
+  readonly dreamMarkDamageCoefficient?: number;
+  readonly dreamMarkContributingRuntimeIds?: readonly string[];
+  readonly dreamMarkStackingStatus?: "PROVISIONAL";
+  /** A delayed payload settlement is diagnostic, not a second skill activation. */
+  readonly reportActivationCount?: number;
   readonly vulnerabilityActivationRound?: number;
   readonly durationRemaining?: number;
   readonly extraDamageEvents?: readonly string[];

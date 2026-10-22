@@ -304,9 +304,8 @@ describe("S3 expedition heroes", () => {
     expect(result.stateAfterActionPhase.sideB.troops.shield.debuffs).toHaveLength(1);
     expect(result.stateAfterActionPhase.sideB.troops.lancer.debuffs).toHaveLength(0);
     expect(result.stateAfterActionPhase.sideB.troops.marksman.debuffs).toHaveLength(0);
-    expect(normalAttack(result, "B", "shield").reductionGroups).toContainEqual(
-      expect.objectContaining({ group: "enemyOutgoingDamageReduction", summedValue: .50 }),
-    );
+    expect(normalAttack(result, "B", "shield").attributeResolutions?.find(
+      (entry) => entry.attribute === "penetration")?.divisionFactor).toBe(1.5);
   });
 
   it("19. replaces repeated Greg Law status and restarts its two-round timing", () => {
@@ -319,9 +318,8 @@ describe("S3 expedition heroes", () => {
       }),
     });
     expect(simulation.trace.rounds.map((round) =>
-      normalAttackFromTrace(round.damageEvents, "B", "shield").reductionGroups.some(
-        (group) => group.group === "enemyOutgoingDamageReduction" && group.summedValue === .50,
-      )
+      normalAttackFromTrace(round.damageEvents, "B", "shield").attributeResolutions?.find(
+        (entry) => entry.attribute === "penetration")?.divisionFactor === 1.5
     )).toEqual([true, true, true, false]);
     const effect = simulation.rounds[1]!.stateAfterActionPhase.sideB.troops.shield.debuffs[0];
     expect(effect).toMatchObject({ appliedRound: 2, stackCount: 1, remainingRounds: 2 });

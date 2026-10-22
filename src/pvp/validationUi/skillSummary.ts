@@ -1,6 +1,7 @@
 import type { BattleTrace } from "../logging";
 import type { SideId, TroopType } from "../types/combat";
 import type { ValidationSkillSummaryEntry } from "./types";
+import { damageEventSkillIds, reportedSkillActivations, type SkillDamageStatistics } from "../statistics/skillDamageAttribution";
 
 interface MutableSummary {
   side: SideId;
@@ -22,6 +23,7 @@ interface MutableSummary {
 
 export function summarizeBattleSkills(
   trace: BattleTrace,
+  damageStatistics?: SkillDamageStatistics,
 ): readonly ValidationSkillSummaryEntry[] {
   const summaries = new Map<string, MutableSummary>();
   for (const round of trace.rounds) {
@@ -36,7 +38,7 @@ export function summarizeBattleSkills(
       );
       recordCheck(summary, skill.probability, skill.eligible, skill.triggered);
       if (skill.triggered) {
-        const activations = skill.reportActivationCount ?? 1;
+        const activations = reportedSkillActivations(skill);
         summary.actualActivationCount += activations;
         increment(summary.activationBySourceTroop, skill.troop, activations);
       }
@@ -52,12 +54,13 @@ export function summarizeBattleSkills(
       );
       recordCheck(summary, skill.probability, skill.eligible, skill.triggered);
       if (skill.triggered) {
-        summary.actualActivationCount += 1;
+        const activations = reportedSkillActivations(skill);
+        summary.actualActivationCount += activations;
         if (skill.sourceTroop !== undefined) {
-          increment(summary.activationBySourceTroop, skill.sourceTroop);
+          increment(summary.activationBySourceTroop, skill.sourceTroop, activations);
         }
         const target = skill.appliedDebuffTargetTroop ?? skill.targetTroop;
-        if (target !== undefined) increment(summary.activationByTargetTroop, target);
+        if (target !== undefined) increment(summary.activationByTargetTroop, target, activations);
       }
       if (skill.criticalResult === true) summary.criticalCount += 1;
       if (skill.dodgeResult === true) summary.dodgeCount += 1;
@@ -65,13 +68,18 @@ export function summarizeBattleSkills(
       if (skill.skippedMainAttack === true) summary.skippedActionCount += 1;
     }
     for (const event of round.damageEvents) {
-      if (event.sourceSkillId === undefined || event.damageSubtype !== "extraDamage") {
+      if (event.damageSubtype !== "extraDamage") {
         continue;
       }
-      const summary = summaries.get(`${event.sourceSide}:${event.sourceSkillId}`);
-      if (summary === undefined) continue;
-      summary.extraDamageEventCount += 1;
-      increment(summary.activationByTargetTroop, event.targetTroop);
+      for (const skillId of damageEventSkillIds(event)) {
+        const summary = summaries.get(`${event.sourceSide}:${skillId}`);
+        if (summary === undefined) continue;
+        summary.extraDamageEventCount += 1;
+        if (!round.heroSkills.some((skill) => skill.side === event.sourceSide &&
+          skill.skillId === skillId && skill.reportActivationCount === 0)) {
+          increment(summary.activationByTargetTroop, event.targetTroop);
+        }
+      }
     }
   }
   return [...summaries.values()]
@@ -79,7 +87,7 @@ export function summarizeBattleSkills(
       summary.actualActivationCount > 0 || summary.probabilityCheckCount > 0 ||
       summary.skippedActionCount > 0
     )
-    .map((summary) => ({ ...summary }))
+    .map((summary) => ({ ...summary, damageContribution: damageStatistics?.bySide[summary.side][summary.skillId] ?? null }))
     .sort((left, right) =>
       left.side.localeCompare(right.side) || left.skillName.localeCompare(right.skillName)
     );

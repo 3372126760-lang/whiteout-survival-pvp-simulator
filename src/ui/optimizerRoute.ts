@@ -8,6 +8,7 @@ export function optimizerRoute(scenarioType: BattleScenarioType | undefined): Op
     case "THREE_QUEUE": return "threeQueue";
     case "ICE_FIRE_LEAGUE": return "threeQueue";
     case "INNER_EARTH": return "innerEarth";
+    case "CITY_DEFENSE":
     case "RALLY": return "rally";
     default: return "single";
   }

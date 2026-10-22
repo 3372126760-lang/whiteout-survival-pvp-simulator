@@ -1,3 +1,4 @@
+import { renderHeroPortrait, renderSkillArt } from "./heroArtwork";
 import { presentBodySkill } from "./bodySkillPresentation";
 import { isHeroAvailableAtStage } from "../pvp/progression";
 import type { BodySkillSelectState } from "./bodySkillSelectView";
@@ -22,13 +23,13 @@ export function renderBodySlotCardMarkup(state: BodySlotCardState, view: { reado
   const category = selected ? selected.generation === null ? selected.rarity : `${selected.rarity} / S${selected.generation}` : "";
   const summary = selected ? `<div class="body-slot-current" data-body-current-summary>
       <span class="body-slot-section-label">当前选中</span>
-      <strong>${escapeHtml(selected.heroName)}（${escapeHtml(selected.generation === null ? selected.rarity : `S${selected.generation}`)}）</strong>
+      <strong class="hero-art-name">${renderHeroPortrait(selected.heroId)}${escapeHtml(selected.heroName)}（${escapeHtml(selected.generation === null ? selected.rarity : `S${selected.generation}`)}）</strong>
       <span>${escapeHtml(selected.effectSummary)}</span>
     </div>` : `<div class="body-slot-current body-slot-empty" data-body-current-summary><span class="body-slot-section-label">当前选中</span><span>不配置车身技能</span></div>`;
   const detail = selected ? `<section class="member-detail body-slot-description" aria-labelledby="${prefix}-detail-title" data-body-description data-side="${state.side}" data-index="${state.index}">
       <h5 id="${prefix}-detail-title">技能说明 · 槽位${slotNumber}</h5>
       <div class="member-detail-heading"><strong>${escapeHtml(selected.heroName)}</strong><span class="tag">${escapeHtml(category)}</span>${state.developer && selected.provisional ? '<span class="tag tag-amber">规则待验证</span>' : ""}</div>
-      <div>远征一技能：${escapeHtml(selected.skillName)} · Lv${selected.level}</div>
+      <div class="skill-art-name">${renderSkillArt(selected.skillId)}远征一技能：${escapeHtml(selected.skillName)} · Lv${selected.level}</div>
       <div class="member-current-effect">当前等级效果：${escapeHtml(selected.effectSummary)}</div>
       <div>触发：${escapeHtml(selected.timingSummary)}</div>
       <div>技能说明：${escapeHtml(selected.skillDescription)}</div>

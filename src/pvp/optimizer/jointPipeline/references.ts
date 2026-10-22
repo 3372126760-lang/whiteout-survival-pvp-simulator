@@ -10,6 +10,7 @@ export function knownRallyStructureReferences(input: OptimizationInput, config: 
   // Historical attack examples are not known defender references.
   if (config.candidateSide === "B" || fixedHeadForSearch(input,config.constraints,config.candidateSide) !== undefined) return [];
   const heads=generateAllHeadFormations(input,config.constraints,undefined,config.candidateSide), requestedBody=["hero-skill.wuming.wind-shelter","hero-skill.wuming.wind-shelter","hero-skill.nuola.multi-troop-combat","hero-skill.nuola.multi-troop-combat"];
+  if(input.scenarioType === "CITY_DEFENSE") return [];
   if(config.constraints.fixedBodyExact || config.constraints.fixedMemberSkillIds?.length) return [];
   let legalBodies:ReturnType<typeof generateBodyFormations>;
   try {legalBodies=generateBodyFormations(input,{...config.constraints,fixedBodyExact:true,fixedMemberSkillIds:requestedBody},heads[0]?.leaderHeroIds??{},config.candidateSide);}

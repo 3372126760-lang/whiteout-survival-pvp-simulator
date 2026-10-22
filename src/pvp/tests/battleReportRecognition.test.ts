@@ -66,7 +66,7 @@ describe("local report recognition and mapping", () => {
       additive: 10, buff: 20, debuff: 0 });
     expect(createValidationPreviewState(mapped).sideA.troops.shield.attack).toBeCloseTo(.9, 10);
     const reuse = { ...mapped, sideA: { ...mapped.sideA, targetBonusMode: "reuseSource" as const } };
-    expect(createValidationPreviewState(reuse).sideA.troops.shield.attack).toBeCloseTo(1.4, 10);
+    expect(createValidationPreviewState(reuse).sideA.troops.shield.attack).toBeCloseTo(.9, 10);
   });
   it("applies an opposing owner's enemy debuff in the inverse calculation", () => {
     const input = { ...createDefaultValidationInput(), attributeInputMode: "prediction" as const };

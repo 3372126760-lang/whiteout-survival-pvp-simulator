@@ -60,8 +60,8 @@ export const WU_MING_FOUR_IMAGES = levelFiveGenerationSkill({
   tags: ["bearModelSemantic", "includesExtraDamage"],
 });
 
-export const RENEE_DREAM_MARK = levelFiveGenerationSkill({
-  source: SOURCE, generation: 6,
+export const RENEE_DREAM_MARK: HeroSkillDefinition = { ...levelFiveGenerationSkill({
+  source: "2026-10-17 battle-report-supported duplicate DreamMark coefficient m+1; PROVISIONAL pending fixed-N0 control", generation: 6,
   id: "hero-skill.ruini.dream-mark", heroId: RENEE,
   name: "芮妮·惊梦留痕", slot: 1, trigger: "beforeAttack",
   actionMechanic: {
@@ -71,10 +71,15 @@ export const RENEE_DREAM_MARK = levelFiveGenerationSkill({
     damageDelayRounds: 1,
     damageCoefficient: 2,
     markDurationRounds: 1,
+    duplicateSourceStacking: {
+      additionalCoefficient: 1,
+      evidenceStatus: "BATTLE_REPORT_SUPPORTED",
+      ruleStatus: "PROVISIONAL",
+    },
   },
   effects: [targetMark("hero-effect.ruini.dream-mark", DREAM_MARK)],
-  tags: ["usesAttackCount", "hitTargetTroop", "targetBoundMark", "bearModelSemantic"],
-});
+  tags: ["usesAttackCount", "hitTargetTroop", "targetBoundMark", "bearModelSemantic", "BATTLE_REPORT_SUPPORTED", "duplicateSourceStacking:PROVISIONAL"],
+}), uiSummary: "矛兵每2次主攻击尝试标记当前目标，下一回合造成200%B技能伤害；每个重复来源追加100%B（战报支持，暂定），各来源分别计数。" };
 
 export const RENEE_DREAM_CATCHER = levelFiveGenerationSkill({
   source: SOURCE, generation: 6,

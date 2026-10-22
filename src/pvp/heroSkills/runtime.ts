@@ -141,6 +141,10 @@ export function validateHeroSkillDefinition(
     if (!Number.isSafeInteger(mechanic.schedule.interval) || mechanic.schedule.interval < 1) {
       throw new RangeError("attackCount schedule interval must be positive.");
     }
+    if (mechanic.kind === "targetBoundMark" && mechanic.duplicateSourceStacking &&
+      (!Number.isFinite(mechanic.duplicateSourceStacking.additionalCoefficient) || mechanic.duplicateSourceStacking.additionalCoefficient < 0)) {
+      throw new RangeError("duplicate mark source coefficient must be finite and nonnegative.");
+    }
   }
 }
 

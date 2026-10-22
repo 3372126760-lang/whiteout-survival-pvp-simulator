@@ -240,7 +240,7 @@ describe("PVP validation batch simulation", () => {
     expect(source).toContain('data-expanded-section="advanced-debug"');
     expect(source).toContain("expectedRemaining");
     expect(source).not.toContain("expectedExitedTotal");
-    expect(source).toContain("meanSkillCasualties");
+    expect(source).toContain("renderBatchSkillDamageStatistics(value)");
     expect(source).toContain("90%模拟区间");
     expect(source).not.toContain("90%置信区间");
     expect(source).toContain("批量统计");

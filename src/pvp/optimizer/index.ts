@@ -94,7 +94,9 @@ function* createRallyWorkflow(input: OptimizationInput,
   config: OptimizationConfig, onProgress?: (progress: OptimizationProgress) => void,
   profiler?: OptimizerProfiler,
 ): OptimizationWorkflow<OptimizationResult> {
-  if (input.battleContext !== "rally") throw new Error("Optimizer is available only for rally battles.");
+  if (input.battleContext !== "rally" && input.scenarioType !== "CITY_DEFENSE") throw new Error("Optimizer is available only for rally battles.");
+  if (input.scenarioType === "CITY_DEFENSE") config = { ...config, objectiveMode: "singleWin",
+    ...(config.candidateSide !== "B" ? { constraints: { ...config.constraints, fixedBodyExact: true, fixedMemberSkillIds: [] } } : {}) };
   validateConfig(config);
   const single = yield* createSingleWaveSearchWorkflow(input, config, onProgress, profiler);
   const mode = config.candidateSide === "B" ? "singleWin" : config.objectiveMode === "auto"
@@ -146,18 +148,19 @@ export function verifyRallyCandidate(
   candidateSide: SideId = "A",
 ): CandidateEvaluation {
   const own = candidateSide === "A" ? input.sideA : input.sideB;
-  if (input.battleContext !== "rally" || own.rallyDeployment === undefined) {
+  if (input.scenarioType !== "CITY_DEFENSE" && (input.battleContext !== "rally" || own.rallyDeployment === undefined)) {
     throw new Error("Candidate verification requires a rally deployment on the candidate side.");
   }
+  const totalTroops = input.scenarioType === "CITY_DEFENSE" ? TROOP_TYPES.reduce((sum, troop) => sum + own.troops[troop].count, 0) : own.rallyDeployment!.totalTroops;
   if (candidateSide === "B") {
     const mapped = candidateToInput(input, candidate, candidateSide);
     const seeds = createStageSeeds(firstSeed, trials, 1_000_000);
     const row = createEvaluationExecutor()({ kind: "battle", input: mapped, seeds, side: candidateSide, collectOutcomes: true });
-    return evaluateSingleCandidate(candidate, mapped.sideB.rallyDeployment!.totalTroops, seeds, () =>
+    return evaluateSingleCandidate(candidate, totalTroops, seeds, () =>
       row.samples.outcomes.map((outcome) => ({ outcome: outcome.outcome === "B" ? "A" as const : outcome.outcome === "A" ? "B" as const : outcome.outcome,
         self: outcome.remaining.B, enemy: outcome.remaining.A, rounds: outcome.roundCount })));
   }
-  return evaluateSingleCandidate(candidate, own.rallyDeployment!.totalTroops,
+  return evaluateSingleCandidate(candidate, totalTroops,
     createStageSeeds(firstSeed, trials, 1_000_000), createEngineCandidateRunner(input));
 }
 

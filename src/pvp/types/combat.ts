@@ -7,6 +7,7 @@ export type SideId = (typeof SIDE_IDS)[number];
 /** Confirmed PVP deployment contexts used by scene-specific hero weapons. */
 export type BattleContext =
   | "unspecified"
+  | "cityDefense"
   | "challenge"
   | "rally"
   | "rallyAttack"
@@ -24,6 +25,9 @@ export function isBattleContextAllowedForSide(
   side: SideId,
 ): boolean {
   if (allowed === undefined) return true;
+  if (context === "cityDefense") return side === "A"
+    ? allowed.includes("challenge")
+    : allowed.includes("rallyDefense") || allowed.includes("garrisonDefense");
   if (context !== "rally") return allowed.includes(context);
   return side === "A"
     ? allowed.includes("rallyAttack")

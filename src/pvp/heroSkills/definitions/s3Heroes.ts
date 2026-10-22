@@ -1,5 +1,6 @@
 import { EXCLUSIVE_WEAPON_SCENE_SKILL_VALUES } from "../data/generationStats";
 import { S1_HERO_SKILL_DEFINITIONS } from "./s1Heroes";
+import { RUFUS_VIOLENT_BLAST } from "./s11Heroes";
 import type {
   HeroPosition,
   HeroSkillDefinition,
@@ -109,22 +110,28 @@ export const GREG_SWORD_OF_JUSTICE = levelFiveSkill({
   tags: ["oncePerRound", "bearModelSemantic", "replaceOnRetrigger"],
 });
 
-export const GREG_LAW_DETERRENCE = levelFiveSkill({
+// Confirmed 2026-10-16: exactly Rufus's per-attempt/current-target template.
+// Preserve the saved skill/effect IDs; only identity, slot and level values differ.
+export const GREG_LAW_DETERRENCE: HeroSkillDefinition = {
+  ...RUFUS_VIOLENT_BLAST,
   id: "hero-skill.gelaige.law-deterrence",
   heroId: "hero.s3.gelaige",
-  name: "格雷格·律令威慑",
-  slot: 2,
-  trigger: "beforeAttack",
-  probability: .20,
-  durationRounds: 2,
-  activationTiming: "immediate",
-  effects: [hitTargetOutgoingReduction(
-    "hero-effect.gelaige.law-deterrence",
-    .50,
-    2,
-  )],
-  tags: ["hitTargetTroop", "perTroopAttack", "replaceOnRetrigger"],
-});
+  name: "格雷格·律令震慑",
+  positionRule: { ...RUFUS_VIOLENT_BLAST.positionRule, expeditionSkillSlot: 2 },
+  levelValues: Object.fromEntries([1, 2, 3, 4, 5].map((level) => [level, {
+    ...RUFUS_VIOLENT_BLAST.levelValues[5]!,
+    versionLabel: `Expedition Lv.${level}`,
+    effects: RUFUS_VIOLENT_BLAST.levelValues[5]!.effects.map((effect) => ({
+      ...effect, id: "hero-effect.gelaige.law-deterrence",
+      name: "hero-effect.gelaige.law-deterrence", value: level / 10,
+    })),
+  }])),
+  metadata: {
+    ...RUFUS_VIOLENT_BLAST.metadata, generation: 3,
+    source: "2026-10-16 user-confirmed Greg penetration reduction; Rufus Violent Blast timing/target template",
+    tags: ["S3", "expeditionSlot2", "hitTargetTroop", "perTroopAttack", "replaceOnRetrigger"],
+  },
+};
 
 export const GREG_ORDER_PROTECTION = levelFiveSkill({
   id: "hero-skill.gelaige.order-protection",
@@ -355,27 +362,6 @@ function hitTargetVulnerability(
     scope: { source: "army", target: "currentTarget", damageType: "all" },
     lifecycle: {
       activationTiming: "nextRound",
-      durationRounds,
-      refreshMode: "replace",
-    },
-  };
-}
-
-function hitTargetOutgoingReduction(
-  id: string,
-  value: number,
-  durationRounds: number,
-): HeroSkillEffect {
-  return {
-    id,
-    name: id,
-    kind: "outgoingDamageReduction",
-    recipient: "enemyArmy",
-    group: "enemyOutgoingDamageReduction",
-    value,
-    scope: { source: "army", target: "all", damageType: "all" },
-    lifecycle: {
-      activationTiming: "immediate",
       durationRounds,
       refreshMode: "replace",
     },

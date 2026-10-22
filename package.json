@@ -1,6 +1,6 @@
 {
   "name": "whiteout-survival-pvp-engine",
-  "version": "0.3.0-beta",
+  "version": "0.3.1-beta",
   "private": true,
   "type": "module",
   "scripts": {
@@ -24,6 +24,7 @@
     "benchmark:optimizer-profiling": "node scripts/run-tsx.mjs scripts/benchmark-optimizer-profiling.ts",
     "benchmark:adaptive-search": "node scripts/run-tsx.mjs scripts/benchmark-adaptive-search.ts",
     "benchmark:joint-rally": "node scripts/run-tsx.mjs scripts/benchmark-joint-optimizer.ts",
+    "benchmark:renee-stacking": "node --max-old-space-size=512 scripts/run-tsx.mjs scripts/benchmark-renee-stacking.ts",
     "benchmark:joint-peak": "node scripts/run-tsx.mjs scripts/benchmark-joint-peak.ts",
     "debug:body-ablation": "node scripts/run-tsx.mjs scripts/run-body-ablation.ts",
     "benchmark:criterion-search": "node scripts/run-tsx.mjs scripts/benchmark-criterion-search.ts",

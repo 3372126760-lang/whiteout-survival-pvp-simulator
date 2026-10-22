@@ -165,15 +165,16 @@ function computeHeroPoolAudit(input: ValidationBattleInput, heroes: readonly Opt
       ...(combinations(after, false) > combinations(after, true) ? [{ count: combinations(after, false) - combinations(after, true), exclusionReason: "recentGenerationRule" as const }] : []),
       ...[...removed].map((heroId) => ({ heroId, exclusionReason: "strictDominance" as const }))] };
 }
-const generationCache = new WeakMap<ValidationBattleInput, Map<SideId, number>>();
+const generationCache = new WeakMap<ValidationBattleInput, Map<string, number>>();
 const catalogHeroesById = new Map(getValidationCatalog().leaderHeroes.map((hero) => [hero.heroId, hero]));
 const generationByHero = new Map(getValidationCatalog().leaderHeroes.map((hero) => [hero.heroId, heroSGeneration(hero) ?? 0]));
 export function optimizerGeneration(input: ValidationBattleInput, side: SideId = "A"): number {
   let cache = generationCache.get(input);
   if (!cache) { cache = new Map(); generationCache.set(input, cache); }
-  const previous = cache.get(side); if (previous !== undefined) return previous;
+  const key = `${validationStageId(input)}:${side}`;
+  const previous = cache.get(key); if (previous !== undefined) return previous;
   const generation = Math.max(0, ...optimizationHeroIds(input, side).map((id) => generationByHero.get(id) ?? 0));
-  cache.set(side, generation); return generation;
+  cache.set(key, generation); return generation;
 }
 
 /** Search-domain constraint only: the exact manual baseline remains evaluable separately. */
@@ -203,7 +204,7 @@ export function recentHeadCandidateAudit(input: ValidationBattleInput,
 const auditCache = new WeakMap<ValidationBattleInput, Map<string, HeroPoolAudit>>();
 export function buildHeroPoolAudit(input: ValidationBattleInput, heroes: readonly OptimizerHeroMetadata[], sideId: SideId = "A", profiler?: OptimizerProfiler): HeroPoolAudit {
   let cache = auditCache.get(input); if (!cache) { cache = new Map(); auditCache.set(input, cache); }
-  const key = `${sideId}:${heroes.map((hero) => hero.heroId).join("|")}`;
+  const key = `${validationStageId(input)}:${sideId}:${heroes.map((hero) => hero.heroId).join("|")}`;
   const previous = cache.get(key); if (previous) { profiler?.cacheHits(1); return previous; }
   const result = computeHeroPoolAudit(input, heroes, sideId, profiler); cache.set(key, result); return result;
 }

@@ -137,6 +137,9 @@ export interface TargetingOverrideEffectDefinition extends EffectDefinitionBase 
 export interface TargetBoundMarkEffectDefinition extends EffectDefinitionBase {
   readonly kind: "targetBoundMark";
   readonly markId: string;
+  /** Payload provenance, not stacks of the boolean marked-target condition. */
+  readonly damageContributors?: readonly { readonly runtimeInstanceId: string; readonly coefficient: number }[];
+  readonly additionalSourceCoefficient?: number;
 }
 
 /** A troop-stack status that skips its complete main action while active. */

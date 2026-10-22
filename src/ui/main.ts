@@ -1,3 +1,5 @@
+import { renderHeroPortrait, renderWeaponArt, renderSkillArt } from "./heroArtwork";
+import { renderReportAttributeComparison } from "./reportConfigurationView";
 import { renderHistoricalBonusTable } from "./historicalBonusView";
 import { historicalReportBonuses } from "../pvp/validationUi/historicalBonuses";
 import { parseConfigurationImport } from "./configImport";
@@ -7,7 +9,11 @@ import { renderReportSpecialBonuses, renderReportRawAttributePreview } from "./r
 import { iceFireSharedContext, normalizeIceFireShared, isIceFireInput } from "../pvp/validationUi/iceFireContext";
 import { formalSampleSchedule } from "../pvp/optimizer/queueRacing";
 import { expectedAttributeAuditIsConsistent } from "../pvp/validationUi/expectedReportAttribute";
-import { targetBonusMode } from "../pvp/validationUi/reportBonusContexts";
+import { maxT12SkillLevel, normalizeBattleInputPolicy } from "../pvp/validationUi/inputPolicy";
+import { AdvancedScenarioStates, scenarioStateKey, type ScenarioEditorState } from "./advancedScenarioState";
+import { advancedHelp, attributeModeHelp, WEAPON_HELP } from "./advancedHelp";
+import { allocateDeployment, deploymentRatios, renderTotalRatioDeployment } from "./troopDeploymentView";
+import { combatBuffPreset, renderCombatBuffPresets, type CombatBuffPreset } from "./combatBuffPresets";
 import { renderOptimizerPerformance, performanceReportBody, optimizerProgressText } from "./optimizerPerformanceView";
 import { stopPerformanceReport, type SearchPerformanceReport } from "../pvp/optimizer/profiling";
 import { bodySkillOptionsView, renderBodySlotCard } from "./bodySkillSelectView";
@@ -34,6 +40,9 @@ import type { RallyTroopRatios } from "../pvp/validationUi/rallyDeployment";
 import { perfMark, perfMeasure, timeUiSection, recordOcrBackend } from "./startupPerformance";
 import { renderFatalError } from "./startupErrors";
 import { LazyDetails } from "./lazyDetails";
+import { DEBUG_PREVIEW, debugJsonPreview, debugHtmlPreview } from "./debugPreview";
+import { downloadBattleJson } from "./battleJsonExport";
+import { renderBatchSkillDamageStatistics, renderSingleSkillDamageStatistics, skillStatisticsExport } from "./skillStatisticsView";
 import { CURRENT_ENGINE_RULE_UNKNOWNS, createValidationPreviewState, previewExpectedReportBonuses, getValidationThreeQueues, toValidationThreeQueueConfig, runValidationThreeQueueScenario, resolveValidationTroopCounts, resolveThreeThreeThreeSide, runValidationBattle } from "../pvp/validationUi/adapter";
 import { DEFAULT_BATCH_SIMULATION_COUNT, MAX_BATCH_SIMULATION_COUNT, MIN_BATCH_SIMULATION_COUNT, type BatchMetricDistribution, type BatchSimulationResult } from "../pvp/validationUi/batchSimulation";
 import { DEFAULT_EXTERNAL_BUFF_CONFIG, PET_DEFENSE_REDUCTION_LEVELS, PET_LIFE_REDUCTION_LEVELS, PET_PENETRATION_REDUCTION_LEVELS, STANDARD_PET_LEVELS } from "../pvp/externalBuffs/data";
@@ -49,11 +58,10 @@ import { getValidationCatalog, getAvailableMemberSkills } from "../pvp/validatio
 import { SERVER_STAGES, getServerStage, getAvailableTroopLevels, isTroopLevelAvailableAtStage, isHeroAvailableAtStage, type ServerStageId } from "../pvp/progression/serverStage";
 import { validationStageId, sanitizeConfigForStage } from "../pvp/validationUi/stageConfig";
 import { resolveBodySkillConfigs } from "../pvp/validationUi/bodySkillConfig";
-import { sourceReportBonuses, zeroReportBonuses, rawReportSide } from "../pvp/validationUi/reportBonusContexts";
-import { changeIceFireExpectedHero, changeIceFireReportHero, changeIceFireReportAttribute, captureQueueReportBaseline, changeQueueHero, changeQueueAttribute, normalizeIceFireReportLineage,
+import { rawReportSide } from "../pvp/validationUi/reportBonusContexts";
+import { changeIceFireExpectedHero, changeIceFireReportHero, captureQueueReportBaseline, changeQueueHero, changeQueueAttribute, normalizeIceFireReportLineage,
   createQueueReportLineageAudit } from "../pvp/validationUi/queueReportLineage";
 import { availableHeadHeroesByTroop, headFormationGenerationAudit } from "../pvp/optimizer/candidateGenerator";
-import { deriveFinalReportAttribute } from "../pvp/battleReportRecognition/mapping";
 import { getActiveSkillUniverse } from "../pvp/validationUi/activeSkillUniverse";
 import { prepareValidationRunInput, replayValidationSeed } from "../pvp/validationUi/randomMode";
 import { highestConfiguredTroopLevel, type BattleScenarioType } from "../pvp/scenario/scenarioTypes";
@@ -100,17 +108,18 @@ import {
 } from "./resultRevision";
 import { swapIceFireQueues, copySideAToB, swapBattleSides } from "./sideConfigActions";
 import { initializeOptimizerWeaponLevels } from "./optimizerWeaponDefaults";
+import { selectSimulationHero } from "./simulationWeaponSelection";
 import { createHeadPoolAudit } from "../pvp/optimizer/headPoolAudit";
 import { optimizationHeroIds, ownedHeroIds, ownedOptimizationHeroIds, optimizerHeadHeroAllowed,
   optimizerWeaponLevel, setOptimizationPoolEnabled, setOwnedHero, optimizerServerGeneration,
-  configuredHeadHeroIds, heroOwnershipScope, setHeroOwnershipScope } from "../pvp/optimizer/heroPools";
+  configuredHeadHeroIds, heroOwnershipScope, setHeroOwnershipScope, syncOptimizationHeroPoolForStage } from "../pvp/optimizer/heroPools";
 import { resolveSearchDimensions, type SearchDimensionsAudit } from "../pvp/optimizer/searchDimensions";
 import { isThreeQueueBattleInput, battleSceneLabel } from "../pvp/scenario/scenePolicy";
 import { normalizeInnerEarthInput, getInnerEarthConfig, getInnerEarthRule, assertInnerEarthInput, sanitizeInnerEarthForStage,
   createInnerEarthAudit } from "../pvp/innerEarth";
 import { applyInnerEarthCandidate, type InnerEarthOptimizationResult } from "../pvp/optimizer/innerEarthOptimizer";
 import { renderInnerEarthForm, renderInnerEarthModePicker, renderInnerEarthPets, updateInnerEarthField,
-  changeInnerEarthMode, INNER_EARTH_MODE_LABELS } from "./innerEarthView";
+  changeInnerEarthMode, updateInnerEarthDeployment, INNER_EARTH_MODE_LABELS } from "./innerEarthView";
 import { createReportRecognitionState, mergeRecognitionImage, clearRecognitionContext,
   pendingRecognitionSides as pendingDraftSides } from "./reportImportDrafts";
 import { applyRecognizedAttributeReport, attributeImportSchema, attributePreviewGroups, confirmAttributeGroup } from "../pvp/battleReportRecognition/attributeImport";
@@ -141,7 +150,7 @@ perfMark("main loaded");
 perfMark("app init start");
 
 const catalog = getValidationCatalog();
-const headPoolOwnershipMigrationNotice = "已将旧英雄可用列表迁移为我的英雄，并补充当前手动阵容已选英雄；其他新解锁英雄请确认拥有。已有参与开关和专武等级保留。";
+const headPoolOwnershipMigrationNotice = "已将旧英雄可用列表迁移为我的英雄，并补充当前手动阵容已选英雄；升代时自动加入新开放车头。已有参与开关和专武等级保留。";
 let input = createPlayerDefaultInput();
 let editorMode: EditorMode = "simple";
 let developerToolsEnabled = new URLSearchParams(location.search).get("dev") === "1";
@@ -150,7 +159,11 @@ try { const layers = resolveEditorLayers(location.search, window.localStorage);
 } catch { /* Storage may be unavailable. */ }
 const simpleTroopModes: Record<SideId, "count" | "ratio"> = { A: "count", B: "count" };
 const simpleRatioDrafts: Record<SideId, RallyTroopRatios | null> = { A: null, B: null };
+let advancedRatioDrafts: Record<SideId, RallyTroopRatios | null> = { A: null, B: null };
 let simpleDetailsOpen = false;
+let specialBuffsOpen = false;
+let configurationPopup: "buffs" | "troops" = "buffs";
+let specialBuffsSide: SideId = "A";
 let playerSingleDetailsOpen = false;
 let lineupActionsOpen = false;
 let appDialog: AppDialog | null = null;
@@ -199,7 +212,6 @@ let traceEndRound = 20;
 let toastTimer: ReturnType<typeof setTimeout> | null = null;
 let revisionState = createValidationResultRevisionState();
 const expandedSections = createExpandedSections();
-const developerExpanded = new Set<string>();
 let configStorage: LocalStorageConfigStorage | null = null;
 let savedProfiles: readonly SavedBattleProfile[] = [];
 let storageStatus: "saving" | "saved" | "error" | "idle" = "idle";
@@ -209,6 +221,7 @@ let lastQueuedStorageSnapshot = "";
 let lastAutosaveReferences: readonly unknown[] = [];
 let profilesLoaded = false;
 let storedProfileCount = 0;
+let scenarioStates = new AdvancedScenarioStates(null);
 
 try {
   configStorage = new LocalStorageConfigStorage(window.localStorage);
@@ -219,14 +232,14 @@ try {
     optimizationConfig = restored.optimizationConfig;
     simpleOptimizerOptions = restored.simpleOptimizerOptions;
     threeQueueOptimizerOptions = restored.threeQueueOptimizerOptions;
-    heroPoolSide = input.scenarioType === "RALLY" ? optimizationConfig.candidateSide ?? "A" :
+    heroPoolSide = optimizerRoute(input.scenarioType) === "rally" ? optimizationConfig.candidateSide ?? "A" :
       isThreeQueueBattleInput(input) ? threeQueueOptimizerOptions.side : simpleOptimizerOptions.side;
     storageStatus = "saved";
     if (restored.adjusted || restored.migrated) {
       storageNotice = restored.queueAttributesMigrated
         ? "旧三队列配置已复制为三个队伍相同属性，请根据实际战报调整。"
         : restored.headPoolOwnershipMigrated ? headPoolOwnershipMigrationNotice
-        : "已迁移旧配置；旧版本可能自动保存了固定车头，已重置为不固定，请按需重新勾选。";
+        : "已按当前输入规则迁移旧配置；历史条件仅供反推，旧的当前自定义加成已忽略，请核对属性与优化设置。";
     }
     if (restored.sceneMigrationWarnings?.length) storageNotice = [storageNotice, ...restored.sceneMigrationWarnings].filter(Boolean).join(" ");
     if (restored.optimizerRacingMigrated) storageNotice = [storageNotice, optimizerRacingMigrationNotice].filter(Boolean).join(" ");
@@ -239,6 +252,9 @@ try {
   storageNotice = error instanceof Error ? error.message : "本地配置无法读取。";
   lastQueuedStorageSnapshot = storageSnapshot();
 }
+
+try { scenarioStates = new AdvancedScenarioStates(window.localStorage); }
+catch (error) { storageNotice = `分场景存档暂不可用，当前阵容仍已恢复：${error instanceof Error ? error.message : String(error)}`; }
 
 // A share restores the same canonical input through the existing validated codec.
 try {
@@ -259,8 +275,6 @@ render();
 app.addEventListener("toggle", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLDetailsElement)) return;
-  if (target.dataset.devTools !== undefined) { if (target.open) developerExpanded.add("tools"); else developerExpanded.delete("tools"); }
-  if (target.dataset.devGroup !== undefined) { if (target.open) developerExpanded.add(target.dataset.devGroup); else developerExpanded.delete(target.dataset.devGroup); }
   try {
     if (target.dataset.profileLibrary !== undefined && target.open && !profilesLoaded) {
       savedProfiles = requireConfigStorage().listProfiles();
@@ -316,10 +330,21 @@ app.addEventListener("change", (event) => {
     if (scope === "simple-count" || scope === "simple-total" || scope === "simple-ratio") {
       updateSimpleTroops(target);
     }
+    if (scope === "advanced-deployment") {
+      const sideId = requireSide(target.dataset.side ?? target.closest<HTMLElement>("[data-deployment-side]")?.dataset.deploymentSide ?? "A");
+      const side = getInputSide(sideId);
+      const counts = Object.fromEntries(TROOP_TYPES.map((troop) => [troop, side.troops[troop].count])) as Record<TroopType, number>;
+      const ratios = advancedRatioDrafts[sideId] ?? deploymentRatios(counts);
+      if (target.dataset.field === "ratio") advancedRatioDrafts[sideId] = { ...ratios, [requireTroop(target.dataset.troop)]: Number(target.value) };
+      if (target.dataset.field === "total" || validSimpleRatios(advancedRatioDrafts[sideId] ?? ratios)) {
+        const total = target.dataset.field === "total" ? Number(target.value) : TROOP_TYPES.reduce((sum, troop) => sum + counts[troop], 0);
+        input = setSimpleCounts(input, sideId, allocateDeployment(total, advancedRatioDrafts[sideId] ?? ratios));
+      }
+    }
     if (scope === "simple-random") input = { ...input,
       simulationMode: (target as HTMLInputElement).checked ? "random" : "fixedSeed" };
     if (scope === "troop" && target.dataset.field === "count" || scope === "server-stage") {
-      simpleRatioDrafts.A = null; simpleRatioDrafts.B = null;
+      simpleRatioDrafts.A = null; simpleRatioDrafts.B = null; advancedRatioDrafts = { A: null, B: null };
     }
     if (scope === "report-source") {
       const side = requireSide(target.dataset.side);
@@ -383,23 +408,21 @@ app.addEventListener("change", (event) => {
           if (recognitionState[side].reportContext !== null) markReportDraftChanged(side);
         }
       }
-      input = { ...input, scenarioType,
-        battleContext: scenarioType === "RALLY" ? "rally" : "challenge",
-        ...(scenarioType === "ICE_FIRE_LEAGUE" ? { attributeInputMode: "prediction" as const, threeQueueMode: "ICE_FIRE_LEAGUE" as const } : {}) };
-      if (scenarioType === "INNER_EARTH") input = normalizeInnerEarthInput(input);
-      else { const ordinary = { ...input }; delete ordinary.innerEarth; input = ordinary; }
-      input = normalizeIceFireReportLineage(input);
+      switchScenario(scenarioType);
       if (scenarioType === "INNER_EARTH") heroPoolSide = "A";
     }
+    if (scope === "city-territory") input = { ...input, defenderInTerritory: (target as HTMLInputElement).checked };
     if (scope === "inner-earth-mode") input = changeInnerEarthMode(input, target.value);
     if (scope === "inner-earth") input = updateInnerEarthField(input, target.dataset, target.value);
+    if (scope === "inner-earth-deployment") input = updateInnerEarthDeployment(input, target.dataset, target.value);
     if (scope === "server-stage") {
+      const previousInput = input;
       const stage = target.value as ServerStageId;
       const sanitized = sanitizeConfigForStage(input, stage);
       const previousEarth = input.innerEarth;
       input = sanitized.input.scenarioType === "INNER_EARTH" ? sanitizeInnerEarthForStage(sanitized.input, stage) : sanitized.input;
       input = normalizeIceFireReportLineage(input);
-      input = initializeOptimizerWeaponLevels(input, catalog.leaderHeroes);
+      input = syncOptimizationHeroPoolForStage(previousInput, input);
       stageNotice = sanitized.changed || JSON.stringify(previousEarth) !== JSON.stringify(input.innerEarth)
         ? "服务器阶段已调整，部分超阶段英雄/兵种配置已重置。" : null;
       optimizationConfig = defaultOptimizationConfig(input.randomSeed);
@@ -541,6 +564,21 @@ app.addEventListener("toggle", (event) => {
 }, true);
 
 app.addEventListener("keydown", (event) => {
+  if (specialBuffsOpen) {
+    const key = event as KeyboardEvent;
+    if (key.key === "Escape") {
+      event.preventDefault(); specialBuffsOpen = false; render();
+      app.querySelector<HTMLElement>(configurationPopup === "troops" ? '[data-action="troops-edit"]' : '.report-stat-source [data-action="special-buffs-open"]')?.focus(); return;
+    }
+    if (key.key === "Tab") {
+      const fields = [...app.querySelectorAll<HTMLElement>('.special-buffs-dialog button, .special-buffs-dialog input, .special-buffs-dialog select, .special-buffs-dialog summary')].filter(node => node.getClientRects().length > 0);
+      const first = fields[0], last = fields.at(-1);
+      if (first && last && (key.shiftKey ? document.activeElement === first : document.activeElement === last)) {
+        event.preventDefault(); (key.shiftKey ? last : first).focus();
+      }
+    }
+    return;
+  }
   if ((event as KeyboardEvent).key === "Escape" && simpleDetailsOpen) {
     simpleDetailsOpen = false; render(); app.querySelector<HTMLButtonElement>('[data-action="simple-details"]')?.focus(); return;
   }
@@ -570,7 +608,65 @@ app.addEventListener("click", (event) => {
   if (!(target instanceof HTMLElement)) return;
   const actionTarget = target.closest<HTMLElement>("[data-action]");
   const action = actionTarget?.dataset.action;
+  if (action === "troops-edit" || action === "special-buffs-open" || action === "special-buffs-close" || action === "special-buffs-side") {
+    captureExpandedSections();
+    if (action === "troops-edit" || action === "special-buffs-open") configurationPopup = action === "troops-edit" ? "troops" : "buffs";
+    if (action === "troops-edit") specialBuffsSide = actionTarget?.dataset.side === "B" ? "B" : "A";
+    specialBuffsOpen = action !== "special-buffs-close";
+    if (action === "special-buffs-side") specialBuffsSide = actionTarget?.dataset.side === "B" ? "B" : "A";
+    render();
+    app.querySelector<HTMLElement>(specialBuffsOpen ? '.special-buffs-dialog [aria-selected="true"]' : configurationPopup === "troops" ? '[data-action="troops-edit"]' : '[data-action="special-buffs-open"]')?.focus();
+    return;
+  }
+  if ((action === "combat-buff-preset" || action === "apply-historical-base") && actionTarget) {
+    captureExpandedSections();
+    try {
+      if (batchRunning || optimizationRunning) return;
+      if (action === "apply-historical-base") applyHistoricalBase(requireSide(actionTarget.dataset.side), actionTarget.dataset.queueIndex);
+      else {
+        const preset = actionTarget.dataset.preset as CombatBuffPreset;
+        if (!["small", "large", "pets", "off"].includes(preset)) throw new Error("无效Buff预设。");
+        if (actionTarget.dataset.side === "earth") {
+          const config = getInnerEarthConfig(input);
+          if (!getInnerEarthRule(config.subMode).allowPet) throw new Error("当前地心玩法不使用宠物。");
+          const buffs = combatBuffPreset({ ...DEFAULT_EXTERNAL_BUFF_CONFIG, pet: config.petContext ?? DEFAULT_EXTERNAL_BUFF_CONFIG.pet }, preset);
+          input = normalizeInnerEarthInput(input, { ...config, petContext: buffs.pet });
+        } else {
+          const sideId = requireSide(actionTarget.dataset.side), side = getInputSide(sideId);
+          if (isIceFireInput(input)) {
+            const shared = iceFireSharedContext(side);
+            const buffs = combatBuffPreset({ town: DEFAULT_EXTERNAL_BUFF_CONFIG.town, pet: shared.petContext, expert: shared.expertContext }, preset);
+            setInputSide(sideId, { ...side, shared: { ...shared, petContext: buffs.pet } });
+          } else setInputSide(sideId, { ...side, externalBuffs: combatBuffPreset(side.externalBuffs ?? DEFAULT_EXTERNAL_BUFF_CONFIG, preset) });
+        }
+      }
+      revisionState = markValidationInputChanged(revisionState);
+      batchResult = null; optimizationResult = null; simpleOptimizationResult = null;
+      threeQueueOptimizationResult = null; innerEarthOptimizationResult = null; errorMessage = null;
+    } catch (error) { errorMessage = error instanceof Error ? error.message : String(error); }
+    render(); return;
+  }
   if (action === undefined) return;
+  if (action === "export-skill-statistics") {
+    const value = actionTarget?.dataset.statSource === "single" ? result :
+      batchResult && !("attackerWins" in batchResult) ? batchResult : null;
+    if (value !== null) downloadConfig(JSON.stringify(skillStatisticsExport(value)), "技能统计");
+    return;
+  }
+  if (["export-battle-input", "export-battle-result", "copy-battle-input"].includes(action)) {
+    if (!developerToolsEnabled || result === null) return;
+    try {
+      if (action === "copy-battle-input") void copyText(JSON.stringify(result.input, null, 2), "BattleInput 已复制");
+      else {
+        const kind = action === "export-battle-input" ? "input" : "result";
+        downloadBattleJson(kind, kind === "input" ? result.input : result.simulation, result.input.randomSeed);
+      }
+    } catch (error) {
+      errorMessage = error instanceof Error ? error.message : String(error);
+      render();
+    }
+    return;
+  }
   if (["download-optimizer-fixture", "copy-optimizer-fixture", "import-optimizer-fixture", "import-run-optimizer-fixture"].includes(action)) {
     if (!developerToolsEnabled || optimizationRunning) return;
     if (action === "download-optimizer-fixture" || action === "copy-optimizer-fixture") {
@@ -607,8 +703,10 @@ app.addEventListener("click", (event) => {
   }
   if (action === "developer-focus-raw" && developerToolsEnabled) {
     simpleDetailsOpen = false; playerSingleDetailsOpen = false; render();
-    const tools = app.querySelector<HTMLDetailsElement>(".developer-tools"); if (tools) tools.open = true;
-    const raw = app.querySelector<HTMLDetailsElement>('[data-dev-group="raw"]'); if (raw) { raw.open = true; raw.scrollIntoView({ block: "start" }); }
+    const tools = app.querySelector<HTMLDetailsElement>(".developer-tools");
+    if (tools) { tools.open = true; lazyDetails.toggle(tools); }
+    const raw = app.querySelector<HTMLDetailsElement>('[data-dev-group="raw"]');
+    if (raw) { raw.open = true; lazyDetails.toggle(raw); raw.scrollIntoView({ block: "start" }); }
     return;
   }
   if (action === "simple-share") {
@@ -908,7 +1006,8 @@ app.addEventListener("click", (event) => {
       storageStatus = "error";
       storageNotice = error instanceof Error ? error.message : "清除自动存档失败。";
     }
-    input = createPlayerDefaultInput();
+    input = createScenarioDefault(scenarioStateKey(input), validationStageId(input));
+    simpleRatioDrafts.A = null; simpleRatioDrafts.B = null; advancedRatioDrafts = { A: null, B: null };
     result = null;
     batchCount = DEFAULT_BATCH_SIMULATION_COUNT;
     batchResult = null;
@@ -924,7 +1023,7 @@ app.addEventListener("click", (event) => {
     stageNotice = null;
     storageNotice = "已恢复默认配置；命名方案已保留。";
     if (storageStatus !== "error") storageStatus = "idle";
-    lastQueuedStorageSnapshot = storageSnapshot();
+    lastQueuedStorageSnapshot = "";
     render();
   }
   if (action === "replay-seed" && result !== null) {
@@ -1006,6 +1105,14 @@ const unregisterWebMcp = registerValidationWebMcp({
   },
 });
 window.addEventListener("beforeunload", unregisterWebMcp, { once: true });
+window.addEventListener("beforeunload", () => {
+  if (autosaveTimer === null || configStorage === null) return;
+  clearTimeout(autosaveTimer); autosaveTimer = null;
+  try {
+    scenarioStates.save(currentScenarioState());
+    configStorage.saveAutosave(input, batchCount, optimizationConfig, simpleOptimizerOptions, threeQueueOptimizerOptions);
+  } catch (error) { console.warn("离开页面时配置未能保存", error); }
+});
 perfMark("ui interactive");
 perfMeasure("initialization", "app init start", "ui interactive");
 
@@ -1023,6 +1130,40 @@ function captureExpandedSections(): void {
 function storageSnapshot(): string {
   return JSON.stringify({ input, batchCount, optimizationConfig,
     simpleOptimizerOptions, threeQueueOptimizerOptions });
+}
+
+function currentScenarioState(): ScenarioEditorState {
+  return { input, simulationCount: batchCount, optimizationConfig, simpleOptimizerOptions, threeQueueOptimizerOptions };
+}
+
+function createScenarioDefault(scenarioType: BattleScenarioType, serverStage: ServerStageId): typeof input {
+  let fresh = normalizeBattleInputPolicy({ ...createPlayerDefaultInput(), serverStage, scenarioType,
+    battleContext: scenarioType === "CITY_DEFENSE" ? "cityDefense" : scenarioType === "RALLY" ? "rally" : "challenge",
+    ...(scenarioType === "ICE_FIRE_LEAGUE" ? { attributeInputMode: "prediction" as const, threeQueueMode: "ICE_FIRE_LEAGUE" as const } : {}) });
+  fresh = sanitizeConfigForStage(fresh, serverStage).input;
+  if (scenarioType === "INNER_EARTH") fresh = normalizeInnerEarthInput(fresh);
+  return normalizeIceFireReportLineage(fresh);
+}
+
+function switchScenario(scenarioType: BattleScenarioType): void {
+  if (scenarioType === scenarioStateKey(input)) return;
+  try { scenarioStates.save(currentScenarioState()); }
+  catch (error) { storageNotice = `本场景暂未持久保存：${error instanceof Error ? error.message : String(error)}；页面内草稿仍保留。`; }
+  let saved = scenarioStates.read(scenarioType);
+  if (saved === null) {
+    const fresh = createScenarioDefault(scenarioType, validationStageId(input));
+    saved = { input: fresh, simulationCount: batchCount, optimizationConfig: defaultOptimizationConfig(fresh.randomSeed),
+      simpleOptimizerOptions: defaultSimpleScenarioOptimizationOptions(fresh.randomSeed),
+      threeQueueOptimizerOptions: defaultThreeQueueOptimizationOptions(fresh.randomSeed) };
+  }
+  input = saved.input; batchCount = saved.simulationCount;
+  optimizationConfig = saved.optimizationConfig; simpleOptimizerOptions = saved.simpleOptimizerOptions;
+  threeQueueOptimizerOptions = saved.threeQueueOptimizerOptions;
+  simpleRatioDrafts.A = null; simpleRatioDrafts.B = null;
+  advancedRatioDrafts = { A: null, B: null };
+  simpleTroopModes.A = "count"; simpleTroopModes.B = "count";
+  result = null; threeQueueResult = null; batchResult = null;
+  simpleOptimizationResult = null; threeQueueOptimizationResult = null; innerEarthOptimizationResult = null;
 }
 
 function updateStorageStatus(): void {
@@ -1051,6 +1192,7 @@ function scheduleAutosaveIfChanged(): void {
   autosaveTimer = setTimeout(() => {
     autosaveTimer = null;
     try {
+      scenarioStates.save(currentScenarioState());
       configStorage!.saveAutosave(input, batchCount, optimizationConfig,
         simpleOptimizerOptions, threeQueueOptimizerOptions);
       storageStatus = "saved";
@@ -1072,12 +1214,13 @@ function scheduleAutosaveIfChanged(): void {
 }
 
 function applyRestoredSetup(restored: RestoredBattleSetup, source: string): void {
+  scenarioStates.remember(currentScenarioState());
   input = restored.input;
   batchCount = restored.simulationCount;
   optimizationConfig = restored.optimizationConfig;
   simpleOptimizerOptions = restored.simpleOptimizerOptions;
   threeQueueOptimizerOptions = restored.threeQueueOptimizerOptions;
-  heroPoolSide = input.scenarioType === "RALLY" ? optimizationConfig.candidateSide ?? "A" :
+  heroPoolSide = optimizerRoute(input.scenarioType) === "rally" ? optimizationConfig.candidateSide ?? "A" :
     isThreeQueueBattleInput(input) ? threeQueueOptimizerOptions.side : simpleOptimizerOptions.side;
   result = null;
   threeQueueResult = null;
@@ -1091,7 +1234,7 @@ function applyRestoredSetup(restored: RestoredBattleSetup, source: string): void
     ? "已根据服务器阶段调整部分过期或超阶段配置。" : null;
   storageNotice = restored.queueAttributesMigrated
     ? "旧三队列配置已复制为三个队伍相同属性，请根据实际战报调整。"
-    : `${source}已载入${restored.migrated ? "，旧版本已迁移；固定车头已重置为不固定，请按需重新勾选" : ""}。`;
+    : `${source}已载入${restored.migrated ? "，旧字段已按当前输入规则迁移，请核对属性与优化设置" : ""}。`;
   if (restored.sceneMigrationWarnings?.length) storageNotice = [storageNotice, ...restored.sceneMigrationWarnings].filter(Boolean).join(" ");
   if (restored.optimizerRacingMigrated) storageNotice += ` ${optimizerRacingMigrationNotice}`;
   if (restored.headPoolOwnershipMigrated) storageNotice += ` ${headPoolOwnershipMigrationNotice}`;
@@ -1179,8 +1322,10 @@ async function importConfigFile(file: File | null): Promise<void> {
 }
 
 function render(): void {
+  input = normalizeBattleInputPolicy(input);
   if (!developerToolsEnabled) input = normalizePlayerHeroLevels(input);
-  try { renderApp(); queueMicrotask(scheduleAutosaveIfChanged); }
+  const popupScroll = app.querySelector<HTMLElement>('.special-buffs-dialog')?.scrollTop ?? 0;
+  try { renderApp(); const popup = app.querySelector<HTMLElement>('.special-buffs-dialog'); if (popup) popup.scrollTop = popupScroll; updateStorageStatus(); queueMicrotask(scheduleAutosaveIfChanged); }
   catch (error) { console.error("PVP UI render failed", error); renderFatalError(error); }
 }
 
@@ -1212,17 +1357,14 @@ function renderApp(): void {
     return;
   }
   app.innerHTML = `
-    <main class="shell advanced-shell" ${appDialog === null && !simpleDetailsOpen ? "" : "inert"}>
+    <main class="shell advanced-shell report-theme" ${appDialog === null && !simpleDetailsOpen && !specialBuffsOpen ? "" : "inert"}>
       ${renderModeHeader(editorMode)}
       ${renderAdvancedScene(input)}
       ${stageNotice === null ? "" : `<div class="stage-notice" role="status">${escapeHtml(stageNotice)}</div>`}
       ${storageNotice === null ? "" : `<div class="stage-notice" role="status">${escapeHtml(storageNotice)}</div>`}
       ${errorMessage === null ? "" : `<div class="error-box" role="alert">${escapeHtml(errorMessage)}</div>`}
       ${renderAdvancedLineupActions(lineupActionsOpen, input.scenarioType === "INNER_EARTH")}
-      ${input.scenarioType === "INNER_EARTH" ? renderInnerEarthForm(input, "player", (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')) : `<section class="config-grid advanced-config" aria-label="双方战斗配置">
-        ${renderAdvancedSide("A", input.sideA)}
-        ${renderAdvancedSide("B", input.sideB)}
-      </section>`}
+      ${input.scenarioType === "INNER_EARTH" ? renderInnerEarthForm(input, "player", (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')) : renderReportConfiguration()}
       ${lazyDetails.render("player-report-import", "战报 / 属性导入", renderReportImporter, 'class="advanced-fold advanced-more-settings"')}
       ${lazyDetails.render("player-profile-management", "阵容与预设管理", () => `${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}${renderPlayerProfiles()}`, 'class="advanced-fold advanced-more-settings"')}
       ${renderAdvancedRun(input, batchCount, batchRunning, batchProgress, playerRunBlocked())}
@@ -1231,8 +1373,8 @@ function renderApp(): void {
       ${batchResult === null ? "" : lazyDetails.render("player-result-statistics", "详细统计 · 回合、兵损与技能表现", () => renderAdvancedStatistics(batchResult!), 'class="advanced-fold advanced-more-settings"')}
       ${renderPlayerSingle(result, threeQueueResult, resultIsStale)}
       ${developerToolsEnabled ? renderDeveloperTools(preview, resultIsStale) : ""}
-      <footer class="simple-footer"><span>WHITEOUT BATTLE LAB · 高级阵容工具</span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
-    </main>${renderAppDialog(appDialog)}${simpleDetailsOpen ? renderPlayerDetailsDrawer() : ""}
+      <footer class="simple-footer"><span>WHITEOUT BATTLE LAB · 高级阵容工具 · <a href="https://wos.h5joy-games.com/zh-CN/heroes/" target="_blank" rel="noreferrer">贴图来源</a></span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
+    </main>${renderSpecialBuffDialog()}${renderAppDialog(appDialog)}${simpleDetailsOpen ? renderPlayerDetailsDrawer() : ""}
   `;
   if (initial) {
     perfMark("initial render end");
@@ -1243,9 +1385,9 @@ function renderApp(): void {
 function renderDeveloperTools(preview: ReturnType<typeof safePreview>, resultIsStale: boolean): string {
   if (!developerToolsEnabled) return "";
   const recognitionPending = pendingRecognitionSides().length > 0;
-  const markup = `<details class="developer-tools" data-dev-tools><summary><span class="dev-badge">DEV</span><div><h2>开发工具，仅用于模型验证</h2><p>配置覆盖、内部诊断和原始数据，与玩家设置分开显示。</p></div><span>展开开发工具 ↓</span></summary><div class="developer-tools-body">
-    <details class="dev-group" data-dev-group="simulation"><summary>Simulation Internals · 模拟内部设置</summary>${renderControls(previewInitialTroopCount())}</details>
-    <details class="dev-group" data-dev-group="skills"><summary>Skill Debug · 技能与配置校验</summary>
+  const markup = lazyDetails.render("dev-tools", `<span class="dev-badge">DEV</span><div><h2>开发工具，仅用于模型验证</h2><p>配置覆盖、内部诊断和原始数据，与玩家设置分开显示。</p></div><span>展开开发工具 ↓</span>`, () => `<div class="developer-tools-body">
+    ${lazyDetails.render("dev-simulation", "Simulation Internals · 模拟内部设置", () => renderControls(previewInitialTroopCount()).replaceAll('name="scenario-type"', 'name="dev-scenario-type"'), 'class="dev-group" data-dev-group="simulation"')}
+    ${lazyDetails.render("dev-skills", "Skill Debug · 技能与配置校验", () => `
       ${isThreeQueueBattleInput(input) || input.scenarioType === "INNER_EARTH" ? "" : lazyDetails.render("advanced-debug",
         '<h2>高级调试</h2><span class="tag">展开后加载本场技能</span>', () => {
           const state = recognitionPending ? null : safePreview();
@@ -1255,23 +1397,21 @@ function renderDeveloperTools(preview: ReturnType<typeof safePreview>, resultIsS
       ${isThreeQueueBattleInput(input) || input.scenarioType === "INNER_EARTH" ? "" : `<h3>英雄技能等级覆盖</h3><div class="config-grid">${(["A", "B"] as const).map((side) => `<section><h4>${side}方普通英雄远征技能</h4>${renderPlayerHeroSkills(side, getInputSide(side))}</section>`).join("")}</div>`}
       ${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}
       ${input.scenarioType === "INNER_EARTH" ? renderInnerEarthForm(input) : `<div class="config-grid">${isThreeQueueBattleInput(input) ? renderThreeQueueSide("A", input.sideA) : renderSide("A", input.sideA, preview, null)}${isThreeQueueBattleInput(input) ? renderThreeQueueSide("B", input.sideB) : renderSide("B", input.sideB, preview, null)}</div>`}
-    </details>
-    <details class="dev-group" data-dev-group="damage"><summary>Damage Debug · 伤害与效果日志</summary>${isThreeQueueBattleInput(input) ? threeQueueResult === null ? '<p class="hint">先运行单场。</p>' : renderThreeQueueResults(threeQueueResult, resultIsStale) : result === null ? '<p class="hint">先运行单场以加载 DamageEvent Trace。</p>' : renderResults(result, resultIsStale)}</details>
-    <details class="dev-group" data-dev-group="rng"><summary>RNG Debug · 逐技能随机判定</summary>${result === null ? '<p class="hint">先运行单场。固定判定通过 Skill Debug 中的覆盖选项设置。</p>' : `<pre>${escapeHtml(JSON.stringify(result.trace.rounds.map((round) => ({ round: round.round, troopSkills: round.troopSkills.filter((skill) => skill.probability !== null), heroSkills: round.heroSkills.filter((skill) => skill.probability !== null), procEffectFamilies: round.procEffectFamilies })), null, 2))}</pre>`}</details>
-    <details class="dev-group" data-dev-group="theory"><summary>Theory / Criterion · 优化参数与内部诊断</summary>
+    `, 'class="dev-group" data-dev-group="skills"')}
+    ${lazyDetails.render("dev-damage", "Damage Debug · 伤害与效果日志", () => `${isThreeQueueBattleInput(input) ? threeQueueResult === null ? '<p class="hint">先运行单场。</p>' : renderThreeQueueResults(threeQueueResult, resultIsStale) : result === null ? '<p class="hint">先运行单场以加载 DamageEvent Trace。</p>' : renderResults(result, resultIsStale)}`, 'class="dev-group" data-dev-group="damage"')}
+    ${lazyDetails.render("dev-rng", "RNG Debug · 逐技能随机判定", () => `${result === null ? '<p class="hint">先运行单场。固定判定通过 Skill Debug 中的覆盖选项设置。</p>' : `<pre>${escapeHtml(debugJsonPreview(result.trace.rounds.slice(0, DEBUG_PREVIEW.rounds).map((round) => ({ round: round.round, troopSkills: round.troopSkills.filter((skill) => skill.probability !== null), heroSkills: round.heroSkills.filter((skill) => skill.probability !== null), procEffectFamilies: round.procEffectFamilies }))))}</pre>`}`, 'class="dev-group" data-dev-group="rng"')}
+    ${lazyDetails.render("dev-theory", "Theory / Criterion · 优化参数与内部诊断", () => `
       <section class="panel optimizer-fixture-tools"><h3>导出完整优化 Benchmark Fixture</h3><p class="hint">保存双方完整配置、有效候选池、全部优化参数和精确共同种子。导入前校验输入与 Head/Body 空间；复跑使用保存的随机种子。</p>
       <div class="inline-fields"><button class="btn" data-action="download-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>下载 JSON</button><button class="btn" data-action="copy-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>复制 JSON</button><button class="btn" data-action="import-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>粘贴导入 Fixture</button><button class="btn" data-action="import-run-optimizer-fixture" ${optimizationRunning ? "disabled" : ""}>导入并一键复跑</button><label>选择 Fixture 文件<input data-scope="optimizer-fixture-file" type="file" accept="application/json,.json" ${optimizationRunning ? "disabled" : ""}></label></div></section>
       ${lazyDetails.render("head-pool-audit", "Head Pool Audit + H0（只检查候选池，不运行战斗）", () => {
-      const audit = createHeadPoolAudit(input, input.scenarioType === "RALLY" ? optimizationConfig.constraints : {}, heroPoolSide);
-      return `${audit.warning ? `<p class="error-box">${audit.warning}</p>` : ""}<pre>${escapeHtml(JSON.stringify({ headPoolAudit: audit }, null, 2))}</pre>`;
-    })}${optimizerPanelOpen ? renderOptimizer() : '<p class="hint">打开配队优化后，可在此查看和调整原有完整优化参数。</p>'}</details>
-    <details class="dev-group" data-dev-group="raw"><summary>Raw Data · 查看原始调试数据</summary>${renderRuleUnknowns()}${renderStoragePanel()}<details class="mini-details"><summary>canonical config JSON</summary><button class="btn" data-action="copy-input">复制战斗输入</button><pre>${escapeHtml(JSON.stringify(input, null, 2))}</pre></details>${renderBatchStatistics(batchResult)}${result === null ? "" : renderDeveloperMode(result)}
+      const audit = createHeadPoolAudit(input, optimizerRoute(input.scenarioType) === "rally" ? optimizationConfig.constraints : {}, heroPoolSide);
+      return `${audit.warning ? `<p class="error-box">${audit.warning}</p>` : ""}<pre>${escapeHtml(debugJsonPreview({ headPoolAudit: audit }))}</pre>`;
+    })}${optimizerPanelOpen ? renderOptimizer() : '<p class="hint">打开配队优化后，可在此查看和调整原有完整优化参数。</p>'}`, 'class="dev-group" data-dev-group="theory"')}
+    ${lazyDetails.render("dev-raw", "Raw Data · 查看原始调试数据", () => `${renderRuleUnknowns()}${renderStoragePanel()}${lazyDetails.render("raw-config", "canonical config JSON", () => `<button class="btn" data-action="copy-input">复制战斗输入</button>${renderDebugPreview(input)}`, 'class="mini-details"')}${renderBatchStatistics(batchResult)}${result === null ? "" : renderDeveloperMode(result)}
       ${input.scenarioType === "INNER_EARTH" ? lazyDetails.render("inner-earth-audit", "地心玩法审计", () =>
-        `<pre>${escapeHtml(JSON.stringify(createInnerEarthAudit(input), null, 2))}</pre>`, 'class="panel"') : ""}
-    </details></div></details>`;
-  return markup.replace('data-dev-tools>', `data-dev-tools ${developerExpanded.has("tools") ? "open" : ""}>`)
-    .replace(/data-dev-group="([a-z]+)">/g, (match: string, key: string) => match.replace(">", developerExpanded.has(key) ? " open>" : ">"))
-    .replaceAll('name="scenario-type"', 'name="dev-scenario-type"');
+        `<pre>${escapeHtml(debugJsonPreview(createInnerEarthAudit(input)))}</pre>`, 'class="panel"') : ""}
+    `, 'class="dev-group" data-dev-group="raw"')}</div>`, 'class="developer-tools" data-dev-tools');
+  return markup;
 }
 
 function playerRunBlocked(): boolean {
@@ -1280,26 +1420,88 @@ function playerRunBlocked(): boolean {
     ((isThreeQueueBattleInput(input) || input.scenarioType === "INNER_EARTH") && !threeQueueValid());
 }
 
-function renderAdvancedSide(sideId: SideId, side: ValidationSideInput): string {
-  if (isThreeQueueBattleInput(input)) {
-    return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方三队阵容</h2><span>每队独立配置 · 容量 ${formatNumber(side.deploymentCapacity ?? TROOP_TYPES.reduce((sum, troop) => sum + side.troops[troop].count, 0))}</span></header><div class="advanced-side-body">${lazyDetails.render(`player-queues-${sideId}`, '三队英雄、兵种与属性设置', () => renderIceFireSide(input, sideId, undefined, false, (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')), 'class="advanced-fold"')}</div></article>`;
-  }
-  const is333 = input.scenarioType === "THREE_THREE_THREE";
-  const display = is333 ? resolveThreeThreeThreeSide(side) : side;
+
+function renderSpecialBuffContent(sideId: SideId, side: ValidationSideInput): string {
+  return `${input.scenarioType === "CITY_DEFENSE" && sideId === "B" ? `<label class="checkbox-label"><input type="checkbox" data-scope="city-territory" ${input.defenderInTerritory ? "checked" : ""}>是否在领地内（部队攻击力、防御力各 +10%）</label><p class="hint">基础面板模式下计入本次 Buff；最终战报模式请填写已包含领地加成的属性。</p>` : ""}${advancedHelp("配置本次准备模拟的战斗中实际存在的外部增益。", "基础面板模式下，普通攻防穿血Buff会叠加到基础属性；最终战报模式已包含这些属性，不重复计算。快捷按钮只设置城镇和宠物战斗属性，专家和出征/集结/宠物容量保持原值。预设应用后仍可逐项修改。")}${attributeModeHelp(input.attributeInputMode === "prediction")}${renderExternalBuffs(sideId, side)}<h4>出征容量增益</h4><p class="hint">容量与普通攻防穿血分开保存；基础面板模式按现有部署规则计算，最终战报模式使用实际入场兵数。</p><div class="inline-fields"><label>出征容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="marchCapacityBonus" type="text" inputmode="decimal" value="${(side.marchCapacityBonus ?? 0) * 100}"></label><label>宠物出征容量等级<select data-scope="capacity" data-side="${sideId}" data-field="petMarchCapacityLevel">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === (side.petMarchCapacityLevel ?? 0) ? "selected" : ""}>Lv${level} · +${level * 1500}</option>`).join("")}</select></label></div>`;
+}
+
+function renderSpecialBuffDialog(): string {
+  if (!specialBuffsOpen) return "";
+  const title = configurationPopup === "troops" ? "更改部队" : "特殊加成";
+  return `<div class="special-buffs-overlay"><div class="special-buffs-backdrop" data-action="special-buffs-close"></div><section class="report-theme special-buffs-dialog" role="dialog" aria-modal="true" aria-labelledby="special-buffs-title"><header><div><h2 id="special-buffs-title">${title}</h2><p>${configurationPopup === "troops" ? "调整出征兵力、比例、兵种等级和 T12 技能。" : "配置城镇、宠物、专家及领地增益。"}修改后自动保存。</p></div><button class="btn" data-action="special-buffs-close" aria-label="关闭${title}">关闭 ×</button></header><div class="special-buffs-tabs" role="tablist" aria-label="选择配置方">${(["A", "B"] as const).map(side => `<button class="btn" role="tab" aria-selected="${side === specialBuffsSide}" aria-controls="special-buffs-panel" id="special-buffs-tab-${side}" data-action="special-buffs-side" data-side="${side}">${side} 方${configurationPopup === "troops" ? "部队" : "特殊加成"}</button>`).join("")}</div><div id="special-buffs-panel" role="tabpanel" aria-labelledby="special-buffs-tab-${specialBuffsSide}">${configurationPopup === "troops" ? renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "troops") + renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "t12") : renderSpecialBuffContent(specialBuffsSide, getInputSide(specialBuffsSide))}</div><footer><span>修改即时生效，关闭后可查看双方对比。</span><button class="btn primary" data-action="special-buffs-close">完成</button></footer></section></div>`;
+}
+
+function renderReportTroops(): string {
+  const sides = (["A", "B"] as const).map(id => {
+    const original = getInputSide(id);
+    const side = input.scenarioType === "THREE_THREE_THREE" ? resolveThreeThreeThreeSide(original) : original;
+    const counts = input.battleContext === "rally" && input.attributeInputMode === "prediction"
+      ? (() => { try { return resolveValidationTroopCounts(side, "rally", "prediction"); } catch { return { shield: 0, lancer: 0, marksman: 0 }; } })()
+      : Object.fromEntries(TROOP_TYPES.map(t => [t, getUiComposition(side.troops[t]).reduce((sum, row) => sum + row.aliveCount, 0)])) as Record<TroopType, number>;
+    const total = TROOP_TYPES.reduce((sum, t) => sum + counts[t], 0);
+    return { id, side, counts, total };
+  });
+  const icons = { shield: "🛡", lancer: "⚔", marksman: "🏹" };
+  return `<div class="report-troops-summary"><div class="report-troops-totals">${sides.map(({ id, total, counts }) => `<div class="side-${id.toLowerCase()}"><div class="report-side-caption">${id} · ${id === "A" ? "我方部队" : "对方部队"}<button class="btn btn-small" data-action="troops-edit" data-side="${id}" aria-haspopup="dialog">更改部队</button></div><p>初始部队</p><strong>${formatNumber(total)}</strong><div class="report-troops-ratio" aria-label="${id}方兵种比例">${TROOP_TYPES.map(t => `<span class="ratio-${t}" style="width:${total ? counts[t] / total * 100 : 0}%"></span>`).join("")}</div><div class="report-troops-legend">${TROOP_TYPES.map(t => `<span class="ratio-${t}">${troopName(t)} ${total ? (counts[t] / total * 100).toFixed(2) : "0.00"}%</span>`).join("")}</div></div>`).join("")}</div><table class="report-stat-table report-troops-table"><caption>参战部队详情</caption><thead><tr><th>A 方数量</th><th>兵种 / 等级</th><th>B 方数量</th></tr></thead>${TROOP_TYPES.map(t => {
+    const compositions = sides.map(({ side, counts }) => side.troops[t].levelMode === "mixed" ? getUiComposition(side.troops[t]) : [{ level: side.troops[t].troopLevel, aliveCount: counts[t] }]);
+    const levels = [...new Set(compositions.flatMap(rows => rows.map(row => row.level)))].sort((a,b) => getTroopConstant(b) - getTroopConstant(a));
+    return `<tbody><tr class="report-troop-divider"><th colspan="3">${icons[t]} ${troopName(t)}</th></tr>${levels.map(level => `<tr>${compositions.map((rows, index) => `${index === 1 ? `<th scope="row">${escapeHtml(level)}</th>` : ""}<td class="side-${index === 0 ? "a" : "b"}"><strong>${formatNumber(rows.filter(row => row.level === level).reduce((sum,row) => sum + row.aliveCount, 0))}</strong></td>`).join("")}</tr>`).join("")}<tr class="report-troops-skill"><td>${sides[0]!.side.troops[t].t12Level ?? 0} 级</td><th scope="row">T12 技能</th><td>${sides[1]!.side.troops[t].t12Level ?? 0} 级</td></tr></tbody>`;
+  }).join("")}</table><p class="hint">此处展示开战前配置；伤亡与剩余兵力在模拟完成后查看。</p></div>`;
+}
+
+function renderReportConfiguration(): string {
+  if (isThreeQueueBattleInput(input)) return `<section class="config-grid advanced-config" aria-label="双方战斗配置">${renderAdvancedSide("A", input.sideA)}${renderAdvancedSide("B", input.sideB)}</section>`;
+  const role = (side: SideId) => input.scenarioType === "CITY_DEFENSE" ? side === "A" ? "进攻方阵容" : "守城方阵容" : input.scenarioType === "RALLY" ? side === "A" ? "集结进攻方" : "集结防守方" : side === "A" ? "我方阵容" : "对比阵容";
+  const pair = (section: ReportConfigSection) => `<div class="report-pair">${(["A", "B"] as const).map(side => `<div class="advanced-side side-${side.toLowerCase()}"><div class="report-side-caption">${side} · ${role(side)}</div><div class="advanced-side-body">${renderAdvancedSide(side, getInputSide(side), section)}</div></div>`).join("")}</div>`;
+  const block = (id: string, number: string, title: string, subtitle: string, content: string) => `<section id="${id}" class="report-config-section"><header class="report-section-heading"><span>${number}</span><div><h2>${title}</h2><p>${subtitle}</p></div></header>${content}</section>`;
+  return `<section class="battle-report-config" aria-label="双方战斗配置"><header class="report-config-banner"><p>战报阵容录入</p><h2>逐项对照，还原这场战斗</h2><div class="report-opponents"><div class="report-opponent side-a"><b>A</b><span>${role("A")}</span><strong>${formatNumber(TROOP_TYPES.reduce((sum,t)=>sum+input.sideA.troops[t].count,0))}<small> 出征部队</small></strong></div><span class="report-versus">VS</span><div class="report-opponent side-b"><b>B</b><span>${role("B")}</span><strong>${formatNumber(TROOP_TYPES.reduce((sum,t)=>sum+input.sideB.troops[t].count,0))}<small> 出征部队</small></strong></div></div><nav aria-label="战报录入导航"><a href="#report-heroes">英雄对比</a><a href="#report-troops">部队对比</a><a href="#report-stats">属性加成</a><button class="report-buffs-link" data-action="special-buffs-open">特殊加成</button></nav></header>
+    ${block("report-heroes", "01", "英雄对比", "按战报双方英雄栏录入；专武等级在下方展开设置。", pair("heroes") + pair("weapons") + (input.scenarioType === "RALLY" || input.scenarioType === "CITY_DEFENSE" ? pair("bodies") : ""))}
+    ${block("report-troops", "02", "部队对比", "双方初始部队与兵种等级，按战报顺序对照。", renderReportTroops())}
+    ${block("report-stats", "03", "属性加成", "按战报属性顺序逐行录入，左右两栏始终对应 A 方和 B 方。", renderReportAttributeComparison(input) + pair("attributes"))}
+  </section>`;
+}
+
+type ReportConfigSection = "heroes" | "troops" | "attributes" | "buffs" | "t12" | "weapons" | "bodies";
+function renderAdvancedSide(sideId: SideId, side: ValidationSideInput, section?: ReportConfigSection): string {
+  if (isThreeQueueBattleInput(input)) return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方三队阵容</h2></header><div class="advanced-side-body">${lazyDetails.render(`player-queues-${sideId}`, '三队英雄、兵种与属性设置', () => renderIceFireSide(input, sideId, undefined, false, (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"'), index => renderBonusContexts(sideId, getValidationThreeQueues(side)[index]!, index)), 'class="advanced-fold"')}</div></article>`;
+  const is333 = input.scenarioType === "THREE_THREE_THREE", display = is333 ? resolveThreeThreeThreeSide(side) : side;
   const isRally = input.battleContext === "rally" && input.attributeInputMode === "prediction";
-  return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2><b>${sideId}</b> ${sideId === "A" ? "我方阵容" : "对比阵容"}</h2><span>${optimizationTargetLabel(input.scenarioType, sideId)}</span></header><div class="advanced-side-body"><h3>英雄阵容</h3><div class="simple-heroes">${TROOP_TYPES.map((troop) => renderSimpleHero(sideId, side, troop, input, developerToolsEnabled)).join("")}</div><div class="advanced-section-title"><h3>兵量与兵种等级</h3><span>总兵力 ${formatNumber(TROOP_TYPES.reduce((sum, troop) => sum + display.troops[troop].count, 0))}</span></div>${is333 ? render333Deployment(sideId, side) : ""}${isRally ? renderRallyDeployment(sideId, side) : ""}<div class="troop-cards advanced-troop-cards">${TROOP_TYPES.map((troop) => renderTroopRow(sideId, troop, display.troops[troop], display, false)).join("")}</div>
-    ${lazyDetails.render(`player-attributes-${sideId}`, '<span>战报属性</span><small>12 项百分数</small>', () => `<label>这些属性来自哪里？<select data-scope="player-attribute-source"><option value="report" ${input.attributeInputMode !== "prediction" ? "selected" : ""}>最终战报 · 已含增益</option><option value="base" ${input.attributeInputMode === "prediction" ? "selected" : ""}>基础面板 · 另行配置增益</option></select></label><p class="hint">${input.attributeInputMode === "prediction" ? "填写基础面板，并单独配置当前战斗增益。历史战报特殊加成只用于反推基础属性，不会自动带入当前战斗。" : "填写战报百分数；英雄、专武及外部属性增益已包含，不重复叠加。"}</p>${renderAttributeInputs(sideId, side)}<button class="btn btn-small" data-action="simple-copy-attributes" data-side="${sideId}">复制到另一方</button>`, 'class="advanced-fold"')}
-    ${lazyDetails.render(`player-buffs-${sideId}`, '<span>城镇、宠物与专家 Buff</span><small>完整增益设置</small>', () => `<p class="hint">${input.attributeInputMode === "prediction" ? "选择城镇、宠物或专家增益后自动用于当前战斗。" : "增益可以编辑并保存。最终战报已含属性增益，当前模拟不再叠加；使用基础面板时按这些设置计算。"}</p>${input.attributeInputMode === "prediction" ? `<h4>历史战报英雄与专武</h4><div class="hero-slot-grid">${TROOP_TYPES.map((troop) => renderHeroSelect("report-hero", sideId, side, troop)).join("")}</div>${renderBonusContexts(sideId, side)}` : ""}${renderExternalBuffs(sideId, side)}${input.attributeInputMode === "prediction" ? `<h4>出征容量增益</h4><div class="inline-fields"><label>出征容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="${input.battleContext === "rally" ? "rallyCapacityBonus" : "marchCapacityBonus"}" type="text" inputmode="decimal" value="${((input.battleContext === "rally" ? side.rallyCapacityBonus : side.marchCapacityBonus) ?? 0) * 100}"></label><label>宠物出征容量等级<select data-scope="capacity" data-side="${sideId}" data-field="petMarchCapacityLevel">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === (side.petMarchCapacityLevel ?? 0) ? "selected" : ""}>Lv${level} · +${level * 1500}</option>`).join("")}</select></label></div>` : ""}`, 'class="advanced-fold"')}
-    ${lazyDetails.render(`player-t12-${sideId}`, '<span>T12兵种技能</span><small>盾兵 / 矛兵 / 射手</small>', () => `<div class="inline-fields">${TROOP_TYPES.map((troop) => `<label>${troopName(troop)}<select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: 25 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("")}</div>`, 'class="advanced-fold"')}
-    ${lazyDetails.render(`player-weapons-${sideId}`, '<span>英雄专武</span><small>各英雄独立等级</small>', () => TROOP_TYPES.map((troop) => { const id = side.leaderHeroIds?.[troop]; return id ? renderWeaponLevelInput("simulation-weapon", sideId, id, `${catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? "英雄"}专武`, side.simulationWeaponLevels?.[id] ?? 0) : ""; }).join("") || '<p class="hint">先选择英雄。</p>', 'class="advanced-fold"')}
-    ${input.battleContext === "rally" ? lazyDetails.render(`player-rally-${sideId}`, '<span>集结详细设置</span><small>车身英雄 / 容量增益</small>', () => `<h4>车身英雄</h4><div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div><h4>容量增益</h4><div class="inline-fields"><label>集结容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="rallyCapacityBonus" type="text" inputmode="decimal" value="${(side.rallyCapacityBonus ?? 0) * 100}"></label><label>额外固定容量<input data-scope="capacity" data-side="${sideId}" data-field="rallyFixedCapacityBonus" type="number" min="0" value="${side.rallyFixedCapacityBonus ?? 0}"></label></div>`, 'class="advanced-fold"') : ""}
-    </div></article>`;
+  const totalRatio = (scenarioStateKey(input) === "SINGLE" || input.scenarioType === "CITY_DEFENSE") && TROOP_TYPES.every((troop) => side.troops[troop].levelMode !== "mixed");
+  const counts = Object.fromEntries(TROOP_TYPES.map((troop) => [troop, side.troops[troop].count])) as Record<TroopType, number>;
+  const parts = {
+    heroes: () => `<h3>英雄阵容</h3>${advancedHelp("选择本场实际参战的英雄。", "英雄runtime技能参与当前战斗。最终战报模式已包含英雄静态属性，不再叠加；基础面板模式按已建模的英雄与专武来源构造当前属性。")}
+    <div class="simple-heroes">${TROOP_TYPES.map((troop) => renderSimpleHero(sideId, side, troop, input, developerToolsEnabled)).join("")}</div>`,
+    troops: () => `<div class="advanced-section-title"><h3>兵量与兵种等级</h3><span>总兵力 ${formatNumber(TROOP_TYPES.reduce((sum, troop) => sum + display.troops[troop].count, 0))}</span></div>
+    ${totalRatio ? `<div data-deployment-side="${sideId}">${renderTotalRatioDeployment(counts, "advanced-deployment", advancedRatioDrafts[sideId])}</div>` + `<details class="mini-details"><summary>高级：精确人数输入</summary><div class="inline-fields">${TROOP_TYPES.map((troop) => `<label>${troopName(troop)}精确人数<input type="number" min="0" step="1" data-scope="troop" data-side="${sideId}" data-troop="${troop}" data-field="count" value="${counts[troop]}"></label>`).join("")}</div></details>` : ""}
+    ${is333 ? render333Deployment(sideId, side) : ""}${isRally ? renderRallyDeployment(sideId, side) : ""}
+    <div class="troop-cards advanced-troop-cards">${TROOP_TYPES.map((troop) => renderTroopRow(sideId, troop, display.troops[troop], display, false)).join("")}</div>`,
+    attributes: () => `${lazyDetails.render(`player-attributes-${sideId}`, '<span>战报属性</span><small>12 项百分数</small>', () => renderAdvancedAttributes(sideId, side, false), 'class="advanced-fold"')}`,
+    buffs: () => lazyDetails.render(`player-buffs-${sideId}`, '<span>城镇、宠物与专家 Buff</span><small>本次战斗的外部增益</small>', () => renderSpecialBuffContent(sideId, side), 'class="advanced-fold"'),
+    t12: () => `${lazyDetails.render(`player-t12-${sideId}`, '<span>T12兵种技能</span><small>盾兵 / 矛兵 / 射手</small>', () => `${advancedHelp("设置当前盾、矛、射的T12兵种技能等级。该技能不属于战报12项攻防穿血。", "技能按现有兵种机制参与战斗；Lv0表示关闭。不同场景独立保存等级，切换不会覆盖集结的高等级设置。")}<p class="hint" data-t12-limit>当前为${maxT12SkillLevel(input, sideId) === 24 ? input.scenarioType === "CITY_DEFENSE" ? "守城" : "集结" : "非集结"}模式，最高Lv${maxT12SkillLevel(input, sideId)}。</p><div class="inline-fields">${TROOP_TYPES.map((troop) => `<label>${troopName(troop)}<select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: maxT12SkillLevel(input, sideId) + 1 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("")}</div>`, 'class="advanced-fold"')}`,
+    weapons: () => `${lazyDetails.render(`player-weapons-${sideId}`, '<span>英雄专武</span><small>各英雄独立等级</small>', () => `${advancedHelp("设置实际参战英雄的专武等级。最终战报模式仍需设置，以运行专武战斗技能。", WEAPON_HELP)}${TROOP_TYPES.map((troop) => { const id = side.leaderHeroIds?.[troop]; return id ? renderWeaponLevelInput("simulation-weapon", sideId, id, `${catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? "英雄"}专武`, side.simulationWeaponLevels?.[id] ?? 0) : ""; }).join("") || '<p class="hint">先选择英雄。</p>'}`, 'class="advanced-fold"')}`,
+    bodies: () => `${input.scenarioType === "CITY_DEFENSE" ? sideId === "B" ? lazyDetails.render("player-city-body-B", "守城车身英雄 · 四个槽位", () => `<div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div>`, 'class="advanced-fold"') : '<p class="hint">进攻方沿用单撞规则，不配置车身。</p>' : ""}
+    ${input.battleContext === "rally" ? lazyDetails.render(`player-rally-${sideId}`, '<span>集结详细设置</span><small>车身英雄 / 容量增益</small>', () => `${advancedHelp("仅用于集结场景的车身英雄、容量和集结相关配置。", "车身技能参与集结战斗；容量按现有部署规则使用，与普通战报属性分开。切换其他模式会保存本场景状态，再次返回集结时恢复。")}<h4>车身英雄</h4><div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div><h4>容量增益</h4><div class="inline-fields"><label>集结容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="rallyCapacityBonus" type="text" inputmode="decimal" value="${(side.rallyCapacityBonus ?? 0) * 100}"></label><label>额外固定容量<input data-scope="capacity" data-side="${sideId}" data-field="rallyFixedCapacityBonus" type="number" min="0" value="${side.rallyFixedCapacityBonus ?? 0}"></label></div>`, 'class="advanced-fold"') : ""}`,
+  };
+  if (section !== undefined) return parts[section]();
+  return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方阵容</h2></header><div class="advanced-side-body">${Object.values(parts).map(render => render()).join("")}</div></article>`;
+}
+function renderAdvancedAttributes(sideId: SideId, side: ValidationSideInput, showInputs = true): string {
+  return `${advancedHelp("设置本次战斗使用的盾、矛、射攻防穿血。可直接输入最终战报属性，也可以输入基础属性后由下方Buff自动计算。", "最终战报包含普通外部属性增益，不能再次叠加。基础面板模式则使用正规城镇、宠物、专家及专武来源。历史反推是独立工具，只有点击还原按钮才会将结果写入基础属性。")}
+    <label>这些属性来自哪里？<select data-scope="player-attribute-source"><option value="report" ${input.attributeInputMode !== "prediction" ? "selected" : ""}>最终战报 · 已含增益</option><option value="base" ${input.attributeInputMode === "prediction" ? "selected" : ""}>基础面板 · 另行配置增益</option></select></label>
+    ${attributeModeHelp(input.attributeInputMode === "prediction")}${showInputs ? renderAttributeInputs(sideId, side) : ""}<button class="btn btn-small" data-action="simple-copy-attributes" data-side="${sideId}">复制到另一方</button>
+    ${input.attributeInputMode === "prediction" ? `<h4>预计最终战报属性</h4>${renderExpectedPanel(sideId)}<details class="mini-details"><summary>属性中已经包含的参考英雄与专武</summary><p class="hint">基础值已包含参考阵容时在此注明；更换模拟英雄时只计算阵容差值。完全未包含英雄和专武的基础值请留空。</p><div class="hero-slot-grid">${TROOP_TYPES.map((troop) => renderHeroSelect("report-hero", sideId, side, troop)).join("")}</div></details>` : ""}
+    ${renderBonusContexts(sideId, side)}`;
+}
+function renderExpectedPanel(sideId: SideId): string {
+  const expected = safeExpectedPreview()?.[sideId];
+  if (!expected) return '<p class="hint">请先补齐有效配置以查看预计最终属性。</p>';
+  return `<div class="table-scroll"><table class="data-table" data-expected-panel><thead><tr><th>兵种</th>${reportAttributes.map((stat) => `<th>${attributeName(stat)} %</th>`).join("")}</tr></thead><tbody>${TROOP_TYPES.map((troop) => `<tr><th>${troopName(troop)}</th>${reportAttributes.map((stat) => `<td>${(expected.breakdown[troop][stat].finalBonus * 100).toFixed(2)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 
 function renderPlayerHeroSkills(sideId: SideId, side: ValidationSideInput): string {
   const leaders = Object.values(side.leaderHeroIds ?? {}).filter(Boolean);
   const skills = catalog.skills.filter((skill) => skill.source === "hero" && skill.category === "expedition" && leaders.includes(skill.heroId));
-  return `<div class="external-grid">${skills.map((skill) => `<label>${escapeHtml(catalog.leaderHeroes.find((hero) => hero.heroId === skill.heroId)?.name ?? "英雄")} · ${escapeHtml(skill.name)}<select data-scope="leader-skill-level" data-side="${sideId}" data-skill-id="${escapeAttr(skill.id)}">${Object.keys(CONFIRMED_HERO_SKILL_DEFINITIONS.find((definition) => definition.id === skill.id)?.levelValues ?? {}).map(Number).sort((a, b) => a - b).map((level) => `<option value="${level}" ${(side.leaderSkillLevels?.[skill.id] ?? 5) === level ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("") || '<p class="hint">先选择英雄，再设置技能等级。</p>'}</div>`;
+  return `<div class="external-grid">${skills.map((skill) => `<label><span class="skill-art-name">${renderSkillArt(skill.id)}${escapeHtml(catalog.leaderHeroes.find((hero) => hero.heroId === skill.heroId)?.name ?? "英雄")} · ${escapeHtml(skill.name)}</span><select data-scope="leader-skill-level" data-side="${sideId}" data-skill-id="${escapeAttr(skill.id)}">${Object.keys(CONFIRMED_HERO_SKILL_DEFINITIONS.find((definition) => definition.id === skill.id)?.levelValues ?? {}).map(Number).sort((a, b) => a - b).map((level) => `<option value="${level}" ${(side.leaderSkillLevels?.[skill.id] ?? 5) === level ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("") || '<p class="hint">先选择英雄，再设置技能等级。</p>'}</div>`;
 }
 
 function renderPlayerProfiles(): string {
@@ -1318,7 +1520,8 @@ function renderPlayerOptimizer(): string {
   const field = (scope: string, key: string, value: number, label: string) => `<label>${label}<input data-scope="${scope}" data-field="${key}" type="number" min="1" value="${value}"></label>`;
   const chooseSide = (scope: string, key: string, value: SideId) => `<label>优化哪一方<select data-scope="${scope}" data-field="${key}"><option value="A" ${value === "A" ? "selected" : ""}>${scope === "optimizer" ? "集结进攻方" : "A方"}</option><option value="B" ${value === "B" ? "selected" : ""}>${scope === "optimizer" ? "集结防守方" : "B方"}</option></select></label>`;
   let fields = "";
-  if (route === "rally") fields = `${chooseSide("optimizer", "candidateSide", optimizationConfig.candidateSide ?? "A")}${(optimizationConfig.candidateSide ?? "A") === "A" ? `<label>目标<select data-scope="optimizer" data-field="objectiveMode">${([['auto', '自动选择'], ['singleWin', '最高单波胜率'], ['minRallies', '最少集结击破']] as const).map(([value, name]) => `<option value="${value}" ${optimizationConfig.objectiveMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label>` : ""}${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}<label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>${input.attributeInputMode === "prediction" ? `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
+  if (input.scenarioType === "CITY_DEFENSE") fields = `<label>优化哪一方<select data-scope="optimizer" data-field="candidateSide"><option value="A" ${(optimizationConfig.candidateSide ?? "A") === "A" ? "selected" : ""}>单撞进攻方</option><option value="B" ${optimizationConfig.candidateSide === "B" ? "selected" : ""}>守城防守方</option></select></label><label>目标<output>最高本方单场胜率</output></label>${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}${optimizationConfig.candidateSide === "B" ? `<label>固定当前四个车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>` : ""}${input.attributeInputMode === "prediction" ? `<label>固定当前英雄<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
+  else if (route === "rally") fields = `${chooseSide("optimizer", "candidateSide", optimizationConfig.candidateSide ?? "A")}${(optimizationConfig.candidateSide ?? "A") === "A" ? `<label>目标<select data-scope="optimizer" data-field="objectiveMode">${([['auto', '自动选择'], ['singleWin', '最高单波胜率'], ['minRallies', '最少集结击破']] as const).map(([value, name]) => `<option value="${value}" ${optimizationConfig.objectiveMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label>` : ""}${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}<label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>${input.attributeInputMode === "prediction" ? `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
   else if (route === "threeQueue" || route === "innerEarth" && ["HEART_OF_EARTH", "HERO_LAND"].includes(getInnerEarthConfig(input).subMode)) fields = `${route === "innerEarth" ? '<label>优化对象<output>A方</output></label>' : chooseSide("three-queue-optimizer", "side", threeQueueOptimizerOptions.side)}${field("three-queue-optimizer", "finalValidationCount", threeQueueOptimizerOptions.finalValidationCount, "最终复验场次")}${field("three-queue-optimizer", "finalCandidateCount", threeQueueOptimizerOptions.finalCandidateCount, "最终候选数")}<label>对手变阵<select data-scope="three-queue-optimizer" data-field="enemyPermutationMode">${([['fixedCurrent', '当前顺序'], ['allPermutations', '全部六种排列'], ['worstCase', '最不利顺序']] as const).map(([value, name]) => `<option value="${value}" ${threeQueueOptimizerOptions.enemyPermutationMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label><label>固定我方队伍顺序<input data-scope="three-queue-optimizer" data-field="fixedOwnQueueOrder" type="checkbox" ${threeQueueOptimizerOptions.fixedOwnQueueOrder ? "checked" : ""}></label><div class="advanced-queue-locks">${[0, 1, 2].map((index) => `<label>固定第${index + 1}队英雄<input data-scope="three-queue-optimizer" data-field="lockHeroes" data-queue-index="${index}" type="checkbox" ${threeQueueOptimizerOptions.lockHeroes[index] ? "checked" : ""}></label><label>固定第${index + 1}队比例<input data-scope="three-queue-optimizer" data-field="lockRatios" data-queue-index="${index}" type="checkbox" ${threeQueueOptimizerOptions.lockRatios[index] ? "checked" : ""}></label>`).join("")}</div>`;
   else fields = `${route === "innerEarth" ? '<label>优化对象<output>A方兵种比例</output></label>' : chooseSide("simple-optimizer", "side", simpleOptimizerOptions.side)}${field("simple-optimizer", "verificationTrials", simpleOptimizerOptions.verificationTrials, "最终复验场次")}${field("simple-optimizer", "topN", simpleOptimizerOptions.topN, "最终候选数")}${input.attributeInputMode === "prediction" && route !== "innerEarth" ? `<label>固定当前英雄<input data-scope="simple-optimizer" data-field="fixedHeroes" type="checkbox" ${simpleOptimizerOptions.fixedHeroes ? "checked" : ""}></label>` : ""}<label>固定当前配兵<input data-scope="simple-optimizer" data-field="fixedRatio" type="checkbox" ${simpleOptimizerOptions.fixedRatio ? "checked" : ""}></label>`;
   const noHeroes = input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty";
@@ -1336,7 +1539,7 @@ function renderPlayerOptimizationResults(): string {
     return `<h3>地心优化结果</h3>${rows.map((row, index) => { const candidate = row.candidate; const ratios = "ratios" in candidate ? candidate.ratios : undefined; return card(index, row.winRate, row.trials, "queues" in candidate ? candidate.queues.map((queue) => heroNames(queue.leaderHeroIds, queue.headWeaponLevels)).join("；") : `${heroNames(candidate.leaderHeroIds, candidate.headWeaponLevels)} · 配比 ${ratios ? TROOP_TYPES.map((troop) => ratios[troop]).join(" / ") : "1:1:1"}`, "apply-inner-earth-optimizer"); }).join("")}`;
   }
   if (isThreeQueueBattleInput(input) && threeQueueOptimizationResult !== null && threeQueueResultRevision === revisionState.inputRevision) return threeQueueOptimizationResult.topCandidates.map((row, index) => card(index, row.winRate, row.trials, row.candidate.queues.map((queue, qi) => `第${qi + 1}队 ${heroNames(queue.leaderHeroIds, queue.headWeaponLevels)} · ${TROOP_TYPES.map((troop) => queue.ratiosBp[troop] / 100).join(" / ")}`).join("；"), "apply-three-queue-optimizer")).join("");
-  if (input.battleContext === "rally" && optimizationResult !== null) return `<h3>集结${(optimizationConfig.candidateSide ?? "A") === "B" ? "防守方" : "进攻方"}优化结果</h3>${optimizationResult.singleWaveTop.map((row, index) => card(index, row.winRate, row.trials, rallyRecommendationDetails(row.candidate, TROOP_TYPES.map((t) => input[(optimizationConfig.candidateSide ?? "A") === "A" ? "sideA" : "sideB"].troops[t].troopLevel), developerToolsEnabled), "apply-rally-optimizer")).join("")}${optimizationResult.multiWaveTop.map((plan, index) => `<article class="player-optimization-card"><h3>多波方案 ${index + 1}</h3><p>${plan.targetWaves === null ? "当前验证未达到目标击破概率" : `${plan.targetWaves} 波达到目标击破概率`}</p>${plan.waves.map((wave) => `<p>第${wave.wave}波累计击破 ${formatPercent(wave.defeatProbability)}</p>`).join("")}<button class="btn" data-action="apply-rally-wave" data-index="${index}">应用第1波阵容</button></article>`).join("")}`;
+  if (optimizerRoute(input.scenarioType) === "rally" && optimizationResult !== null) return `<h3>${optimizationTargetLabel(input.scenarioType, optimizationConfig.candidateSide ?? "A")}优化结果</h3>${optimizationResult.singleWaveTop.map((row, index) => card(index, row.winRate, row.trials, rallyRecommendationDetails(row.candidate, TROOP_TYPES.map((t) => input[(optimizationConfig.candidateSide ?? "A") === "A" ? "sideA" : "sideB"].troops[t].troopLevel), developerToolsEnabled), "apply-rally-optimizer")).join("")}${optimizationResult.multiWaveTop.map((plan, index) => `<article class="player-optimization-card"><h3>多波方案 ${index + 1}</h3><p>${plan.targetWaves === null ? "当前验证未达到目标击破概率" : `${plan.targetWaves} 波达到目标击破概率`}</p>${plan.waves.map((wave) => `<p>第${wave.wave}波累计击破 ${formatPercent(wave.defeatProbability)}</p>`).join("")}<button class="btn" data-action="apply-rally-wave" data-index="${index}">应用第1波阵容</button></article>`).join("")}`;
   if (simpleOptimizationResult !== null && simpleResultRevision === revisionState.inputRevision) return simpleOptimizationResult.topCandidates.map((row, index) => card(index, row.winRate, row.trials, `${heroNames(row.candidate.leaderHeroIds, row.candidate.headWeaponLevels)} · 配比 ${row.candidate.ratios ? TROOP_TYPES.map((troop) => row.candidate.ratios![troop]).join(" / ") : "1:1:1"}`, "apply-simple-optimizer")).join("");
   return "";
 }
@@ -1397,15 +1600,16 @@ function renderHeroPool(): string {
   const excludedCurrent = configuredHeadHeroIds(input).filter((id) => !selected.has(id));
   const unownedCurrent = excludedCurrent.filter((id) => !ownedHeroIds(input).includes(id));
   const currentNotice = excludedCurrent.length ? `<p class="hint">当前手动阵容中未参与自动 Head 搜索的英雄：${excludedCurrent.map((id) => `${escapeHtml(catalog.leaderHeroes.find((h) => h.heroId === id)?.name ?? id)}（${unownedCurrent.includes(id) ? "未标记拥有" : owned.has(id) ? "未勾选参与" : "R/SR 不参与 Head"}）`).join("、")}。手动阵容独立保留。</p>${unownedCurrent.length ? '<button class="btn btn-small" data-action="hero-pool-own-current">确认当前阵容英雄已拥有</button>' : ""}` : "";
-  const stageWarning = developerToolsEnabled && validationStageId(input) === "s12" && !heroes.some((hero) => hero.generation === 12 && selected.has(hero.heroId))
-    ? '<p class="error-box">S12 server stage but no S12 SSR is eligible for Head optimization</p>' : "";
+  const serverGeneration = optimizerServerGeneration(input);
+  const stageWarning = developerToolsEnabled && !heroes.some((hero) => hero.generation === serverGeneration && selected.has(hero.heroId))
+    ? `<p class="error-box">S${serverGeneration} server stage but no S${serverGeneration} SSR is eligible for Head optimization</p>` : "";
   const weaponLevels = heroes.filter((hero) => selected.has(hero.heroId)).map((hero) => optimizerWeaponLevel(input, hero.heroId, heroPoolSide));
   const weaponSummary = `专武：Lv10 × ${weaponLevels.filter((level) => level === 10).length} · 自定义等级 × ${weaponLevels.filter((level) => level !== null && level !== 10).length} · 无专武 × ${weaponLevels.filter((level) => level === null).length}`;
   return lazyDetails.render("hero-pool", `<h2>本次优化英雄池</h2><span>参与优化：${selected.size} / 可用 ${owned.size}（已拥有且当前合法） · ${weaponSummary}</span>`, () =>
     `<div class="panel-body"><p class="hint">此处只设置本次参与优化与优化专武等级；长期拥有情况在“我的英雄”中维护。R/SR 不进入车头自动优化池，手动配置与车身池继续保留。近三代只用于生成新车头。全选 / 全不选保留拥有情况与专武等级。</p>
-    ${currentNotice}${stageWarning}<p class="hint">拥有范围：${heroOwnershipScope(input) === "allAvailable" ? "理论全部可用（随服务器阶段开放新英雄）" : "我的英雄（新解锁英雄需确认拥有）"}</p><div class="inline-fields"><button class="btn btn-small" data-action="hero-pool-all">全选</button><button class="btn btn-small" data-action="hero-pool-none">全不选</button>
+    ${currentNotice}${stageWarning}<p class="hint">拥有范围：${heroOwnershipScope(input) === "allAvailable" ? "理论全部可用（随服务器阶段开放新英雄）" : "我的英雄（升代时自动加入新开放车头，保留已有参与设置）"}</p><div class="inline-fields"><button class="btn btn-small" data-action="hero-pool-all">全选</button><button class="btn btn-small" data-action="hero-pool-none">全不选</button>
       ${input.scenarioType === "INNER_EARTH" ? '<label>英雄池侧<output>我方 A</output></label>' : `<label>编辑英雄池侧<select data-scope="hero-pool-side"><option value="A" ${heroPoolSide === "A" ? "selected" : ""}>A 方</option><option value="B" ${heroPoolSide === "B" ? "selected" : ""}>B 方</option></select></label>`}</div>
-    <div class="hero-pool-grid">${heroes.map((hero) => `<div class="hero-pool-row"><label><input data-scope="hero-pool" data-hero-id="${escapeAttr(hero.heroId)}" type="checkbox" ${selected.has(hero.heroId) ? "checked" : ""}>参与优化</label><span>${escapeHtml(hero.name)} ${heroCategoryLabel(hero)}</span>
+    <div class="hero-pool-grid">${heroes.map((hero) => `<div class="hero-pool-row"><label><input data-scope="hero-pool" data-hero-id="${escapeAttr(hero.heroId)}" type="checkbox" ${selected.has(hero.heroId) ? "checked" : ""}>参与优化</label><span class="hero-art-name">${renderHeroPortrait(hero.heroId)}${escapeHtml(hero.name)} ${heroCategoryLabel(hero)}</span>
       ${hero.weaponMaxStat === null ? "<span>无专武等级</span>" : `<label>专武<select data-scope="owned-weapon" data-hero-id="${escapeAttr(hero.heroId)}" data-side="${heroPoolSide}">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === optimizerWeaponLevel(input, hero.heroId, heroPoolSide) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`}</div>`).join("")}</div></div>`, 'class="hero-pool"');
 }
 
@@ -1414,8 +1618,8 @@ function renderOwnedHeroes(): string {
     .sort((a, b) => (a.generation ?? 0) - (b.generation ?? 0));
   const owned = new Set(ownedHeroIds(input));
   return lazyDetails.render("owned-heroes", `<h2>我的英雄</h2><span>已拥有：${owned.size} / 当前阶段 ${heroes.length}</span>`, () =>
-    `<div class="panel-body"><label>拥有范围<select data-scope="hero-ownership-scope"><option value="allAvailable" ${heroOwnershipScope(input) === "allAvailable" ? "selected" : ""}>理论全部可用</option><option value="owned" ${heroOwnershipScope(input) === "owned" ? "selected" : ""}>我的英雄</option></select></label><p class="hint">理论全部可用随服务器阶段开放新英雄；我的英雄仅使用明确拥有的英雄。取消拥有会关闭双方对此英雄的优化参与状态，保留专武等级。手动选择新英雄会将其加入我的英雄，已有的参与开关保持不变。此处包含可用于手动配置及车身的 R / SR 英雄。</p><div class="hero-pool-grid">${heroes.map((hero) =>
-      `<label class="owned-hero-row"><input data-scope="owned-hero" data-hero-id="${escapeAttr(hero.heroId)}" type="checkbox" ${owned.has(hero.heroId) ? "checked" : ""}>拥有 ${escapeHtml(hero.name)} ${heroCategoryLabel(hero)}</label>`).join("")}</div></div>`, 'class="owned-heroes"');
+    `<div class="panel-body"><label>拥有范围<select data-scope="hero-ownership-scope"><option value="allAvailable" ${heroOwnershipScope(input) === "allAvailable" ? "selected" : ""}>理论全部可用</option><option value="owned" ${heroOwnershipScope(input) === "owned" ? "selected" : ""}>我的英雄</option></select></label><p class="hint">升代时自动加入本次新开放的合法车头，已有英雄的拥有、参与与专武设置保持不变。取消拥有会关闭双方对此英雄的优化参与状态，保留专武等级。手动选择新英雄会将其加入我的英雄，已有的参与开关保持不变。此处包含可用于手动配置及车身的 R / SR 英雄。</p><div class="hero-pool-grid">${heroes.map((hero) =>
+      `<label class="owned-hero-row"><input data-scope="owned-hero" data-hero-id="${escapeAttr(hero.heroId)}" type="checkbox" ${owned.has(hero.heroId) ? "checked" : ""}><span class="hero-art-name">${renderHeroPortrait(hero.heroId)}拥有 ${escapeHtml(hero.name)} ${heroCategoryLabel(hero)}</span></label>`).join("")}</div></div>`, 'class="owned-heroes"');
 }
 
 function updateHeroPool(target: HTMLInputElement): void {
@@ -1765,7 +1969,7 @@ function renderControls(n0: number | null): string {
     <h2 class="control-title">全局战斗设置</h2>
     <label>服务器阶段<select data-scope="server-stage">${SERVER_STAGES.map((candidate) => `<option value="${candidate.id}" ${candidate.id === stage.id ? "selected" : ""}>${candidate.label}</option>`).join("")}</select></label>
     <div class="stage-summary"><span>英雄上限 <strong>S${stage.maxHeroGeneration}</strong></span><span>兵种上限 <strong>${stage.maxTroopLevel}</strong></span></div>
-    <div class="scenario-picker"><span>战斗场景</span>${(["SINGLE", "THREE_THREE_THREE", "ICE_FIRE_LEAGUE", "RALLY", "INNER_EARTH"] as const).map((type) => `<label class="scenario-choice"><input type="radio" name="scenario-type" data-scope="scenario-type" value="${type}" ${(input.scenarioType ?? (input.battleContext === "rally" ? "RALLY" : "SINGLE")) === type ? "checked" : ""}><span>${({ SINGLE: "单撞模式", THREE_THREE_THREE: "333模式", ICE_FIRE_LEAGUE: "冰火战歌模式", RALLY: "集结模式", INNER_EARTH: "地心模式" })[type]}</span></label>`).join("")}</div>
+    <div class="scenario-picker"><span>战斗场景</span>${(["SINGLE", "CITY_DEFENSE", "THREE_THREE_THREE", "ICE_FIRE_LEAGUE", "RALLY", "INNER_EARTH"] as const).map((type) => `<label class="scenario-choice"><input type="radio" name="scenario-type" data-scope="scenario-type" value="${type}" ${(input.scenarioType ?? (input.battleContext === "rally" ? "RALLY" : "SINGLE")) === type ? "checked" : ""}><span>${({ SINGLE: "单撞模式", CITY_DEFENSE: "守城模式", THREE_THREE_THREE: "333模式", ICE_FIRE_LEAGUE: "冰火战歌模式", RALLY: "集结模式", INNER_EARTH: "地心模式" })[type]}</span></label>`).join("")}</div>
     ${innerEarth ? renderInnerEarthModePicker(input) : ""}
     <button class="btn btn-primary" data-action="run" ${invalidRally || invalidThreeQueue || pendingReport.length > 0 ? "disabled" : ""}>开始模拟</button>
     <button class="btn" data-action="open-optimizer" ${optimizationRunning ? "disabled" : ""}>配队优化</button>
@@ -1885,7 +2089,7 @@ function renderThreeQueueOptimizer(): string {
 }
 
 function optimizerDimensions(): SearchDimensionsAudit {
-  if (input.scenarioType === "RALLY") return resolveSearchDimensions(input, {
+  if (optimizerRoute(input.scenarioType) === "rally") return resolveSearchDimensions(input, {
     side: optimizationConfig.candidateSide ?? "A",
     fixedHead: TROOP_TYPES.every((troop) => optimizationConfig.constraints.fixedLeaders?.[troop] !== undefined),
     fixedBody: optimizationConfig.constraints.fixedBodyExact === true,
@@ -2062,6 +2266,7 @@ function renderSimpleOptimizer(): string {
 }
 
 function renderRallyOptimizer(): string {
+  if (input.scenarioType === "CITY_DEFENSE") return renderPlayerOptimizer();
   const candidateSide = optimizationConfig.candidateSide ?? "A";
   const constraints = optimizationConfig.constraints;
   const joint = resolveJointPipelineOptions(optimizationConfig.jointPipeline);
@@ -2172,7 +2377,7 @@ function renderOptimizationResult(value: OptimizationResult | null): string {
   const candidateSide=value.optimizationContext?.candidateSide??value.searchDiagnostics?.optimizationTargetSide??"A";
   const audit=value.searchDimensionAudit??optimizerDimensions();
   const own=candidateSide==="A"?input.sideA:input.sideB;
-  const candidateLabel=optimizationTargetLabel("RALLY",candidateSide);
+  const candidateLabel=optimizationTargetLabel(input.scenarioType,candidateSide);
   const heroName = (id: string | null | undefined): string =>
     id === null || id === undefined ? "无" : catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? id;
   const leaderName = (id: string | null | undefined, candidate?: CandidateEvaluation["candidate"]): string => {
@@ -2297,7 +2502,7 @@ function renderSide(
         "T12 兵种技能等级",
         `<div class="inline-fields">${TROOP_TYPES.map((troop) => `
           <label>${troopName(troop)}（0–24）
-            <select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: 25 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>${level}</option>`).join("")}</select>
+            <select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: maxT12SkillLevel(input, sideId) + 1 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>${level}</option>`).join("")}</select>
           </label>`).join("")}</div>${lazyDetails.render(`loadout-${sideId}`, "兵种技能预览", () => {
             const state = safePreview();
             return state === null ? "当前输入无法生成技能预览。" :
@@ -2306,7 +2511,7 @@ function renderSide(
       )}
       ${prediction ? renderSideSection(
         "历史报告与当前战斗加成",
-        `${renderBonusContexts(sideId, side)}${bonusModeForDisplay(side) === "custom" ? renderExternalBuffs(sideId, side) : ""}<div class="inline-fields"><label>${isRally ? "集结" : "出征"}容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="${isRally ? "rallyCapacityBonus" : "marchCapacityBonus"}" type="text" inputmode="decimal" value="${((isRally ? side.rallyCapacityBonus : side.marchCapacityBonus) ?? 0) * 100}"></label>${isRally ? `<label>固定容量增益<input data-scope="capacity" data-side="${sideId}" data-field="rallyFixedCapacityBonus" type="number" min="0" step="1" value="${side.rallyFixedCapacityBonus ?? 0}"></label>` : ""}<label>宠物出征容量等级（Lv0–10）<select data-scope="capacity" data-side="${sideId}" data-field="petMarchCapacityLevel">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === (side.petMarchCapacityLevel ?? 0) ? "selected" : ""}>Lv${level} · +${level * 1500}</option>`).join("")}</select></label></div>`,
+        `${renderBonusContexts(sideId, side)}${renderExternalBuffs(sideId, side)}<div class="inline-fields"><label>${isRally ? "集结" : "出征"}容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="${isRally ? "rallyCapacityBonus" : "marchCapacityBonus"}" type="text" inputmode="decimal" value="${((isRally ? side.rallyCapacityBonus : side.marchCapacityBonus) ?? 0) * 100}"></label>${isRally ? `<label>固定容量增益<input data-scope="capacity" data-side="${sideId}" data-field="rallyFixedCapacityBonus" type="number" min="0" step="1" value="${side.rallyFixedCapacityBonus ?? 0}"></label>` : ""}<label>宠物出征容量等级（Lv0–10）<select data-scope="capacity" data-side="${sideId}" data-field="petMarchCapacityLevel">${Array.from({ length: 11 }, (_, level) => `<option value="${level}" ${level === (side.petMarchCapacityLevel ?? 0) ? "selected" : ""}>Lv${level} · +${level * 1500}</option>`).join("")}</select></label></div>`,
       ) : ""}
       ${prediction ? lazyDetails.render(`expected-${sideId}`, "预期战报加成", () => {
         const values = expected ?? safeExpectedPreview()?.[sideId];
@@ -2428,7 +2633,7 @@ function renderThreeQueueSide(sideId: SideId, side: ValidationSideInput): string
           <label>组内比例 %<input data-scope="queue-mixed-ratio" data-side="${sideId}" data-queue-index="${index}" data-troop="${troop}" data-index="${partIndex}" type="text" inputmode="decimal" value="${total === 0 ? 0 : (part.aliveCount / total * 100).toFixed(2)}"></label>`).join("")}</div></details>`];
       }).join("")}
       ${renderBonusContexts(sideId, queue, index)}
-      ${bonusModeForDisplay(queue) === "custom" ? renderQueueExternalBuffs(sideId, index, queue) : ""}
+      ${renderQueueExternalBuffs(sideId, index, queue)}
       ${renderQueueHeroSkillLevels(sideId, index, queue)}
       <h5>本队兵种比例</h5><div class="queue-ratios">${ratios}</div>
       <p class="hint">本队合计 <strong class="${counts === null ? "negative" : "positive"}">
@@ -2522,6 +2727,7 @@ function renderTroopRow(
 ): string {
   const isRally = input.battleContext === "rally" && input.attributeInputMode === "prediction";
   const is333 = input.scenarioType === "THREE_THREE_THREE";
+  const ratioOnly = !internals && (scenarioStateKey(input) === "SINGLE" || input.scenarioType === "CITY_DEFENSE");
   const levelMode = isRally ? "single" : value.levelMode ?? "single";
   let rallyCount = value.count;
   if (isRally) {
@@ -2545,7 +2751,7 @@ function renderTroopRow(
     <div class="troop-fields">
       ${isRally ? `<label>比例 %<input class="compact-input" data-scope="rally" data-side="${side}" data-field="${troop}" type="text" inputmode="decimal" value="${sideInput.rallyDeployment?.ratios[troop] ?? (troop === "shield" ? 34 : 33)}"></label>` : ""}
       ${isRally || is333 ? "" : `<label>等级模式<select data-scope="troop-level-mode" data-side="${side}" data-troop="${troop}"><option value="single" ${levelMode === "single" ? "selected" : ""}>单等级</option><option value="mixed" ${levelMode === "mixed" ? "selected" : ""}>混等级</option></select></label>`}
-      ${levelMode === "single" && !is333 ? `${isRally ? "" : `<label>数量${numberField("count", "1")}</label>`}<label>${internals ? "等级" : "兵种等级"}<select data-scope="troop" data-side="${side}" data-troop="${troop}" data-field="troopLevel">${getAvailableTroopLevels(validationStageId(input), troop).map((level) => `<option value="${level}" ${level === value.troopLevel ? "selected" : ""}>${level}</option>`).join("")}</select></label>` : ""}
+      ${levelMode === "single" && !is333 ? `${isRally || ratioOnly ? "" : `<label>数量${numberField("count", "1")}</label>`}<label>${internals ? "等级" : "兵种等级"}<select data-scope="troop" data-side="${side}" data-troop="${troop}" data-field="troopLevel">${getAvailableTroopLevels(validationStageId(input), troop).map((level) => `<option value="${level}" ${level === value.troopLevel ? "selected" : ""}>${level}</option>`).join("")}</select></label>` : ""}
     </div>
     ${levelMode === "mixed" ? `<div class="mixed-composition"><div class="mixed-composition-head"><strong>${troopName(troop)}等级构成</strong><button class="btn btn-small" type="button" data-action="add-mixed-level" data-side="${side}" data-troop="${troop}" ${composition.length >= getAvailableTroopLevels(validationStageId(input), troop).length ? "disabled" : ""}>+ 添加等级</button></div>${composition.map((entry, index) => `<div class="mixed-level-row"><select aria-label="混等级兵种等级" data-scope="mixed-level" data-side="${side}" data-troop="${troop}" data-index="${index}">${getAvailableTroopLevels(validationStageId(input), troop).map((level) => `<option value="${level}" ${level === entry.level ? "selected" : ""} ${level !== entry.level && composition.some((candidate) => candidate.level === level) ? "disabled" : ""}>${level}</option>`).join("")}</select><input aria-label="该等级兵数" data-scope="mixed-count" data-side="${side}" data-troop="${troop}" data-index="${index}" type="number" min="0" step="1" value="${entry.aliveCount}"><button class="btn btn-small" type="button" data-action="remove-mixed-level" data-side="${side}" data-troop="${troop}" data-index="${index}" ${composition.length === 1 ? "disabled" : ""}>移除</button></div>`).join("")}</div>` : ""}
     ${internals ? `<div class="readonly-grid">
@@ -2559,7 +2765,7 @@ function renderTroopRow(
 
 function renderExternalBuffs(sideId: SideId, side: ValidationSideInput): string {
   const config = side.externalBuffs ?? DEFAULT_EXTERNAL_BUFF_CONFIG;
-  return `<div class="external-buffs">
+  return `<div class="external-buffs">${renderCombatBuffPresets(sideId)}
     <details open><summary>城镇增益</summary><div class="external-grid">
       ${townBuffSelect(sideId, "attack", "我方攻击增加", config.town.attack)}
       ${townBuffSelect(sideId, "defense", "我方防御增加", config.town.defense)}
@@ -2632,73 +2838,65 @@ function renderExpectedReportBonus(value: ValidationExpectedReportBonus): string
     <details class="mini-details"><summary>高级调试 · 历史 / 当前加成与来源</summary><pre>${escapeHtml(JSON.stringify({
       units: "breakdown: decimal rates; calculationAudit: percentage points except targetBuff/targetDebuff/currentExternalBuffBase/currentWeaponBuff/currentExternalBuffTotal decimal rates; actualTargetBuffUsed includes the weapon rate", breakdown: value.breakdown,
     }, null, 2))}</pre></details>
-    <p class="hint">历史加成只用于反推 raw；当前加成由所选模式决定。公式：(100 + raw + 阵容修正 + 当前官职) × (1 + 当前 Buff + 场景专武 Buff) ÷ (1 + 当前 Debuff) − 100。场景专武列展示来源；同属性的普通 Buff 与专武 Buff 先相加，统一进入外部 Buff 乘区。英雄主动技能在战斗内结算。</p></div>`;
-}
-
-function bonusModeForDisplay(side: ValidationSideInput | ValidationQueueConfig): "none" | "reuseSource" | "custom" {
-  return targetBonusMode(side as ValidationSideInput);
+    <p class="hint">历史条件仅供独立反推工具使用；当前Buff来自正规配置。公式：(100 + 基础属性 + 阵容修正) × (1 + 当前 Buff + 场景专武 Buff) ÷ (1 + 当前 Debuff) − 100。场景专武列展示来源；同属性的普通 Buff 与专武 Buff 先相加，统一进入外部 Buff 乘区。英雄主动技能在战斗内结算。</p></div>`;
 }
 
 function renderBonusContexts(sideId: SideId, side: ValidationSideInput | ValidationQueueConfig,
   queueIndex?: number): string {
-  const history = sourceReportBonuses(side);
-  const target = side.targetBattleBonuses ?? zeroReportBonuses();
   const key = `${sideId}-${queueIndex ?? "side"}`;
   const location = `data-side="${sideId}" ${queueIndex === undefined ? "" : `data-queue-index="${queueIndex}"`}`;
-  const mode = bonusModeForDisplay(side);
-  const table = (context: "sourceReportBonuses" | "targetBattleBonuses") =>
-    `<div class="table-scroll"><table class="data-table"><thead><tr><th>属性</th><th>官职加算 %</th><th>Buff %</th><th>受到 Debuff %</th></tr></thead><tbody>${TROOP_TYPES.flatMap((troop) => reportAttributes.map((stat) =>
-      `<tr><td>${troopName(troop)}${attributeName(stat)}</td>${(["additive", "buff", "debuff"] as const).map((field) => `<td><input type="text" inputmode="decimal" data-scope="bonus-context" ${location} data-context="${context}" data-troop="${troop}" data-stat="${stat}" data-field="${field}" value="${(context === "sourceReportBonuses" ? history : target)[troop][stat][field]}" ${context === "sourceReportBonuses" && side.reportAttributeBasis !== "historicalReport" ? "readonly" : ""}></td>`).join("")}</tr>`)).join("")}</tbody></table></div>`;
-  return `<div class="bonus-contexts"><label>属性输入含义<select data-scope="bonus-context" ${location} data-field="reportAttributeBasis"><option value="raw" ${side.reportAttributeBasis !== "historicalReport" ? "selected" : ""}>原始 / 本队基础属性</option><option value="historicalReport" ${side.reportAttributeBasis === "historicalReport" ? "selected" : ""}>手动输入历史最终战报</option></select></label>
-    ${lazyDetails.render(`source-bonuses-${key}`, "历史特殊加成 · 仅用于反推", () => `${renderHistoricalBonusTable(sideId, side, queueIndex)}<p class="hint">历史战报特殊加成只用于从历史战报反推基础属性，不会自动带入当前战斗。同一属性的加成分别用于盾、矛、射的对应战报项；三兵种属性仍各自独立。</p>${developerToolsEnabled && side.historicalBonusMigration ? `<p class="notice warning">旧历史特殊加成存在兵种间冲突：已保留逐项反推的基础属性，冲突项在四属性表中置零，未任意选取某个兵种。${side.historicalBonusMigration.conflicts.length} 项冲突。</p><pre>${escapeHtml(JSON.stringify(side.historicalBonusMigration, null, 2))}</pre>` : ""}`, 'class="mini-details"')}
-    <label>当前预期战斗特殊加成<select data-scope="bonus-context" ${location} data-field="targetBonusMode"><option value="none" ${mode === "none" ? "selected" : ""}>不沿用原战报特殊加成（默认）</option><option value="reuseSource" ${mode === "reuseSource" ? "selected" : ""}>沿用原战报特殊加成</option><option value="custom" ${mode === "custom" ? "selected" : ""}>自定义</option></select></label>
-    ${mode === "custom" ? lazyDetails.render(`target-bonuses-${key}`, "自定义当前加成", () => `${table("targetBattleBonuses")}<p class="hint">当前官职、其他 Buff 和受到的 Debuff；下方城镇、宠物、专家配置另行合并。只影响新战斗。</p>`, 'class="mini-details"') : ""}
-    ${side.targetBonusMode === undefined && mode === "custom" ? '<p class="hint">兼容旧原始面板配置：下方已手动配置的外部增益仍生效；选择“不沿用”可清零当前环境。</p>' : ""}</div>`;
+  const attributes = side.sourceReportAttributes ?? ("troops" in side ? side.troops : side.attributes);
+  return lazyDetails.render(`source-bonuses-${key}`, "从历史战报反推基础属性", () => `
+    ${advancedHelp("历史特殊加成（仅用于还原基础属性）。仅用于旧战报反推，不参与当前战斗。",
+      "如果历史战报当时存在临时Buff或Debuff，在这里记录那一战的条件，再点击还原按钮，将结果明确写入基础属性。如果不是在做旧战报反推，这里无需填写。<p>例如：历史战报穿透3000%，当时有穿透Buff +20%、受到穿透Debuff 2%。填写20和2仅用于还原历史基础穿透，不会把这些加成带入今天的新战斗。</p>")}
+    <h4>历史最终战报12项属性</h4><div class="report-attributes">${TROOP_TYPES.flatMap((troop) => reportAttributes.map((stat) => `<label>${troopName(troop)}${attributeName(stat)} %<input type="text" inputmode="decimal" data-scope="bonus-context" ${location} data-context="sourceReportAttributes" data-troop="${troop}" data-stat="${stat}" value="${attributes?.[troop][stat] ?? 0}"></label>`)).join("")}</div>
+    ${renderHistoricalBonusTable(sideId, side, queueIndex)}
+    <button class="btn" data-action="apply-historical-base" ${location}>还原并填入基础属性</button>
+    <p class="hint">只有点击还原按钮才会改写当前基础属性；编辑历史记录不会改变当前BattleInput的战斗属性。</p>
+    ${developerToolsEnabled && side.historicalBonusMigration ? `<p class="notice warning">旧历史条件有 ${side.historicalBonusMigration.conflicts.length} 项兵种间冲突，请核对原始记录。</p>` : ""}`, 'class="mini-details"');
 }
 
 function updateBonusContext(target: HTMLInputElement | HTMLSelectElement): void {
-  const sideId = requireSide(target.dataset.side);
-  const side = getInputSide(sideId);
+  const sideId = requireSide(target.dataset.side), side = getInputSide(sideId);
   const queueIndex = target.dataset.queueIndex;
   const queues = queueIndex === undefined ? undefined : [...getValidationThreeQueues(side)];
-  const index = Number(queueIndex);
-  const current = queues === undefined ? side : queues[index]!;
-  let next = { ...current };
-  const field = target.dataset.field;
-  if (field === "targetBonusMode") {
-    next = { ...current, targetBonusMode: target.value as NonNullable<ValidationSideInput["targetBonusMode"]> };
-  } else if (field === "reportAttributeBasis") {
-    const troops = queues === undefined ? side.troops : Object.fromEntries(TROOP_TYPES.map((troop) =>
-      [troop, { ...side.troops[troop], ...queues[index]!.attributes![troop] }])) as ValidationSideInput["troops"];
-    const original = { ...side, ...current, troops } as ValidationSideInput;
-    const raw = rawReportSide(original);
-    const source = sourceReportBonuses(original);
-    const converted = target.value === "raw" ? raw.troops : Object.fromEntries(TROOP_TYPES.map((troop) => [troop,
-      { ...raw.troops[troop], ...Object.fromEntries(reportAttributes.map((stat) => [stat,
-        deriveFinalReportAttribute({ rawPercent: raw.troops[troop][stat], additivePercent: source[troop][stat].additive,
-          buffDecimal: source[troop][stat].buff / 100, debuffDecimal: source[troop][stat].debuff / 100 })])) }])) as ValidationSideInput["troops"];
-    next = { ...current, reportAttributeBasis: target.value as "raw" | "historicalReport",
-      ...(queues === undefined ? { troops: converted } : { attributes: Object.fromEntries(TROOP_TYPES.map((troop) =>
-        [troop, Object.fromEntries(reportAttributes.map((stat) => [stat, converted[troop][stat]]))])) as NonNullable<ValidationQueueConfig["attributes"]> }) };
+  const index = Number(queueIndex), current = queues === undefined ? side : queues[index]!;
+  const stat = target.dataset.stat as typeof reportAttributes[number];
+  if (!reportAttributes.includes(stat)) throw new Error("无效历史属性。");
+  const value = readManualPercent(target as HTMLInputElement);
+  let next: ValidationSideInput | ValidationQueueConfig;
+  if (target.dataset.context === "sourceReportAttributes") {
+    const troop = requireTroop(target.dataset.troop);
+    const attributes = current.sourceReportAttributes ?? ("troops" in current ? current.troops : current.attributes!);
+    next = { ...current, sourceReportAttributes: { ...attributes, [troop]: { ...attributes[troop], [stat]: value } } };
   } else {
-    const context = target.dataset.context;
-    const troop = target.dataset.troop as TroopType;
-    const stat = target.dataset.stat as typeof reportAttributes[number];
-    if ((context !== "sourceReportBonuses" && context !== "targetBattleBonuses") || !reportAttributes.includes(stat) ||
-      (context === "targetBattleBonuses" && !TROOP_TYPES.includes(troop)) ||
-      (field !== "additive" && field !== "buff" && field !== "debuff")) throw new Error("无效加成字段。");
-    const value = readManualPercent(target as HTMLInputElement);
-    if (context === "sourceReportBonuses") {
-      const history = historicalReportBonuses(current);
-      next = { ...current, sourceReportBonuses: { ...history, [stat]: { ...history[stat], [field]: value } } };
-    } else {
-      const matrix = current.targetBattleBonuses ?? zeroReportBonuses();
-      next = { ...current, targetBattleBonuses: { ...matrix, [troop]: { ...matrix[troop], [stat]: { ...matrix[troop][stat], [field]: value } } }, targetBonusMode: "custom" as const };
-    }
+    const field = target.dataset.field;
+    if (target.dataset.context !== "sourceReportBonuses" || !["additive", "buff", "debuff"].includes(field ?? "")) throw new Error("无效历史加成。");
+    const history = historicalReportBonuses(current);
+    next = { ...current, sourceReportBonuses: { ...history, [stat]: { ...history[stat], [field!]: value } } };
   }
   if (queues === undefined) setInputSide(sideId, next as ValidationSideInput);
   else { queues[index] = next as ValidationQueueConfig; setInputSide(sideId, { ...side,
     threeQueues: queues as unknown as NonNullable<ValidationSideInput["threeQueues"]> }); }
+}
+
+function applyHistoricalBase(sideId: SideId, queueIndex?: string): void {
+  const side = getInputSide(sideId), queues = queueIndex === undefined ? undefined : [...getValidationThreeQueues(side)];
+  const index = Number(queueIndex), current = queues === undefined ? side : queues[index]!;
+  const attributes = current.sourceReportAttributes ?? ("troops" in current ? current.troops : current.attributes!);
+  const historical = { ...side, ...current, reportAttributeBasis: "historicalReport" as const,
+    troops: Object.fromEntries(TROOP_TYPES.map((troop) => [troop, { ...side.troops[troop], ...attributes[troop] }])) as ValidationSideInput["troops"] };
+  const raw = rawReportSide(historical as ValidationSideInput);
+  if (!queues) setInputSide(sideId, { ...side, troops: raw.troops, sourceReportAttributes: attributes, reportAttributeBasis: "raw" });
+  else {
+    const converted = Object.fromEntries(TROOP_TYPES.map((troop) =>
+      [troop, Object.fromEntries(reportAttributes.map((stat) => [stat, raw.troops[troop][stat]]))])) as NonNullable<ValidationQueueConfig["attributes"]>;
+    queues[index] = { ...captureQueueReportBaseline(current as ValidationQueueConfig), attributes: converted,
+      sourceReportAttributes: attributes, reportAttributeBasis: "raw", reportLineage: { source: "historicalReport",
+        historicalLineageConfirmed: true, attributeSnapshot: structuredClone(converted) } };
+    setInputSide(sideId, { ...side, threeQueues: queues as unknown as NonNullable<ValidationSideInput["threeQueues"]> });
+  }
+  input = { ...input, attributeInputMode: "prediction" };
 }
 
 function renderHeroSelect(
@@ -2713,7 +2911,7 @@ function renderHeroSelect(
   const heroes = (scope === "report-hero" ? catalog.reportHeroes : catalog.leaderHeroes)
     .filter((hero) => hero.troopType === troop &&
       isHeroAvailableAtStage(hero, validationStageId(input)));
-  return `<div class="hero-option"><label>${troopName(troop)}英雄
+  return `<div class="hero-option">${renderHeroPortrait(selected)}<label>${troopName(troop)}英雄
     <select data-scope="${scope}" data-side="${sideId}" data-troop="${troop}">
       <option value="">不配置</option>
       ${heroes.map((hero) => `<option value="${escapeAttr(hero.heroId)}" ${selected === hero.heroId ? "selected" : ""}>${escapeHtml(formatValidationHeroOption(hero))}</option>`).join("")}
@@ -2768,7 +2966,8 @@ function renderWeaponLevelInput(
   label: string,
   level: number,
 ): string {
-  return `<label>${escapeHtml(label)}<select data-scope="${scope}" data-side="${sideId}" data-hero="${escapeAttr(heroId)}">${Array.from({ length: 11 }, (_, weaponLevel) => `<option value="${weaponLevel}" ${weaponLevel === level ? "selected" : ""}>Lv${weaponLevel}</option>`).join("")}</select></label>`;
+  const weaponArt = renderWeaponArt(heroId);
+  return `<div class="weapon-art-field">${weaponArt}<label>${escapeHtml(label)}<select data-scope="${scope}" data-side="${sideId}" data-hero="${escapeAttr(heroId)}">${Array.from({ length: 11 }, (_, weaponLevel) => `<option value="${weaponLevel}" ${weaponLevel === level ? "selected" : ""}>Lv${weaponLevel}</option>`).join("")}</select></label></div>`;
 }
 
 function renderMemberSelect(sideId: SideId, side: ValidationSideInput, index: number): string {
@@ -2927,18 +3126,8 @@ function renderBatchStatistics(value: BatchSimulationResult | ThreeQueueBatchRes
             ${renderBatchDistributionMetric("期望剩余射手", distribution.remaining.marksman, remaining.marksman)}
           </div></section>`;
         }).join("")}</div>
-        <h3 class="section-title">技能平均造成的退出兵数</h3>
-        <p class="hint">仅统计独立技能伤害事件直接造成的退出兵数；这是二级归因，不再计入总退出兵数。纯属性 Buff 暂无直接击败归因。</p>
-        <div class="batch-skill-sides">${(["A", "B"] as const).map((side) => {
-          const entries = Object.entries(value.meanSkillCasualties[side])
-            .sort((left, right) => right[1] - left[1]);
-          return `<section><h4>${side} 方</h4>${entries.length === 0
-            ? `<p class="hint">本批次没有可直接归因的技能退出兵数。</p>`
-            : `<div class="batch-skill-list">${entries.map(([skillId, mean]) => {
-              const name = catalog.skills.find((skill) => skill.id === skillId)?.name ?? skillId;
-              return `<article class="batch-skill-row"><strong>${escapeHtml(name)}</strong><span>平均造成退出：${formatBatchExpectation(mean)}</span>${developerMode ? `<code>${escapeHtml(skillId)}</code>` : ""}</article>`;
-            }).join("")}</div>`}</section>`;
-        }).join("")}</div>
+        <h3 class="section-title">技能退出与击败归因</h3>
+        ${renderBatchSkillDamageStatistics(value)}
         <h3 class="section-title">概率技能统计</h3>
         <div class="batch-skill-sides">${(["A", "B"] as const).map((side) => {
           const entries = value.skillStatistics.filter((entry) => entry.side === side);
@@ -2992,7 +3181,7 @@ function renderThreeQueueResults(value: ThreeQueueScenarioResult, stale: boolean
       const trace = value.scenarioTrace.battles[row.battleNumber - 1]!;
       return lazyDetails.render(`queue-battle-${row.battleNumber}`, `<h2>第 ${row.battleNumber} 场 · ${row.attackerQueueId} 对 ${row.defenderQueueId}</h2><span class="tag tag-cyan">${row.winner} 胜 · seed ${row.battleSeed}</span>`,
         () => `<div class="panel-body"><p class="hint">战前 A：${counts(trace.attackerBefore)}；B：${counts(trace.defenderBefore)}</p><p class="hint">战后 A：${counts(trace.attackerAfter)}；B：${counts(trace.defenderAfter)}</p>${lazyDetails.render(`queue-trace-${row.battleNumber}`, `完整 BattleTrace · ${row.battle.simulation.trace.rounds.length} 回合`,
-          () => `<pre>${escapeHtml(row.battle.readableTrace)}</pre>`, 'class="mini-details"')}</div>`,
+          () => `<pre>${escapeHtml(row.battle.readableTrace.slice(0, DEBUG_PREVIEW.chars))}</pre>`, 'class="mini-details"')}</div>`,
         'class="panel trace-panel"');
     }).join("")}
     <section class="panel"><header class="panel-head"><h2>战后伤亡汇总</h2></header><div class="panel-body"><div class="summary-troops">${(["A", "B"] as const).map((side) => {
@@ -3013,9 +3202,8 @@ function renderResults(
     ${renderGradeCasualties(value.postBattleCasualties)}
     ${renderSkillSummary(value)}
     ${lazyDetails.render("battle-trace", '<h2>详细逐回合战斗日志</h2><span class="tag tag-cyan">默认折叠 · 回合 → 行动 → 事件</span>',
-      () => `<div class="panel-body"><div class="trace-range"><label>开始回合<input type="number" min="1" max="${value.summary.rounds}" data-scope="trace-range" data-field="start" value="${traceStartRound}"></label><label>结束回合<input type="number" min="1" max="${value.summary.rounds}" data-scope="trace-range" data-field="end" value="${traceEndRound}"></label></div>${value.trace.rounds.filter((round) => round.round >= traceStartRound && round.round <= traceEndRound).map((round) => renderRoundTrace(value, round)).join("")}</div>`,
+      () => `<div class="panel-body"><div class="trace-range"><label>开始回合<input type="number" min="1" max="${value.summary.rounds}" data-scope="trace-range" data-field="start" value="${traceStartRound}"></label><label>结束回合<input type="number" min="1" max="${value.summary.rounds}" data-scope="trace-range" data-field="end" value="${traceEndRound}"></label></div><p class="hint">每次最多预览 ${DEBUG_PREVIEW.rounds} 回合、每回合 ${DEBUG_PREVIEW.events} 个事件；更改回合范围查看后续内容。</p>${value.trace.rounds.filter((round) => round.round >= traceStartRound && round.round <= traceEndRound).slice(0, DEBUG_PREVIEW.rounds).map((round) => renderRoundTrace(value, round)).join("")}</div>`,
       'class="panel trace-panel"')}
-    ${renderDeveloperMode(value)}
   </section>`;
 }
 
@@ -3052,7 +3240,7 @@ function renderSummary(value: ValidationBattleResult): string {
 }
 
 function renderSkillSummary(value: ValidationBattleResult): string {
-  return `<section class="panel skill-summary"><header class="panel-head"><h2>技能生效次数</h2><span class="tag">成功生效次数</span></header><div class="panel-body skill-summary-grid">${(["A", "B"] as const).map((side) => {
+  return `<section class="panel skill-summary"><header class="panel-head"><h2>技能生效次数与击败归因</h2><span class="tag">保留退出人数</span></header><div class="panel-body">${renderSingleSkillDamageStatistics(value)}</div><div class="panel-body skill-summary-grid">${(["A", "B"] as const).map((side) => {
     const entries = value.skillSummary.filter((entry) => entry.side === side);
     return `<div><h3>${side} 方技能详情</h3>${entries.length === 0 ? `<p class="hint">本场没有技能生效或概率判定。</p>` : entries.map((entry) => `<details class="skill-summary-row"><summary><span><strong>${escapeHtml(entry.skillName)}</strong><small>${escapeHtml(entry.uiSummary)}</small></span><b>${entry.actualActivationCount}</b></summary><div class="kv-grid">
       <div class="kv"><span>判定次数</span><strong>${entry.probabilityCheckCount}</strong></div>
@@ -3064,36 +3252,34 @@ function renderSkillSummary(value: ValidationBattleResult): string {
 }
 
 function renderRoundDamage(value: ValidationBattleResult): string {
-  return `<section class="panel"><header class="panel-head"><h2>每回合模型伤害</h2></header><div class="panel-body"><table class="data-table"><thead><tr><th>回合</th><th>A → B</th><th>B → A</th></tr></thead><tbody>${value.roundDamage.map((row) => `<tr><td>R${row.round}</td><td class="metric">${formatNumber(row.AtoB)}</td><td class="metric">${formatNumber(row.BtoA)}</td></tr>`).join("")}</tbody></table></div></section>`;
+  return `<section class="panel"><header class="panel-head"><h2>每回合模型伤害</h2></header><div class="panel-body"><table class="data-table"><thead><tr><th>回合</th><th>A → B</th><th>B → A</th></tr></thead><tbody>${value.roundDamage.slice(0, DEBUG_PREVIEW.rounds).map((row) => `<tr><td>R${row.round}</td><td class="metric">${formatNumber(row.AtoB)}</td><td class="metric">${formatNumber(row.BtoA)}</td></tr>`).join("")}</tbody></table></div></section>`;
 }
 
 function renderComparisons(value: ValidationBattleResult): string {
-  return `<section class="panel"><header class="panel-head"><h2>模型与实际战报对比</h2></header><div class="panel-body"><table class="data-table"><thead><tr><th>回合</th><th>方向</th><th>模型值</th><th>实际值</th><th>差值</th><th>误差率</th></tr></thead><tbody>${value.comparisons.map((row) => `<tr><td>R${row.round}</td><td>${row.direction === "AtoB" ? "A → B" : "B → A"}</td><td class="metric">${formatNumber(row.model)}</td><td class="metric">${formatNumber(row.actual)}</td><td class="metric ${row.difference > 0 ? "positive" : row.difference < 0 ? "negative" : ""}">${signed(row.difference)}</td><td class="metric">${row.errorRate === null ? "不适用" : formatPercent(row.errorRate)}</td></tr>`).join("")}</tbody></table></div></section>`;
+  return `<section class="panel"><header class="panel-head"><h2>模型与实际战报对比</h2></header><div class="panel-body"><table class="data-table"><thead><tr><th>回合</th><th>方向</th><th>模型值</th><th>实际值</th><th>差值</th><th>误差率</th></tr></thead><tbody>${value.comparisons.slice(0, DEBUG_PREVIEW.events).map((row) => `<tr><td>R${row.round}</td><td>${row.direction === "AtoB" ? "A → B" : "B → A"}</td><td class="metric">${formatNumber(row.model)}</td><td class="metric">${formatNumber(row.actual)}</td><td class="metric ${row.difference > 0 ? "positive" : row.difference < 0 ? "negative" : ""}">${signed(row.difference)}</td><td class="metric">${row.errorRate === null ? "不适用" : formatPercent(row.errorRate)}</td></tr>`).join("")}</tbody></table></div></section>`;
 }
 
 function renderRoundTrace(value: ValidationBattleResult, round: RoundBattleTrace): string {
-  const effects = value.activeEffects.filter((effect) => effect.round === round.round);
-  const actionOrders = [...new Set(round.damageEvents.map((event) => event.actionOrder))]
+  const effects = value.activeEffects.filter((effect) => effect.round === round.round).slice(0, DEBUG_PREVIEW.events);
+  const previewEvents = round.damageEvents.slice(0, DEBUG_PREVIEW.events);
+  const actionOrders = [...new Set(previewEvents.map((event) => event.actionOrder))]
     .sort((left, right) => left - right);
-  return `<details class="trace-round">
-    <summary><span>第 ${round.round} 回合</span><span class="tag">${battleContextName(round.roundStart.battleContext)} · N0=${round.roundStart.fixedInitialMinTroops} · ${round.damageEvents.length} 个事件</span></summary>
-    <div class="round-content">
+  return lazyDetails.render(`trace-round-${round.round}`, `<span>第 ${round.round} 回合</span><span class="tag">${battleContextName(round.roundStart.battleContext)} · N0=${round.roundStart.fixedInitialMinTroops} · ${round.damageEvents.length} 个事件（最多预览 ${DEBUG_PREVIEW.events} 个）</span>`, () => `<div class="round-content">
       <div class="snapshot-grid">${(["A", "B"] as const).map((side) => renderSnapshot(side, round)).join("")}</div>
       <details class="mini-details"><summary>生效中的效果 · ${effects.length}</summary><div>${effects.length === 0 ? `<p class="hint">无生效效果</p>` : effects.map((effect) => `<div class="effect-line"><strong>${effect.side}.${effect.holder === "army" ? "全军" : troopName(effect.holder)}</strong>${developerMode ? ` · effectId=${escapeHtml(effect.effectId)}` : ""} · ${effectKindName(effect.kind)}${developerMode && effect.group !== null ? ` · group=${effect.group}` : ""} · 数值=${effect.value === null ? "不适用" : formatPercent(effect.value)} · 层数=${effect.stacks} · 剩余=${effect.remainingDuration ?? "永久"} · 生效=R${effect.effectiveFromRound} · 到期=${effect.expiresAfterRound === null ? "永久" : `R${effect.expiresAfterRound}`}${developerMode ? ` · timing=${effect.activationTiming} · periodic=${effect.periodRounds === null ? "no" : `R${effect.firstActiveRound}/${effect.activeWindowRounds}of${effect.periodRounds}`}` : ""}</div>`).join("")}</div></details>
       ${renderHeroMechanicEvents(round)}
       <div>${actionOrders.map((actionOrder) => {
-        const events = round.damageEvents.filter(
+        const events = previewEvents.filter(
           (event) => event.actionOrder === actionOrder,
         );
         const primary = events.find((event) => event.parentEventId === undefined) ?? events[0]!;
         return `<details class="trace-action">
           <summary><span>行动 ${actionOrder} · ${primary.sourceSide}.${troopName(primary.sourceTroop)}</span><span class="tag">${events.length} 个伤害事件</span></summary>
-          <div class="action-events">${events.map((event) => renderDamageEvent(value, round, event)).join("")}</div>
+          <div class="action-events">${events.map((event) => lazyDetails.render(`trace-event-${event.id}`, `${event.sourceSide}.${troopName(event.sourceTroop)} → ${event.targetSide}.${troopName(event.targetTroop)} · ${formatNumber(event.finalDamage)}`, () => renderDamageEvent(value, round, event), 'class="trace-event-preview"')).join("")}</div>
         </details>`;
       }).join("")}</div>
       ${renderRoundEnd(round)}
-    </div>
-  </details>`;
+    </div>`, 'class="trace-round"');
 }
 
 function renderSnapshot(side: SideId, round: RoundBattleTrace): string {
@@ -3106,8 +3292,12 @@ function renderSnapshot(side: SideId, round: RoundBattleTrace): string {
 function renderDamageEvent(
   value: ValidationBattleResult,
   round: RoundBattleTrace,
-  event: RoundDamageEventTrace,
+  rawEvent: RoundDamageEventTrace,
 ): string {
+  // Bound every event-level collection before map/join builds the rich preview.
+  const event = { ...rawEvent, ...Object.fromEntries(Object.entries(rawEvent)
+    .filter(([, value]) => Array.isArray(value))
+    .map(([key, value]) => [key, (value as readonly unknown[]).slice(0, DEBUG_PREVIEW.events)])) };
   const source = round.roundStart.sides[event.sourceSide][event.sourceTroop];
   const target = round.roundStart.sides[event.targetSide][event.targetTroop];
   const end = round.roundEnd.troops.find(
@@ -3155,7 +3345,7 @@ function renderDamageEvent(
       expiresAfterRound: trace.expiresAfterRound,
     })),
   ];
-  return `<details class="event">
+  return debugHtmlPreview`<details class="event">
     <summary><span class="event-order">${event.actionOrder}</span><span class="event-title">${event.sourceSide}.${troopName(event.sourceTroop)} → ${event.targetSide}.${troopName(event.targetTroop)}</span><span class="tag">${damageTypeName(event.damageType, event.damageSubtype)}</span><span class="damage-pill">${formatNumber(event.finalDamage)}</span></summary>
     <div class="event-body">
       ${auditSection("战报验证摘要", kvs({ 回合: round.round, 攻击方兵种: `${event.sourceSide}.${troopName(event.sourceTroop)}`, 目标兵种: `${event.targetSide}.${troopName(event.targetTroop)}`, 原始伤害: formatNumber(event.rawDamage), 效果修正后: formatNumber(event.modifiedDamage), 取整伤害: formatNumber(event.roundedDamage), ...(event.primaryRoundedDamage === undefined ? {} : { 主普攻: event.mainHitCancelled ? "闪避 · 0" : formatNumber(event.primaryRoundedDamage) }), ...(event.internalSegments?.length ? { 连射内部伤害: formatNumber(event.internalSegments.reduce((sum, segment) => sum + segment.roundedDamage, 0)) } : {}), 实际承伤: formatNumber(event.appliedDamage), 攻击方有效C: formatNumber(source.effectiveTroopConstant), 回合末目标剩余: end?.aliveCount ?? "—", 回合末前排生命: end === undefined ? "—" : formatNumber(end.frontUnitHp), 概率判定数: probabilistic.length }))}
@@ -3178,7 +3368,7 @@ function renderDamageEvent(
       ${auditSection("临时护盾", event.temporaryShield.length === 0 ? `<p class="hint">本次伤害未经过临时护盾。</p>` : event.temporaryShield.map((shield) => `<div class="effect-line"><strong>${shield.ruleStatus === "TENTATIVE" ? "待定规则" : "临时护盾"}</strong> · ${shield.gatotShield === undefined ? `减伤前原始伤害基准=${formatNumber(shield.rawDamageBasis ?? 0)}` : `加托自身攻击力X=${formatNumber(shield.gatotShield.calculatedAttackX)}`} · 生成护盾=${formatNumber(shield.generatedShieldHp)} · 承伤前护盾=${formatNumber(shield.shieldHpBeforeHit)} · 吸收=${formatNumber(shield.absorbedDamage)} · 承伤后护盾=${formatNumber(shield.shieldHpAfterHit)}${developerMode ? ` · sourceSkill=${escapeHtml(shield.shieldSourceSkill)} · status=${shield.ruleStatus}` : ""}</div>`).join(""))}
       ${auditSection("概率技能", probabilistic.length === 0 ? `<p class="hint">该攻击事件没有关联的概率判定。</p>` : probabilistic.map((trace) => `<div class="effect-line"><strong>第 ${round.round} 回合 · ${event.sourceSide}.${troopName(event.sourceTroop)}攻击${event.targetSide}.${troopName(event.targetTroop)}</strong> · ${trace.side}.${troopName(trace.troop)} ${escapeHtml(trace.name)} · ${escapeHtml(trace.summary)} · 概率=${formatPercent(trace.probability ?? 0)} · ${developerMode ? `RNG=${trace.roll ?? "强制覆盖"} · ` : ""}${trace.triggered ? "触发" : "未触发"} · 减伤前=${formatNumber(event.rawDamage)} · 减伤后=${formatNumber(event.modifiedDamage)}${trace.targetTroop === undefined ? "" : ` · 状态目标=${troopName(trace.targetTroop)} · 生效=R${trace.effectiveFromRound}–R${trace.expiresAfterRound}`}</div>`).join(""))}
       ${developerMode && round.procEffectFamilies?.some((family) => family.parentEventId === event.id)
-        ? auditSection("同机制技能概率与唯一效果", `<pre>${escapeHtml(JSON.stringify(round.procEffectFamilies.filter((family) => family.parentEventId === event.id), null, 2))}</pre>`) : ""}
+        ? auditSection("同机制技能概率与唯一效果", `<pre>${escapeHtml(debugJsonPreview(round.procEffectFamilies.filter((family) => family.parentEventId === event.id)))}</pre>`) : ""}
       ${auditSection("最终结算链", `<div class="chain"><span class="chain-step">原始 ${formatNumber(event.rawDamage)}</span><span class="arrow">→</span><span class="chain-step">效果修正 ${formatNumber(event.modifiedDamage)}</span><span class="arrow">→</span><span class="chain-step">取整 ${formatNumber(event.roundedDamage)}</span><span class="arrow">→</span><span class="chain-step">实际承伤 ${formatNumber(event.appliedDamage)}</span></div>${end === undefined ? "" : `<div class="kv-grid" style="margin-top:8px">${kvs({ 实际吸收: formatNumber(event.appliedDamage), 丢弃溢出: formatNumber(event.overflowDiscarded), 本回合退出战斗: end.casualties, 新存活数: end.aliveCount, 新前排生命: formatNumber(end.frontUnitHp) })}</div>`}`)}
     </div>
   </details>`;
@@ -3190,9 +3380,10 @@ function renderHeroMechanicEvents(round: RoundBattleTrace): string {
     trace.stunTarget !== undefined ||
     trace.temporaryShieldGenerated === true ||
     trace.defenseBuffActivation !== undefined ||
+    trace.dreamMarkDamageCoefficient !== undefined ||
     (trace.multiTargetExtraDamageEvents?.length ?? 0) > 0 ||
     trace.vulnerabilityActivationRound !== undefined
-  );
+  ).slice(0, DEBUG_PREVIEW.events);
   if (entries.length === 0) return "";
   return `<details class="mini-details" open><summary>英雄机制事件 · ${entries.length}</summary><div>${entries.map((trace) => {
     const target = trace.targetTroop === undefined
@@ -3228,7 +3419,9 @@ function renderHeroMechanicEvents(round: RoundBattleTrace): string {
     const multi = trace.multiTargetExtraDamageEvents === undefined
       ? ""
       : ` · 对${trace.multiTargetExtraDamageEvents.length}个存活兵种栈分别生成额外伤害`;
-    return `<div class="effect-line"><strong>R${round.round} · ${escapeHtml(trace.skillName)}</strong> · ${escapeHtml(trace.uiSummary)}${developerMode ? ` · skillId=${escapeHtml(trace.skillId)}` : ""}${counter}${target}${proc}${poison}${stun}${shield}${bounty}${torrent}${defense}${vulnerability}${multi}</div>`;
+    const mark = trace.dreamMarkDamageCoefficient === undefined ? "" :
+      ` · 梦之痕合并${trace.dreamMarkSourceCount}来源 → ${trace.dreamMarkDamageCoefficient}B（战报支持，暂定）；这是伤害结算，战报触发次数+0`;
+    return `<div class="effect-line"><strong>R${round.round} · ${escapeHtml(trace.skillName)}</strong> · ${escapeHtml(trace.uiSummary)}${developerMode ? ` · skillId=${escapeHtml(trace.skillId)}` : ""}${counter}${target}${proc}${poison}${stun}${shield}${bounty}${torrent}${defense}${vulnerability}${multi}${mark}</div>`;
   }).join("")}</div></details>`;
 }
 
@@ -3299,13 +3492,17 @@ function formatLevelComposition(
   return composition.map((entry) => `${entry.level}: ${entry.aliveCount}`).join(" / ");
 }
 
+function renderDebugPreview(value: unknown, downloadable = false): string {
+  return `<p class="hint">限量预览：最多 ${DEBUG_PREVIEW.events} 条/层、${DEBUG_PREVIEW.chars} 字符；完整数据请点击${downloadable ? " Copy JSON 或导出 JSON，大数据推荐导出文件" : "复制 JSON"}。</p><pre>${escapeHtml(debugJsonPreview(value))}</pre>`;
+}
+
 function renderDeveloperMode(value: ValidationBattleResult): string {
   return `<section class="panel"><header class="panel-head"><h2>开发者模式</h2><label class="check-row"><input type="checkbox" data-scope="developer" ${developerMode ? "checked" : ""}>显示内部 ID、小数与原始 JSON</label></header>${developerMode ? `<div class="panel-body">
     ${renderRoundDamage(value)}
     ${value.comparisons.length === 0 ? "" : renderComparisons(value)}
-    <details class="mini-details"><summary>Raw BattleInput</summary><div><button class="btn btn-small" data-action="copy-input">Copy JSON</button><pre>${escapeHtml(JSON.stringify(value.input, null, 2))}</pre></div></details>
-    <details class="mini-details"><summary>Raw BattleResult</summary><div><button class="btn btn-small" data-action="copy-result">Copy JSON</button><pre>${escapeHtml(JSON.stringify(value.simulation, null, 2))}</pre></div></details>
-    <details class="mini-details"><summary>Raw BattleTrace</summary><div><button class="btn btn-small" data-action="copy-trace">Copy JSON</button><pre>${escapeHtml(JSON.stringify(value.trace, null, 2))}</pre></div></details>
+    ${lazyDetails.render("raw-battle-input", "Raw BattleInput", () => `<div class="inline-fields"><button class="btn btn-small" data-action="copy-battle-input">Copy JSON</button><button class="btn btn-small" data-action="export-battle-input">导出 JSON</button></div>${renderDebugPreview(value.input, true)}`, 'class="mini-details"')}
+    ${lazyDetails.render("raw-battle-result", "Raw BattleResult", () => `<div class="inline-fields"><button class="btn btn-small" data-action="copy-result">Copy JSON</button><button class="btn btn-small" data-action="export-battle-result">导出 JSON</button></div>${renderDebugPreview(value.simulation, true)}`, 'class="mini-details"')}
+    ${lazyDetails.render("raw-battle-trace", "Raw BattleTrace", () => `<button class="btn btn-small" data-action="copy-trace">Copy JSON</button>${renderDebugPreview(value.trace)}`, 'class="mini-details"')}
   </div>` : ""}</section>`;
 }
 
@@ -3922,7 +4119,7 @@ function updateExternalBuff(target: HTMLSelectElement): void {
   const external = side.externalBuffs ?? DEFAULT_EXTERNAL_BUFF_CONFIG;
   if (section === "town") {
     setInputSide(sideId, {
-      ...side, targetBonusMode: "custom",
+      ...side,
       externalBuffs: {
         ...external,
         town: { ...external.town, [field]: target.value },
@@ -3932,7 +4129,7 @@ function updateExternalBuff(target: HTMLSelectElement): void {
   }
   const level = Number(target.value);
   setInputSide(sideId, {
-    ...side, targetBonusMode: "custom",
+    ...side,
     externalBuffs: {
       ...external,
       [section]: { ...external[section], [field]: level },
@@ -4043,7 +4240,7 @@ function updateIceFireQueueSetting(target: HTMLSelectElement): void {
   const sideId = requireSide(target.dataset.side), side = getInputSide(sideId), index = Number(target.dataset.queueIndex);
   const value = Number(target.value), scope = target.dataset.scope;
   if (!isIceFireInput(input) || !Number.isInteger(index) || index < 0 || index > 2 ||
-    !Number.isInteger(value) || value < 0 || value > (scope === "queue-t12" ? 24 : 10)) throw new Error("队列设置无效。");
+    !Number.isInteger(value) || value < 0 || value > (scope === "queue-t12" ? maxT12SkillLevel(input) : 10)) throw new Error("队列设置无效。");
   const queues = [...getValidationThreeQueues(side)] as [ValidationQueueConfig, ValidationQueueConfig, ValidationQueueConfig];
   const queue = queues[index]!;
   if (scope === "queue-t12") {
@@ -4076,7 +4273,14 @@ function updateQueueAttribute(target: HTMLInputElement): void {
   const queues = [...getValidationThreeQueues(side)] as
     [ValidationQueueConfig, ValidationQueueConfig, ValidationQueueConfig];
   const queue = queues[index]!;
-  queues[index] = (isIceFireInput(input) ? changeIceFireReportAttribute : changeQueueAttribute)(queue, troop, field as typeof reportAttributes[number], value);
+  const history = Object.fromEntries(["sourceReportBonuses", "sourceReportAttributes", "historicalBonusMigration"].flatMap((key) => {
+    const value = queue[key as keyof ValidationQueueConfig]; return value === undefined ? [] : [[key, value]];
+  }));
+  const changed = changeQueueAttribute({ ...queue, reportAttributeBasis: "raw" }, troop, field as typeof reportAttributes[number], value);
+  queues[index] = isIceFireInput(input) && queue.reportLineage && queue.reportHeroByTroop
+    ? { ...queue, attributes: changed.attributes!, attributeSource: "manualInput", reportAttributeBasis: "raw",
+      reportLineage: { ...queue.reportLineage, historicalLineageConfirmed: true, attributeSnapshot: structuredClone(changed.attributes!) }, ...history }
+    : { ...changed, ...history };
   setInputSide(sideId, { ...side, threeQueues: queues });
 }
 
@@ -4147,7 +4351,7 @@ function updateQueueExternalBuff(target: HTMLSelectElement): void {
   if (section !== "town" && (!Number.isSafeInteger(value) || Number(value) < 0)) {
     throw new RangeError("外部增减益等级无效。");
   }
-  queues[index] = { ...queue, targetBonusMode: "custom", externalBuffs: { ...external,
+  queues[index] = { ...queue, externalBuffs: { ...external,
     [section]: { ...external[section], [field]: value } } };
   setInputSide(sideId, { ...side, threeQueues: queues });
 }
@@ -4180,7 +4384,7 @@ function updateTroopField(target: HTMLInputElement | HTMLSelectElement): void {
   if (field === undefined) throw new Error("Missing troop field.");
   const currentSide = getInputSide(sideId);
   const currentTroop = currentSide.troops[troop];
-  if (editorMode === "simple" && ["attack", "defense", "penetration", "life"].includes(field)) {
+  if (["attack", "defense", "penetration", "life"].includes(field)) {
     target.value = target.value.trim().replace(/^\+/, "").replace(/[%％]$/, "").trim();
   }
   const nextValue = field === "troopLevel" ? target.value :
@@ -4393,10 +4597,7 @@ function updateLeader(target: HTMLSelectElement): void {
     throw new RangeError("英雄超过当前服务器阶段或兵种不匹配。");
   }
   const side = getInputSide(sideId);
-  setInputSide(sideId, {
-    ...side,
-    leaderHeroIds: { ...side.leaderHeroIds, [troop]: target.value || null },
-  });
+  setInputSide(sideId, selectSimulationHero(side, troop, target.value || null));
   if (target.value && heroOwnershipScope(input) === "owned" && !ownedHeroIds(input).includes(target.value))
     input = setOwnedHero(input, target.value, true);
 }
@@ -4438,8 +4639,8 @@ function updateT12(target: HTMLInputElement | HTMLSelectElement): void {
   const sideId = requireSide(target.dataset.side);
   const troop = requireTroop(target.dataset.troop);
   const level = Number(target.value);
-  if (!Number.isSafeInteger(level) || level < 0 || level > 24) {
-    throw new Error("T12 兵种技能等级必须是 0 到 24 的整数。");
+  if (!Number.isSafeInteger(level) || level < 0 || level > maxT12SkillLevel(input, sideId)) {
+    throw new Error(`T12 兵种技能等级必须是0到${maxT12SkillLevel(input, sideId)}的整数。`);
   }
   const side = getInputSide(sideId);
   setInputSide(sideId, {

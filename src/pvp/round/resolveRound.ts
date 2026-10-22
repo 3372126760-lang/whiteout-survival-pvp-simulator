@@ -21,6 +21,7 @@ import { createRoundStartSnapshot } from "./snapshot";
 import type { PendingDamageResolutionOptions } from "../casualty/resolvePendingDamage";
 import type { TroopSkillSystem, TroopSkillTraceEntry } from "../troopSkills";
 import type { HeroSkillSystem, HeroSkillTraceEntry } from "../heroSkills";
+import { attributeResolvedDamage, legacySkillCasualties, type DamageAttribution } from "../statistics/skillDamageAttribution";
 
 export interface RoundEndResolution {
   readonly state: BattleState;
@@ -42,8 +43,9 @@ export interface CompactResolvedRound {
   readonly stateAfter: BattleState;
   readonly damageA: number;
   readonly damageB: number;
-  /** Explicit skill-damage event attribution; never added back to total casualties. */
+  /** Legacy reporting-only exits (Renee excluded), including fractional pool/segment estimates. */
   readonly skillCasualtiesBySide: Readonly<Record<"A" | "B", Readonly<Record<string, number>>>>;
+  readonly damageAttribution: DamageAttribution;
 }
 
 export interface RoundResolutionOptions
@@ -123,27 +125,13 @@ export function resolveRoundCompact(
   const resolved = resolveRoundInternal(state, { ...options, recordBattleLog: false }, false);
   let damageA = 0;
   let damageB = 0;
-  const skillCasualtiesBySide: Record<"A" | "B", Record<string, number>> = {
-    A: {}, B: {},
-  };
   for (const event of resolved.action.generatedEvents) {
     if (event.sourceSide === "A") damageA += event.finalDamage;
     else damageB += event.finalDamage;
-    if (event.sourceSkillId !== undefined && event.damageType === "skillDamage" &&
-      event.sourceSkillId !== "hero-skill.ruini.dream-mark") {
-      skillCasualtiesBySide[event.sourceSide][event.sourceSkillId] ??= 0;
-    }
   }
-  for (const casualty of resolved.end.casualties) {
-    if (casualty.casualties === 0) continue;
-    for (const event of casualty.sourceEvents) {
-      if (event.sourceSkillId === undefined || event.damageType !== "skillDamage" ||
-        event.sourceSkillId === "hero-skill.ruini.dream-mark") continue;
-      const side = skillCasualtiesBySide[event.sourceSide];
-      side[event.sourceSkillId] = (side[event.sourceSkillId] ?? 0) + casualty.casualties;
-    }
-  }
-  return { stateAfter: resolved.end.state, damageA, damageB, skillCasualtiesBySide };
+  const damageAttribution = attributeResolvedDamage(resolved.action.generatedEvents, resolved.end.casualties);
+  const skillCasualtiesBySide = legacySkillCasualties(damageAttribution);
+  return { stateAfter: resolved.end.state, damageA, damageB, skillCasualtiesBySide, damageAttribution };
 }
 
 /** Same resolution chain; skips trace and reporting-only damage attribution. */

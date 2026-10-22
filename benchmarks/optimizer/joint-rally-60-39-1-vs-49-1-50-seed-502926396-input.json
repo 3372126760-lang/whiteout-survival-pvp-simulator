@@ -1,0 +1,1311 @@
+{
+  "serverStage": "s12",
+  "scenarioType": "RALLY",
+  "availableHeroIds": [
+    "hero.r.youjin",
+    "hero.r.shimisi",
+    "hero.r.chali",
+    "hero.r.kelaoruisi",
+    "hero.sr.xieergai",
+    "hero.sr.patelike",
+    "hero.sr.baxiti",
+    "hero.body.jiexi",
+    "hero.body.shuyun",
+    "hero.body.jiesaier",
+    "hero.sr.lumubogen",
+    "hero.sr.lingshuang",
+    "hero.sr.jina",
+    "hero.s1.heluonimo",
+    "hero.s1.nataliya",
+    "hero.s1.moli",
+    "hero.s1.jinman",
+    "hero.head.fulinte",
+    "hero.s2.feilande",
+    "hero.s2.alongsuo",
+    "hero.s3.luogen",
+    "hero.s3.miya",
+    "hero.s3.gelaige",
+    "hero.s4.ahemosi",
+    "hero.s4.lingnai",
+    "hero.s4.linen",
+    "hero.s5.heketuo",
+    "hero.s5.nuola",
+    "hero.s5.gewen",
+    "hero.s6.wuming",
+    "hero.s6.ruini",
+    "hero.s6.weien",
+    "hero.s7.aidisi",
+    "hero.s7.gedun",
+    "hero.s7.buladeli",
+    "hero.s8.jiatuo",
+    "hero.s8.suoniya",
+    "hero.s8.hengdelike",
+    "hero.s9.magenusi",
+    "hero.s9.fuleide",
+    "hero.s9.xiula",
+    "hero.s10.gregory",
+    "hero.s10.freya",
+    "hero.s10.blanchette",
+    "hero.s11.eleonora",
+    "hero.s11.lloyd",
+    "hero.s11.rufus"
+  ],
+  "ownedHeroIds": [
+    "hero.r.youjin",
+    "hero.r.shimisi",
+    "hero.r.chali",
+    "hero.r.kelaoruisi",
+    "hero.sr.xieergai",
+    "hero.sr.patelike",
+    "hero.sr.baxiti",
+    "hero.body.jiexi",
+    "hero.body.shuyun",
+    "hero.body.jiesaier",
+    "hero.sr.lumubogen",
+    "hero.sr.lingshuang",
+    "hero.sr.jina",
+    "hero.s1.heluonimo",
+    "hero.s1.nataliya",
+    "hero.s1.moli",
+    "hero.s1.jinman",
+    "hero.head.fulinte",
+    "hero.s2.feilande",
+    "hero.s2.alongsuo",
+    "hero.s3.luogen",
+    "hero.s3.miya",
+    "hero.s3.gelaige",
+    "hero.s4.ahemosi",
+    "hero.s4.lingnai",
+    "hero.s4.linen",
+    "hero.s5.heketuo",
+    "hero.s5.nuola",
+    "hero.s5.gewen",
+    "hero.s6.wuming",
+    "hero.s6.ruini",
+    "hero.s6.weien",
+    "hero.s7.aidisi",
+    "hero.s7.gedun",
+    "hero.s7.buladeli",
+    "hero.s8.jiatuo",
+    "hero.s8.suoniya",
+    "hero.s8.hengdelike",
+    "hero.s9.magenusi",
+    "hero.s9.fuleide",
+    "hero.s9.xiula",
+    "hero.s10.gregory",
+    "hero.s10.freya",
+    "hero.s10.blanchette",
+    "hero.s11.eleonora",
+    "hero.s11.lloyd",
+    "hero.s11.rufus",
+    "hero.s12.karol",
+    "hero.s12.ligeia",
+    "hero.s12.hervor",
+    "hero.s15.hank"
+  ],
+  "optimizerHeroPool": {
+    "A": {
+      "hero.r.youjin": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.r.shimisi": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.r.chali": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.r.kelaoruisi": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.xieergai": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.patelike": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.baxiti": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.body.jiexi": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.body.shuyun": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.body.jiesaier": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.lumubogen": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.lingshuang": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.jina": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.s1.heluonimo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s1.nataliya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s1.moli": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s1.jinman": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.head.fulinte": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s2.feilande": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s2.alongsuo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s3.luogen": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s3.miya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s3.gelaige": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s4.ahemosi": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s4.lingnai": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s4.linen": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s5.heketuo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s5.nuola": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s5.gewen": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s6.wuming": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s6.ruini": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s6.weien": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s7.aidisi": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s7.gedun": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s7.buladeli": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s8.jiatuo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s8.suoniya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s8.hengdelike": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s9.magenusi": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s9.fuleide": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s9.xiula": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s10.gregory": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s10.freya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s10.blanchette": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s11.eleonora": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s11.lloyd": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s11.rufus": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s12.karol": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s12.ligeia": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s12.hervor": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s15.hank": {
+        "enabled": false,
+        "weaponLevel": 10
+      }
+    },
+    "B": {
+      "hero.r.youjin": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.r.shimisi": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.r.chali": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.r.kelaoruisi": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.xieergai": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.patelike": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.baxiti": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.body.jiexi": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.body.shuyun": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.body.jiesaier": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.lumubogen": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.lingshuang": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.sr.jina": {
+        "enabled": true,
+        "weaponLevel": null
+      },
+      "hero.s1.heluonimo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s1.nataliya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s1.moli": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s1.jinman": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.head.fulinte": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s2.feilande": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s2.alongsuo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s3.luogen": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s3.miya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s3.gelaige": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s4.ahemosi": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s4.lingnai": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s4.linen": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s5.heketuo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s5.nuola": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s5.gewen": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s6.wuming": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s6.ruini": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s6.weien": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s7.aidisi": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s7.gedun": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s7.buladeli": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s8.jiatuo": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s8.suoniya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s8.hengdelike": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s9.magenusi": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s9.fuleide": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s9.xiula": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s10.gregory": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s10.freya": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s10.blanchette": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s11.eleonora": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s11.lloyd": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s11.rufus": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s12.karol": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s12.ligeia": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s12.hervor": {
+        "enabled": true,
+        "weaponLevel": 10
+      },
+      "hero.s15.hank": {
+        "enabled": true,
+        "weaponLevel": 10
+      }
+    }
+  },
+  "battleContext": "rally",
+  "simulationMode": "random",
+  "attributeInputMode": "prediction",
+  "postBattleCasualtyMode": "NORMAL",
+  "sideA": {
+    "troops": {
+      "shield": {
+        "count": 125574,
+        "attack": 3251.5,
+        "defense": 3247.5,
+        "penetration": 2741.3,
+        "life": 2736,
+        "troopLevel": "T12-FC10",
+        "levelMode": "single",
+        "resolutionSource": "userOverride",
+        "t12Level": 24
+      },
+      "lancer": {
+        "count": 5022,
+        "attack": 3299.6,
+        "defense": 3295.5,
+        "penetration": 2787.5,
+        "life": 2784,
+        "troopLevel": "T12-FC10",
+        "levelMode": "single",
+        "resolutionSource": "userOverride",
+        "t12Level": 24
+      },
+      "marksman": {
+        "count": 120552,
+        "attack": 3251.5,
+        "defense": 3247.5,
+        "penetration": 2741.3,
+        "life": 2736,
+        "troopLevel": "T12-FC10",
+        "levelMode": "single",
+        "resolutionSource": "userOverride",
+        "t12Level": 24
+      }
+    },
+    "sourceReportBonuses": {
+      "attack": {
+        "additive": 0,
+        "buff": 0,
+        "debuff": 0
+      },
+      "defense": {
+        "additive": 0,
+        "buff": 0,
+        "debuff": 0
+      },
+      "penetration": {
+        "additive": 0,
+        "buff": 20,
+        "debuff": 2
+      },
+      "life": {
+        "additive": 0,
+        "buff": 20,
+        "debuff": 0
+      }
+    },
+    "sourceReportAttributes": {
+      "shield": {
+        "attack": 2488.3,
+        "defense": 2528.6,
+        "penetration": 2360.4,
+        "life": 2698.2
+      },
+      "lancer": {
+        "attack": 1365.3,
+        "defense": 1375.6,
+        "penetration": 1142.8,
+        "life": 1113.1
+      },
+      "marksman": {
+        "attack": 2737.4,
+        "defense": 2732.7,
+        "penetration": 2451.8,
+        "life": 2288.9
+      }
+    },
+    "reportAttributeBasis": "raw",
+    "targetBonusMode": "custom",
+    "reportHeroIds": [],
+    "leaderHeroId": null,
+    "selectedMemberSkillIds": [
+      "hero-skill.ruini.dream-mark",
+      "hero-skill.ruini.dream-mark",
+      "hero-skill.jiatuo.golden-guard",
+      "hero-skill.s8.hengdelike.defense-reduction"
+    ],
+    "bodySkills": [
+      {
+        "heroId": "hero.s6.ruini",
+        "heroDefinitionId": "hero.s6.ruini",
+        "runtimeInstanceId": "A-body-0",
+        "skillId": "hero-skill.ruini.dream-mark",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      },
+      {
+        "heroId": "hero.s6.ruini",
+        "heroDefinitionId": "hero.s6.ruini",
+        "runtimeInstanceId": "A-body-1",
+        "skillId": "hero-skill.ruini.dream-mark",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      },
+      {
+        "heroId": "hero.s8.jiatuo",
+        "heroDefinitionId": "hero.s8.jiatuo",
+        "runtimeInstanceId": "A-body-2",
+        "skillId": "hero-skill.jiatuo.golden-guard",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      },
+      {
+        "heroId": "hero.s8.hengdelike",
+        "heroDefinitionId": "hero.s8.hengdelike",
+        "runtimeInstanceId": "A-body-3",
+        "skillId": "hero-skill.s8.hengdelike.defense-reduction",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      }
+    ],
+    "threeQueues": [
+      {
+        "ratios": {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "reportWeaponLevels": {},
+        "attributeSource": "manualInput",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "heroSkillLevels": {},
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 33,
+          "lancer": 33,
+          "marksman": 34
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "reportWeaponLevels": {},
+        "attributeSource": "manualInput",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "heroSkillLevels": {},
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 10,
+          "lancer": 20,
+          "marksman": 70
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "reportWeaponLevels": {},
+        "attributeSource": "manualInput",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "heroSkillLevels": {},
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        }
+      }
+    ],
+    "reportHeroByTroop": {
+      "shield": "hero.s11.eleonora",
+      "lancer": "hero.s11.lloyd",
+      "marksman": "hero.s11.rufus"
+    },
+    "leaderHeroIds": {
+      "shield": "hero.s12.hervor",
+      "lancer": "hero.s11.lloyd",
+      "marksman": "hero.s3.gelaige"
+    },
+    "reportWeaponLevels": {
+      "hero.s10.gregory": 10,
+      "hero.s3.miya": 10,
+      "hero.s11.rufus": 10,
+      "hero.s11.eleonora": 10,
+      "hero.s11.lloyd": 10
+    },
+    "simulationWeaponLevels": {
+      "hero.s1.heluonimo": 10,
+      "hero.s1.nataliya": 10,
+      "hero.s1.moli": 10,
+      "hero.s1.jinman": 10,
+      "hero.head.fulinte": 10,
+      "hero.s2.feilande": 10,
+      "hero.s2.alongsuo": 10,
+      "hero.s3.luogen": 10,
+      "hero.s3.miya": 10,
+      "hero.s3.gelaige": 10,
+      "hero.s4.ahemosi": 10,
+      "hero.s4.lingnai": 10,
+      "hero.s4.linen": 10,
+      "hero.s5.heketuo": 10,
+      "hero.s5.nuola": 10,
+      "hero.s5.gewen": 10,
+      "hero.s6.wuming": 10,
+      "hero.s6.ruini": 10,
+      "hero.s6.weien": 10,
+      "hero.s7.aidisi": 10,
+      "hero.s7.gedun": 10,
+      "hero.s7.buladeli": 10,
+      "hero.s8.jiatuo": 10,
+      "hero.s8.suoniya": 10,
+      "hero.s8.hengdelike": 10,
+      "hero.s9.magenusi": 10,
+      "hero.s9.fuleide": 10,
+      "hero.s9.xiula": 10,
+      "hero.s10.gregory": 10,
+      "hero.s10.freya": 10,
+      "hero.s10.blanchette": 10,
+      "hero.s11.eleonora": 10,
+      "hero.s11.lloyd": 10,
+      "hero.s11.rufus": 10,
+      "hero.s12.hervor": 10,
+      "hero.s12.karol": 10,
+      "hero.s12.ligeia": 10
+    },
+    "externalBuffs": {
+      "town": {
+        "attack": "large",
+        "defense": "large",
+        "penetration": "large",
+        "life": "large",
+        "enemyAttackReduction": "large",
+        "enemyDefenseReduction": "large"
+      },
+      "pet": {
+        "attackLevel": 10,
+        "defenseLevel": 10,
+        "penetrationLevel": 10,
+        "lifeLevel": 10,
+        "enemyDefenseReductionLevel": 10,
+        "enemyPenetrationReductionLevel": 8,
+        "enemyLifeReductionLevel": 7
+      },
+      "expert": {
+        "garethFourthSkillLevel": 20
+      }
+    },
+    "rallyDeployment": {
+      "totalTroops": 1800000,
+      "ratios": {
+        "shield": 60,
+        "lancer": 39,
+        "marksman": 1
+      }
+    }
+  },
+  "sideB": {
+    "troops": {
+      "shield": {
+        "count": 125574,
+        "attack": 3251.5,
+        "defense": 3247.5,
+        "penetration": 2741.3,
+        "life": 2736,
+        "troopLevel": "T12-FC10",
+        "levelMode": "single",
+        "resolutionSource": "userOverride",
+        "t12Level": 24
+      },
+      "lancer": {
+        "count": 5022,
+        "attack": 3299.6,
+        "defense": 3295.5,
+        "penetration": 2787.5,
+        "life": 2784,
+        "troopLevel": "T12-FC10",
+        "levelMode": "single",
+        "resolutionSource": "userOverride",
+        "t12Level": 24
+      },
+      "marksman": {
+        "count": 120552,
+        "attack": 3251.5,
+        "defense": 3247.5,
+        "penetration": 2741.3,
+        "life": 2736,
+        "troopLevel": "T12-FC10",
+        "levelMode": "single",
+        "resolutionSource": "userOverride",
+        "t12Level": 24
+      }
+    },
+    "sourceReportBonuses": {
+      "attack": {
+        "additive": 0,
+        "buff": 0,
+        "debuff": 0
+      },
+      "defense": {
+        "additive": 0,
+        "buff": 0,
+        "debuff": 0
+      },
+      "penetration": {
+        "additive": 0,
+        "buff": 20,
+        "debuff": 2
+      },
+      "life": {
+        "additive": 0,
+        "buff": 20,
+        "debuff": 0
+      }
+    },
+    "sourceReportAttributes": {
+      "shield": {
+        "attack": 2488.3,
+        "defense": 2528.6,
+        "penetration": 2360.4,
+        "life": 2698.2
+      },
+      "lancer": {
+        "attack": 1365.3,
+        "defense": 1375.6,
+        "penetration": 1142.8,
+        "life": 1113.1
+      },
+      "marksman": {
+        "attack": 2737.4,
+        "defense": 2732.7,
+        "penetration": 2451.8,
+        "life": 2288.9
+      }
+    },
+    "reportAttributeBasis": "raw",
+    "targetBonusMode": "custom",
+    "reportHeroIds": [],
+    "leaderHeroId": null,
+    "selectedMemberSkillIds": [
+      "hero-skill.nuola.multi-troop-combat",
+      "hero-skill.nuola.multi-troop-combat",
+      "hero-skill.jiatuo.golden-guard",
+      "hero-skill.s8.hengdelike.defense-reduction"
+    ],
+    "bodySkills": [
+      {
+        "heroId": "hero.s5.nuola",
+        "heroDefinitionId": "hero.s5.nuola",
+        "runtimeInstanceId": "B-body-0",
+        "skillId": "hero-skill.nuola.multi-troop-combat",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      },
+      {
+        "heroId": "hero.s5.nuola",
+        "heroDefinitionId": "hero.s5.nuola",
+        "runtimeInstanceId": "B-body-1",
+        "skillId": "hero-skill.nuola.multi-troop-combat",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      },
+      {
+        "heroId": "hero.s8.jiatuo",
+        "heroDefinitionId": "hero.s8.jiatuo",
+        "runtimeInstanceId": "B-body-2",
+        "skillId": "hero-skill.jiatuo.golden-guard",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      },
+      {
+        "heroId": "hero.s8.hengdelike",
+        "heroDefinitionId": "hero.s8.hengdelike",
+        "runtimeInstanceId": "B-body-3",
+        "skillId": "hero-skill.s8.hengdelike.defense-reduction",
+        "expeditionSkillSlot": 1,
+        "skillLevel": 5
+      }
+    ],
+    "threeQueues": [
+      {
+        "ratios": {
+          "shield": 50,
+          "lancer": 20,
+          "marksman": 30
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "reportWeaponLevels": {},
+        "attributeSource": "manualInput",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "heroSkillLevels": {},
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 33,
+          "lancer": 33,
+          "marksman": 34
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "reportWeaponLevels": {},
+        "attributeSource": "manualInput",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "heroSkillLevels": {},
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        }
+      },
+      {
+        "ratios": {
+          "shield": 10,
+          "lancer": 20,
+          "marksman": 70
+        },
+        "leaderHeroIds": {},
+        "reportHeroByTroop": {},
+        "weaponLevels": {},
+        "reportWeaponLevels": {},
+        "attributeSource": "manualInput",
+        "attributes": {
+          "shield": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "lancer": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          },
+          "marksman": {
+            "attack": 240,
+            "defense": 240,
+            "penetration": 240,
+            "life": 240
+          }
+        },
+        "externalBuffs": {
+          "town": {
+            "attack": "none",
+            "defense": "none",
+            "penetration": "none",
+            "life": "none",
+            "enemyAttackReduction": "none",
+            "enemyDefenseReduction": "none"
+          },
+          "pet": {
+            "attackLevel": 0,
+            "defenseLevel": 0,
+            "penetrationLevel": 0,
+            "lifeLevel": 0,
+            "enemyDefenseReductionLevel": 0,
+            "enemyPenetrationReductionLevel": 0,
+            "enemyLifeReductionLevel": 0
+          },
+          "expert": {
+            "garethFourthSkillLevel": 0
+          }
+        },
+        "heroSkillLevels": {},
+        "troopLevels": {
+          "shield": "T10-FC8",
+          "lancer": "T10-FC8",
+          "marksman": "T10-FC10"
+        }
+      }
+    ],
+    "reportHeroByTroop": {
+      "shield": "hero.s11.eleonora",
+      "lancer": "hero.s11.lloyd",
+      "marksman": "hero.s11.rufus"
+    },
+    "leaderHeroIds": {
+      "shield": "hero.s12.hervor",
+      "lancer": "hero.s12.karol",
+      "marksman": "hero.s12.ligeia"
+    },
+    "reportWeaponLevels": {
+      "hero.s10.gregory": 10,
+      "hero.s3.miya": 10,
+      "hero.s11.rufus": 10,
+      "hero.s11.eleonora": 10,
+      "hero.s11.lloyd": 10
+    },
+    "simulationWeaponLevels": {
+      "hero.s1.heluonimo": 10,
+      "hero.s1.nataliya": 10,
+      "hero.s1.moli": 10,
+      "hero.s1.jinman": 10,
+      "hero.head.fulinte": 10,
+      "hero.s2.feilande": 10,
+      "hero.s2.alongsuo": 10,
+      "hero.s3.luogen": 10,
+      "hero.s3.miya": 10,
+      "hero.s3.gelaige": 10,
+      "hero.s4.ahemosi": 10,
+      "hero.s4.lingnai": 10,
+      "hero.s4.linen": 10,
+      "hero.s5.heketuo": 10,
+      "hero.s5.nuola": 10,
+      "hero.s5.gewen": 10,
+      "hero.s6.wuming": 10,
+      "hero.s6.ruini": 10,
+      "hero.s6.weien": 10,
+      "hero.s7.aidisi": 10,
+      "hero.s7.gedun": 10,
+      "hero.s7.buladeli": 10,
+      "hero.s8.jiatuo": 10,
+      "hero.s8.suoniya": 10,
+      "hero.s8.hengdelike": 10,
+      "hero.s9.magenusi": 10,
+      "hero.s9.fuleide": 10,
+      "hero.s9.xiula": 10,
+      "hero.s10.gregory": 10,
+      "hero.s10.freya": 10,
+      "hero.s10.blanchette": 10,
+      "hero.s11.eleonora": 10,
+      "hero.s11.lloyd": 10,
+      "hero.s11.rufus": 10,
+      "hero.s12.hervor": 10,
+      "hero.s12.karol": 10,
+      "hero.s12.ligeia": 10
+    },
+    "externalBuffs": {
+      "town": {
+        "attack": "large",
+        "defense": "large",
+        "penetration": "large",
+        "life": "large",
+        "enemyAttackReduction": "large",
+        "enemyDefenseReduction": "large"
+      },
+      "pet": {
+        "attackLevel": 10,
+        "defenseLevel": 10,
+        "penetrationLevel": 10,
+        "lifeLevel": 10,
+        "enemyDefenseReductionLevel": 10,
+        "enemyPenetrationReductionLevel": 8,
+        "enemyLifeReductionLevel": 7
+      },
+      "expert": {
+        "garethFourthSkillLevel": 20
+      }
+    },
+    "rallyDeployment": {
+      "totalTroops": 1800000,
+      "ratios": {
+        "shield": 49,
+        "lancer": 1,
+        "marksman": 50
+      }
+    }
+  },
+  "maxRounds": 1500,
+  "randomSeed": 502926396,
+  "triggerOverrides": {},
+  "disabledSkillIds": [],
+  "actualRounds": []
+}

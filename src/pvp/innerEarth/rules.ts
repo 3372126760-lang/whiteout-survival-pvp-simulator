@@ -15,7 +15,7 @@ const threeQueue = {
 export const INNER_EARTH_MODE_RULES: Readonly<Record<InnerEarthMode, InnerEarthModeRule>> = {
   HEART_OF_EARTH: { ...threeQueue, mode: "HEART_OF_EARTH", label: "大地之心",
     troopTierMode: "player", allowPet: true, allowFireCrystalSkill: true,
-    allowT12Skill: true, t12SkillMaxLevel: 24 },
+    allowT12Skill: true, t12SkillMaxLevel: 3 },
   HERO_LAND: { ...threeQueue, mode: "HERO_LAND", label: "英雄之地", allyCapacity: 190410 },
   BEAST_CAVE: { ...fixedRatio, mode: "BEAST_CAVE", label: "群兽洞窟" },
   GEM_MINE: { ...fixedRatio, mode: "GEM_MINE", label: "宝石矿洞", enemyCapacityMode: "fixed150000" },

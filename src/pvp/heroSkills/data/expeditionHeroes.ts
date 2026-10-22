@@ -133,7 +133,7 @@ export const EXPEDITION_HERO_DATA = [
   }),
   generationHero(3, "hero.s3.gelaige", "格雷格", "marksman", [
     combat("expedition.gelaige.sword-of-justice", "正义之剑", 1, { 5: .40 }, "hero-skill.gelaige.sword-of-justice", "每回合一次20%判定；触发当回合全军伤害提升40%，持续3回合，重复触发覆盖并重新计时。"),
-    combat("expedition.gelaige.law-deterrence", "律令威慑", 2, { 5: .50 }, "hero-skill.gelaige.law-deterrence", "各兵种攻击时独立20%判定；命中目标栈造成伤害降低50%，立即生效2回合，重复触发覆盖。"),
+    combat("expedition.gelaige.law-deterrence", "律令震慑", 2, { 1: .10, 2: .20, 3: .30, 4: .40, 5: .50 }, "hero-skill.gelaige.law-deterrence", "盾/矛/射每次主攻击尝试分别20%判定；本次选中目标穿透降低10/20/30/40/50%，立即生效2回合，闪避仍判定，同一目标重复触发覆盖刷新。"),
     combat("expedition.gelaige.order-protection", "秩序庇护", 3, { 5: .25 }, "hero-skill.gelaige.order-protection", "全军生命提升25%，开场生效。"),
   ], {
     "hero-weapon-skill.gelaige.rally-life": EXCLUSIVE_WEAPON_SCENE_SKILL_VALUES,
@@ -188,7 +188,7 @@ export const EXPEDITION_HERO_DATA = [
     "hero-weapon-skill.wuming.defense-defense": EXCLUSIVE_WEAPON_SCENE_SKILL_VALUES,
   }),
   generationHero(6, "hero.s6.ruini", "芮妮", "lancer", [
-    combat("expedition.ruini.dream-mark", "惊梦留痕", 1, { 5: 2 }, "hero-skill.ruini.dream-mark", "矛兵每2次主攻击尝试在闪避前标记选定目标；下回合对该目标造成200%独立技能额外伤害。"),
+    combat("expedition.ruini.dream-mark", "惊梦留痕", 1, { 5: 2 }, "hero-skill.ruini.dream-mark", "矛兵每2次主攻击尝试在闪避前标记选定目标；下回合200%B独立技能伤害。重复m来源合并为(m+1)B，各来源独立计数；目标标记不叠层，重复伤害规则为战报支持的暂定规则。"),
     combat("expedition.ruini.dream-catcher", "捕梦手", 2, { 5: 1.50 }, "hero-skill.ruini.dream-catcher", "矛兵对DreamMark目标伤害提升150%。"),
     combat("expedition.ruini.dream-fragment", "梦境切片", 3, { 5: .75 }, "hero-skill.ruini.dream-fragment", "全军对DreamMark目标伤害提升75%。"),
   ], {

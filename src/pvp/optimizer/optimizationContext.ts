@@ -2,7 +2,7 @@ import { CONFIRMED_HERO_SKILL_DEFINITIONS, type HeroSkillDefinition } from "../h
 import { isBattleContextAllowedForSide, type BattleContext, type BattleState, type SideId } from "../types";
 import type { ValidationBattleInput } from "../validationUi";
 
-export type OptimizationBattleScenario = "single" | "333" | "rally" | "threeQueue";
+export type OptimizationBattleScenario = "single" | "333" | "cityDefense" | "rally" | "threeQueue";
 export type RallyOptimizationRole = "attacker" | "defender";
 /** Candidate identity is independent of role. SINGLE/333/ThreeQueue have no
  * attack/defense role. The formal rally adapter currently maps A to attack and
@@ -16,15 +16,15 @@ export interface OptimizationContext {
 }
 export function createOptimizationContext(input: Pick<ValidationBattleInput, "scenarioType" | "battleContext">,
   candidateSide: SideId = "A"): OptimizationContext {
-  const battleScenario: OptimizationBattleScenario = input.scenarioType === "RALLY" ? "rally" :
+  const battleScenario: OptimizationBattleScenario = input.scenarioType === "CITY_DEFENSE" ? "cityDefense" : input.scenarioType === "RALLY" ? "rally" :
     input.scenarioType === "THREE_QUEUE" ? "threeQueue" : input.scenarioType === "THREE_THREE_THREE" ? "333" : "single";
-  return { battleScenario, candidateSide, rallyRole: battleScenario === "rally" ? candidateSide === "A" ? "attacker" : "defender" : null,
+  return { battleScenario, candidateSide, rallyRole: battleScenario === "rally" || battleScenario === "cityDefense" ? candidateSide === "A" ? "attacker" : "defender" : null,
     fixedOpponentSide: candidateSide === "A" ? "B" : "A", optimizationObjective: "candidateSideWinRate" };
 }
 /** Same context as toEngineScenario; explicit legacy contexts remain available
  * to standalone formal-state tests, but the normal rally adapter uses rally. */
 export function optimizationBattleContext(context: OptimizationContext): BattleContext {
-  return context.battleScenario === "rally" ? "rally" : "challenge";
+  return context.battleScenario === "cityDefense" ? "cityDefense" : context.battleScenario === "rally" ? "rally" : "challenge";
 }
 export interface OptimizationContextAudit {
   readonly battleScenario: OptimizationBattleScenario;

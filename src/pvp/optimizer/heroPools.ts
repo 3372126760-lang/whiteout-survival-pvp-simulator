@@ -7,9 +7,8 @@ const catalog = getValidationCatalog();
 const heroById = new Map(catalog.leaderHeroes.map((hero) => [hero.heroId, hero]));
 
 /** Head search policy only. Registry, manual formations and teammate body pools stay intact. */
-export function optimizerHeadHeroAllowed(hero: HeroCategorySource, _serverGeneration: number): boolean {
-  void _serverGeneration;
-  return heroCategory(hero) === "S";
+export function optimizerHeadHeroAllowed(hero: HeroCategorySource, serverGeneration: number): boolean {
+  return heroCategory(hero) === "S" && (heroSGeneration(hero) ?? 1) <= serverGeneration;
 }
 export function optimizerServerGeneration(input: ValidationBattleInput): number {
   return getServerStage(validationStageId(input)).maxHeroGeneration;
@@ -140,6 +139,21 @@ export function initializeOptimizationHeroPool(input: ValidationBattleInput): Va
     pool[side] = next;
   }
   return changed ? { ...input, optimizerHeroPool: pool } : input;
+}
+
+/** A deliberate server upgrade unlocks new Head heroes in every inventory.
+ * Earlier ownership omissions and explicit participation/weapon choices survive.
+ * Call at the stage transition, never while restoring a frozen benchmark input. */
+export function syncOptimizationHeroPoolForStage(previous: ValidationBattleInput,
+  current: ValidationBattleInput): ValidationBattleInput {
+  const before = optimizerServerGeneration(previous), after = optimizerServerGeneration(current);
+  let next = current;
+  if (after > before && heroOwnershipScope(current) === "owned") {
+    const added = visibleOptimizationHeroIds(current).filter((id) => (heroSGeneration(heroById.get(id)!) ?? 1) > before);
+    const owned = current.ownedHeroIds ?? current.availableHeroIds ?? [];
+    if (added.some((id) => !owned.includes(id))) next = { ...current, ownedHeroIds: [...new Set([...owned, ...added])] };
+  }
+  return initializeOptimizationHeroPool(next);
 }
 export function setHeroOwnershipScope(input: ValidationBattleInput, scope: "allAvailable" | "owned"): ValidationBattleInput {
   const next = { ...input };

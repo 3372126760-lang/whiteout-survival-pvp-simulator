@@ -221,7 +221,7 @@ describe("external buffs and validation UI refactor", () => {
       "utf8",
     );
     expect(source).toContain('<details class="panel trace-panel">');
-    expect(source).toContain('<details class="trace-round">');
+    expect(source).toContain('lazyDetails.render(`trace-round-${round.round}`');
     expect(source).not.toContain('<details class="trace-round" open>');
     expect(source).toContain('input.battleContext === "rally"');
   });

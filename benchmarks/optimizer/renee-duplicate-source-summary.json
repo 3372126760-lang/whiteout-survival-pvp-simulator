@@ -1,0 +1,191 @@
+{
+  "schema": 1,
+  "fixture": "benchmarks/optimizer/renee-duplicate-source-fixture.json",
+  "sourceFileSha256": "3dde023d1bb73889978721e693df6cff76566e131431e780f28ba819beace1cb",
+  "interpretation": "Strict same-canonical-input/source/seed comparison of Renee stacking only. Legacy runtime selected by removing only Renee duplicateSourceStacking policy in an isolated current-source snapshot. Not a replay of historical optimizer options, and not a full optimizer search rerun; ranks scan all Head×Body J peaks, Formal holds the supplied 60/39/1 lineup fixed.",
+  "optimizerOptionsProvenance": "Original file contains BattleConfig only, no optimizer config. Current defaults explicitly frozen for this comparison; not claimed to be historical optimizer settings.",
+  "baselinePatch": {
+    "file": "src/pvp/heroSkills/definitions/s6Heroes.ts",
+    "currentSha256": "65399cc5dc270343dcb1695800894b6933faf3342765d18e462b4f62ed2f6223",
+    "legacySha256": "2a6114f7b8576d724071bd5d5b21035b0f799bd61a6d549ab3656b2d4763a29b",
+    "changedFiles": 1
+  },
+  "old": {
+    "variant": "old",
+    "inputSha256": "a5aca8f702307a82baf8b161017870d4e7f2d95559c3a98caa481d6ff1c6036b",
+    "engineScenarioSha256": "5130ae2c68e0d071b5492ea59ad556c40ab7e5bc374cf39a594087e7d3b05ed8",
+    "seedsSha256": "a6d8f3af03b978c4687ed6051534377d45e6fa5e337f801b16a76e3605e3054f",
+    "rule": "Independent 2B per source, separate delayed events and rounding",
+    "sourceCount": 2,
+    "coefficient": 4,
+    "headCount": 1062,
+    "bodyCount": 10185,
+    "headKeysSha256": "1f8a5bd91e20da8429f42aec4654827f6f6c25556967778301fe0d1331cbc771",
+    "bodyKeysSha256": "83aba0d36ed748d489a8919519fd1fa2a65cd1086ef948494244a3b48e1547a3",
+    "evaluatedHeadBodyCount": 10816470,
+    "j": {
+      "atOriginalRatio": 3488388690543.632,
+      "max": 3532381722184.979,
+      "peakRatio": {
+        "shield": 65.364284274997,
+        "lancer": 32.13633898817788,
+        "marksman": 2.499376736825112
+      },
+      "globalPeakRank": 468246,
+      "bodyRankWithinHead": 1,
+      "headRankWithinBody": 98,
+      "recalledByGlobalTop10000": false,
+      "recalledByPerHeadTop1": true,
+      "globalBest": {
+        "head": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "body": [
+          "hero-skill.patelike.life",
+          "hero-skill.shuyun.attack",
+          "hero-skill.gewen.eagle-vision",
+          "hero-skill.jiatuo.golden-guard"
+        ],
+        "jMax": 7856081842036.043,
+        "peakRatio": {
+          "shield": 66.50342185485546,
+          "lancer": 3.3747306903429903,
+          "marksman": 30.121847454801546
+        }
+      }
+    },
+    "formal": {
+      "trials": 1000,
+      "outcomes": {
+        "A": 717,
+        "B": 283,
+        "draw": 0,
+        "timeout": 0
+      },
+      "winRateA": 0.717,
+      "averageRemaining": {
+        "A": 750254.489,
+        "B": 192758.247
+      }
+    },
+    "elapsedMs": 27084.9453,
+    "historicalReplay": {
+      "seed": 502926396,
+      "summary": {
+        "rounds": 32,
+        "endReason": "elimination",
+        "remaining": {
+          "A": 912274,
+          "B": 0
+        },
+        "outcome": "A"
+      },
+      "markEventsR21": [
+        {
+          "sourceSide": "A",
+          "targetTroop": "marksman",
+          "damageType": "skillDamage",
+          "skillCoefficient": 4,
+          "roundedDamage": 33990045839
+        }
+      ]
+    }
+  },
+  "new": {
+    "variant": "new",
+    "inputSha256": "a5aca8f702307a82baf8b161017870d4e7f2d95559c3a98caa481d6ff1c6036b",
+    "engineScenarioSha256": "5130ae2c68e0d071b5492ea59ad556c40ab7e5bc374cf39a594087e7d3b05ed8",
+    "seedsSha256": "a6d8f3af03b978c4687ed6051534377d45e6fa5e337f801b16a76e3605e3054f",
+    "rule": "One delayed payload: first source 2B, each additional source 1B",
+    "sourceCount": 2,
+    "coefficient": 3,
+    "headCount": 1062,
+    "bodyCount": 10185,
+    "headKeysSha256": "1f8a5bd91e20da8429f42aec4654827f6f6c25556967778301fe0d1331cbc771",
+    "bodyKeysSha256": "83aba0d36ed748d489a8919519fd1fa2a65cd1086ef948494244a3b48e1547a3",
+    "evaluatedHeadBodyCount": 10816470,
+    "j": {
+      "atOriginalRatio": 3029477793994.3384,
+      "max": 3091401933474.565,
+      "peakRatio": {
+        "shield": 66.13517845631554,
+        "lancer": 30.55091702413652,
+        "marksman": 3.3139045195479326
+      },
+      "globalPeakRank": 934493,
+      "bodyRankWithinHead": 78,
+      "headRankWithinBody": 118,
+      "recalledByGlobalTop10000": false,
+      "recalledByPerHeadTop1": false,
+      "globalBest": {
+        "head": {
+          "shield": "hero.s12.hervor",
+          "lancer": "hero.s12.karol",
+          "marksman": "hero.s12.ligeia"
+        },
+        "body": [
+          "hero-skill.patelike.life",
+          "hero-skill.shuyun.attack",
+          "hero-skill.gewen.eagle-vision",
+          "hero-skill.jiatuo.golden-guard"
+        ],
+        "jMax": 7856081842036.043,
+        "peakRatio": {
+          "shield": 66.50342185485546,
+          "lancer": 3.3747306903429903,
+          "marksman": 30.121847454801546
+        }
+      }
+    },
+    "formal": {
+      "trials": 1000,
+      "outcomes": {
+        "A": 615,
+        "B": 385,
+        "draw": 0,
+        "timeout": 0
+      },
+      "winRateA": 0.615,
+      "averageRemaining": {
+        "A": 611269.739,
+        "B": 275459.49
+      }
+    },
+    "elapsedMs": 26926.466199999995,
+    "historicalReplay": {
+      "seed": 502926396,
+      "summary": {
+        "rounds": 36,
+        "endReason": "elimination",
+        "remaining": {
+          "A": 852283,
+          "B": 0
+        },
+        "outcome": "A"
+      },
+      "markEventsR21": [
+        {
+          "sourceSide": "A",
+          "targetTroop": "marksman",
+          "damageType": "skillDamage",
+          "skillCoefficient": 3,
+          "roundedDamage": 25492534379
+        }
+      ]
+    }
+  },
+  "paired": {
+    "oldAnewA": 615,
+    "oldAnewOther": 102,
+    "oldOtherNewA": 0,
+    "neitherA": 283
+  },
+  "delta": {
+    "jAtOriginalRatio": -458910896549.29346,
+    "jMax": -440979788710.41406,
+    "globalJPeakRank": 466247,
+    "formalWinRateA": -0.10199999999999998
+  }
+}

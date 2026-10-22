@@ -1,3 +1,4 @@
+import { rawReportSide } from "../validationUi/reportBonusContexts";
 import { historicalReportBonuses } from "../validationUi/historicalBonuses";
 import { describe, expect, it } from "vitest";
 import { createDefaultValidationInput } from "../../ui/defaultInput";
@@ -15,10 +16,10 @@ function modifiers(additive: number, buff: number, debuff: number): ValidationRe
 }
 function manualHistory(): ValidationBattleInput {
   const base = createDefaultValidationInput();
-  return { ...base, attributeInputMode: "prediction", sideA: { ...base.sideA,
+  return { ...base, attributeInputMode: "prediction", sideA: { ...rawReportSide({ ...base.sideA,
     troops: Object.fromEntries(troops.map((troop) => [troop, { ...base.sideA.troops[troop],
       attack: 200, defense: 200, penetration: 200, life: 200 }])) as typeof base.sideA.troops,
-    sourceReportBonuses: modifiers(5, 20, 10), reportAttributeBasis: "historicalReport" } };
+    sourceReportBonuses: modifiers(5, 20, 10), reportAttributeBasis: "historicalReport" }), reportAttributeBasis: "raw" } };
 }
 
 describe("historical versus target report contexts", () => {
@@ -34,35 +35,36 @@ describe("historical versus target report contexts", () => {
     expect(createValidationPreviewState(input).sideA.troops.lancer.attack).toBeCloseTo(raw / 100, 12);
     expect(JSON.stringify(input)).toBe(before);
   });
-  it("reuses the original only on explicit selection", () => {
+  it("ignores the removed reuseSource switch even when explicitly supplied", () => {
     const input = manualHistory();
     const configured = { ...input, sideA: { ...input.sideA, targetBonusMode: "reuseSource" as const } };
     const row = previewExpectedReportBonuses(configured).A.breakdown.shield.attack;
-    expect(row).toMatchObject({ targetAdditive: .05, targetBuff: .2, targetDebuff: .1 });
-    expect(row.finalBonus).toBeCloseTo(2, 12);
-    expect(createValidationPreviewState(configured).sideA.troops.shield.attack).toBeCloseTo(2, 12);
+    expect(row).toMatchObject({ targetAdditive: 0, targetBuff: 0, targetDebuff: 0 });
+    expect(row.finalBonus).toBeCloseTo(1.7, 12);
+    expect(createValidationPreviewState(configured).sideA.troops.shield.attack).toBeCloseTo(1.7, 12);
   });
   it("displays the target rate itself rather than a report-value-dependent residual", () => {
     const base = createDefaultValidationInput();
     const input = { ...base, attributeInputMode: "prediction" as const,
       sideA: { ...base.sideA, troops: { ...base.sideA.troops,
         lancer: { ...base.sideA.troops.lancer, attack: 140 } },
-        targetBonusMode: "custom" as const, targetBattleBonuses: modifiers(0, 20, 0) } };
+        externalBuffs: { ...base.sideA.externalBuffs!, town: { ...base.sideA.externalBuffs!.town, attack: "large" as const } } } };
     const row = previewExpectedReportBonuses(input).A.breakdown.lancer.attack;
     expect(row.finalBonus).toBeCloseTo(1.88, 12);
     expect(row.targetBuff).toBe(.2);
     // The old residual display would label a 20% factor as a 48-point increase.
     expect(row.finalBonus - row.inputReportBonus).toBeCloseTo(.48, 12);
   });
-  it("keeps custom target values independent of changes in historical context", () => {
+  it("keeps custom target values independent of changes in historical metadata", () => {
     const input = manualHistory();
     const first = { ...input, sideA: { ...input.sideA,
-      targetBonusMode: "custom" as const, targetBattleBonuses: modifiers(0, 30, 5) } };
+      externalBuffs: { ...input.sideA.externalBuffs!, town: { ...input.sideA.externalBuffs!.town, attack: "large" as const }, pet: { ...input.sideA.externalBuffs!.pet, attackLevel: 10 } } },
+      sideB: { ...input.sideB, externalBuffs: { ...input.sideB.externalBuffs!, town: { ...input.sideB.externalBuffs!.town, enemyAttackReduction: "large" as const } } } };
     const second = { ...first, sideA: { ...first.sideA, sourceReportBonuses: modifiers(0, 60, 30) } };
     for (const configured of [first, second]) {
       const row = previewExpectedReportBonuses(configured).A.breakdown.shield.attack;
-      expect(row).toMatchObject({ targetAdditive: 0, targetBuff: .3, targetDebuff: .05 });
-      expect(row.finalBonus).toBeCloseTo((1 + row.inputReportBonus) * 1.3 / 1.05 - 1, 12);
+      expect(row.targetAdditive).toBe(0); expect(row.targetBuff).toBeCloseTo(.3, 12); expect(row.targetDebuff).toBe(.2);
+      expect(row.finalBonus).toBeCloseTo((1 + row.inputReportBonus) * 1.3 / 1.2 - 1, 12);
     }
     expect(first.sideA.targetBattleBonuses).toBe(second.sideA.targetBattleBonuses);
   });
@@ -91,14 +93,14 @@ describe("historical versus target report contexts", () => {
         .toBeCloseTo(createValidationPreviewState(configure(manual)).sideA.troops.lancer.attack, 12);
     }
     expect(imported.sideA.sourceReportAttributes?.lancer.attack).toBe(200);
-    expect(imported.sideA.targetBonusMode).toBe("none");
+    expect(imported.sideA.targetBonusMode).toBeUndefined();
   });
-  it("does not propagate historical environment into the independently configured opponent", () => {
+  it("applies explicitly configured current town debuffs even when historical metadata exists", () => {
     const input = manualHistory();
     const configured = { ...input, sideA: { ...input.sideA,
       externalBuffs: { ...input.sideA.externalBuffs!, town: { ...input.sideA.externalBuffs!.town,
         enemyAttackReduction: "large" as const } } } };
-    expect(previewExpectedReportBonuses(configured).B.breakdown.shield.attack.targetDebuff).toBe(0);
+    expect(previewExpectedReportBonuses(configured).B.breakdown.shield.attack.targetDebuff).toBe(.2);
   });
   it("roundtrips source, target, mode and input basis independently", () => {
     const input = manualHistory();
@@ -106,8 +108,9 @@ describe("historical versus target report contexts", () => {
       targetBattleBonuses: modifiers(0, 30, 5) } };
     const restored = restorePersistedConfig(createPersistedEnvelope(configured, 1000)).input;
     expect(restored.sideA.sourceReportBonuses).toEqual(historicalReportBonuses(configured.sideA));
-    expect(restored.sideA.targetBattleBonuses).toEqual(configured.sideA.targetBattleBonuses);
-    expect(restored.sideA.reportAttributeBasis).toBe("historicalReport");
+    expect(restored.sideA.targetBattleBonuses).toBeUndefined();
+    expect(restored.sideA.targetBonusMode).toBeUndefined();
+    expect(restored.sideA.reportAttributeBasis).toBe("raw");
     expect(createValidationPreviewState(restored).sideA.troops.shield.attack)
       .toBeCloseTo(createValidationPreviewState(configured).sideA.troops.shield.attack, 12);
   });
@@ -122,11 +125,11 @@ describe("historical versus target report contexts", () => {
       sideA: { ...input.sideA, targetBonusMode: "custom" as const, targetBattleBonuses: modifiers(0, 99, 99),
         threeQueues: queues as unknown as NonNullable<typeof input.sideA.threeQueues> } };
     const config = toValidationThreeQueueConfig(configured);
-    expect(config.attacker.queues[0].side.lancer.attack).toBeCloseTo(1.75, 12);
+    expect(config.attacker.queues[0].side.lancer.attack).toBeCloseTo(2, 12);
     expect(config.attacker.queues[0].side.targetBattleBonuses?.lancer.attack)
       .toEqual({ additive: 0, buff: 0, debuff: 0 });
     expect(config.attacker.queues[1].side.targetBattleBonuses?.lancer.attack)
-      .toEqual({ additive: 0, buff: 20, debuff: 10 });
+      .toEqual({ additive: 0, buff: 0, debuff: 0 });
   });
 });
 

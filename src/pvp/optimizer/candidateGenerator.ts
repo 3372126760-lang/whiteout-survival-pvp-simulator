@@ -81,14 +81,16 @@ export function refineRatios(origin: RallyTroopRatios, step: number, radius: num
 export function candidateToInput(input: OptimizationInput, candidate: RallyCandidate, side: SideId = "A"): OptimizationInput {
   const sideKey = side === "A" ? "sideA" : "sideB", own = input[sideKey];
   const deployment = own.rallyDeployment;
-  if (deployment === undefined) throw new Error(`Optimizer requires rally deployment on side ${side}.`);
+  if (deployment === undefined && input.scenarioType !== "CITY_DEFENSE") throw new Error(`Optimizer requires rally deployment on side ${side}.`);
   const finalReport = input.attributeInputMode !== "prediction";
-  const totalTroops = finalReport ? TROOP_TYPES.reduce((sum, troop) => sum + own.troops[troop].count, 0)
-    : deployment.totalTroops;
-  const counts = finalReport ? allocateRallyTroopsByRatio({ totalTroops, ratios: candidate.ratios }) : undefined;
+  const city = input.scenarioType === "CITY_DEFENSE";
+  const totalTroops = finalReport || city ? TROOP_TYPES.reduce((sum, troop) => sum + own.troops[troop].count, 0)
+    : deployment!.totalTroops;
+  const counts = finalReport || city ? allocateRallyTroopsByRatio({ totalTroops, ratios: candidate.ratios }) : undefined;
   const head = finalReport ? currentHeadHeroIds(input, side) : candidate.leaderHeroIds;
   const leaderIds = TROOP_TYPES.flatMap((troop) => head[troop] ?? []);
-  const bodySkills = resolveBodySkillConfigs(candidate.memberSkillIds, leaderIds,
+  const memberSkillIds = city && side === "A" ? [] : candidate.memberSkillIds;
+  const bodySkills = resolveBodySkillConfigs(memberSkillIds, leaderIds,
     validationStageId(input), side).map((body, index) => ({ ...body,
     skillLevel: candidate.bodySkillLevels?.[index] ?? (own.bodySkills?.[index]?.skillId === body.skillId
       ? own.bodySkills[index]!.skillLevel
@@ -96,15 +98,15 @@ export function candidateToInput(input: OptimizationInput, candidate: RallyCandi
         ?.skillLevel ?? body.skillLevel) }));
   return {
     ...input,
-    scenarioType: "RALLY",
-    battleContext: "rally",
+    scenarioType: city ? "CITY_DEFENSE" : "RALLY",
+    battleContext: city ? "cityDefense" : "rally",
     [sideKey]: {
       ...own,
       leaderHeroId: null,
       leaderHeroIds: head,
       simulationWeaponLevels: { ...own.simulationWeaponLevels,
         ...(finalReport ? currentHeadWeaponLevels(input, side) : candidate.headWeaponLevels ?? optimizerHeadWeaponLevels(input, head, side)) },
-      selectedMemberSkillIds: candidate.memberSkillIds,
+      selectedMemberSkillIds: memberSkillIds,
       bodySkills,
       troops: counts === undefined && candidate.troopLevels === undefined ? own.troops : Object.fromEntries(TROOP_TYPES.map((troop) => [troop, {
         ...(counts === undefined ? own.troops[troop] : rescaleTroop(own.troops[troop], counts[troop])),
@@ -118,7 +120,7 @@ export function candidateToInput(input: OptimizationInput, candidate: RallyCandi
 /** Final report troop counts are authoritative; prediction uses deployment ratios. */
 export function currentRallyRatios(input: OptimizationInput, side: SideId = "A"): RallyTroopRatios {
   const own = side === "A" ? input.sideA : input.sideB;
-  if (input.attributeInputMode === "prediction") return own.rallyDeployment!.ratios;
+  if (input.attributeInputMode === "prediction" && input.scenarioType !== "CITY_DEFENSE") return own.rallyDeployment!.ratios;
   const total = TROOP_TYPES.reduce((sum, troop) => sum + own.troops[troop].count, 0);
   if (total <= 0) throw new Error("Optimizer requires positive attacker troop count.");
   return Object.fromEntries(TROOP_TYPES.map((troop) =>

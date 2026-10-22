@@ -6894,16 +6894,24 @@
       "heroName": "格雷格",
       "troopType": "marksman",
       "skillId": "hero-skill.gelaige.law-deterrence",
-      "skillName": "格雷格·律令威慑",
-      "uiSummary": "各兵种攻击时独立20%判定；命中目标栈造成伤害降低50%，立即生效2回合，重复触发覆盖。",
-      "description": "各兵种攻击时独立20%判定；命中目标栈造成伤害降低50%，立即生效2回合，重复触发覆盖。",
+      "skillName": "格雷格·律令震慑",
+      "uiSummary": "盾/矛/射每次主攻击尝试分别20%判定；本次选中目标穿透降低10/20/30/40/50%，立即生效2回合，闪避仍判定，同一目标重复触发覆盖刷新。",
+      "description": "盾/矛/射每次主攻击尝试分别20%判定；本次选中目标穿透降低10/20/30/40/50%，立即生效2回合，闪避仍判定，同一目标重复触发覆盖刷新。",
       "skillClass": "expedition",
-      "skillType": "概率+伤害修正",
+      "skillType": "概率+属性减益",
       "trigger": "beforeAttack",
       "probabilityByLevel": {
+        "1": 0.2,
+        "2": 0.2,
+        "3": 0.2,
+        "4": 0.2,
         "5": 0.2
       },
       "durationByLevel": {
+        "1": 2,
+        "2": 2,
+        "3": 2,
+        "4": 2,
         "5": 2
       },
       "cooldownByLevel": {},
@@ -6920,22 +6928,42 @@
       },
       "ruleStatus": "supported",
       "confirmationStatus": "confirmed",
-      "confirmationBasis": "独立证据：兵种及格雷格规则明确该类为 enemy outgoing damage reduction，区别于直接抵消；阿隆索钢铁意志属于穿透属性减益，不在本组。",
-      "confirmationEvidence": "confirmed S3 expedition PVP rules, synchronized 2026-09-20",
+      "confirmationBasis": "2026-10-16 用户最终确认：游戏技能截图为穿透降低；触发/目标/闪避/持续刷新完全复用鲁弗斯暴烈震爆，不作用敌军全体。",
+      "confirmationEvidence": "2026-10-16 user-confirmed Greg penetration reduction; Rufus Violent Blast timing/target template",
       "sourceFile": "src/pvp/heroSkills/definitions/s3Heroes.ts",
       "effectId": "hero-effect.gelaige.law-deterrence",
       "effectName": "hero-effect.gelaige.law-deterrence",
-      "effectKind": "outgoingDamageReduction",
-      "group": "enemyOutgoingDamageReduction",
-      "attribute": null,
+      "effectKind": "attributeReduction",
+      "group": "enemyPenetrationReduction",
+      "attribute": "penetration",
       "operation": null,
       "recipient": "enemyArmy",
       "scope": {
         "source": "army",
-        "target": "all",
+        "target": "currentTarget",
         "damageType": "all"
       },
       "lifecycleByLevel": {
+        "1": {
+          "activationTiming": "immediate",
+          "durationRounds": 2,
+          "refreshMode": "replace"
+        },
+        "2": {
+          "activationTiming": "immediate",
+          "durationRounds": 2,
+          "refreshMode": "replace"
+        },
+        "3": {
+          "activationTiming": "immediate",
+          "durationRounds": 2,
+          "refreshMode": "replace"
+        },
+        "4": {
+          "activationTiming": "immediate",
+          "durationRounds": 2,
+          "refreshMode": "replace"
+        },
         "5": {
           "activationTiming": "immediate",
           "durationRounds": 2,
@@ -6943,9 +6971,17 @@
         }
       },
       "valueByLevel": {
+        "1": 0.1,
+        "2": 0.2,
+        "3": 0.3,
+        "4": 0.4,
         "5": 0.5
       },
       "presentLevels": [
+        1,
+        2,
+        3,
+        4,
         5
       ],
       "extra": {
@@ -6964,9 +7000,10 @@
         "army"
       ],
       "targetTroops": [
-        "all"
+        "currentTarget"
       ],
-      "candidateGroups": []
+      "candidateGroups": [],
+      "triggerTiming": "mainAttackAttempt"
     },
     {
       "sourceType": "generation",
@@ -10051,13 +10088,21 @@
       "troopType": "lancer",
       "skillId": "hero-skill.ruini.dream-mark",
       "skillName": "芮妮·惊梦留痕",
-      "uiSummary": "矛兵每2次主攻击尝试在闪避前标记选定目标；下回合对该目标造成200%独立技能额外伤害。",
-      "description": "矛兵每2次主攻击尝试在闪避前标记选定目标；下回合对该目标造成200%独立技能额外伤害。",
+      "uiSummary": "矛兵每2次主攻击尝试标记当前目标，下一回合造成200%B技能伤害；每个重复来源追加100%B（战报支持，暂定），各来源分别计数。",
+      "description": "矛兵每2次主攻击尝试标记当前目标，下一回合造成200%B技能伤害；每个重复来源追加100%B（战报支持，暂定），各来源分别计数。",
       "skillClass": "expedition",
       "skillType": "状态",
       "trigger": "beforeAttack",
       "triggerStage": "preDodgeMainAttackAttempt",
-      "generatedDamage": { "coefficient": 2, "damageType": "skillDamage", "damageSubtype": "extraDamage", "activationTiming": "nextRound", "durationRounds": 1, "retargetOnDeath": false, "separateSkillCasualtyAttribution": false },
+      "generatedDamage": {
+        "coefficient": 2,
+        "damageType": "skillDamage",
+        "damageSubtype": "extraDamage",
+        "activationTiming": "nextRound",
+        "durationRounds": 1,
+        "retargetOnDeath": false,
+        "separateSkillCasualtyAttribution": false
+      },
       "probabilityByLevel": {},
       "durationByLevel": {},
       "cooldownByLevel": {},
@@ -10072,7 +10117,12 @@
         "markId": "reneeDreamMark",
         "damageDelayRounds": 1,
         "damageCoefficient": 2,
-        "markDurationRounds": 1
+        "markDurationRounds": 1,
+        "duplicateSourceStacking": {
+          "additionalCoefficient": 1,
+          "evidenceStatus": "BATTLE_REPORT_SUPPORTED",
+          "ruleStatus": "PROVISIONAL"
+        }
       },
       "battleContexts": null,
       "positionRule": {
@@ -10084,9 +10134,9 @@
         ]
       },
       "ruleStatus": "supported",
-      "confirmationStatus": "confirmed",
-      "confirmationBasis": "S6真实战报确认：pre-dodge偶数次主攻尝试绑定当前目标；下回合整回合生效，独立产生2B skillDamage/extraDamage，目标死亡不转移。",
-      "confirmationEvidence": "S6真实战报与用户最终规则，2026-09-25",
+      "confirmationStatus": "provisional",
+      "confirmationBasis": "单来源2B与目标/时序保持原确认；重复m来源合并(m+1)B由1–5实例连续战报支持，PROVISIONAL，等待固定N0/总兵数的严格对照。每来源仍独立750次/1500有效主攻计数。",
+      "confirmationEvidence": "2026-10-17 battle-report-supported duplicate DreamMark coefficient m+1; PROVISIONAL pending fixed-N0 control",
       "sourceFile": "src/pvp/heroSkills/definitions/s6Heroes.ts",
       "effectId": "hero-effect.ruini.dream-mark",
       "effectName": "hero-effect.ruini.dream-mark",
@@ -10382,8 +10432,20 @@
       "skillType": "额外伤害",
       "trigger": "roundStart",
       "triggerStage": "naturalRoundPeriodicPerAliveTroop",
-      "periodRoundsByLevel": { "1": 4, "2": 4, "3": 4, "4": 4, "5": 4 },
-      "periodStartRoundByLevel": { "1": 4, "2": 4, "3": 4, "4": 4, "5": 4 },
+      "periodRoundsByLevel": {
+        "1": 4,
+        "2": 4,
+        "3": 4,
+        "4": 4,
+        "5": 4
+      },
+      "periodStartRoundByLevel": {
+        "1": 4,
+        "2": 4,
+        "3": 4,
+        "4": 4,
+        "5": 4
+      },
       "probabilityByLevel": {},
       "durationByLevel": {},
       "cooldownByLevel": {},
@@ -11340,7 +11402,11 @@
         "damageType": "all"
       },
       "lifecycleByLevel": {
-        "1": { "activationTiming": "nextRound", "durationRounds": 1, "refreshMode": "replace" },
+        "1": {
+          "activationTiming": "nextRound",
+          "durationRounds": 1,
+          "refreshMode": "replace"
+        },
         "5": {
           "activationTiming": "nextRound",
           "durationRounds": 1,
@@ -11391,8 +11457,14 @@
       "skillClass": "expedition",
       "skillType": "周期+伤害修正",
       "trigger": "roundStart",
-      "periodRoundsByLevel": { "1": 3, "5": 3 },
-      "periodStartRoundByLevel": { "1": 3, "5": 3 },
+      "periodRoundsByLevel": {
+        "1": 3,
+        "5": 3
+      },
+      "periodStartRoundByLevel": {
+        "1": 3,
+        "5": 3
+      },
       "probabilityByLevel": {},
       "durationByLevel": {},
       "cooldownByLevel": {},
@@ -11425,7 +11497,11 @@
         "damageType": "all"
       },
       "lifecycleByLevel": {
-        "1": { "activationTiming": "immediate", "durationRounds": 1, "refreshMode": "replace" },
+        "1": {
+          "activationTiming": "immediate",
+          "durationRounds": 1,
+          "refreshMode": "replace"
+        },
         "5": {
           "activationTiming": "immediate",
           "durationRounds": 1,
@@ -11473,8 +11549,14 @@
       "skillClass": "expedition",
       "skillType": "周期+伤害修正",
       "trigger": "roundStart",
-      "periodRoundsByLevel": { "1": 3, "5": 3 },
-      "periodStartRoundByLevel": { "1": 3, "5": 3 },
+      "periodRoundsByLevel": {
+        "1": 3,
+        "5": 3
+      },
+      "periodStartRoundByLevel": {
+        "1": 3,
+        "5": 3
+      },
       "probabilityByLevel": {},
       "durationByLevel": {},
       "cooldownByLevel": {},
@@ -11507,7 +11589,11 @@
         "damageType": "all"
       },
       "lifecycleByLevel": {
-        "1": { "activationTiming": "immediate", "durationRounds": 1, "refreshMode": "replace" },
+        "1": {
+          "activationTiming": "immediate",
+          "durationRounds": 1,
+          "refreshMode": "replace"
+        },
         "5": {
           "activationTiming": "immediate",
           "durationRounds": 1,
@@ -11558,8 +11644,14 @@
       "skillClass": "expedition",
       "skillType": "周期+伤害修正",
       "trigger": "roundStart",
-      "periodRoundsByLevel": { "1": 4, "5": 4 },
-      "periodStartRoundByLevel": { "1": 4, "5": 4 },
+      "periodRoundsByLevel": {
+        "1": 4,
+        "5": 4
+      },
+      "periodStartRoundByLevel": {
+        "1": 4,
+        "5": 4
+      },
       "probabilityByLevel": {},
       "durationByLevel": {},
       "cooldownByLevel": {},
@@ -11592,7 +11684,11 @@
         "damageType": "all"
       },
       "lifecycleByLevel": {
-        "1": { "activationTiming": "immediate", "durationRounds": 2, "refreshMode": "replace" },
+        "1": {
+          "activationTiming": "immediate",
+          "durationRounds": 2,
+          "refreshMode": "replace"
+        },
         "5": {
           "activationTiming": "immediate",
           "durationRounds": 2,
@@ -11640,8 +11736,14 @@
       "skillClass": "expedition",
       "skillType": "周期+伤害修正",
       "trigger": "roundStart",
-      "periodRoundsByLevel": { "1": 4, "5": 4 },
-      "periodStartRoundByLevel": { "1": 4, "5": 4 },
+      "periodRoundsByLevel": {
+        "1": 4,
+        "5": 4
+      },
+      "periodStartRoundByLevel": {
+        "1": 4,
+        "5": 4
+      },
       "probabilityByLevel": {},
       "durationByLevel": {},
       "cooldownByLevel": {},
@@ -11674,7 +11776,11 @@
         "damageType": "all"
       },
       "lifecycleByLevel": {
-        "1": { "activationTiming": "immediate", "durationRounds": 2, "refreshMode": "replace" },
+        "1": {
+          "activationTiming": "immediate",
+          "durationRounds": 2,
+          "refreshMode": "replace"
+        },
         "5": {
           "activationTiming": "immediate",
           "durationRounds": 2,

@@ -1,7 +1,7 @@
 import { getValidationCatalog, validationStageId, type ValidationBattleInput } from "../validationUi";
 import { heroSGeneration } from "../validationUi/heroCategory";
 import { configuredHeadHeroIds, heroOwnershipScope, optimizationHeroIds, ownedHeroIds,
-  ownedOptimizationHeroIds, serverHeroIds, optimizerHeadHeroAllowed } from "./heroPools";
+  ownedOptimizationHeroIds, serverHeroIds, optimizerHeadHeroAllowed, optimizerServerGeneration } from "./heroPools";
 import { headFormationGenerationAudit, headHeroPoolAudit } from "./candidateGenerator";
 import { optimizerGeneration, recentGenerations } from "./heroSearchPolicy";
 import type { SearchConstraint } from "./types";
@@ -31,26 +31,30 @@ export function createHeadPoolAudit(input: ValidationBattleInput, constraints: S
       !eligible.includes(id) ? "strictDominance" : undefined;
     return reason === undefined ? [] : [{ heroId: id, generation: heroSGeneration(hero) ?? null, reason }];
   });
-  const s12 = (ids: readonly string[]) => ids.filter((id) => heroSGeneration(byId.get(id)!) === 12);
+  const atGeneration = (ids: readonly string[], generation: number) => ids.filter((id) => heroSGeneration(byId.get(id)!) === generation);
+  const serverGeneration = optimizerServerGeneration(input);
   const effectiveN = optimizerGeneration(input, side);
   const h0 = headFormationGenerationAudit(input, constraints, undefined, side);
   const dimensions = resolveSearchDimensions(input, { side,
     fixedHead: TROOP_TYPES.every((troop) => constraints.fixedLeaders?.[troop] !== undefined) });
-  const warning = validationStageId(input) === "s12" && s12(eligible).length === 0
-    ? "S12 server stage but no S12 SSR is eligible for Head optimization" : null;
+  const warning = atGeneration(server, serverGeneration).length > 0 && atGeneration(eligible, serverGeneration).length === 0
+    ? `S${serverGeneration} server stage but no S${serverGeneration} SSR is eligible for Head optimization` : null;
   const canonicalSelectedHeroesExcluded = configuredHeadHeroIds(input).flatMap((id) => {
     const rejection = rejectedHeadHeroes.find((hero) => hero.heroId === id);
     return rejection === undefined ? [] : [rejection];
   });
   return {
     serverStage: validationStageId(input), side, ownershipMode: heroOwnershipScope(input),
-    serverUnlockedHeroCount: server.length, serverUnlockedSSRHeadCount: server.filter((id) => optimizerHeadHeroAllowed(byId.get(id)!, 0)).length,
+    serverUnlockedHeroCount: server.length, serverUnlockedSSRHeadCount: server.filter((id) => optimizerHeadHeroAllowed(byId.get(id)!, serverGeneration)).length,
     ownedHeroCount: owned.length, availableSSRHeadHeroCount: ownedOptimizationHeroIds(input).length,
     optimizationEnabledHeroCount: enabled.length, eligibleHeadHeroCount: eligible.length,
-    maxServerGeneration: maxGeneration(server), maxOwnedGeneration: maxGeneration(owned),
+    maxServerGeneration: serverGeneration, maxOwnedGeneration: maxGeneration(owned),
     maxOptimizationGeneration: maxGeneration(enabled), effectiveN,
-    serverUnlockedS12HeroIds: s12(server), ownedS12HeroIds: s12(owned),
-    optimizationEnabledS12HeroIds: s12(enabled), eligibleS12HeadHeroIds: s12(eligible),
+    serverUnlockedCurrentGenerationHeroIds: atGeneration(server, serverGeneration), ownedCurrentGenerationHeroIds: atGeneration(owned, serverGeneration),
+    optimizationEnabledCurrentGenerationHeroIds: atGeneration(enabled, serverGeneration), eligibleCurrentGenerationHeadHeroIds: atGeneration(eligible, serverGeneration),
+    // Historical diagnostics remain readable; these aliases never constrain the search domain.
+    serverUnlockedS12HeroIds: atGeneration(server, 12), ownedS12HeroIds: atGeneration(owned, 12),
+    optimizationEnabledS12HeroIds: atGeneration(enabled, 12), eligibleS12HeadHeroIds: atGeneration(eligible, 12),
     rejectedHeadHeroes, canonicalSelectedHeroesExcluded, warning,
     recentGenerationWindow: effectiveN < 3 ? [] : recentGenerations(effectiveN),
     heroCountByTroop: headAudit.counts.afterDominance,

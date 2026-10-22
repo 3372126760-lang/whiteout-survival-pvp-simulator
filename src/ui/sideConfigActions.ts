@@ -2,6 +2,7 @@ import type { ValidationBattleInput, ValidationSideInput, ValidationQueueConfig 
 import { normalizeIceFireReportLineage } from "../pvp/validationUi/queueReportLineage";
 import { isIceFireInput } from "../pvp/validationUi/iceFireContext";
 import { getValidationThreeQueues } from "../pvp/validationUi/adapter";
+import { normalizeBattleInputPolicy } from "../pvp/validationUi/inputPolicy";
 
 /** Exchange whole queue objects. Side.shared is deliberately retained by reference. */
 export function swapIceFireQueues(input: ValidationBattleInput, sideId: "A" | "B", first: number, second: number): ValidationBattleInput {
@@ -26,18 +27,18 @@ export function cloneValidationSideInput(
 export function copySideAToB(
   input: ValidationBattleInput,
 ): ValidationBattleInput {
-  return normalizeIceFireReportLineage({
+  return normalizeBattleInputPolicy(normalizeIceFireReportLineage({
     ...input,
     sideB: cloneValidationSideInput(input.sideA),
-  });
+  }));
 }
 
 export function swapBattleSides(
   input: ValidationBattleInput,
 ): ValidationBattleInput {
-  return normalizeIceFireReportLineage({
+  return normalizeBattleInputPolicy(normalizeIceFireReportLineage({
     ...input,
     sideA: cloneValidationSideInput(input.sideB),
     sideB: cloneValidationSideInput(input.sideA),
-  });
+  }));
 }

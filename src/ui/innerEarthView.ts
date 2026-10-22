@@ -1,3 +1,4 @@
+import { renderHeroPortrait } from "./heroArtwork";
 import { TROOP_TYPES, type TroopType } from "../pvp/types";
 import { getValidationCatalog, validationStageId, type ValidationBattleInput,
   type ValidationQueueAttributes } from "../pvp/validationUi";
@@ -7,6 +8,11 @@ import { getInnerEarthConfig, getInnerEarthRule, normalizeInnerEarthInput,
   INNER_EARTH_MODES } from "../pvp/innerEarth";
 import type { PetExternalBuffConfig } from "../pvp/externalBuffs";
 import { heroCategoryLabel } from "../pvp/validationUi/heroCategory";
+import { allocateDeployment, deploymentRatios, renderTotalRatioDeployment, type DeploymentCounts } from "./troopDeploymentView";
+import { combatBuffPreset, renderCombatBuffPresets } from "./combatBuffPresets";
+import { DEFAULT_EXTERNAL_BUFF_CONFIG } from "../pvp/externalBuffs/data";
+import { validSimpleRatios } from "./simpleMode";
+import type { RallyTroopRatios } from "../pvp/validationUi/rallyDeployment";
 import { innerEarthAttributeSchema, compactAttributeInput, expandAttributeInput,
   ATTRIBUTE_SCHEMA_FIELDS, attributeFieldKey } from "../pvp/validationUi/attributeSchema";
 
@@ -17,6 +23,25 @@ const stats = { attack: "攻击", defense: "防御", penetration: "穿透", life
 const petLabels: Record<keyof PetExternalBuffConfig, string> = { attackLevel: "宠物攻击技能", defenseLevel: "宠物防御技能",
   penetrationLevel: "宠物穿透技能", lifeLevel: "宠物生命技能", enemyDefenseReductionLevel: "宠物敌方防御减益",
   enemyPenetrationReductionLevel: "宠物敌方穿透减益", enemyLifeReductionLevel: "宠物敌方生命减益" };
+let deploymentDraft: { counts: DeploymentCounts; ratios: RallyTroopRatios } | null = null;
+const maxPetLevels = combatBuffPreset(DEFAULT_EXTERNAL_BUFF_CONFIG, "pets").pet;
+export function updateInnerEarthDeployment(input: ValidationBattleInput, dataset: Record<string, string | undefined>, raw: string): ValidationBattleInput {
+  const config = getInnerEarthConfig(input);
+  if (getInnerEarthRule(config.subMode).heroMode !== "empty") throw new Error("多队列请使用各队比例。");
+  let ratios = deploymentDraft?.counts === config.ally.counts ? deploymentDraft.ratios : deploymentRatios(config.ally.counts);
+  if (dataset.field === "ratio") {
+    const troop = dataset.troop as TroopType;
+    if (!TROOP_TYPES.includes(troop)) throw new Error("兵种无效。");
+    ratios = { ...ratios, [troop]: Number(raw) };
+    deploymentDraft = { counts: config.ally.counts, ratios };
+    if (!validSimpleRatios(ratios)) return input;
+  }
+  const total = dataset.field === "total" ? Number(raw) : TROOP_TYPES.reduce((sum, troop) => sum + config.ally.counts[troop], 0);
+  const counts = allocateDeployment(total, ratios);
+  const next = normalizeInnerEarthInput(input, { ...config, ally: { ...config.ally, counts } });
+  deploymentDraft = { counts, ratios };
+  return next;
+}
 const escape = (value: string) => value.replaceAll("&", "&amp;").replaceAll('"', "&quot;")
   .replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("'", "&#39;");
 const data = (fields: Record<string, string | number>) => Object.entries(fields)
@@ -47,7 +72,7 @@ function attributeFields(attributes: ValidationQueueAttributes, side: "ally" | "
 }
 function heroFields(input: ValidationBattleInput, side: "ally" | "enemy", queue: number): string {
   const config = getInnerEarthConfig(input), selected = config[side].queues[queue]!.heroes;
-  return `<div class="hero-slot-grid">${TROOP_TYPES.map((troop) => `<label>${names[troop]}英雄<select data-scope="inner-earth" data-field="hero" data-side="${side}" data-queue="${queue}" data-troop="${troop}">
+  return `<div class="hero-slot-grid">${TROOP_TYPES.map((troop) => `<label><span class="hero-art-name">${renderHeroPortrait(selected[troop])}${names[troop]}英雄</span><select data-scope="inner-earth" data-field="hero" data-side="${side}" data-queue="${queue}" data-troop="${troop}">
     <option value="">无英雄</option>${getValidationCatalog().leaderHeroes.filter((hero) => hero.troopType === troop &&
       isHeroAvailableAtStage(hero, validationStageId(input))).map((hero) => `<option value="${escape(hero.heroId)}" ${selected[troop] === hero.heroId ? "selected" : ""}>${escape(hero.name)} ${heroCategoryLabel(hero)}</option>`).join("")}</select></label>`).join("")}</div>`;
 }
@@ -73,16 +98,16 @@ export function renderInnerEarthForm(input: ValidationBattleInput, presentation:
     return `<label>我方${names[troop]}兵种等级<select data-scope="inner-earth" data-field="tier" data-side="ally" data-troop="${troop}">${options.map((tier) =>
       `<option value="${tier}" ${config.ally.troopTiers[troop] === tier ? "selected" : ""}>${tier === "LAB_T11" ? "T11无火晶（研究所）" : tier === "LAB_T12" ? "T12无火晶（研究所）" : tier}</option>`).join("")}</select></label>`;
   }).join("")}</div>` : "";
-  const t12 = config.subMode === "UNDERGROUND_LAB" && TROOP_TYPES.some((troop)=>config.ally.troopTiers[troop] === "LAB_T12") ? `<section><h3>我方 T12 技能等级</h3><div class="inline-fields">${TROOP_TYPES.filter((troop) => config.ally.troopTiers[troop] === "LAB_T12").map((troop) =>
+  const t12 = rule.allowT12Skill && TROOP_TYPES.some((troop)=>config.ally.troopTiers[troop].includes("T12")) ? `<section><h3>我方 T12 技能等级</h3><p class="hint">该技能不属于战报12项攻防穿血。当前为非集结模式，最高Lv3；Lv0关闭。</p><div class="inline-fields">${TROOP_TYPES.filter((troop) => config.ally.troopTiers[troop].includes("T12")).map((troop) =>
     `<label>${names[troop]}（0–3）<select data-scope="inner-earth" data-field="t12" data-troop="${troop}">${Array.from({ length: 4 }, (_, level) =>
       `<option value="${level}" ${config.ally.t12SkillLevels[troop] === level ? "selected" : ""}>${level}</option>`).join("")}</select></label>`).join("")}</div></section>` : "";
   const ally = queued ? `<div class="queue-grid">${config.ally.queues.map((queue, index) => `<article class="queue-card"><h3>我方第${index + 1}队</h3>
     ${heroFields(input, "ally", index)}<div class="inline-fields">${TROOP_TYPES.map((troop) => field(names[troop] + "比例", queue.ratio[troop],
       { field: "ratio", side: "ally", queue: index, troop }, true)).join("")}</div>
     ${presentation === "player" ? fold(`player-earth-attributes-${index}`, "本队战报属性", () => attributeFields(queue.expectedReportStats, "ally", config.subMode, index)) : `<h4>本队预期战报基础属性</h4>${attributeFields(queue.expectedReportStats, "ally", config.subMode, index)}`}</article>`).join("")}</div>` :
-    `<div class="inline-fields">${TROOP_TYPES.map((troop) => field(names[troop] + "数量", config.ally.counts[troop], { field: "count", troop })).join("")}</div>${presentation === "player" ? fold("player-earth-attributes", "战报属性", () => attributeFields(config.ally.reportStats, "ally", config.subMode)) : attributeFields(config.ally.reportStats, "ally", config.subMode)}`;
+    `${renderTotalRatioDeployment(config.ally.counts, "inner-earth-deployment", deploymentDraft?.counts === config.ally.counts ? deploymentDraft.ratios : null)}<details class="mini-details"><summary>高级：精确人数输入</summary><div class="inline-fields">${TROOP_TYPES.map((troop) => field(names[troop] + "数量", config.ally.counts[troop], { field: "count", troop })).join("")}</div></details>${presentation === "player" ? fold("player-earth-attributes", "战报属性", () => attributeFields(config.ally.reportStats, "ally", config.subMode)) : attributeFields(config.ally.reportStats, "ally", config.subMode)}`;
   return `<section class="panel inner-earth-panel" data-inner-earth-mode="${config.subMode}"><header class="panel-head"><h2>地心模式 · ${INNER_EARTH_MODE_LABELS[config.subMode]}</h2><span class="tag tag-cyan">${queued ? "预期战报属性" : "最终战报属性"}（固定）</span></header>
-    <div class="panel-body"><p class="hint">${queued ? "我方三队英雄、比例、基础属性分别录入；敌方仅英雄分队，兵力和属性共用。" : "双方无英雄；我方填写数量，敌方由容量和固定比例预设生成兵数。"}敌方固定T10。</p>
+    <div class="panel-body"><p class="hint">${queued ? "我方三队英雄、比例、基础属性分别录入；敌方仅英雄分队，兵力和属性共用。" : "双方无英雄；我方使用总出征数量与比例，敌方由容量和固定比例预设生成兵数。"}敌方固定T10。</p>
     ${presentation === "developer" ? renderInnerEarthModePicker(input) : ""}<div class="inline-fields">${allyCapacity}${enemyCapacity}${enemyPreset}</div>${tiers}${t12}
     <h3>我方配置</h3>${ally}<p>敌方兵种等级：T10（固定）</p>${presentation === "player" ? fold("player-earth-enemy-attributes", "敌方共用战报属性", () => attributeFields(config.enemy.shared.expectedReportStats, "enemy", config.subMode)) : `<h3>敌方共用属性</h3>${attributeFields(config.enemy.shared.expectedReportStats, "enemy", config.subMode)}`}
     ${queued ? `<div class="queue-grid">${config.enemy.queues.map((_, index) => `<article class="queue-card"><h3>敌方第${index + 1}队英雄</h3>${heroFields(input, "enemy", index)}</article>`).join("")}</div>` : ""}
@@ -92,8 +117,8 @@ export function renderInnerEarthForm(input: ValidationBattleInput, presentation:
 export function renderInnerEarthPets(input: ValidationBattleInput): string {
   const config = getInnerEarthConfig(input);
   if (config.subMode !== "HEART_OF_EARTH") return "";
-  return `<details class="panel inner-earth-pets"><summary>大地之心宠物战斗技能</summary><div class="panel-body"><p class="hint">独立参与候选战斗评价，不改写上方基础战报属性；出征容量类宠物不参与。</p><div class="inline-fields">${Object.entries(petLabels).map(([fieldName, label]) =>
-    `<label>${label}<select data-scope="inner-earth" data-field="pet" data-pet-field="${fieldName}">${Array.from({ length: 11 }, (_, level) =>
+  return `<details class="panel inner-earth-pets"><summary>大地之心宠物战斗技能</summary><div class="panel-body">${renderCombatBuffPresets("earth", true)}<p class="hint">预设只修改宠物战斗属性，最高等级来自现有技能表，不调整任何出征容量。独立参与候选战斗评价，不改写上方基础战报属性；出征容量类宠物不参与。</p><div class="inline-fields">${Object.entries(petLabels).map(([fieldName, label]) =>
+    `<label>${label}<select data-scope="inner-earth" data-field="pet" data-pet-field="${fieldName}">${Array.from({ length: maxPetLevels[fieldName as keyof PetExternalBuffConfig] + 1 }, (_, level) =>
       `<option value="${level}" ${(config.petContext?.[fieldName as keyof PetExternalBuffConfig] ?? 0) === level ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("")}</div></div></details>`;
 }
 
@@ -154,11 +179,11 @@ export function updateInnerEarthField(input: ValidationBattleInput, dataset: Rec
     mutable.ally.troopTiers[troop] = raw;
     if (config.subMode === "UNDERGROUND_LAB" && raw !== "LAB_T12") mutable.ally.t12SkillLevels[troop] = 0;
   }
-  else if (fieldName === "t12") { if (config.subMode !== "UNDERGROUND_LAB" || config.ally.troopTiers[troop] !== "LAB_T12") throw new Error("仅我方T12可配置T12技能。"); const level = integer(); if (level > 3) throw new Error("T12技能等级最高3级。"); mutable.ally.t12SkillLevels[troop] = level; }
+  else if (fieldName === "t12") { if (!getInnerEarthRule(config.subMode).allowT12Skill || !config.ally.troopTiers[troop].includes("T12")) throw new Error("仅我方T12可配置T12技能。"); const level = integer(); if (level > 3) throw new Error("T12技能等级最高3级。"); mutable.ally.t12SkillLevels[troop] = level; }
   else if (fieldName === "pet") {
     if (config.subMode !== "HEART_OF_EARTH") throw new Error("当前玩法不使用宠物。");
     const key = dataset.petField as keyof PetExternalBuffConfig; if (!(key in petLabels)) throw new Error("宠物技能无效。");
-    const level = integer(); if (level > 10) throw new Error("宠物技能等级为0–10。");
+    const level = integer(); if (level > maxPetLevels[key]) throw new Error(`该宠物技能等级为0到${maxPetLevels[key]}。`);
     mutable.petContext ??= Object.fromEntries(Object.keys(petLabels).map((key) => [key, 0])) as Mutable<PetExternalBuffConfig>;
     mutable.petContext[key] = level;
   } else throw new Error("地心输入字段无效。");

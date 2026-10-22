@@ -10,6 +10,7 @@ export function rallyOptimizationSide(config: Pick<OptimizationConfig, "candidat
 /** Display names follow scenario semantics; single and 333 sides have no rally role. */
 export function optimizationTargetLabel(scenario: ValidationBattleInput["scenarioType"] | "single" | "333" | "rally" | "threeQueue",
   side: SideId): string {
+  if (scenario === "CITY_DEFENSE") return side === "A" ? "单撞进攻方" : "守城防守方";
   return scenario === "RALLY" || scenario === "rally" ? side === "A" ? "集结进攻方" : "集结防守方" : `${side}方`;
 }
 

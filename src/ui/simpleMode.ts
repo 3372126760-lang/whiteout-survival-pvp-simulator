@@ -34,7 +34,7 @@ export function withSimpleSide(input: ValidationBattleInput, side: SideId,
 
 /** Special scene deployment/mixed-level composition stays with its existing editor. */
 export function canEditSimpleTroops(input: ValidationBattleInput, side: SideId): boolean {
-  return (input.scenarioType === undefined || input.scenarioType === "SINGLE" || input.scenarioType === "RALLY") &&
+  return (input.scenarioType === undefined || input.scenarioType === "SINGLE" || input.scenarioType === "CITY_DEFENSE" || input.scenarioType === "RALLY") &&
     !(input.battleContext === "rally" && input.attributeInputMode === "prediction") &&
     TROOP_TYPES.every((troop) => simpleSide(input, side).troops[troop].levelMode !== "mixed");
 }

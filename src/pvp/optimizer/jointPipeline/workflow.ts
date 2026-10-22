@@ -167,7 +167,7 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     formalPairs: formal.length, formalRatioCandidates: 0, finalOptimizerCandidates: 0, comparisonCandidates: 0, finalTrials: Math.max(1000, config.verificationTrials) };
   const seeds = adaptiveSeedPools(config.firstSeed, 300, pipeline.finalTrials), integrity = emptySearchIntegrityReport(seeds.finalScreeningPrefix);
   const current: RallyCandidate = { initialJRank: null, initialGlobalJRank: null, recalledBy: ["currentConfig"], formalBestRatio: currentRallyRatios(input, side), leaderHeroIds: currentHeadHeroIds(input, side), headWeaponLevels: currentHeadWeaponLevels(input, side),
-    memberSkillIds: own.bodySkills?.map((b) => b.skillId) ?? own.selectedMemberSkillIds,
+    memberSkillIds: input.scenarioType === "CITY_DEFENSE" && side === "A" ? [] : own.bodySkills?.map((b) => b.skillId) ?? own.selectedMemberSkillIds,
     bodySkillLevels: own.bodySkills?.map((b) => b.skillLevel) ?? own.selectedMemberSkillIds.map(() => 5), troopLevels,
     ratios: currentRallyRatios(input, side), selectionReasons: ["currentConfig"] };
   const currentKey = candidateKey(current), unique = (rows: readonly RallyCandidate[]) => {
@@ -178,7 +178,7 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     return [...map.values()];
   };
   const ledger = new BattleSampleLedger(candidateKey, (c: RallyCandidate) => candidateKey(c) === currentKey ? input : candidateToInput(input, c, side), side, profiler, seeds.screeningSet);
-  const counts = resolveValidationTroopCounts(own, "rally", input.attributeInputMode ?? "finalReport"), total = TROOP_TYPES.reduce((sum, t) => sum + counts[t], 0);
+  const counts = resolveValidationTroopCounts(own, input.scenarioType === "CITY_DEFENSE" ? "challenge" : "rally", input.attributeInputMode ?? "finalReport"), total = TROOP_TYPES.reduce((sum, t) => sum + counts[t], 0);
   const records: { stage: string; candidates: number; trials: number; retained: number; simulatedTrials: number }[] = [];
   const visited = new Map<string, RallyCandidate["leaderHeroIds"]>();
   const compare = (a: CandidateEvaluation, b: CandidateEvaluation) => SingleWinObjective.compare(a, b) || (candidateKey(a.candidate) < candidateKey(b.candidate) ? -1 : 1);

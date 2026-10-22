@@ -2,7 +2,7 @@ import { TROOP_TYPES, type TroopType } from "../types/combat";
 import { SUPPORTED_TROOP_LEVELS } from "../troopSkills";
 
 /** THREE_QUEUE is retained as an internal/legacy adapter value, not a public scene. */
-export type BattleScenarioType = "SINGLE" | "THREE_THREE_THREE" | "ICE_FIRE_LEAGUE" | "RALLY" | "INNER_EARTH" | "THREE_QUEUE";
+export type BattleScenarioType = "SINGLE" | "CITY_DEFENSE" | "THREE_THREE_THREE" | "ICE_FIRE_LEAGUE" | "RALLY" | "INNER_EARTH" | "THREE_QUEUE";
 
 export type TroopCounts = Readonly<Record<TroopType, number>>;
 

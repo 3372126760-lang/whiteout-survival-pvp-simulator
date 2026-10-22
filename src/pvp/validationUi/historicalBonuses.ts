@@ -52,13 +52,16 @@ function normalizeContext(raw: Record<string, unknown>): Record<string, unknown>
     ...(converted ? { [raw.attributes ? "attributes" : "troops"]: converted,
       sourceReportAttributes: raw.sourceReportAttributes ?? Object.fromEntries(TROOP_TYPES.map((t) => [t, Object.fromEntries(HISTORICAL_STATS.map((s) => [s, attributes![t][s]]))])),
       reportAttributeBasis: "raw", ...(raw.reportLineage ? { reportLineage: { ...raw.reportLineage as object, attributeSnapshot: converted } } : {}) } : {}),
-    ...(raw.targetBonusMode === "reuseSource" ? { targetBonusMode: "custom", targetBattleBonuses: original } : {}) };
+  };
 }
 /** Migration boundary shared by file import, share import and persistence. */
 export function normalizeHistoricalTree<T>(value: T): T {
   if (Array.isArray(value)) { const rows = value.map(normalizeHistoricalTree); return rows.every((row, i) => row === value[i]) ? value : rows as T; }
   if (!value || typeof value !== "object") return value;
-  let node = normalizeContext(value as Record<string, unknown>);
+  const original = value as Record<string, unknown>;
+  const { targetBonusMode: _mode, targetBattleBonuses: _current, ...withoutCurrent } = original;
+  void [_mode, _current];
+  let node = normalizeContext(_mode === undefined && _current === undefined ? original : withoutCurrent);
   if (node.bonuses && node.reportAttributes) {
     const migrated = normalizeContext({ sourceReportBonuses: node.bonuses, reportAttributeBasis: "raw" });
     if (migrated.sourceReportBonuses !== node.bonuses || migrated.historicalBonusMigration)

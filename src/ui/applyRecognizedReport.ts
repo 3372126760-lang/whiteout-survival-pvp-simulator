@@ -56,7 +56,7 @@ export function applyRecognizedReport(input: ValidationBattleInput,
     troopLevels, importedReportModifiers: updatedSide.importedReportModifiers,
     sourceReportBonuses: updatedSide.sourceReportBonuses!,
     sourceReportAttributes: updatedSide.sourceReportAttributes!,
-    reportAttributeBasis: "raw", targetBonusMode: queues[queueIndex].targetBonusMode ?? "none",
+    reportAttributeBasis: "raw",
     troopLevelCompositions: { ...queues[queueIndex].troopLevelCompositions,
       ...Object.fromEntries(TROOP_TYPES.flatMap((troop) =>
         parsed.troopSetup[troop]?.level === undefined && parsed.troopSetup[troop]?.displayedTroopLevel === undefined ? [] : [[troop,

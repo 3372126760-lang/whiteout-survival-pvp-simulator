@@ -326,8 +326,8 @@ describe("PVP validation UI adapter", () => {
       .toHaveLength(3);
   });
 
-  it("22. passes direct T12 level 24 into the skill runtime", () => {
-    const base = makeInput();
+  it("22. passes Rally T12 level 24 into the skill runtime", () => {
+    const base = { ...makeInput(), scenarioType: "RALLY" as const, battleContext: "rally" as const };
     const input = withSide(base, "A", {
       ...base.sideA,
       troops: {

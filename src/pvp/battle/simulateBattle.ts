@@ -1,5 +1,7 @@
 import type { BattleState } from "../types/battle";
 import type { BattleTrace } from "../logging";
+import { attributeResolvedDamage, emptyDamageAttribution, mergeDamageAttribution,
+  type DamageAttribution } from "../statistics/skillDamageAttribution";
 import {
   resolveRound,
   resolveRoundCompact,
@@ -17,6 +19,7 @@ export interface BattleSimulationResult {
   readonly rounds: readonly ResolvedRound[];
   readonly endReason: "elimination" | "roundLimit";
   readonly trace: BattleTrace;
+  readonly damageAttribution: DamageAttribution;
 }
 
 export interface CompactBattleSimulationResult {
@@ -25,6 +28,7 @@ export interface CompactBattleSimulationResult {
   readonly endReason: "elimination" | "roundLimit";
   readonly totalDamage: { readonly A: number; readonly B: number };
   readonly skillCasualtiesBySide: Readonly<Record<"A" | "B", Readonly<Record<string, number>>>>;
+  readonly damageAttribution: DamageAttribution;
 }
 
 export function simulateBattle(
@@ -48,6 +52,7 @@ export function simulateBattle(
     throw new RangeError("maxRounds must be an integer from 1 to 1500.");
   }
   let state = initialState;
+  const damageAttribution = emptyDamageAttribution(options.traceMode !== "none");
   if (options.traceMode === "summary" || options.traceMode === "none") {
     let roundCount = 0;
     let damageA = 0;
@@ -64,6 +69,7 @@ export function simulateBattle(
       damageA += resolved.damageA;
       damageB += resolved.damageB;
       if (options.traceMode === "summary") {
+        mergeDamageAttribution(damageAttribution, resolved.damageAttribution);
         for (const side of ["A", "B"] as const) {
           for (const [skillId, casualties] of Object.entries(resolved.skillCasualtiesBySide[side])) {
             skillCasualtiesBySide[side][skillId] =
@@ -79,11 +85,14 @@ export function simulateBattle(
       endReason: state.status === "completed" ? "elimination" : "roundLimit",
       totalDamage: { A: damageA, B: damageB },
       skillCasualtiesBySide,
+      damageAttribution,
     };
   }
   const rounds: ResolvedRound[] = [];
   while (state.status === "ready" && rounds.length < options.maxRounds) {
     const resolved = resolveRound(state, options);
+    mergeDamageAttribution(damageAttribution,
+      attributeResolvedDamage(resolved.stateAfterActionPhase.pendingDamageEvents, resolved.casualties));
     rounds.push(resolved);
     state = resolved.stateAfter;
   }
@@ -92,6 +101,7 @@ export function simulateBattle(
     finalState: state,
     rounds,
     endReason,
+    damageAttribution,
     trace: {
       heroStatCorrections: {
         ...(initialState.sideA.heroStatCorrection === undefined

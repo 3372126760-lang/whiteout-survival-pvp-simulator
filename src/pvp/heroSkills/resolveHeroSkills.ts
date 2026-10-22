@@ -1,4 +1,5 @@
 import { heroDefinitionId, heroRuntimeId } from "./identity";
+import { targetMarkDamageCoefficient } from "./targetMarkStacking";
 import { replaceTroop } from "../battle/createBattleState";
 import { calculateBaseTroopDamage } from "../formulas/damage";
 import { getHeroSkillUiSummary } from "../skillPresentation";
@@ -795,13 +796,26 @@ function prepareHeroSkillRound(
             const key = runtimeKey(context.action.side, heroRuntimeId(hero), definition.id);
             const runtime = runtimeUpdates.get(key) ?? originalRuntime;
             if (definition.actionMechanic?.kind === "targetBoundMark") {
+              const markMechanic = definition.actionMechanic;
               const delayed = compileTargetBoundMarkDamageInputs(state, definition, context, hero);
               outputs.push(...delayed);
+              const markSources = delayed.flatMap((input) => sideFromState(state, input.targetSide).troops[input.targetTroop].debuffs
+                .flatMap((effect) => effect.definition.kind === "targetBoundMark" &&
+                  effect.definition.markId === markMechanic.markId &&
+                  effect.appliedRound + markMechanic.damageDelayRounds === state.round
+                  ? effect.definition.damageContributors ?? [] : []));
               if (config.recordTrace !== false && delayed.length > 0) traces.push({
                 ...toSyntheticTrace(state.round, context.action.side, hero,
                   definition, runtime, context.action.troop, "targetBoundMarkDamage"),
                 targetTroop: delayed[0]!.targetTroop,
                 dreamMarkTarget: delayed[0]!.targetTroop,
+                reportActivationCount: 0,
+                ...(definition.actionMechanic.duplicateSourceStacking ? {
+                  dreamMarkSourceCount: markSources.length,
+                  dreamMarkDamageCoefficient: delayed[0]!.skillCoefficient!,
+                  dreamMarkContributingRuntimeIds: markSources.map((source) => source.runtimeInstanceId),
+                  dreamMarkStackingStatus: "PROVISIONAL" as const,
+                } : {}),
                 producedDamageEventIds: delayed.map((input) => input.id),
                 extraDamageEvents: delayed.map((input) => input.id),
                 parentEventId: context.primaryDamageEvent.id,
@@ -1418,7 +1432,9 @@ function compileAfterNormalActiveEffects(
         targetTroop,
         effect: createActiveEffect({
           identity: {
-            sourceId: `hero:${ownerSide}:${heroRuntimeId(hero)}:${hero.position}:mark:${targetSide}:${targetTroop}`,
+            sourceId: mechanic.duplicateSourceStacking
+              ? `hero:${ownerSide}:merged-mark:${decision.definition.id}:${targetSide}:${targetTroop}:R${round}`
+              : `hero:${ownerSide}:${heroRuntimeId(hero)}:${hero.position}:mark:${targetSide}:${targetTroop}`,
             sourceSkillId: decision.definition.id,
             effectId: effect.id,
           },
@@ -1427,6 +1443,10 @@ function compileAfterNormalActiveEffects(
             name: effect.name,
             kind: "targetBoundMark",
             markId: effect.markId,
+            ...(mechanic.duplicateSourceStacking ? {
+              additionalSourceCoefficient: mechanic.duplicateSourceStacking.additionalCoefficient,
+              damageContributors: [{ runtimeInstanceId: heroRuntimeId(hero), coefficient: mechanic.damageCoefficient }],
+            } : {}),
             ruleStatus: decision.definition.metadata.ruleStatus,
             lifecycle: {
               activationTiming: "nextRound",
@@ -1454,7 +1474,9 @@ function compileAfterNormalActiveEffects(
             targetTroop,
             effect: createActiveEffect({
               identity: {
-                sourceId: `hero:${ownerSide}:${heroRuntimeId(hero)}:${hero.position}:marked-target:${targetSide}:${targetTroop}`,
+                sourceId: mechanic.duplicateSourceStacking
+                  ? `hero:${ownerSide}:marked-target:${related!.id}:${targetSide}:${targetTroop}`
+                  : `hero:${ownerSide}:${heroRuntimeId(hero)}:${hero.position}:marked-target:${targetSide}:${targetTroop}`,
                 sourceSkillId: related!.id,
                 effectId: markedEffect.id,
               },
@@ -1649,10 +1671,19 @@ function compileTargetBoundMarkDamageInputs(
       effect.definition.kind === "targetBoundMark" &&
       effect.definition.markId === mechanic.markId &&
       effect.identity.sourceSkillId === definition.id &&
-      effect.identity.sourceId.startsWith(`hero:${context.action.side}:${heroRuntimeId(hero)}:${hero.position}:`) &&
+      (mechanic.duplicateSourceStacking
+        ? effect.identity.sourceId.startsWith(`hero:${context.action.side}:merged-mark:`)
+        : effect.identity.sourceId.startsWith(`hero:${context.action.side}:${heroRuntimeId(hero)}:${hero.position}:`)) &&
       effect.appliedRound + mechanic.damageDelayRounds === state.round
     );
     if (mark === undefined) return [];
+    if (mark.definition.kind !== "targetBoundMark") return [];
+    const contributors = mark.definition.damageContributors;
+    // Exactly one owner emits the merged payload; all owners retain their trigger traces/counters.
+    if (contributors && contributors[0]?.runtimeInstanceId !== heroRuntimeId(hero)) return [];
+    const coefficient = contributors ? targetMarkDamageCoefficient(
+      contributors.map((source) => source.coefficient), mark.definition.additionalSourceCoefficient,
+    ) : mechanic.damageCoefficient;
     const parent = context.primaryDamageEvent;
     return [{
       id: `${parent.id}:hero:${definition.id}${hero.position === "member" ?
@@ -1663,9 +1694,9 @@ function compileTargetBoundMarkDamageInputs(
       targetTroop,
       damageType: "skillDamage" as const,
       damageSubtype: "extraDamage" as const,
-      baseDamage: parent.baseDamage * mechanic.damageCoefficient,
+      baseDamage: parent.baseDamage * coefficient,
       damageBasis: "parentBaseDamage",
-      skillCoefficient: mechanic.damageCoefficient,
+      skillCoefficient: coefficient,
       sourceSkillId: definition.id,
       parentEventId: parent.id,
       rootEventId: parent.rootEventId,
@@ -2016,6 +2047,14 @@ function upsertHitTargetDebuff(
   effect: ActiveEffect,
 ): ActiveEffect {
   const key = hitTargetKey(side, troop);
+  const existing = (effectsByTarget.get(key) ?? []).find((candidate) => candidate.instanceId === effect.instanceId);
+  if (existing?.definition.kind === "targetBoundMark" && effect.definition.kind === "targetBoundMark" &&
+      effect.definition.damageContributors && existing.definition.damageContributors &&
+      existing.appliedRound === effect.appliedRound) {
+    const contributors = new Map([...existing.definition.damageContributors, ...effect.definition.damageContributors]
+      .map((source) => [source.runtimeInstanceId, source]));
+    effect = { ...effect, definition: { ...effect.definition, damageContributors: [...contributors.values()] } };
+  }
   const effects = upsertActiveEffect(effectsByTarget.get(key) ?? [], effect);
   effectsByTarget.set(key, effects);
   return effects.find((candidate) => candidate.instanceId === effect.instanceId)!;

@@ -1,4 +1,7 @@
+import { isBattleContextAllowedForSide } from "../../types";
 import { createValidationPreviewState, type ValidationBattleInput } from "../../validationUi";
+import { targetMarkSourceGroups } from "../../heroSkills/targetMarkStacking";
+import { stateBindings } from "../criterion/signatures";
 import { CONFIRMED_HERO_SKILL_DEFINITIONS, createHeroSkillSystem,
   type HeroSkillDefinition, type HeroSkillEffect } from "../../heroSkills";
 import { CONFIRMED_TROOP_SKILL_DEFINITIONS, createTroopSkillSystem,
@@ -67,8 +70,7 @@ function approximateDefinition<T extends Skill>(skill: T, options: TheoryOptions
   } as T;
 }
 function contextAllows(skill: HeroSkillDefinition, state: BattleState, side: SideId): boolean {
-  const context = state.battleContext === "rally" ? side === "A" ? "rallyAttack" : "rallyDefense" : state.battleContext;
-  return skill.battleContexts === undefined || skill.battleContexts.includes(context);
+  return isBattleContextAllowedForSide(skill.battleContexts, state.battleContext, side);
 }
 
 /** Builds just one numeric coefficient template per lineup, not per ratio/trial.
@@ -95,6 +97,14 @@ export function createTheoryTemplateBuilder(options: TheoryOptions): TheoryTempl
     const extras: Record<SideId, { effect: Extract<Effect, { kind: "extraDamage" }>; value: number; troop?: string }[]> = { A: [], B: [] };
     for (const side of ["A", "B"] as const) {
       const before = sideFromState(initial, side);
+      for (const group of targetMarkSourceGroups(stateBindings(initial, side).filter((b) => !disabled.has(b.skill.id)))) {
+        const mechanic = group.mechanic;
+        extras[side].push({ effect: { id: `theory:${group.key}`, name: "delayed marked-target skill proxy",
+          kind: "extraDamage", recipient: "selfArmy", coefficient: group.coefficient,
+          basis: "parentBaseDamage", scope: { source: mechanic.schedule.source, target: "currentTarget", damageType: "skillDamage" } },
+          value: group.coefficient / mechanic.schedule.interval });
+        omitted.add(`${group.sources[0]!.skill.id}:merged delayed coefficient=${group.coefficient}; sources=${group.sources.length}; ${mechanic.duplicateSourceStacking?.ruleStatus ?? "additive"}; static delay/target proxy`);
+      }
       const inspect = (skill: Skill | undefined, levelNumber: number, enabled: boolean, troop?: string) => {
         if (skill === undefined || !enabled || disabled.has(skill.id) ||
           ("heroId" in skill && !contextAllows(skill, initial, side))) return;

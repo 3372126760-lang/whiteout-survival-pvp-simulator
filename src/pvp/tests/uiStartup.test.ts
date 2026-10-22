@@ -16,7 +16,7 @@ import { createEmptyHeadCandidate, resolveSearchDimensions } from "../optimizer/
 import type { InnerEarthOptimizationResult } from "../optimizer/innerEarthOptimizer";
 import type { ThreeQueueOptimizationResult, ThreeQueueOptimizationState } from "../optimizer/threeQueueOptimizer";
 import { toThreeQueueBasisPoints } from "../scenario/threeQueueRatios";
-import { initializeOptimizationHeroPool, serverHeroIds } from "../optimizer/heroPools";
+import { initializeOptimizationHeroPool, optimizationHeroIds, serverHeroIds } from "../optimizer/heroPools";
 
 afterEach(() => {
   if (vi.isFakeTimers()) {
@@ -26,11 +26,19 @@ afterEach(() => {
   vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.resetModules();
 });
 
+/** Match addEventListener: registering a second handler never replaces the first. */
+class StartupListeners extends Map<string, EventListener> {
+  override set(name: string, listener: EventListener): this {
+    const previous = this.get(name);
+    return super.set(name, previous ? (event) => { previous(event); listener(event); } : listener);
+  }
+}
+
 /** Exercise main's delegated events and persisted state without a browser dependency. */
 async function mountStartup(input: ValidationBattleInput, config?: OptimizationConfig,
-  simpleOptions?: SimpleScenarioOptimizationOptions) {
+  simpleOptions?: SimpleScenarioOptimizationOptions, existingStorage?: Map<string, string>) {
   const saved = JSON.stringify(createPersistedEnvelope(input, 1000, config, 1000, simpleOptions));
-  const storage = new Map([[AUTOSAVE_STORAGE_KEY, saved], ["pvp.editor-mode", "advanced"]]);
+  const storage = existingStorage ?? new Map([[AUTOSAVE_STORAGE_KEY, saved], ["pvp.editor-mode", "advanced"]]);
   const setItem = vi.fn((key: string, value: string) => storage.set(key, value));
   const listeners = new Map<string, EventListener[]>();
   const dispatch = (name: string, target: object) => listeners.get(name)!
@@ -66,10 +74,11 @@ async function mountStartup(input: ValidationBattleInput, config?: OptimizationC
   vi.stubGlobal("window", { localStorage: { getItem: (key: string) => storage.get(key) ?? null,
     setItem, removeItem: vi.fn() }, addEventListener: vi.fn() });
   await import("../../ui/main");
+      openDeveloperSettings(listeners);
   await vi.runOnlyPendingTimersAsync();
   setItem.mockClear();
   return {
-    app, workers, setItem,
+    app, workers, setItem, storage,
     profiles: () => JSON.parse(storage.get(PROFILES_STORAGE_KEY) ?? "[]") as { id: string; name: string; data: { input: ValidationBattleInput } }[],
     click(action: string, data: Record<string, string> = {}) {
       const target = new ElementStub(); target.dataset = { action, ...data };
@@ -89,6 +98,210 @@ async function mountStartup(input: ValidationBattleInput, config?: OptimizationC
     restoreSaved: () => restorePersistedConfig(JSON.parse(storage.get(AUTOSAVE_STORAGE_KEY)!)),
   };
 }
+
+/** These integration cases inspect developer settings; explicitly open their lazy parents.
+ * Collapsed/large-result behavior has its own regression suite. */
+function openDeveloperSettings(listeners: Map<string, EventListener | EventListener[]>) {
+  class Details {
+    dataset: Record<string, string> = {}; open = true;
+    querySelector() { return null; }
+    insertAdjacentHTML() { /* DOM is represented by the next render in these stubs. */ }
+  }
+  const DetailsType = typeof HTMLDetailsElement === "undefined" ? Details : HTMLDetailsElement;
+  if (typeof HTMLDetailsElement === "undefined") vi.stubGlobal("HTMLDetailsElement", DetailsType);
+  const fire = (name: string, target: object) => {
+    const handlers = listeners.get(name);
+    for (const handler of Array.isArray(handlers) ? handlers : handlers ? [handlers] : []) handler({ target } as unknown as Event);
+  };
+  for (const key of ["dev-tools", "dev-simulation", "dev-skills", "dev-theory", "dev-raw"]) {
+    const target = new DetailsType(); target.dataset.lazySection = key; target.open = true;
+    fire("toggle", target);
+  }
+  if (typeof HTMLInputElement === "undefined") vi.stubGlobal("HTMLInputElement", class { dataset = {}; });
+  const target = new HTMLInputElement();
+  Object.defineProperty(target, "dataset", { value: { scope: "developer" } }); target.checked = true;
+  fire("change", target);
+}
+
+describe("Advanced scenario persistence and final attribute semantics", () => {
+  it("restores defaults only for the current scenario and preserves another scenario's edits", async () => {
+    vi.useFakeTimers();
+    const base = createDefaultValidationInput(), ui = await mountStartup({ ...base, scenarioType: "SINGLE" });
+    ui.change({ scope: "troop", side: "A", troop: "shield", field: "attack" }, "2700");
+    ui.change({ scope: "scenario-type" }, "RALLY");
+    ui.change({ scope: "troop", side: "A", troop: "shield", field: "attack" }, "3500");
+    ui.click("restore-default");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.scenarioType).toBe("RALLY");
+    expect(ui.restoreSaved().input.sideA.troops.shield.attack).toBe(base.sideA.troops.shield.attack);
+    ui.change({ scope: "scenario-type" }, "SINGLE");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.sideA.troops.shield.attack).toBe(2700);
+  });
+
+  it("restores independent Rally Lv24 and Underground Lv3/attributes through switches and reload", async () => {
+    vi.useFakeTimers();
+    const base = createDefaultValidationInput();
+    const side = { ...base.sideA, troops: { ...base.sideA.troops, shield: { ...base.sideA.troops.shield, attack: 3500, t12Level: 24 } } };
+    const ui = await mountStartup({ ...base, scenarioType: "RALLY", battleContext: "rally", sideA: side, sideB: side });
+    expect((ui.click("troops-edit", { side: "A" }), ui.open("player-t12-A"))).toContain('value="24" selected');
+    ui.change({ scope: "scenario-type" }, "INNER_EARTH");
+    ui.change({ scope: "inner-earth", field: "compact-attribute", side: "ally", queue: "0", stat: "attack" }, "2800");
+    ui.change({ scope: "inner-earth", field: "tier", side: "ally", troop: "shield" }, "T12-FC10");
+    ui.change({ scope: "inner-earth", field: "t12", troop: "shield" }, "3");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.innerEarth!.ally.t12SkillLevels.shield).toBe(3);
+    ui.change({ scope: "scenario-type" }, "RALLY");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.sideA.troops.shield).toMatchObject({ attack: 3500, t12Level: 24 });
+    expect(ui.restoreSaved().input.sideB.troops.shield.t12Level).toBe(24);
+    vi.clearAllTimers(); vi.resetModules();
+    const reloaded = await mountStartup(base, undefined, undefined, ui.storage);
+    reloaded.change({ scope: "scenario-type" }, "INNER_EARTH");
+    await vi.runOnlyPendingTimersAsync();
+    expect(reloaded.restoreSaved().input.innerEarth!.ally.queues[0].expectedReportStats.shield.attack).toBe(2800);
+    expect(reloaded.restoreSaved().input.innerEarth!.ally.t12SkillLevels.shield).toBe(3);
+    reloaded.change({ scope: "scenario-type" }, "RALLY");
+    await vi.runOnlyPendingTimersAsync();
+    expect(reloaded.restoreSaved().input.sideA.troops.shield).toMatchObject({ attack: 3500, t12Level: 24 });
+  });
+
+  it("updates input-mode help and uses real total-plus-ratio counts independently on both Single sides", async () => {
+    vi.useFakeTimers();
+    const ui = await mountStartup({ ...createDefaultValidationInput(), scenarioType: "SINGLE" });
+    expect(ui.app.innerHTML).toContain('report-troops-summary');
+    expect(ui.app.innerHTML).not.toContain('data-scope="advanced-deployment"');
+    ui.click("troops-edit", { side: "A" });
+    expect(ui.app.innerHTML).toContain('data-scope="advanced-deployment"');
+    ui.click("special-buffs-close");
+    expect(ui.app.innerHTML).toContain('class="btn report-special-buffs-button"');
+    expect(ui.app.innerHTML).not.toContain('id="report-buffs"');
+    ui.click("special-buffs-open");
+    expect(ui.app.innerHTML).toContain('role="dialog" aria-modal="true"');
+    expect(ui.app.innerHTML).toContain('advanced-shell report-theme" inert');
+    ui.click("special-buffs-close");
+    expect(ui.app.innerHTML).not.toContain('class="special-buffs-overlay"');
+    const beforeB = ui.restoreSaved().input.sideB;
+    ui.change({ scope: "advanced-deployment", field: "total" }, "100001");
+    for (const [troop, value] of [["shield", "33"], ["lancer", "33"], ["marksman", "34"]])
+      ui.change({ scope: "advanced-deployment", field: "ratio", troop: troop! }, value!);
+    ui.change({ scope: "player-attribute-source" }, "base");
+    expect(ui.open("player-attributes-A")).toContain("预计最终战报属性");
+    expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "A" }), ui.app.innerHTML)).toContain("当前输入为基础属性");
+    expect((ui.click("troops-edit", { side: "A" }), ui.open("player-t12-A"))).toContain("非集结模式，最高Lv3");
+    await vi.runOnlyPendingTimersAsync();
+    const input = ui.restoreSaved().input;
+    expect([input.sideA.troops.shield.count, input.sideA.troops.lancer.count, input.sideA.troops.marksman.count]).toEqual([33000, 33000, 34001]);
+    expect(input.sideB).toEqual(beforeB);
+    ui.change({ scope: "advanced-deployment", side: "B", field: "total" }, "224790");
+    await vi.runOnlyPendingTimersAsync();
+    const updated = ui.restoreSaved().input;
+    expect(Object.values(updated.sideB.troops).reduce((sum, row) => sum + row.count, 0)).toBe(224790);
+    expect(updated.sideA).toEqual(input.sideA);
+    ui.change({ scope: "scenario-type" }, "RALLY");
+    expect((ui.click("troops-edit", { side: "A" }), ui.open("player-t12-A"))).toContain("集结模式，最高Lv24");
+    ui.change({ scope: "scenario-type" }, "SINGLE");
+    expect(ui.open("player-attributes-A")).toContain("当前输入为基础属性");
+  });
+
+  it("shows defender-only city controls and persists territory and defensive T12 levels", async () => {
+    vi.useFakeTimers();
+    const ui = await mountStartup({ ...createDefaultValidationInput(), scenarioType: "CITY_DEFENSE", battleContext: "cityDefense", attributeInputMode: "prediction" });
+    expect(ui.app.innerHTML).toContain("进攻方阵容");
+    expect(ui.app.innerHTML).toContain("守城方阵容");
+    expect(ui.app.innerHTML).toContain("守城车身英雄");
+    expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "A" }), ui.app.innerHTML)).not.toContain('data-scope="city-territory"');
+    expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "B" }), ui.app.innerHTML)).toContain('data-scope="city-territory"');
+    expect((ui.click("troops-edit", { side: "A" }), ui.open("player-t12-A"))).not.toContain('value="24"');
+    expect((ui.click("troops-edit", { side: "B" }), ui.open("player-t12-B"))).toContain('value="24"');
+    ui.change({ scope: "city-territory" }, "", true);
+    ui.change({ scope: "t12", side: "B", troop: "shield" }, "24");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.defenderInTerritory).toBe(true);
+    expect(ui.restoreSaved().input.sideB.troops.shield.t12Level).toBe(24);
+    ui.change({ scope: "scenario-type" }, "SINGLE");
+    ui.change({ scope: "scenario-type" }, "CITY_DEFENSE");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.defenderInTerritory).toBe(true);
+  });
+
+  it("records both sides from report-shaped percent inputs without changing other battle settings", async () => {
+    vi.useFakeTimers();
+    const base = { ...createDefaultValidationInput(), scenarioType: "CITY_DEFENSE" as const, defenderInTerritory: true };
+    const ui = await mountStartup(base);
+    expect(ui.app.innerHTML).toContain('class="report-stat-table"');
+    expect(ui.app.innerHTML.indexOf('id="report-heroes"')).toBeLessThan(ui.app.innerHTML.indexOf('id="report-troops"'));
+    expect(ui.app.innerHTML.indexOf('id="report-troops"')).toBeLessThan(ui.app.innerHTML.indexOf('id="report-stats"'));
+    ui.change({ scope: "troop", side: "A", troop: "shield", field: "attack" }, "+4527.7%");
+    ui.change({ scope: "troop", side: "B", troop: "marksman", field: "life" }, "+3188.25");
+    await vi.runOnlyPendingTimersAsync();
+    const restored = ui.restoreSaved().input;
+    expect(restored.sideA.troops.shield.attack).toBe(4527.7);
+    expect(restored.sideB.troops.marksman.life).toBe(3188.25);
+    expect(restored.sideA.troops.shield.count).toBe(base.sideA.troops.shield.count);
+    expect(restored.defenderInTerritory).toBe(true);
+    expect(restored.scenarioType).toBe("CITY_DEFENSE");
+    expect(restored.sideA.leaderHeroIds).toEqual(base.sideA.leaderHeroIds);
+  });
+
+  it("keeps capacity and expert settings through all combat shortcuts and allows manual changes", async () => {
+    vi.useFakeTimers();
+    const base = createDefaultValidationInput(), side = { ...base.sideA, marchCapacityBonus: .12, rallyCapacityBonus: .18,
+      rallyFixedCapacityBonus: 2222, petMarchCapacityLevel: 7,
+      externalBuffs: { ...base.sideA.externalBuffs!, expert: { garethFourthSkillLevel: 12 } } };
+    const ui = await mountStartup({ ...base, sideA: side });
+    expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "A" }), ui.app.innerHTML)).toContain("宠物全开");
+    for (const preset of ["small", "large", "pets", "off"]) {
+      ui.click("combat-buff-preset", { side: "A", preset });
+      await vi.runOnlyPendingTimersAsync();
+      const current = ui.restoreSaved().input.sideA;
+      expect([current.marchCapacityBonus, current.rallyCapacityBonus, current.rallyFixedCapacityBonus, current.petMarchCapacityLevel]).toEqual([.12, .18, 2222, 7]);
+      expect(current.externalBuffs!.expert.garethFourthSkillLevel).toBe(12);
+      if (preset === "pets") expect(current.externalBuffs!.pet).toMatchObject({ attackLevel: 10, enemyPenetrationReductionLevel: 8, enemyLifeReductionLevel: 7 });
+      if (preset === "off") expect(Object.values(current.externalBuffs!.pet).every((level) => level === 0)).toBe(true);
+    }
+    ui.change({ scope: "external", side: "A", section: "pet", field: "attackLevel" }, "4");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.sideA.externalBuffs!.pet.attackLevel).toBe(4);
+  });
+
+  it("keeps history edits separate until explicit reverse and removes the current custom UI", async () => {
+    vi.useFakeTimers();
+    const base = createDefaultValidationInput(), side = { ...base.sideA, troops: { ...base.sideA.troops,
+      shield: { ...base.sideA.troops.shield, penetration: 3000 } } };
+    const ui = await mountStartup({ ...base, sideA: side });
+    ui.open("player-attributes-A");
+    const history = ui.open("source-bonuses-A-side");
+    expect(history).toContain("仅用于旧战报反推，不参与当前战斗");
+    ui.change({ scope: "bonus-context", side: "A", context: "sourceReportBonuses", stat: "penetration", field: "buff" }, "20");
+    ui.change({ scope: "bonus-context", side: "A", context: "sourceReportBonuses", stat: "penetration", field: "debuff" }, "2");
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.sideA.troops.shield.penetration).toBe(3000);
+    ui.click("apply-historical-base", { side: "A" });
+    await vi.runOnlyPendingTimersAsync();
+    expect(ui.restoreSaved().input.sideA.troops.shield.penetration).toBeCloseTo(3100 * 1.02 / 1.2 - 100, 10);
+    expect(ui.restoreSaved().input.attributeInputMode).toBe("prediction");
+    expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "A" }), ui.app.innerHTML)).not.toMatch(/当前预期战斗特殊加成|自定义当前加成/);
+  });
+
+  it("edits IceFire current attributes without silently applying saved historical conditions", async () => {
+    vi.useFakeTimers();
+    const base = createDefaultValidationInput();
+    const queues = getValidationThreeQueues(base.sideA).map((queue) => ({ ...queue,
+      sourceReportBonuses: { attack: { additive: 0, buff: 20, debuff: 2 }, defense: { additive: 0, buff: 0, debuff: 0 },
+        penetration: { additive: 0, buff: 0, debuff: 0 }, life: { additive: 0, buff: 0, debuff: 0 } } }));
+    const ui = await mountStartup({ ...base, scenarioType: "ICE_FIRE_LEAGUE", attributeInputMode: "prediction",
+      sideA: { ...base.sideA, threeQueues: queues as unknown as NonNullable<typeof base.sideA.threeQueues> } });
+    ui.change({ scope: "queue-attribute", side: "A", queueIndex: "0", troop: "shield", field: "attack" }, "2500");
+    await vi.runOnlyPendingTimersAsync();
+    const saved = ui.restoreSaved().input.sideA.threeQueues![0];
+    expect(saved.attributes!.shield.attack).toBe(2500);
+    expect(saved.attributes!.lancer.attack).toBe(base.sideA.troops.lancer.attack);
+    expect(saved.sourceReportBonuses).toEqual(queues[0]!.sourceReportBonuses);
+    ui.open("player-queues-A"); ui.open("player-queue-history-A-0");
+    expect(ui.open("source-bonuses-A-0")).toContain("仅用于旧战报反推，不参与当前战斗");
+  });
+});
 
 function selectMarkup(html: string, dataset: Record<string, string>): string {
   const select = [...html.matchAll(/<select\b[^>]*>[\s\S]*?<\/select>/g)].map((match) => match[0])
@@ -208,7 +421,7 @@ describe("UI startup with restored prediction config", () => {
     const listeners = new Map<string, EventListener[]>();
     const app = { innerHTML: "", addEventListener: (name: string, listener: EventListener) =>
       listeners.set(name, [...listeners.get(name) ?? [], listener]),
-      querySelector: () => null, replaceChildren: vi.fn() };
+      querySelector: () => null, querySelectorAll: () => [], replaceChildren: vi.fn() };
     const documentStub = { querySelector: () => app, documentElement: { dataset: {} } };
     vi.stubGlobal("document", documentStub);
     vi.stubGlobal("location", { search: "?mode=advanced&dev=1", href: "http://127.0.0.1:5173/" });
@@ -221,6 +434,7 @@ describe("UI startup with restored prediction config", () => {
     const battle = vi.spyOn(adapter, "runValidationBattle");
     const queues = vi.spyOn(adapter, "runValidationThreeQueueScenario");
     await import("../../ui/main");
+      openDeveloperSettings(listeners);
     expect(app.innerHTML).toContain("WHITEOUT · ADVANCED");
     expect(app.innerHTML).not.toContain("共享战报英雄阵容");
     expect(app.innerHTML.match(/data-scope="report-hero"/g)).toHaveLength(6);
@@ -243,7 +457,7 @@ describe("UI startup with restored prediction config", () => {
     const input = { ...createDefaultValidationInput(), scenarioType: "RALLY" as const,
       battleContext: "rally" as const, attributeInputMode: "prediction" as const };
     const saved = JSON.stringify(createPersistedEnvelope(input, 1000));
-    const listeners = new Map<string, EventListener>();
+    const listeners = new StartupListeners();
     const app = { innerHTML: "", addEventListener: (name: string, listener: EventListener) =>
       listeners.set(name, listener), querySelector: () => null, querySelectorAll: () => [],
       replaceChildren: vi.fn() };
@@ -257,6 +471,7 @@ describe("UI startup with restored prediction config", () => {
     vi.stubGlobal("window", { localStorage: { getItem: (key: string) =>
       key === "pvp.editor-mode" ? "advanced" : key === AUTOSAVE_STORAGE_KEY ? saved : null, setItem: vi.fn(), removeItem: vi.fn() }, addEventListener: vi.fn() });
     await import("../../ui/main");
+      openDeveloperSettings(listeners);
     listeners.get("click")!({ target: new ButtonStub() } as unknown as Event);
     const checkbox = () => /data-field="fixedLeaders" type="checkbox"([^>]*)/.exec(app.innerHTML)?.[1];
     expect(checkbox()).toBeDefined();
@@ -280,7 +495,7 @@ describe("UI startup with restored prediction config", () => {
         sideA: { ...base.sideA, selectedMemberSkillIds: [skillId],
           bodySkills: resolveBodySkillConfigs([skillId], [], "s11").map((body) => ({ ...body, skillLevel: 3 })) } };
       const saved = JSON.stringify(createPersistedEnvelope(input, 1000));
-      const listeners = new Map<string, EventListener>();
+      const listeners = new StartupListeners();
       const app = { innerHTML: "", addEventListener: (name: string, listener: EventListener) => listeners.set(name, listener),
         querySelector: () => null, querySelectorAll: () => [], replaceChildren: vi.fn() };
       const select = { innerHTML: "" }, status = { textContent: "" };
@@ -295,6 +510,7 @@ describe("UI startup with restored prediction config", () => {
       vi.stubGlobal("window", { localStorage: { getItem: (key: string) => key === "pvp.editor-mode" ? "advanced" : key === AUTOSAVE_STORAGE_KEY ? saved : null,
         setItem, removeItem: vi.fn() }, addEventListener: vi.fn() });
       await import("../../ui/main");
+      openDeveloperSettings(listeners);
       await vi.runOnlyPendingTimersAsync(); setItem.mockClear();
       const initialHtml = app.innerHTML, target = new SearchInput();
       listeners.get("input")!({ target } as unknown as Event);
@@ -335,7 +551,7 @@ describe("UI startup with restored prediction config", () => {
           reportWeaponLevels: { "hero.s1.nataliya": 3 },
           leaderHeroIds: { shield: "hero.s11.eleonora" }, simulationWeaponLevels: { "hero.s11.eleonora": 8 } } };
       const saved = JSON.stringify(createPersistedEnvelope(configured, 1000));
-      const listeners = new Map<string, EventListener>();
+      const listeners = new StartupListeners();
       const app = { innerHTML: "", addEventListener: (name: string, listener: EventListener) => listeners.set(name, listener),
         querySelector: () => null, querySelectorAll: () => [], replaceChildren: vi.fn() };
       class SelectInput { dataset: Record<string, string> = { scope: "report-hero", side: "A", troop: "shield" }; value = "hero.s3.luogen"; }
@@ -345,7 +561,8 @@ describe("UI startup with restored prediction config", () => {
       const setItem = vi.fn();
       vi.stubGlobal("window", { localStorage: { getItem: (key: string) => key === "pvp.editor-mode" ? "advanced" : key === AUTOSAVE_STORAGE_KEY ? saved : null,
         setItem, removeItem: vi.fn() }, addEventListener: vi.fn() });
-      await import("../../ui/main"); await vi.runOnlyPendingTimersAsync(); setItem.mockClear();
+      await import("../../ui/main");
+      openDeveloperSettings(listeners); await vi.runOnlyPendingTimersAsync(); setItem.mockClear();
       const target = new SelectInput();
       listeners.get("change")!({ target } as unknown as Event); await vi.runOnlyPendingTimersAsync();
       const restoreLast = () => restorePersistedConfig(JSON.parse(setItem.mock.calls.at(-1)![1])).input;
@@ -363,7 +580,7 @@ describe("UI startup with restored prediction config", () => {
     vi.useFakeTimers();
     try {
       const saved = JSON.stringify(createPersistedEnvelope(createDefaultValidationInput(), 1000));
-      const listeners = new Map<string, EventListener>();
+      const listeners = new StartupListeners();
       const label = { textContent: "", closest: () => null }, body = { innerHTML: "" };
       const host = { innerHTML: "", querySelector: () => host.innerHTML ? body : null };
       const app = { innerHTML: "", addEventListener: (name: string, listener: EventListener) => listeners.set(name, listener),
@@ -386,6 +603,7 @@ describe("UI startup with restored prediction config", () => {
       vi.stubGlobal("window", { localStorage: { getItem: (key: string) => key === "pvp.editor-mode" ? "advanced" : key === AUTOSAVE_STORAGE_KEY ? saved : null,
         setItem: vi.fn(), removeItem: vi.fn() }, addEventListener: vi.fn() });
       await import("../../ui/main");
+      openDeveloperSettings(listeners);
       const click = (action: string) => { const target = new Button(); target.dataset.action = action;
         listeners.get("click")!({ target } as unknown as Event); };
       click("open-optimizer"); click("run-optimizer");
@@ -411,6 +629,23 @@ describe("UI startup with restored prediction config", () => {
 });
 
 describe("main UI optimization side integration", () => {
+  it("writes a newly selected full S12 weapon to A and B canonical state symmetrically", async () => {
+    vi.useFakeTimers();
+    try {
+      const base = createDefaultValidationInput();
+      const ui = await mountStartup({ ...base, serverStage: "s12", scenarioType: "RALLY", battleContext: "rally", attributeInputMode: "prediction" });
+      for (const side of ["A", "B"] as const) {
+        ui.change({ scope: "leader", side, troop: "shield" }, "hero.s12.hervor");
+        await vi.runOnlyPendingTimersAsync();
+      }
+      const saved = ui.restoreSaved().input;
+      expect(saved.sideA.simulationWeaponLevels?.["hero.s12.hervor"]).toBe(10);
+      expect(saved.sideB.simulationWeaponLevels?.["hero.s12.hervor"]).toBe(10);
+      ui.change({ scope: "simulation-weapon", side: "B", hero: "hero.s12.hervor" }, "0");
+      await vi.runOnlyPendingTimersAsync();
+      expect(ui.restoreSaved().input.sideB.simulationWeaponLevels?.["hero.s12.hervor"]).toBe(0);
+    } finally { vi.useRealTimers(); }
+  });
   it("Head pool S12: restores legacy available heroes with current canonical S12 and shows migration notice", async () => {
     vi.useFakeTimers();
     try {
@@ -487,6 +722,48 @@ describe("main UI optimization side integration", () => {
       expect(ui.workers).toHaveLength(0);
     } finally { vi.useRealTimers(); }
   });
+  it("immediately refreshes an owned S12 pool through S13-S16, and sends the same S13 pool to the optimizer Worker", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.spyOn(console, "info").mockImplementation(() => {});
+      const base = { ...distinctRallyInput(), serverStage: "s12" as const };
+      const ui = await mountStartup({ ...base, ownedHeroIds: serverHeroIds(base) });
+      ui.click("open-optimizer"); expect(ui.app.innerHTML).toContain("参与优化：37 / 可用 37");
+      ui.change({ scope: "server-stage" }, "s13");
+      expect(ui.app.innerHTML).toContain("参与优化：40 / 可用 40");
+      const pool = ui.open("hero-pool");
+      for (const id of ["hero.s13.gisela", "hero.s13.flora", "hero.s13.vulcanus"]) expect(pool).toContain(`data-hero-id="${id}"`);
+      ui.click("run-optimizer");
+      const worker = ui.workers.at(-1)!;
+      const payload = worker.postMessage.mock.calls[0]![0] as { task: string; input: ValidationBattleInput };
+      expect(payload.task).toBe("optimize"); expect(payload.input.serverStage).toBe("s13");
+      expect(optimizationHeroIds(payload.input)).toHaveLength(40);
+      expect(optimizationHeroIds(payload.input)).toContain("hero.s13.flora");
+      // Finish the stub request so no optimization promise/interval leaks into later tests.
+      worker.onmessage?.({ data: { type: "error", message: "Stopped test Worker" } } as MessageEvent);
+      await vi.advanceTimersByTimeAsync(0);
+      for (const [stage, count] of [["s14", 43], ["s15", 46], ["s16", 49], ["s13", 40], ["s12", 37]] as const) {
+        ui.change({ scope: "server-stage" }, stage);
+        expect(ui.app.innerHTML).toContain(`参与优化：${count} / 可用 ${count}`);
+      }
+      expect(ui.open("hero-pool")).not.toContain('data-hero-id="hero.s13.flora"');
+      await vi.runOnlyPendingTimersAsync();
+      expect(optimizationHeroIds(ui.restoreSaved().input)).toHaveLength(37);
+      expect(ui.restoreSaved().input.ownedHeroIds).toContain("hero.s16.sigel");
+    } finally { vi.useRealTimers(); }
+  });
+  it("adds newly unlocked S13 Heads even to a custom owned subset, preserving omitted older heroes", async () => {
+    vi.useFakeTimers();
+    try {
+      const ui = await mountStartup({ ...distinctRallyInput(), serverStage: "s12", ownedHeroIds: ["hero.s11.eleonora"] });
+      ui.click("open-optimizer"); expect(ui.app.innerHTML).toContain("参与优化：1 / 可用 1");
+      ui.change({ scope: "server-stage" }, "s13");
+      expect(ui.app.innerHTML).toContain("参与优化：4 / 可用 4");
+      await vi.runOnlyPendingTimersAsync();
+      expect(ui.restoreSaved().input.ownedHeroIds).toEqual(["hero.s11.eleonora", "hero.s13.gisela", "hero.s13.flora", "hero.s13.vulcanus"]);
+      expect(ui.restoreSaved().input.ownedHeroIds).not.toContain("hero.s12.hervor");
+    } finally { vi.useRealTimers(); }
+  });
   it.each(["SINGLE", "THREE_THREE_THREE", "RALLY"] as const)("hides hero search controls for final-report %s and restores them in prediction", async (scenarioType) => {
     vi.useFakeTimers();
     try {
@@ -535,13 +812,13 @@ describe("main UI optimization side integration", () => {
     } finally { vi.useRealTimers(); }
   });
 
-  it("offers five public scenes and fixes IceFire scheduling without a random activity switch", async () => {
+  it("offers six public scenes and fixes IceFire scheduling without a random activity switch", async () => {
     vi.useFakeTimers();
     try {
       const ui = await mountStartup({ ...createDefaultValidationInput(), scenarioType: "ICE_FIRE_LEAGUE", attributeInputMode: "prediction" });
       const sceneChoices = [...ui.app.innerHTML.slice(0, ui.app.innerHTML.indexOf('class="developer-tools"')).matchAll(/<input[^>]+data-scope="scenario-type"[^>]+value="([^"]+)"/g)]
         .map((match) => match[1]);
-      expect(sceneChoices).toEqual(["SINGLE", "THREE_THREE_THREE", "RALLY", "ICE_FIRE_LEAGUE", "INNER_EARTH"]);
+      expect(sceneChoices).toEqual(["SINGLE", "CITY_DEFENSE", "THREE_THREE_THREE", "RALLY", "ICE_FIRE_LEAGUE", "INNER_EARTH"]);
       expect(ui.app.innerHTML).not.toContain('value="THREE_QUEUE"');
       expect(ui.app.innerHTML).not.toContain("三队列模式");
       expect(ui.app.innerHTML).not.toContain('data-scope="three-queue-mode"');
@@ -620,6 +897,13 @@ describe("main UI optimization side integration", () => {
       expect(saved.attributeSource).toBe("manualInput");
       expect(saved.attributes!.lancer.attack).toBe(5100);
       expect(ui.app.innerHTML).not.toContain("因子无效");
+      ui.change({ scope: "bonus-context", side: "B", queueIndex: "0", context: "sourceReportBonuses", stat: "attack", field: "buff" }, "20");
+      ui.click("apply-historical-base", { side: "B", queueIndex: "0" });
+      await vi.runOnlyPendingTimersAsync();
+      const reversed = ui.restoreSaved().input.sideB.threeQueues![0];
+      expect(reversed.reportHeroByTroop).toEqual({ lancer: "hero.s11.lloyd" });
+      expect(reversed.reportLineage?.historicalLineageConfirmed).toBe(true);
+      expect(reversed.attributes!.lancer.attack).toBeCloseTo(5200 / 1.2 - 100, 10);
     } finally { vi.useRealTimers(); }
   });
 
@@ -689,13 +973,13 @@ describe("main UI optimization side integration", () => {
         sideA:{...base.sideA,threeQueues:queues.map((queue,index) => ({...queue,attributes:attrs(2000+index*100)})) as unknown as NonNullable<typeof base.sideA.threeQueues>} });
       ui.change({scope:"ice-fire-shared",side:"A",group:"petContext",field:"attackLevel"},"10");
       ui.change({scope:"ice-fire-shared",side:"A",group:"expertContext",field:"garethFourthSkillLevel"},"20");
-      ui.change({scope:"queue-t12",side:"A",queueIndex:"0",troop:"shield"},"14");
+      ui.change({scope:"queue-t12",side:"A",queueIndex:"0",troop:"shield"},"3");
       ui.click("swap-ice-fire-queues",{side:"A",first:"0",second:"2"});
       await vi.runOnlyPendingTimersAsync();
       const saved = ui.restoreSaved().input.sideA;
       expect(saved.shared!.petContext.attackLevel).toBe(10);expect(saved.shared!.expertContext.garethFourthSkillLevel).toBe(20);
       expect(saved.threeQueues![0].attributes!.shield.attack).toBe(2200);expect(saved.threeQueues![2].attributes!.shield.attack).toBe(2000);
-      expect(saved.threeQueues![2].t12Levels!.shield).toBe(14);expect(saved.queueOrder).toEqual([2,1,0]);
+      expect(saved.threeQueues![2].t12Levels!.shield).toBe(3);expect(saved.queueOrder).toEqual([2,1,0]);
       expect(saved.threeQueues!.every((q) => !q.externalBuffs)).toBe(true);
       ui.click("open-optimizer");
       expect(ui.app.innerHTML).toContain('data-field="enemyPermutationMode"');
@@ -997,11 +1281,11 @@ describe("main UI optimization side integration", () => {
     } finally { vi.useRealTimers(); }
   });
 
-  it("applies the worker's rally defender recommendation to B's heroes, bodies, weapons and troop ratio", async () => {
+  it.each(["RALLY", "CITY_DEFENSE"] as const)("applies the worker's %s defender recommendation to B's heroes, bodies, weapons and troop ratio", async (scenarioType) => {
     vi.useFakeTimers();
     try {
       vi.spyOn(console, "info").mockImplementation(() => undefined);
-      const configured = distinctRallyInput();
+      const configured = { ...distinctRallyInput(), scenarioType, battleContext: scenarioType === "CITY_DEFENSE" ? "cityDefense" as const : "rally" as const, defenderInTerritory: true };
       const ui = await mountStartup(configured, defaultOptimizationConfig(configured.randomSeed));
       ui.click("open-optimizer");
       ui.change({ scope: "optimizer", field: "candidateSide" }, "B");
@@ -1019,7 +1303,7 @@ describe("main UI optimization side integration", () => {
       worker.onmessage!({ data: { type: "complete", result: fakeOptimizationResult(before, recommendation) } } as MessageEvent);
       await vi.advanceTimersByTimeAsync(0);
       expect(worker.terminate).toHaveBeenCalledOnce();
-      expect(ui.app.innerHTML).toContain("集结防守方优化结果");
+      expect(ui.app.innerHTML).toContain(scenarioType === "CITY_DEFENSE" ? "守城防守方优化结果" : "集结防守方优化结果");
       expect(ui.app.innerHTML).toContain('data-action="apply-rally-optimizer"');
       expect(ui.app.innerHTML).not.toContain("搜索中…");
       ui.setItem.mockClear();
@@ -1029,6 +1313,8 @@ describe("main UI optimization side integration", () => {
       expect(ui.setItem).toHaveBeenCalled();
       const restored = ui.restoreSaved();
       expect(restored.optimizationConfig.candidateSide).toBe("B");
+      expect(restored.input.scenarioType).toBe(scenarioType);
+      expect(restored.input.defenderInTerritory).toBe(true);
       expect(restored.input.sideA).toEqual(before.sideA);
       expect(restored.input.sideB.leaderHeroIds).toEqual(recommendation.leaderHeroIds);
       expect(restored.input.sideB.selectedMemberSkillIds).toEqual(recommendation.memberSkillIds);
@@ -1041,7 +1327,7 @@ describe("main UI optimization side integration", () => {
       const battle = createValidationPreviewState(restored.input);
       expect([battle.sideB.troops.shield.aliveCount, battle.sideB.troops.lancer.aliveCount,
         battle.sideB.troops.marksman.aliveCount]).toEqual([7200, 10800, 18000]);
-      expect(ui.app.innerHTML).not.toContain("集结防守方优化结果");
+      expect(ui.app.innerHTML).not.toContain(scenarioType === "CITY_DEFENSE" ? "守城防守方优化结果" : "集结防守方优化结果");
     } finally { vi.useRealTimers(); }
   });
 });

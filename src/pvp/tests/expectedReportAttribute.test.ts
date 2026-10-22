@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { deriveExpectedReportAttribute, expectedAttributeAuditIsConsistent } from "../validationUi/expectedReportAttribute";
 import { createDefaultValidationInput } from "../../ui/defaultInput";
 import { previewExpectedReportBonuses, createValidationPreviewState, compileValidationBattle, runValidationBattle } from "../index";
-import { zeroReportBonuses } from "../validationUi/reportBonusContexts";
 
 describe("canonical expected report builder", () => {
   const base = { raw: 2541.3, formationDelta: 170.14, targetAdditive: 0,
@@ -38,14 +37,17 @@ describe("canonical expected report builder", () => {
   });
   it("uses the same panel in UI, optimizer compilation and battle trace", () => {
     const base = createDefaultValidationInput();
-    const matrix = zeroReportBonuses();
     const input = { ...base, attributeInputMode: "prediction" as const, maxRounds: 1,
-      sideA: { ...base.sideA, targetBonusMode: "custom" as const,
-        targetBattleBonuses: { ...matrix, shield: { ...matrix.shield,
-          attack: { additive: 0, buff: 30, debuff: 20 } } },
-        troops: { ...base.sideA.troops, shield: { ...base.sideA.troops.shield, attack: 2541.3 } } } };
+      sideA: { ...base.sideA, externalBuffs: { ...base.sideA.externalBuffs!,
+        town: { ...base.sideA.externalBuffs!.town, attack: "large" as const },
+        pet: { ...base.sideA.externalBuffs!.pet, attackLevel: 10 } },
+        troops: { ...base.sideA.troops, shield: { ...base.sideA.troops.shield, attack: 2541.3 } } },
+      sideB: { ...base.sideB, externalBuffs: { ...base.sideB.externalBuffs!,
+        town: { ...base.sideB.externalBuffs!.town, enemyAttackReduction: "large" as const } } } };
     const row = previewExpectedReportBonuses(input).A.breakdown.shield.attack;
     const panel = createValidationPreviewState(input).sideA.troops.shield.attack;
+    expect(row.targetBuff).toBeCloseTo(.3, 12);
+    expect(row.targetDebuff).toBeCloseTo(.2, 12);
     expect(row.finalBonus).toBeCloseTo(panel, 12);
     expect(expectedAttributeAuditIsConsistent(row.calculationAudit)).toBe(true);
     const compile = compileValidationBattle(input);

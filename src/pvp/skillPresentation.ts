@@ -99,7 +99,7 @@ function describeEffect(
     case "attributeModifier":
       return `${source}${attributeName(effect.attribute)}${amount || "按技能值提升"}`;
     case "attributeReduction":
-      return `敌军${attributeName(effect.attribute)}降低${amount.replace("+", "") || "技能值"}`;
+      return `${probabilityPrefix}${target === "currentTarget" ? "当前目标" : "敌军"}${attributeName(effect.attribute)}降低${amount.replace("+", "") || "技能值"}`;
     case "defenseModifier":
       return effect.scope.incomingSourceTroop === undefined
         ? `${source}防御${amount || "按技能值提升"}`

@@ -52,7 +52,7 @@ export function resolveSearchDimensions(input: ValidationBattleInput, options: {
   const noEnabledHeroPool = !finalReport && !options.fixedHead && !currentEmpty && optimizationHeroIds(input, side).length === 0;
   const headSearchEnabled = !finalReport && !options.fixedHead && !currentEmpty && !noEnabledHeroPool;
   const ratioSearchEnabled = input.scenarioType !== "THREE_THREE_THREE" && !options.fixedRatio;
-  const bodySearchEnabled = input.scenarioType === "RALLY" && !options.fixedBody;
+  const bodySearchEnabled = (input.scenarioType === "RALLY" || input.scenarioType === "CITY_DEFENSE" && side === "B") && !options.fixedBody;
   return { attributeInputMode: finalReport ? "FINAL_REPORT" : "CONFIG", headSearchEnabled,
     headFixedReason: finalReport ? "finalReportAttributes" : options.fixedHead ? "userFixedHead" : currentEmpty ? "emptyHead" : noEnabledHeroPool ? "noEnabledHeroPool" : null,
     ratioSearchEnabled, bodySearchEnabled,

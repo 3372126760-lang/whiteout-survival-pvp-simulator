@@ -211,12 +211,12 @@ describe("restored special OCR and atomic history import", () => {
     expect(() => applyRecognizedAttributeReport(input,bad,"left","A","complete")).toThrow(/确认/);
     expect(() => applyRecognizedAttributeReport(input,r,"left","A","explicitZero")).toThrow(/非零/); expect(input).toEqual(before);
   });
-  it("keeps compact InnerEarth report schemas while reversing each raw cell independently", () => {
+  it("keeps compact final-report InnerEarth attributes and stores historical conditions without applying them", () => {
     const base = fixture(), input = normalizeInnerEarthInput(base,createDefaultInnerEarthConfig(base,"EQUIPMENT_FORGE"));
     const r = report(), imported = applyRecognizedAttributeReport(input,r,"left","A","complete"), materialized = materializeInnerEarthInput(imported);
     expect(imported.innerEarth!.ally.reportStats.shield.attack).toBe(1000);
     expect(materialized.sideA.reportAttributeBasis).toBe("raw");
-    expect(createValidationPreviewState(imported).sideA.troops.shield.attack*100).toBeCloseTo(1100*1.1/1.2-100-5);
+    expect(createValidationPreviewState(imported).sideA.troops.shield.attack*100).toBeCloseTo(1000);
     const restored = restorePersistedConfig(createPersistedEnvelope(imported,1000)).input;
     expect(restored.innerEarth!.ally.reportHistory).toEqual(imported.innerEarth!.ally.reportHistory);
   });

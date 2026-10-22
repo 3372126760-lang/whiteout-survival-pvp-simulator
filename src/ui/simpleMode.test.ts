@@ -90,7 +90,7 @@ describe("shared canonical config through actual editor events", () => {
 
   it("keeps debug controls out of public advanced mode and preserves their saved values", async () => {
     const ui = await mount("advanced"), before = ui.current();
-    expect(ui.app.innerHTML).toContain('class="shell advanced-shell"');
+    expect(ui.app.innerHTML).toContain('class="shell advanced-shell report-theme"');
     expect(ui.app.innerHTML).not.toContain('class="developer-tools"');
     expect(ui.app.innerHTML).not.toContain('data-field="maxRounds"');
     expect(ui.app.innerHTML).not.toContain('data-scope="override"');
@@ -101,6 +101,9 @@ describe("shared canonical config through actual editor events", () => {
     vi.resetModules();
     const dev = await mount("advanced", true);
     expect(dev.app.innerHTML).toContain('class="developer-tools"');
+    expect(dev.app.innerHTML).not.toContain('data-field="maxRounds"');
+    dev.open("dev-tools"); dev.open("dev-simulation");
+    await dev.change({ scope: "developer" }, "", true);
     expect(dev.app.innerHTML).toContain('data-field="maxRounds"');
     expect(dev.app.innerHTML).toContain('data-dev-group="skills"');
     expect(dev.current().maxRounds).toBe(317);
@@ -137,7 +140,7 @@ describe("shared canonical config through actual editor events", () => {
     expect(simple.triggerOverrides).toEqual(before.triggerOverrides);
     await ui.click("editor-mode", { mode: "advanced" });
     expect(ui.current()).toEqual(simple);
-    expect(ui.open("player-attributes-A")).toContain('value="1376.4"');
+    expect(ui.app.innerHTML).toContain('value="+1376.4"');
     expect(ui.app.innerHTML).toContain('value="hero.s5.heketuo" selected');
     await ui.click("editor-mode", { mode: "simple" });
     expect(ui.current()).toEqual(simple);
@@ -214,11 +217,11 @@ describe("player UI product controls", () => {
     for (const field of towns) expect(external.town[field as keyof typeof external.town]).toBe("large");
     for (const field of pets) expect(external.pet[field as keyof typeof external.pet]).toBe(1);
     expect(simple.sideA.externalBuffs?.expert.garethFourthSkillLevel).toBe(1);
-    expect(simple.sideA.targetBonusMode).toBe("custom");
+    expect(simple.sideA.targetBonusMode).toBeUndefined();
     expect(simple.sideB).toEqual(beforeB);
     await ui.click("editor-mode", { mode: "advanced" });
     expect(ui.current()).toEqual(simple);
-    selectedValue(ui.open("player-buffs-A"), { scope: "external", side: "A", section: "town", field: "attack" }, "large");
+    selectedValue((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "A" }), ui.app.innerHTML), { scope: "external", side: "A", section: "town", field: "attack" }, "large");
     await ui.click("editor-mode", { mode: "simple" });
     expect(ui.current()).toEqual(simple);
     selectedValue(ui.app.innerHTML, { scope: "external", side: "A", section: "pet", field: "attackLevel" }, "1");
@@ -226,7 +229,7 @@ describe("player UI product controls", () => {
 
   it("echoes Advanced buffs and Simple weapon edits across modes", async () => {
     const ui = await mount("advanced");
-    expect(ui.open("player-buffs-B")).not.toMatch(/<fieldset[^>]*disabled/);
+    expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "B" }), ui.app.innerHTML)).not.toMatch(/<fieldset[^>]*disabled/);
     await ui.change({ scope: "external", side: "B", section: "pet", field: "enemyLifeReductionLevel" }, "2");
     await ui.change({ scope: "external", side: "B", section: "town", field: "defense" }, "small");
     await ui.change({ scope: "leader", side: "B", troop: "shield" }, "hero.s5.heketuo");
@@ -263,12 +266,13 @@ describe("player UI product controls", () => {
     expect(ui.app.innerHTML).not.toContain("simple-confidence");
     expect(ui.app.innerHTML).not.toMatch(/TENTATIVE|CODE_CONFIRMED|CONFLICT|BATTLE_CONFIRMED/);
     await ui.click("editor-mode", { mode: "advanced" });
+    ui.click("troops-edit", { side: "A" });
     const t12 = ui.open("player-t12-A");
     expect(t12.match(/data-scope="t12"/g)).toHaveLength(3);
     expect(ui.app.innerHTML).not.toContain('data-scope="leader-skill-level"');
     expect(ui.app.innerHTML).not.toContain("英雄及技能详细设置");
-    await ui.change({ scope: "t12", side: "A", troop: "shield" }, "17");
-    expect(ui.current().sideA.troops.shield.t12Level).toBe(17);
+    await ui.change({ scope: "t12", side: "A", troop: "shield" }, "3");
+    expect(ui.current().sideA.troops.shield.t12Level).toBe(3);
     await ui.change({ scope: "leader-skill-level", side: "A", skillId: CONFIRMED_HERO_SKILL_DEFINITIONS.find((skill) => skill.heroId === "hero.s3.miya")!.id }, "1");
     expect(ui.current().sideA.leaderSkillLevels).toBeUndefined();
   });
@@ -286,6 +290,8 @@ describe("player UI product controls", () => {
     expect(state.sideA.heroStates.find((entry) => entry.heroId === hero.heroId)!.skillStates.every((skill) => skill.level === 5)).toBe(true);
     vi.resetModules();
     const dev = await mount("advanced", true, low);
+    dev.open("dev-tools"); dev.open("dev-simulation"); dev.open("dev-skills");
+    await dev.change({ scope: "developer" }, "", true);
     expect(dev.app.innerHTML).toContain('data-scope="leader-skill-level"');
     expect(dev.app.innerHTML).toContain('data-field="maxRounds"');
     expect(dev.app.innerHTML).toContain("simple-confidence");
@@ -351,8 +357,8 @@ describe("player UI product controls", () => {
     const queues = ui.open("player-queues-A");
     expect(queues).not.toContain('data-scope="queue-skill-level"');
     expect(queues.match(/data-scope="queue-t12"/g)).toHaveLength(9);
-    await ui.change({ scope: "queue-t12", side: "A", queueIndex: "0", troop: "shield" }, "12");
-    expect(ui.current().sideA.threeQueues?.[0]?.t12Levels?.shield).toBe(12);
+    await ui.change({ scope: "queue-t12", side: "A", queueIndex: "0", troop: "shield" }, "3");
+    expect(ui.current().sideA.threeQueues?.[0]?.t12Levels?.shield).toBe(3);
   });
 
   it("shows body skill validation metadata only when Developer is enabled", () => {

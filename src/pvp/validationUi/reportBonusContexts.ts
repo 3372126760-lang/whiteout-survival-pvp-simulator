@@ -15,36 +15,19 @@ export function sourceReportBonuses(side: HistoricalBonusSource): ValidationRepo
   return expandHistoricalBonuses(side.sourceReportBonuses ?? side.importedReportModifiers ?? zeroReportBonuses());
 }
 
-/** Existing explicitly configured external controls count as a custom target.
- * Historical metadata alone never opts into reusing its environment. */
-export function targetBonusMode(side: ValidationSideInput): "none" | "reuseSource" | "custom" {
-  if (side.targetBonusMode !== undefined) return side.targetBonusMode;
-  if (side.sourceReportBonuses !== undefined || side.importedReportModifiers !== undefined ||
-    side.reportAttributeBasis === "historicalReport") return "none";
-  const external = resolveBattleReportModifiers(side.externalBuffs, undefined);
-  return [...Object.values(external.selfBuffs), ...Object.values(
-    resolveBattleReportModifiers(undefined, side.externalBuffs).receivedDebuffs)]
-    .some((value) => value !== 0) || side.targetBattleBonuses !== undefined ? "custom" : "none";
-}
-
 export function currentExternalConfig(side: ValidationSideInput) {
-  const mode = targetBonusMode(side);
-  return mode === "none" || mode === "reuseSource" ? undefined : side.externalBuffs;
+  return side.externalBuffs;
 }
 
 export function targetBattleBonuses(side: ValidationSideInput,
-  opponent: ValidationSideInput): ValidationReportBonusMatrix {
-  const mode = targetBonusMode(side);
-  const custom = mode === "reuseSource" ? sourceReportBonuses(side) :
-    mode === "none" ? zeroReportBonuses() : side.targetBattleBonuses ?? zeroReportBonuses();
-  if (mode === "reuseSource") return structuredClone(custom);
+  opponent: ValidationSideInput, inTerritory = false): ValidationReportBonusMatrix {
   const external = resolveBattleReportModifiers(currentExternalConfig(side),
     currentExternalConfig(opponent));
   return Object.fromEntries(TROOP_TYPES.map((troop) => [troop,
     Object.fromEntries(REPORT_STATS.map((stat) => [stat, {
-      additive: custom[troop][stat].additive,
-      buff: custom[troop][stat].buff + external.selfBuffs[stat] * 100,
-      debuff: custom[troop][stat].debuff + external.receivedDebuffs[stat] * 100,
+      additive: 0,
+      buff: external.selfBuffs[stat] * 100 + (inTerritory && (stat === "attack" || stat === "defense") ? 10 : 0),
+      debuff: external.receivedDebuffs[stat] * 100,
     }]))])) as ValidationReportBonusMatrix;
 }
 

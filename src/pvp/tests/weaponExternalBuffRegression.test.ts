@@ -120,17 +120,23 @@ function weaponAttributeInput(testCase: WeaponCase, normalBuff: number,
   const base = createDefaultValidationInput();
   const key = testCase.side === "A" ? "sideA" : "sideB";
   const side = base[key];
-  const bonuses = zeroReportBonuses();
   return { ...base, attributeInputMode: "prediction", battleContext: "rally", maxRounds: 2,
     disabledSkillIds: CONFIRMED_HERO_SKILL_DEFINITIONS.filter((definition) =>
       definition.positionRule.kind !== "exclusiveWeapon").map((definition) => definition.id),
+    [testCase.side === "A" ? "sideB" : "sideA"]: { ...base[testCase.side === "A" ? "sideB" : "sideA"], externalBuffs: {
+      ...side.externalBuffs!, town: { ...side.externalBuffs!.town,
+        ...(testCase.stat === "attack" ? { enemyAttackReduction: debuff ? "large" : "none" } : {}),
+        ...(testCase.stat === "defense" ? { enemyDefenseReduction: debuff ? "large" : "none" } : {}) },
+      pet: { ...side.externalBuffs!.pet,
+        enemyPenetrationReductionLevel: testCase.stat === "penetration" && debuff ? 8 : 0,
+        enemyLifeReductionLevel: testCase.stat === "life" && debuff ? 7 : 0 } } },
     [key]: { ...side, reportHeroByTroop: { [testCase.role]: testCase.hero },
       leaderHeroIds: { [testCase.role]: testCase.hero },
       reportWeaponLevels: { [testCase.hero]: weaponLevel },
       simulationWeaponLevels: { [testCase.hero]: weaponLevel },
-      targetBonusMode: "custom", targetBattleBonuses: Object.fromEntries(TROOP_TYPES.map((troop) =>
-        [troop, { ...bonuses[troop], [testCase.stat]: { additive: 0,
-          buff: normalBuff * 100, debuff: debuff * 100 } }])) as typeof bonuses,
+      externalBuffs: { ...side.externalBuffs!,
+        town: { ...side.externalBuffs!.town, [testCase.stat]: normalBuff ? "large" : "none" },
+        pet: { ...side.externalBuffs!.pet, [`${testCase.stat}Level`]: normalBuff ? 10 : 0 } },
       troops: Object.fromEntries(TROOP_TYPES.map((troop) => [troop,
         { ...side.troops[troop], attack: 200, defense: 200, penetration: 200, life: 200 }])) as typeof side.troops,
     } };
@@ -166,6 +172,7 @@ describe.each(weaponCases)("$stat scene weapon external group", (testCase) => {
     { normal: .30, weaponLevel: 10, weapon: .15, debuff: .20, expected: 2.625 },
   ])("normal $normal + weapon $weapon with debuff $debuff", (values) => {
     const input = weaponAttributeInput(testCase, values.normal, values.debuff, values.weaponLevel);
+    const expected = values.debuff && ["penetration", "life"].includes(testCase.stat) ? 3.142857142857143 : values.expected;
     const preview = previewExpectedReportBonuses(input)[testCase.side];
     for (const troop of TROOP_TYPES) {
       const row = preview.breakdown[troop][testCase.stat];
@@ -175,11 +182,11 @@ describe.each(weaponCases)("$stat scene weapon external group", (testCase) => {
       expect(row.weaponScenarioContribution).toBeCloseTo(values.weapon, 12);
       expect(row.currentExternalBuffTotal).toBeCloseTo(values.normal + values.weapon, 12);
       expect(row.calculationAudit.actualTargetBuffUsed).toBeCloseTo(values.normal + values.weapon, 12);
-      expect(row.finalBonus).toBeCloseTo(values.expected, 12);
-      expect(preview.troops[troop][testCase.stat]).toBeCloseTo(values.expected, 12);
+      expect(row.finalBonus).toBeCloseTo(expected, 12);
+      expect(preview.troops[troop][testCase.stat]).toBeCloseTo(expected, 12);
       expect(expectedAttributeAuditIsConsistent(row.calculationAudit)).toBe(true);
     }
-    assertBattleAttribute(input, testCase.side, testCase.stat, values.expected);
+    assertBattleAttribute(input, testCase.side, testCase.stat, expected);
   });
 
   it("respects disabled weapon effects and ineligible battle contexts", () => {
@@ -191,7 +198,7 @@ describe.each(weaponCases)("$stat scene weapon external group", (testCase) => {
       const row = previewExpectedReportBonuses(inactive)[testCase.side].breakdown.shield[testCase.stat];
       expect(row.currentWeaponBuff).toBe(0);
       expect(row.currentExternalBuffTotal).toBeCloseTo(.30, 12);
-      expect(row.finalBonus).toBeCloseTo(2.25, 12);
+      expect(row.finalBonus).toBeCloseTo(["penetration", "life"].includes(testCase.stat) ? 2.714285714285714 : 2.25, 12);
     }
   });
 });
@@ -212,9 +219,9 @@ it("sums two eligible weapon sources once without multiplying them", () => {
   assertBattleAttribute(combined, "A", "attack", 3);
 });
 
-it("keeps formation correction and officer additive before the summed external group", () => {
+it("ignores removed officer additive while retaining formation correction before external buffs", () => {
   const input = weaponAttributeInput(weaponCases[0], .30, .20);
-  const bonuses = input.sideA.targetBattleBonuses!;
+  const bonuses = zeroReportBonuses();
   const sideA = { ...input.sideA,
     reportHeroByTroop: { marksman: "hero.s1.jinman" },
     reportWeaponLevels: { "hero.s1.jinman": 0 },
@@ -225,7 +232,7 @@ it("keeps formation correction and officer additive before the summed external g
   const changed = { ...input, sideA };
   const row = previewExpectedReportBonuses(changed).A.breakdown.marksman.attack;
   expect(row.lineupCorrection).toBeGreaterThan(0);
-  const expected = ((100 + 2541.3 + row.lineupCorrection * 100 + 5) * 1.45 / 1.20 - 100) / 100;
+  const expected = ((100 + 2541.3 + row.lineupCorrection * 100) * 1.45 / 1.20 - 100) / 100;
   expect(row.currentWeaponBuff).toBeCloseTo(.15, 12);
   expect(row.finalBonus).toBeCloseTo(expected, 12);
   expect(expectedAttributeAuditIsConsistent(row.calculationAudit)).toBe(true);

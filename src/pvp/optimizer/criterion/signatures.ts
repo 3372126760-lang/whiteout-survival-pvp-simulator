@@ -1,4 +1,5 @@
 import { CONFIRMED_HERO_SKILL_DEFINITIONS, type HeroSkillDefinition } from "../../heroSkills";
+import { targetMarkSourceGroups } from "../../heroSkills/targetMarkStacking";
 import { CONFIRMED_TROOP_SKILL_DEFINITIONS, type TroopSkillDefinition } from "../../troopSkills";
 import { createActiveEffect } from "../../effects";
 import { TROOP_TYPES, isBattleContextAllowedForSide, type ActiveEffect, type BattleState, type EffectDefinition, type SideId } from "../../types";
@@ -106,6 +107,15 @@ export function createEffectSignature(bindings: readonly SignatureBinding[], key
     } else compile(binding);
   }
   for (const { binding, probability } of families.values()) compile(binding, probability);
+  for (const group of targetMarkSourceGroups(bindings.filter((b) => b.skill.levelValues[b.level]?.effects.some((e) => e.kind === "targetBoundMark")))) {
+    const mechanic = group.mechanic;
+    for (const [source, troop] of TROOP_TYPES.entries()) if (mechanic.schedule.source === "army" || mechanic.schedule.source === troop)
+      channels.push({ source, kind: "skillDamage", coefficient: group.coefficient / mechanic.schedule.interval, target: "current",
+        ...(mechanic.duplicateSourceStacking ? { markAggregationKey: group.key,
+          firstSourcePremium: (mechanic.damageCoefficient - mechanic.duplicateSourceStacking.additionalCoefficient) / mechanic.schedule.interval } : {}) });
+    flags.roundSkillApproximation = true; flags.hardToStaticize = true;
+    omitted.add(`${group.sources[0]!.skill.id}:target-bound delay/redirect correlation proxy; coefficient=${group.coefficient}; sources=${group.sources.length}; ${mechanic.duplicateSourceStacking?.ruleStatus ?? "additive"}`);
+  }
   return { key, effects, channels, redirects, uncertainty: Math.min(.95, uncertainty), flags, omittedMechanisms: [...omitted], rough,
     structure: [...new Set(bindings.flatMap((b) => b.skill.levelValues[b.level]?.effects.map((e) => e.kind + ("group" in e ? ":" + e.group : "")) ?? []))].sort().join("|") };
 }

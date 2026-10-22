@@ -1,4 +1,5 @@
 import { CONFIRMED_HERO_SKILL_DEFINITIONS, type HeroSkillDefinition, type HeroSkillEffect } from "../../heroSkills";
+import { targetMarkSourceGroups } from "../../heroSkills/targetMarkStacking";
 import { TROOP_TYPES, type BattleState, type EffectDefinition, type SideId } from "../../types";
 import type { RallyTroopRatios } from "../../validationUi";
 import type { CriterionTemplate, Triple } from "./types";
@@ -17,6 +18,8 @@ const metrics: readonly BodyMetric[] = ["attackBuff", "defenseBuff", "penetratio
 const registry = new Map(CONFIRMED_HERO_SKILL_DEFINITIONS.map((skill) => [skill.id, skill]));
 const epsilon = 1e-10;
 export interface BodySkillEffectSignature extends BodyValues {
+  readonly delayedSkillCoefficient?: number;
+  readonly averageDelayedSkillPerAttack?: number;
   readonly skillId: string;
   readonly skillLevel: number;
   readonly heroDefinitionId: string;
@@ -48,6 +51,8 @@ export interface BodyMarginalTerm {
   readonly value: number;
 }
 export interface BodyComboSignature extends BodyValues {
+  readonly delayedSkillCoefficient?: number;
+  readonly averageDelayedSkillPerAttack?: number;
   readonly key: string;
   readonly skills: readonly BodySkillEffectSignature[];
   readonly dimensions: DimensionValues;
@@ -138,7 +143,10 @@ export function createBodySkillSignature(definition: HeroSkillDefinition, level 
   const crossTargetEffect = atLevel?.effects.some((effect) => effect.kind === "extraDamage" && effect.scope.target !== "currentTarget") ?? false;
   const scopes = [...new Set(atLevel?.effects.map((effect) => JSON.stringify(effect.scope)) ?? [])].sort().join("|");
   const groups = [...new Set(atLevel?.effects.flatMap((effect) => "group" in effect ? [effect.group] : []) ?? [])].sort().join("|");
-  return { ...values, skillId: definition.id, skillLevel: level, heroDefinitionId: definition.heroId,
+  const mark = definition.actionMechanic?.kind === "targetBoundMark" ? definition.actionMechanic : undefined;
+  return { ...values, ...(mark ? { delayedSkillCoefficient: mark.damageCoefficient,
+    averageDelayedSkillPerAttack: mark.damageCoefficient / mark.schedule.interval } : {}),
+    skillId: definition.id, skillLevel: level, heroDefinitionId: definition.heroId,
     effectFamily: primaryFamily(definition, level), targetSide: [...new Set(atLevel?.effects.map((effect) => effect.recipient) ?? [])].sort().join("|"),
     troopScope: scopes, triggerType: definition.trigger, probability, value: rawValue, multiplierGroup: groups, targetRedirect, crossTargetEffect,
     uncertainty: Math.min(.95, (probability < 1 ? .08 : 0) + special.size * .1), specialMechanismFlags: [...special],
@@ -199,7 +207,10 @@ export function createBodyComboSignature(ids: readonly string[], skills: readonl
     return metricFor(definition, effect.enemy) === "ordinaryReceivedReduction" && "value" in definition && !definition.scope?.targetTroops && !definition.scope?.damageTypes ? sum + definition.value * effect.effect.stackCount : sum;
   }, 0);
   const channelCoefficients = [0, 0, 0]; for (const channel of signature.channels) channelCoefficients[channel.source]! += channel.coefficient;
+  const marks = targetMarkSourceGroups(skills.map((s) => ({ skill: s.definition })));
   return { ...values, key: ids.join("|"), skills, dimensions, terms: termsFor(signature), uncertainty: signature.uncertainty,
+    ...(marks.length ? { delayedSkillCoefficient: marks.reduce((sum, g) => sum + g.coefficient, 0),
+      averageDelayedSkillPerAttack: marks.reduce((sum, g) => sum + g.coefficient / g.mechanic.schedule.interval, 0) } : {}),
     stabilityRisk: skills.reduce((sum, skill) => sum + skill.stabilityRisk, 0), specialMechanismFlags: [...special],
     hasSpecialMechanisms: special.size > 0, ordinaryReductionDenominator: 1 + commonOrdinaryReduction, ordinaryReductionDenominators, channels: signature.channels,
     channelCoefficients: channelCoefficients as unknown as Triple };

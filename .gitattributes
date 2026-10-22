@@ -1,0 +1,2 @@
+# Preserve the supplied canonical JSON's original LF bytes and source SHA-256 on Windows.
+/benchmarks/optimizer/joint-rally-60-39-1-vs-49-1-50-seed-502926396-input.json text eol=lf

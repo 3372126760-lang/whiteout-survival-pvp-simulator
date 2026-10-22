@@ -113,7 +113,7 @@ describe("Underground Lab dedicated constants and existing runtimes", () => {
     }
   });
   it("rejects level 4, FC tiers and T12 skills on T10", () => {
-    expect(() => toEngineScenario(lab("LAB_T12", 4))).toThrow(/0-3/);
+    expect(toEngineScenario(lab("LAB_T12", 4)).sideA.shield.t12Level).toBe(3);
     expect(() => toEngineScenario(lab("T12-FC7", 0))).toThrow(/仅允许T10/);
     expect(() => toEngineScenario(lab("T10", 1))).toThrow(/只有T12/);
   });

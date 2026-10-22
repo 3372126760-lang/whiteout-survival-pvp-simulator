@@ -21,7 +21,7 @@ function historicalContext(stats: ValidationQueueAttributes, history?: InnerEart
   if (!history || !TROOP_TYPES.every((troop) => ["attack", "defense", "penetration", "life"].every((stat) =>
     stats[troop][stat as keyof typeof stats[typeof troop]] === history.reportAttributes[troop][stat as keyof typeof stats[typeof troop]]))) return {};
   return { sourceReportAttributes: history.reportAttributes, sourceReportBonuses: history.bonuses,
-    reportAttributeBasis: "historicalReport" as const,
+    reportAttributeBasis: "raw" as const,
     ...(history.recognizedSpecialBonuses === undefined ? {} : { recognizedSpecialBonuses: history.recognizedSpecialBonuses }) };
 }
 
@@ -41,7 +41,7 @@ function baseSide(source: ValidationSideInput, stats: ValidationQueueAttributes,
       ([hero]) => Object.values(reportHeroes).includes(hero))),
     leaderHeroId: null, leaderHeroIds: { ...heroes }, selectedMemberSkillIds: [], bodySkills: [],
     simulationWeaponLevels: {}, externalBuffs,
-    reportAttributeBasis: "raw", targetBonusMode: "custom",
+    reportAttributeBasis: "raw",
     marchCapacityBonus: 0, rallyCapacityBonus: 0, rallyFixedCapacityBonus: 0, petMarchCapacityLevel: 0,
   };
 }
