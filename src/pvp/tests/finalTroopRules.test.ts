@@ -69,12 +69,12 @@ describe("final confirmed troop event rules", () => {
     const incoming = result.trace.damageEvents.filter((event) => event.sourceSide === "A");
     const checks = result.trace.troopSkills.filter((entry) =>
       entry.side === "B" && entry.skillId === "lancer-crimson-field");
-    expect(incoming).toHaveLength(2);
-    expect(incoming[0]?.internalSegments).toHaveLength(1);
-    expect(incoming[1]?.damageSubtype).toBe("extraDamage");
+    expect(incoming).toHaveLength(3);
+    expect(incoming.some(e=>e.sourceSkillId === "marksman-rapid-fire")).toBe(true);
+    expect(incoming.some(e=>e.damageSubtype === "extraDamage")).toBe(true);
     expect(checks).toHaveLength(2);
-    expect(checks.map((entry) => entry.parentEventId)).toEqual(incoming.map((event) => event.id));
-    expect(incoming.map((event) => event.receivedDamageReductionDenominator)).toEqual([1.5, 1.5]);
+    expect(checks.map((entry) => entry.parentEventId)).toEqual(incoming.filter(e=>!e.sameMainAttackSegment).map((event) => event.id));
+    expect(incoming.map((event) => event.receivedDamageReductionDenominator)).toEqual([1.5, 1.5, 1.5]);
   });
 
   it("sets Crimson Field probability to FC8 10% and FC10 15%", () => {
@@ -119,7 +119,7 @@ describe("final confirmed troop event rules", () => {
       "B:shield-crystal-shield": true,
     }) });
     const incoming = result.trace.damageEvents.filter((event) => event.sourceSide === "A");
-    expect(incoming).toHaveLength(2);
+    expect(incoming).toHaveLength(3);
     expect(result.trace.troopSkills.filter((entry) => entry.skillId === "shield-crystal-shield")).toHaveLength(2);
     for (const event of incoming) {
       expect(event.receivedDamageReductionDenominator).toBeCloseTo(1.51);
@@ -146,12 +146,12 @@ describe("final confirmed troop event rules", () => {
       expect(skill.currentBonus).toBeCloseTo(bonus);
       expect(skill.triggered).toBe([5, 10, 15].includes(index));
       const events = round.damageEvents.filter((event) => event.sourceSide === "A");
-      expect(events).toHaveLength(2);
+      expect(events).toHaveLength(3);
       for (const event of events) {
         expect(event.increaseGroups.find((group) => group.group === "commonDamageIncrease")?.summedValue ?? 0)
           .toBeCloseTo(bonus);
       }
-      expect(events[0]?.internalSegments).toHaveLength(1);
+      expect(events.some(e=>e.sourceSkillId === "marksman-rapid-fire")).toBe(true);
     }
   });
 });

@@ -51,6 +51,7 @@ export interface BatchSimulationResult {
   /** Per-trial post-battle conversion FIRST, then mean; no full trial trace retained. */
   readonly skillDamageStatistics?: SkillDamageStatistics;
   /** Cumulative report activations, including deterministic skills and duplicate runtimes. */
+  readonly skillDisplayLayout?: ReturnType<typeof getActiveSkillUniverse>;
   readonly skillActivationCounts?: Readonly<Record<SideId, Readonly<Record<string, number>>>>;
 }
 
@@ -285,6 +286,7 @@ export function runBatchSimulation(
     skillStatistics,
     skillDamageStatistics,
     skillActivationCounts,
+    skillDisplayLayout: getActiveSkillUniverse(compiled.initialState),
     meanSkillCasualties: legacySkillCasualties(skillDamageStatistics),
   };
 }

@@ -160,8 +160,8 @@ describe("confirmed troop skill rules", () => {
     const attacks = result.trace.damageEvents.filter(
       (event) => event.sourceSide === "A" && event.damageType === "normalAttack",
     );
-    expect(attacks).toHaveLength(1);
-    expect(attacks[0]?.internalSegments).toEqual([expect.objectContaining({ sourceSkillId: MARKSMAN_RAPID_FIRE.id })]);
+    expect(attacks).toHaveLength(2);
+    expect(attacks[1]?.sourceSkillId).toBe(MARKSMAN_RAPID_FIRE.id);
   });
 
   it("does not let rapid fire's second shot trigger powder or another rapid fire", () => {
@@ -178,8 +178,8 @@ describe("confirmed troop skill rules", () => {
       },
     );
     const fromA = result.trace.damageEvents.filter((event) => event.sourceSide === "A");
-    expect(fromA.filter((event) => event.damageType === "normalAttack")).toHaveLength(1);
-    expect(fromA[0]?.internalSegments).toHaveLength(1);
+    expect(fromA.filter((event) => event.damageType === "normalAttack")).toHaveLength(2);
+    expect(fromA.some(e => e.sourceSkillId === MARKSMAN_RAPID_FIRE.id)).toBe(true);
     expect(fromA.filter((event) => event.sourceSkillId === MARKSMAN_CRYSTAL_POWDER.id)).toHaveLength(1);
     expect(result.trace.troopSkills.filter(
       (entry) => entry.skillId === MARKSMAN_RAPID_FIRE.id,
@@ -197,8 +197,8 @@ describe("confirmed troop skill rules", () => {
     const attacks = result.trace.damageEvents.filter(
       (event) => event.sourceSide === "A" && event.damageType === "normalAttack",
     );
-    expect(attacks.map((event) => event.targetTroop)).toEqual(["shield"]);
-    expect(attacks[0]?.internalSegments).toHaveLength(1);
+    expect(attacks.map((event) => event.targetTroop)).toEqual(["shield", "shield"]);
+    expect(attacks[1]?.sourceSkillId).toBe(MARKSMAN_RAPID_FIRE.id);
   });
 
   it("reuses Crystal Shield's first judgment for rapid fire's second shot", () => {
@@ -215,7 +215,7 @@ describe("confirmed troop skill rules", () => {
     const attacks = result.trace.damageEvents.filter(
       (event) => event.sourceSide === "A" && event.damageType === "normalAttack",
     );
-    expect(attacks).toHaveLength(1);
+    expect(attacks).toHaveLength(2);
     expect(attacks[0]?.receivedDamageReductionDenominator).toBeCloseTo(1.36);
     expect(result.trace.troopSkills.filter(
       (entry) => entry.skillId === SHIELD_CRYSTAL_SHIELD.id,
@@ -238,7 +238,7 @@ describe("confirmed troop skill rules", () => {
     const attacks = result.trace.damageEvents.filter(
       (event) => event.sourceSide === "A" && event.damageType === "normalAttack",
     );
-    expect(attacks.map((event) => event.receivedDamageReductionDenominator)).toEqual([1.5]);
+    expect(attacks.map((event) => event.receivedDamageReductionDenominator)).toEqual([1.5, 1.5]);
     expect(result.trace.troopSkills.filter(
       (entry) => entry.skillId === LANCER_CRIMSON_FIELD.id,
     )).toHaveLength(1);
@@ -477,13 +477,13 @@ describe("confirmed troop skill rules", () => {
     const normals = (events: typeof fc8) => events.filter((event) => event.damageType === "normalAttack");
     const powder = (events: typeof fc8) => events.find((event) =>
       event.sourceSkillId === MARKSMAN_CRYSTAL_POWDER.id)!;
-    expect(normals(fc7)).toHaveLength(1);
-    expect(normals(fc8)).toHaveLength(1);
+    expect(normals(fc7)).toHaveLength(2);
+    expect(normals(fc8)).toHaveLength(2);
     const expectedBaseRatio = 1.04 * getTroopConstant("T10-FC8") / getTroopConstant("T10-FC7");
     expect(normals(fc8)[0]!.baseDamage / normals(fc7)[0]!.baseDamage).toBeCloseTo(expectedBaseRatio);
-    expect(normals(fc8)[0]!.internalSegments![0]!.basis / normals(fc7)[0]!.internalSegments![0]!.basis).toBeCloseTo(expectedBaseRatio);
-    expect(powder(fc7).baseDamage / (normals(fc7)[0]!.baseDamage / 2)).toBeCloseTo(0.5);
-    expect(powder(fc8).baseDamage / (normals(fc8)[0]!.baseDamage / 2)).toBeCloseTo(0.75);
+    expect(normals(fc8)[1]!.baseDamage / normals(fc7)[1]!.baseDamage).toBeCloseTo(expectedBaseRatio);
+    expect(powder(fc7).baseDamage / normals(fc7)[0]!.baseDamage).toBeCloseTo(0.5);
+    expect(powder(fc8).baseDamage / normals(fc8)[0]!.baseDamage).toBeCloseTo(0.75);
     expect(powder(fc8).baseDamage / 0.75 / powder(fc7).baseDamage * 0.5).toBeCloseTo(expectedBaseRatio);
     expect(fc8.filter((event) => event.sourceSkillId === MARKSMAN_CRYSTAL_POWDER.id)).toHaveLength(1);
   });
@@ -553,11 +553,11 @@ describe("confirmed troop skill rules", () => {
       },
     );
     const incoming = result.trace.damageEvents.filter((event) => event.sourceSide === "A");
-    expect(incoming).toHaveLength(3);
+    expect(incoming).toHaveLength(4);
     expect(result.trace.troopSkills.filter((entry) =>
       entry.skillId === SHIELD_CRYSTAL_SHIELD.id)).toHaveLength(3);
     expect(incoming.map((event) => event.receivedDamageReductionDenominator))
-      .toEqual([1.51, 1.51, 1.51]);
+      .toEqual([1.51, 1.51, 1.51, 1.51]);
     expect(incoming.find((event) => event.damageSubtype === "extraDamage")
       ?.receivedDamageReductionSources.map((effect) => effect.effectId))
       .toEqual(["shield-crystal-shield-reduction"]);

@@ -208,11 +208,12 @@ describe("S4 confirmed attack-attempt and dodge order", () => {
       event.parentEventId === undefined)!;
     const powder = result.trace.damageEvents.find((event) =>
       event.sourceSkillId === "marksman-crystal-powder")!;
-    expect(main.internalSegments).toHaveLength(1);
+    const rapid = result.trace.damageEvents.find(e=>e.sourceSkillId === "marksman-rapid-fire")!;
+    expect(rapid).toBeDefined();
     expect(main.mainHitCancelled).toBe(true);
     expect(main.primaryRoundedDamage).toBe(0);
-    expect(main.finalDamage - main.internalSegments![0]!.roundedDamage).toBe(0);
-    expect(main.finalDamage).toBeGreaterThan(0);
+    expect(main.finalDamage).toBe(0);
+    expect(rapid.finalDamage).toBeGreaterThan(0);
     expect(powder.finalDamage).toBeGreaterThan(0);
     expect(result.trace.heroSkills.filter((entry) =>
       entry.side === "B" && entry.skillId === "hero-skill.lingnai.swift-shadow-dance")).toHaveLength(1);

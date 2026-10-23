@@ -1,0 +1,74 @@
+{
+  "shield-dense-formation": {
+    "path": "assets/troop-skills/shield-dense-formation.jpg",
+    "name": "密集战阵",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/09/2024y09m11d_2007559448.jpg",
+    "sha256": "a085e121c9af4e8592da7b7f7abe9bd7d0a3fdc712841ced16a125b7b00f8b81"
+  },
+  "shield-steel-guardian": {
+    "path": "assets/troop-skills/shield-steel-guardian.jpg",
+    "name": "钢铁守护",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/09/2024y09m11d_200758848.jpg",
+    "sha256": "b5c04404a3becab1f7183d37114f350310af9a01402dd36f52f5a52883114ae1"
+  },
+  "shield-crystal-shield": {
+    "path": "assets/troop-skills/shield-crystal-shield.jpg",
+    "name": "烈晶盾牌",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/07/2024y07m26d_1804275774.jpg",
+    "sha256": "ce4b922d2f827d99d418691b2c29451c0eb50d6ff58a1d03c0aff834954c7c64"
+  },
+  "shield-lightforged-body": {
+    "path": "assets/troop-skills/shield-lightforged-body.jpg",
+    "name": "光铸之躯",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2026/04/2026y04m27d_1815596095.jpg",
+    "sha256": "195075e2932dfaa86377ec895aa8837c64cd5a03b1984c5d0df58e5dd79d1aa6"
+  },
+  "lancer-charge": {
+    "path": "assets/troop-skills/lancer-charge.jpg",
+    "name": "冲锋",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/09/2024y09m11d_2008042401.jpg",
+    "sha256": "486e4903a4b8976a6155b237143577ac843d706eed6a221efe4819baab29d9e3"
+  },
+  "lancer-ambush": {
+    "path": "assets/troop-skills/lancer-ambush.jpg",
+    "name": "奇袭",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/09/2024y09m11d_2008065455.jpg",
+    "sha256": "19ff450f71a11e410dc8a3d8629c7333f64032692a04cad135b7704b8ed14f15"
+  },
+  "lancer-crystal-spear": {
+    "path": "assets/troop-skills/lancer-crystal-spear.jpg",
+    "name": "炎晶战矛",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/07/2024y07m26d_1813483881.jpg",
+    "sha256": "e1bef581af6be72dc776b14bca8465e9d39a7e3e9ff636ac9ceda683ffa79d03"
+  },
+  "lancer-crimson-field": {
+    "path": "assets/troop-skills/lancer-crimson-field.jpg",
+    "name": "炽红力场",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2026/04/2026y04m27d_1816184663.jpg",
+    "sha256": "0c139c5374d6f91bc643e08e4b9c3e353aa715520e4cdf6c8cfe95ec1984514f"
+  },
+  "marksman-remote-strike": {
+    "path": "assets/troop-skills/marksman-remote-strike.jpg",
+    "name": "远程打击",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/09/2024y09m11d_2008117539.jpg",
+    "sha256": "a58dea88fa637816fcd781a7dfe6e4a4c7a3693f0aaecee0cd88e403e69cf634"
+  },
+  "marksman-rapid-fire": {
+    "path": "assets/troop-skills/marksman-rapid-fire.jpg",
+    "name": "连射",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/09/2024y09m11d_2008150989.jpg",
+    "sha256": "8582e2e2fd8ca3bdcaa33171485b9d9459a5bb349c1dec47b8bb814e54bd9fea"
+  },
+  "marksman-crystal-powder": {
+    "path": "assets/troop-skills/marksman-crystal-powder.jpg",
+    "name": "燃晶火药",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2024/07/2024y07m26d_1833297847.jpg",
+    "sha256": "968eb24d90d491cd81e3083e16aaaecba7d5ab5e6d9d05279df18b8593518e9b"
+  },
+  "marksman-flame-impact": {
+    "path": "assets/troop-skills/marksman-flame-impact.jpg",
+    "name": "火焰冲击",
+    "source": "https://img.altema.jp/whiteoutsurvival/uploads/2026/04/2026y04m27d_1816437444.jpg",
+    "sha256": "0809056f67d0dcea8afa8d35c082b6c600f8f5a046fd92326101bbed46592ee3"
+  }
+}

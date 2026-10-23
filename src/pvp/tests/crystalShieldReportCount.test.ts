@@ -100,13 +100,13 @@ describe("Crystal Shield counts rapid-fire effect uses independently of combat p
     const denominator = success ? 1.36 : 1;
     expect(event.receivedDamageReductionDenominator).toBeCloseTo(denominator);
     expect(event.targetTroop).toBe("shield");
-    expect(event.internalSegments ?? []).toHaveLength(rapid ? 1 : 0);
+    expect(round.trace.damageEvents.filter(e=>e.sourceSkillId === "marksman-rapid-fire")).toHaveLength(rapid ? 1 : 0);
     if (rapid) {
-      const second = event.internalSegments![0]!;
+      const second = round.trace.damageEvents.find(e=>e.sourceSkillId === "marksman-rapid-fire")!;
       expect(second.modifiedDamage).toBeCloseTo(second.rawDamage / denominator, 12);
       expect(second.roundedDamage).toBe(Math.round(second.modifiedDamage));
       expect(event.primaryRoundedDamage).toBe(second.roundedDamage);
-      expect(event.finalDamage).toBe(event.primaryRoundedDamage! + second.roundedDamage);
+      expect(event.finalDamage).toBe(event.primaryRoundedDamage);
     }
     expect(options.onReportActivation).toHaveBeenCalledTimes(success && rapid ? 1 : 0);
     if (success && rapid) {
@@ -123,13 +123,13 @@ describe("Crystal Shield counts rapid-fire effect uses independently of combat p
   it("keeps the existing per-segment Math.round damage: 295 + 295 = 590", () => {
     const round = resolveRound(battle(), system([.1], true));
     const event = main(round);
-    const second = event.internalSegments![0]!;
-    expect(second.basis).toBeCloseTo(401.76, 12);
+    const second = round.trace.damageEvents.find(e=>e.sourceSkillId === "marksman-rapid-fire")!;
+    expect(second.baseDamage).toBeCloseTo(401.76, 12);
     expect(second.modifiedDamage).toBeCloseTo(401.76 / 1.36, 12);
     expect(event.primaryRoundedDamage).toBe(295);
     expect(second.roundedDamage).toBe(295);
-    expect(event.finalDamage).toBe(590);
-    expect(Math.round(event.modifiedDamage)).toBe(591);
+    expect(event.finalDamage + second.finalDamage).toBe(590);
+    expect(Math.round(event.modifiedDamage + second.modifiedDamage)).toBe(591);
     expect(report([round]).actualActivationCount).toBe(2);
   });
 
@@ -149,7 +149,7 @@ describe("Crystal Shield counts rapid-fire effect uses independently of combat p
     }
     expect(rngCalls).toBe(100);
     expect(inherited).toBe(4);
-    expect(rounds.filter((round) => main(round).internalSegments?.length === 1)).toHaveLength(10);
+    expect(rounds.filter((round) => round.trace.damageEvents.some(e=>e.sourceSkillId === "marksman-rapid-fire"))).toHaveLength(10);
     expect(report(rounds)).toMatchObject({
       probabilityCheckCount: 100, procSuccessCount: 40, actualActivationCount: 44,
       activationBySourceTroop: { shield: 44 },
@@ -163,7 +163,7 @@ describe("Crystal Shield counts rapid-fire effect uses independently of combat p
     const round = resolveRound(battle(false, true), options);
     expect(options.next).toHaveBeenCalledTimes(1);
     expect(options.onReportActivation).not.toHaveBeenCalled();
-    expect(main(round).internalSegments).toHaveLength(1);
+    expect(round.trace.damageEvents.filter(e=>e.sourceSkillId === "marksman-rapid-fire")).toHaveLength(1);
     expect(main(round).receivedDamageReductionDenominator).toBe(1.5);
     expect(report([round], LANCER_CRIMSON_FIELD.id)).toMatchObject({
       probabilityCheckCount: 1, procSuccessCount: 1, actualActivationCount: 1,

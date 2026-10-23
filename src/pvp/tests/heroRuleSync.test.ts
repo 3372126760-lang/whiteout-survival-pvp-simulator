@@ -200,7 +200,7 @@ describe("confirmed expedition hero rule synchronization", () => {
     const shots = result.trace.damageEvents.filter(
       (event) => event.sourceSide === "A" && event.sourceTroop === "marksman" && event.damageType === "normalAttack",
     );
-    expect(shots).toHaveLength(1);
+    expect(shots).toHaveLength(2);
     const extra = result.trace.damageEvents.filter((event) =>
       event.sourceSkillId === "hero-skill.baxiti.unstable-field"
     );
@@ -211,10 +211,10 @@ describe("confirmed expedition hero rule synchronization", () => {
     });
     // The trace's normal event includes Rapid Fire's internal second segment;
     // the child uses the original one-segment B, not the merged two-segment B.
-    expect(extra[0]!.baseDamage).toBeCloseTo(shots[0]!.baseDamage * .25);
+    expect(extra[0]!.baseDamage).toBeCloseTo(shots[0]!.baseDamage * .5);
     expect(shots[0]!.increaseGroups.some((group) => group.group === "unstableFieldDamage"))
       .toBe(false);
-    expect(shots[0]!.internalSegments).toHaveLength(1);
+    expect(shots[1]!.sourceSkillId).toBe("marksman-rapid-fire");
     expect(random.calls()).toBe(1);
   });
 
@@ -365,9 +365,8 @@ describe("confirmed expedition hero rule synchronization", () => {
     const extra = result.trace.damageEvents.find((event) =>
       event.sourceSkillId === "hero-skill.baxiti.unstable-field"
     )!;
-    expect(normal.modifiedDamage).toBeCloseTo(250);
-    expect(normal.internalSegments).toHaveLength(1);
-    expect(normal.internalSegments![0]!.modifiedDamage).toBeCloseTo(125);
+    expect(normal.modifiedDamage).toBeCloseTo(125);
+    expect(result.trace.damageEvents.find(e=>e.sourceSkillId === "marksman-rapid-fire")!.modifiedDamage).toBeCloseTo(125);
     expect(extra.baseDamage).toBeCloseTo(50);
     expect(extra.modifiedDamage).toBeCloseTo(50);
     expect(result.trace.heroSkills.filter((entry) =>

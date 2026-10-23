@@ -211,15 +211,15 @@ describe("S1 expedition heroes and exclusive weapons", () => {
     const shots = result.trace.damageEvents.filter(
       (event) => event.sourceSide === "A" && event.sourceTroop === "marksman",
     );
-    expect(shots).toHaveLength(2);
+    expect(shots).toHaveLength(3);
     const normal = shots.find((event) => event.damageType === "normalAttack")!;
     const extra = shots.find((event) => event.sourceSkillId === "hero-skill.moli.ice-field")!;
-    expect(normal.internalSegments).toHaveLength(1);
+    expect(shots.some(e=>e.sourceSkillId === "marksman-rapid-fire")).toBe(true);
     expect(normal.appliedIncreaseEffects.some((effect) =>
       effect.effectId === "hero-effect.moli.ice-field"
     )).toBe(false);
     expect(extra).toMatchObject({ damageType: "skillDamage", damageSubtype: "extraDamage", parentEventId: normal.id });
-    expect(extra.baseDamage).toBeCloseTo(normal.baseDamage * .25);
+    expect(extra.baseDamage).toBeCloseTo(normal.baseDamage * .5);
   });
 
   it("15. applies Zinman defense/life before the Round 1 snapshot", () => {

@@ -168,7 +168,7 @@ describe("S10-S15 expedition heroes", () => {
       .toHaveLength(1);
     expect(simulation.trace.rounds[1]!.damageEvents.filter((event) =>
       event.sourceTroop === "marksman" && event.damageSubtype === "extraDamage"
-    )).toMatchObject([{ skillCoefficient: 2 }]);
+    )).toMatchObject([{ skillCoefficient: 1 }, { skillCoefficient: 1 }]);
     expect(group(simulation.trace.rounds[2]!, "A", "marksman", "increase", "vulnerability"))
       .toBeCloseTo(.25);
     expect(group(simulation.trace.rounds[2]!, "B", "shield", "reduction", "enemyOutgoingDamageReduction"))

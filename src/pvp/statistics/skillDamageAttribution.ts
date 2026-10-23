@@ -118,6 +118,13 @@ export function damageEventSkillIds(event: DamageEvent): readonly string[] {
     .flatMap((share) => share.skillId === undefined ? [] : [share.skillId]))];
 }
 
+/** Per-skill pre-HP damage, using the same pool/segment shares as aggregate statistics. */
+export function damageEventSkillRoundedDamage(event: DamageEvent, skillId: string): number {
+  return sourceShares(event, emptyDamageAttribution().issues)
+    .filter(share => share.skillId === skillId)
+    .reduce((sum, share) => sum + event.roundedDamage * share.weight, 0);
+}
+
 export function attributeResolvedDamage(events: readonly DamageEvent[], settlements: readonly TargetCasualtyResolution[]): DamageAttribution {
   const report = emptyDamageAttribution();
   const shares = new Map<string, readonly SourceShare[]>();

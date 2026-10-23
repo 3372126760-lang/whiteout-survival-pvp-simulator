@@ -389,13 +389,10 @@ describe("S7-S9 expedition heroes", () => {
     expect(attributeGroup(simulation.trace.rounds[2]!, "A", "marksman", "attack", "heroAttackBonus"))
       .toBeCloseTo(.25);
     const r10 = simulation.trace.rounds[9]!;
-    const pooled = r10.damageEvents.filter((event) => event.skillPoolComponents?.some(
-      (component) => component.sourceSkillId === "hero-skill.suoniya.bounty-temptation"));
-    expect(pooled).toHaveLength(1);
-    expect(pooled[0]!.skillPoolComponents?.map((part) => part.coefficient).sort())
-      .toEqual([.75, 2.50].sort());
-    expect(pooled[0]!.skillCoefficient).toBeCloseTo(3.25);
-    expect(pooled[0]!.baseDamage).toBeCloseTo(normalAttack(r10, "A", "lancer").baseDamage * 3.25);
+    const skills = r10.damageEvents.filter(e=>e.sourceSide === "A" && e.sourceTroop === "lancer" && e.damageType === "skillDamage");
+    expect(skills.map(e=>e.skillCoefficient).sort()).toEqual([.75,2.5].sort());
+    expect(skills.every(e=>e.skillPoolComponents === undefined)).toBe(true);
+    expect(skills.reduce((sum,e)=>sum+e.baseDamage,0)).toBeCloseTo(normalAttack(r10,"A","lancer").baseDamage * 3.25);
   });
 
   it("15b. keeps Sonya's torrent on natural R5/R10 after a missed lancer attack", () => {

@@ -390,7 +390,7 @@ function prepareTroopSkillRound(
           producedActiveEffectIds: compiledEffects.map((effect) => effect.instanceId),
           producedDamageEventIds: [
             ...extras.map((event) => event.id),
-            ...(parent === undefined ? [] : sameMainAttackSegments.map(() => parent.id)),
+            ...(parent === undefined ? [] : sameMainAttackSegments.map(event => event.id)),
           ],
           targetingChanged: compiledEffects.some(
             (effect) => effect.definition.kind === "targetingOverride",
@@ -527,8 +527,7 @@ function prepareTroopSkillRound(
             }
             if (traceIndex >= 0) traces[traceIndex] = {
               ...traces[traceIndex]!,
-              producedDamageEventIds: inputs.map((input) =>
-                input.sameMainAttackSegment ? context.primaryDamageEvent.id : input.id),
+              producedDamageEventIds: inputs.map((input) => input.id),
               parentEventId: context.primaryDamageEvent.id,
             };
           }

@@ -446,3 +446,251 @@ body:has(.special-buffs-overlay) { overflow:hidden; }
  .report-troops-totals .report-side-caption { padding:10px; flex-wrap:wrap; gap:8px; }
  .special-buffs-dialog .advanced-troop-cards { grid-template-columns:1fr; }
 }
+
+/* Shared report readability and complete player/result surfaces. */
+.report-theme { font-family:Arial,"Microsoft YaHei","PingFang SC",sans-serif; }
+.report-theme input, .report-theme select, .report-theme textarea, .report-theme button { font-family:inherit; }
+.report-theme .report-percent { padding:3px 12px; }
+.report-theme .report-percent input { font:700 clamp(18px,2vw,23px)/1.4 Arial,"Microsoft YaHei",sans-serif; font-variant-numeric:tabular-nums; min-height:40px; text-align:center; }
+.report-theme .report-percent > span { font:700 18px/1.4 Arial,sans-serif; }
+.report-theme .report-percent:has(.report-stat-higher) :is(input,span) { color:#478d28; }
+.report-theme .report-percent:has(.report-stat-lower) :is(input,span) { color:#e33b32; }
+.report-theme .report-stat-table tbody th[scope=row] { font-size:16px; font-weight:500; color:#746656; }
+.report-theme .report-troop-divider th { font-size:15px; font-weight:700; }
+.report-theme.simple-shell :is(input:not([type=checkbox]),select) { background:#fffaf1; color:#514335; border-color:#cdb69f; font-size:14px; }
+.report-theme :is(.simple-side,.survivor-card,.simple-differences,.simple-empty,.simple-preserved,.simple-global-stage,.simple-confidence p) { background:#fff5e8; color:#514335; border:1px solid #d0bba6; }
+.report-theme.simple-shell .simple-global-stage { background:#f2e4d3; border-color:#d0bba6; }
+.report-theme .simple-side-head { background:linear-gradient(90deg,#efc4bf,#fae9da); border-color:#d0bba6; }
+.report-theme .simple-side.side-b .simple-side-head { background:linear-gradient(270deg,#c1d4e9,#f0eadf); }
+.report-theme .simple-side-head h3, .report-theme .simple-side.side-b h3 { color:#614b38; }
+.report-theme .simple-side-head h3 > span { background:#b66e60; color:#fff; }
+.report-theme .simple-side.side-b h3 > span { background:#5784a7; color:#fff; }
+.report-theme :is(.simple-side-head .side-label,.simple-side.side-b .side-label,.simple-stage,.simple-stage small,.simple-intro p,.simple-section-heading p,.simple-result-heading > span,.simple-result-meta strong,.simple-damage-note,.simple-differences p,.simple-differences h3 small,.simple-empty p,.simple-presets > span,.simple-fold > summary > small) { color:#806b56; }
+.report-theme :is(.simple-troop-heading h4,.simple-fold > summary,.simple-empty h2,.simple-differences h3,.survivor-card h3,.survivor-card p,.survivor-troops span,.simple-total,.simple-troop-inputs label > span,.simple-input-unit em) { color:#735b43; }
+.report-theme :is(.survivor-card > div:first-child > strong,.survivor-card p strong,.survivor-troops b,.simple-differences ul) { color:#514335; }
+.report-theme .survivor-a { background:linear-gradient(120deg,#f8e0d8,#fff7ed); }
+.report-theme .survivor-b { background:linear-gradient(120deg,#dce9f2,#fff7ed); }
+.report-theme .survivor-a > div:first-child > strong { color:#a65042; }
+.report-theme .survivor-b > div:first-child > strong { color:#32688e; }
+.report-theme .survivor-card h3 { font-size:14px; }
+.report-theme .survivor-troops span,.report-theme .survivor-card p { font-size:13px; }
+.report-theme .survivor-troops b { font-size:18px; font-weight:700; }
+.report-theme .survivor-card small { color:#806b56; }
+.report-theme :is(.survivor-troops,.simple-fold,.simple-footer) { border-color:#decbb6; }
+.report-theme .simple-differences li::marker { color:#56803d; }
+.report-theme :is(.simple-mini-switch,.simple-presets button,.scene-pill) { background:#ecddc9; color:#735b43; }
+.report-theme .simple-mini-switch button { color:#735b43; }
+.report-theme .simple-mini-switch button[aria-pressed=true],.report-theme .simple-presets button[aria-pressed=true] { background:#fff9ef; color:#32688e; border-color:#8ca9bc; }
+.report-theme .simple-run-card { background:linear-gradient(110deg,#e4edf1,#f8f0e2); border:1px solid #9ab3bc; }
+.report-theme .simple-run-card h2 { color:#42627b; }
+.report-theme .simple-run-card p,.report-theme .simple-run-settings > label:first-child { color:#6b6257; }
+.report-theme .simple-text-button { color:#32688e; }
+body:has(.report-theme) .simple-drawer-backdrop { background:rgb(65 48 32 / 38%); }
+@media(max-width:600px) {
+ .report-theme .report-percent { padding:2px 4px; }
+ .report-theme .report-percent input { font-size:17px; }
+ .report-theme .report-percent > span { font-size:15px; }
+ .report-theme .report-stat-table tbody th[scope=row] { font-size:13px; }
+}
+
+.report-theme .report-percent { justify-content:center; gap:2px; }
+.report-theme .report-percent input { flex:0 1 150px; width:150px; max-width:calc(100% - 20px); text-align:right; }
+.report-theme .report-percent > span { flex:0 0 auto; }
+
+
+.simple-report-section { margin-top:22px; overflow:hidden; border:1px solid #c8af96; border-radius:12px; background:#fff3e6; }
+.report-theme.simple-shell .report-percent input { font-size:21px; font-weight:700; background:transparent; border:0; }
+
+.body-name-summary > p { display:flex; flex-wrap:wrap; gap:12px 18px; margin:16px 0 4px; }
+.body-summary-slot { display:inline-flex; align-items:center; gap:7px; color:#70553e; font-size:14px; }
+.body-summary-slot .hero-skill-art { width:34px; height:34px; border-radius:7px; object-fit:cover; border:1px solid #c7a77e; }
+
+.game-troop-icon { width:24px; height:27px; object-fit:contain; vertical-align:middle; }
+.hero-avatar small .game-troop-icon { width:17px; height:19px; }
+.report-troops-table .game-troop-portrait { width:58px; height:58px; object-fit:contain; display:inline-block; vertical-align:middle; margin-right:12px; filter:drop-shadow(0 2px 2px #805e4020); }
+.game-troop-level { display:inline-flex; align-items:center; gap:7px; vertical-align:middle; font-weight:700; color:#70553e; }
+.game-crystal-badge { width:29px; height:31px; object-fit:contain; }
+.report-theme .report-config-section { box-shadow:0 4px 16px #795b3710,inset 0 1px #fff8; }
+.report-theme .report-section-heading { border-bottom:1px solid #b99d80; }
+.report-theme .report-section-heading h2 { font-size:20px; font-weight:800; }
+.report-theme .report-troop-divider th { padding:10px; }
+.report-theme .simple-hero { box-shadow:inset 0 1px #fff9; }
+.report-theme .hero-avatar { border:1px solid #bc9d76; box-shadow:0 2px 5px #71513022; }
+@media(max-width:600px) { .report-troops-table .game-troop-portrait { width:42px; height:42px; margin:0 4px 0 0; } .game-troop-level { font-size:11px; } .game-crystal-badge { width:23px; } }
+
+.report-armies { display:grid; grid-template-columns:1fr 1fr; gap:24px; border-top:1px solid #d4bda5; padding-top:18px; }
+.report-army { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; align-items:start; }
+.report-army + .report-army { border-left:1px solid #dac5b0; padding-left:24px; }
+.report-soldier { text-align:center; min-width:0; padding:10px 3px; }
+.report-soldier h3 { display:flex; align-items:center; justify-content:center; gap:4px; font-size:14px; margin:0 0 12px; color:#75604b; }
+.report-soldier-image { position:relative; width:80px; height:80px; margin:0 auto; display:grid; place-items:center; background:linear-gradient(#f5d8c7,#fff0de); border:2px solid #d0a486; border-radius:12px; box-shadow:inset 0 1px #fff9,0 3px 5px #77533118; }
+.side-b .report-soldier-image { background:linear-gradient(#d3e3ef,#fff4e8); border-color:#9cb7cb; }
+.report-soldier-image .game-troop-portrait { width:76px; height:76px; object-fit:contain; }
+.report-soldier-image .game-crystal-badge { position:absolute; top:-10px; right:-8px; width:28px; height:30px; }
+.report-soldier-tier { display:block; margin:8px 0 5px; font-size:12px; font-weight:700; color:#80634b; }
+.report-soldier-level strong { display:block; font:700 clamp(16px,1.6vw,22px)/1.3 Arial,sans-serif; color:#624c39; }
+.report-soldier-level small { font-size:10px; color:#8b7764; }
+.report-soldier-level + .report-soldier-level { margin-top:14px; }
+.report-soldier-skill { margin-top:14px; display:flex; align-items:center; justify-content:center; gap:5px; border-top:1px solid #e2cdb8; padding-top:10px; }
+.game-t12-skill { width:35px; height:35px; object-fit:contain; }
+.report-soldier-skill span { color:#927559; font-size:10px; }
+.report-soldier-skill b { display:block; font-size:13px; color:#6e553f; margin-top:3px; }
+@media(max-width:700px) { .report-armies { gap:10px; } .report-army { gap:3px; } .report-army + .report-army { padding-left:10px; } .report-soldier-image { width:52px; height:52px; } .report-soldier-image .game-troop-portrait { width:50px; height:50px; } .report-soldier-skill { flex-direction:column; } .report-soldier h3 { font-size:12px; } .report-soldier-tier { font-size:10px; } }
+
+.report-soldier-image { background:linear-gradient(#ff8e93,#cc4852); border-color:#e07a7f; }
+.report-soldier-image .t12-report-portrait { display:block; width:76px; height:76px; background-repeat:no-repeat; background-size:646px 1389px; border-radius:9px; }
+.t12-report-shield { background-position:-33px -303px; }
+.t12-report-lancer { background-position:-121px -303px; }
+.t12-report-marksman { background-position:-210px -303px; }
+.report-soldier-rank { position:absolute; bottom:0; left:0; right:0; border-radius:0 0 9px 9px; background:#2d2324bb; color:#fff; font:bold 13px/19px Arial,sans-serif; text-shadow:0 1px 2px #000; }
+@media(max-width:700px) { .report-soldier-image .t12-report-portrait { width:50px; height:50px; background-size:425px 914px; } .t12-report-shield { background-position:-22px -199px; } .t12-report-lancer { background-position:-80px -199px; } .t12-report-marksman { background-position:-138px -199px; } .report-soldier-rank { font-size:10px; line-height:14px; } }
+
+/* Cards must keep their content width when browser zoom reduces available space. */
+.report-armies { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.report-army { grid-template-columns:repeat(auto-fit,minmax(110px,1fr)); min-width:0; gap:14px; }
+.report-soldier { min-width:0; padding:10px 0; }
+.report-soldier h3 { white-space:nowrap; flex-wrap:nowrap; }
+.report-soldier h3 .game-troop-icon { flex-shrink:0; }
+.report-soldier-level strong { font-size:clamp(16px,1.6vw,22px); overflow-wrap:anywhere; }
+.report-soldier-tier { white-space:nowrap; font-size:12px; }
+.report-soldier-image .game-crystal-badge { width:30px; height:33px; top:-10px; right:-9px; z-index:2; }
+.report-soldier-image .game-crystal-badge:is([data-fc="8"],[data-fc="9"],[data-fc="10"]) { width:42px; height:42px; top:-14px; right:-14px; }
+@media(max-width:850px) {
+ .report-armies { grid-template-columns:1fr; gap:20px; }
+ .report-army { grid-template-columns:repeat(3,minmax(110px,1fr)); }
+ .report-army + .report-army { border-left:0; border-top:1px solid #dac5b0; padding:20px 0 0; }
+ .report-soldier-skill { flex-direction:row; }
+}
+@media(max-width:440px) {
+ .report-army { grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); }
+ .report-soldier-skill { flex-direction:column; }
+ .report-soldier-image .game-crystal-badge { width:25px; height:27px; top:-8px; right:-7px; }
+ .report-soldier-image .game-crystal-badge:is([data-fc="8"],[data-fc="9"],[data-fc="10"]) { width:34px; height:34px; top:-11px; right:-11px; }
+}
+
+.report-soldier-image .t12-report-portrait { background-size:635px 1410px; }
+.t12-report-shield { background-position:-30px -550px; }
+.t12-report-lancer { background-position:-118px -550px; }
+.t12-report-marksman { background-position:-205px -550px; }
+@media(max-width:700px) { .report-soldier-image .t12-report-portrait { background-size:418px 928px; } .t12-report-shield { background-position:-20px -362px; } .t12-report-lancer { background-position:-77px -362px; } .t12-report-marksman { background-position:-135px -362px; } }
+.scenario-report-summary .scenario-read-value { display:block; padding:10px; font-weight:700; color:#624c39; background:#fff8ef; border-radius:6px; overflow-wrap:anywhere; }
+.scenario-report-summary input,.scenario-report-summary select { pointer-events:none; }
+
+.special-buffs-tabs[hidden] { display:none; }
+.special-buffs-dialog:has(.special-buffs-tabs[hidden]) { width:min(1040px,100%); }
+
+/* Troop portrait rarity/background is independent of army side. */
+.report-theme .report-soldier-image, .report-theme .side-b .report-soldier-image { background:linear-gradient(#ff8e93,#cc4852); border-color:#e07a7f; }
+
+
+.earth-battle-report { padding:0 14px 20px; margin-bottom:20px; border-bottom:1px solid #d4bda5; }
+.earth-battle-report > h3 { font-size:18px; color:#72583e; }
+.earth-battle-report .report-troops-totals { margin:0 0 16px; }
+.earth-stat-table { margin-top:24px; }
+.earth-stat-table td { text-align:center; padding:14px 6px; font:700 clamp(17px,2vw,23px)/1.4 Arial,sans-serif; }
+.report-theme .earth-stat-higher { color:#478d28; }
+.report-theme .earth-stat-lower { color:#e33b32; }
+.report-theme .earth-stat-equal { color:#7b6855; }
+
+/* Both armies have equal content widths and identical responsive columns. */
+.report-army { box-sizing:border-box; padding-inline:0; grid-template-columns:repeat(3,minmax(0,1fr)); }
+.report-army + .report-army { padding-left:0; border-left:0; }
+.report-armies { column-gap:24px; }
+.report-soldier { min-width:0; }
+.report-theme .report-soldier-image[data-frame="gray"] { background:linear-gradient(#d5d8d8,#9b9f9f); border-color:#a3aaaa; }
+.report-theme .report-soldier-image[data-frame="green"] { background:linear-gradient(#b7db8d,#6a9d51); border-color:#80a85d; }
+.report-theme .report-soldier-image[data-frame="blue"] { background:linear-gradient(#a2cde6,#528bb8); border-color:#6d9dbd; }
+.report-theme .report-soldier-image[data-frame="purple"] { background:linear-gradient(#ccabe4,#8c62af); border-color:#a47bbc; }
+.report-theme .report-soldier-image[data-frame="gold"] { background:linear-gradient(#ffc88a,#dc8d48); border-color:#e6a666; }
+.report-theme .report-soldier-image[data-frame="red"] { background:linear-gradient(#ff8e93,#cc4852); border-color:#e07a7f; }
+@media(max-width:850px) { .report-armies { grid-template-columns:1fr; } .report-army + .report-army { padding:20px 0 0; border-top:1px solid #dac5b0; } }
+@media(max-width:400px) { .report-army { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; } .report-soldier-level strong { font-size:15px; } }
+
+.report-soldier-image .t11-lancer-report-portrait { display:block; width:76px; height:76px; background-repeat:no-repeat; background-size:646px 1389px; background-position:-444px -303px; border-radius:9px; }
+@media(max-width:700px) { .report-soldier-image .t11-lancer-report-portrait { width:50px; height:50px; background-size:425px 914px; background-position:-292px -199px; } }
+
+.report-soldier-image .t11-lancer-report-portrait { background-size:636px 1398px; background-position:-118px -785px; }
+@media(max-width:700px) { .report-soldier-image .t11-lancer-report-portrait { background-size:418px 919px; background-position:-77px -516px; } }
+
+.skill-stat-sides { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; align-items:start; }
+.skill-stat-side { min-width:0; border:1px solid #d0bba6; border-radius:10px; overflow:hidden; }
+.skill-stat-side > h3 { margin:0; padding:12px 14px; background:#efc4bf; color:#96564b; }
+.skill-stat-side.side-b > h3 { background:#c7d9ec; color:#426d95; }
+.skill-stat-side > .hint { padding:0 12px; }
+.skill-stat-side table { min-width:650px; }
+.report-theme .skill-stat-group th { background:#f0e3d1; color:#775b40; font-size:14px; padding:12px; }
+.simple-drawer:has(.skill-stat-sides) { width:min(1600px,100%); }
+@media(max-width:700px) { .skill-stat-sides { grid-template-columns:1fr; } }
+
+.skill-stat-side table { min-width:0; width:100%; }
+.skill-stat-side .data-table :is(th,td) { white-space:normal; overflow-wrap:anywhere; padding:10px 8px; }
+.skill-stat-side .data-table th:first-child { min-width:135px; }
+.skill-record-cell { min-width:120px; }
+.skill-record-cell details { border:1px solid #ddc7ae; border-radius:6px; background:#fff7ec; margin:4px 0; font-size:12px; }
+.skill-record-cell summary { cursor:pointer; color:#326b8e; padding:7px; white-space:nowrap; }
+.skill-record-cell :is(p,dl,ol) { padding:0 10px; }
+.skill-record-cell ol { list-style-position:inside; }
+.skill-record-cell li { margin:8px 0; line-height:1.6; }
+.skill-record-cell dd { margin:3px 0 10px; font-weight:700; }
+.skill-record-cell:has(details[open]) { min-width:230px; }
+@media(max-width:1100px) { .skill-stat-side .table-scroll { overflow-x:auto; } .skill-stat-side table { min-width:480px; } }
+
+.skill-group-hero { display:inline-flex; align-items:center; gap:8px; margin:8px 0 0; width:100%; font-size:16px; }
+.skill-group-hero .hero-portrait-art { width:44px; height:44px; border-radius:8px; border:2px solid #bc9474; }
+.skill-stat-side.side-b .skill-group-hero { flex-direction:row-reverse; justify-content:flex-start; }
+
+/* Keep each side inside its own grid track, including expanded diagnostics. */
+.skill-stat-side .advanced-table-scroll { width:100%; max-width:100%; box-sizing:border-box; }
+.skill-stat-side .data-table { table-layout:fixed; width:100%; min-width:0; }
+.skill-stat-side .data-table :is(th,td), .skill-stat-side .data-table th:first-child,
+.skill-stat-side .skill-record-cell:has(details[open]) { min-width:0; box-sizing:border-box; }
+.skill-stat-side .skill-art-name { min-width:0; max-width:100%; gap:6px; }
+.skill-stat-side .hero-skill-art { flex:0 0 30px; }
+.skill-stat-side .skill-record-cell { padding:6px 4px; }
+.skill-stat-side .skill-record-cell details { max-width:100%; }
+.skill-stat-side .skill-record-cell summary { white-space:normal; overflow-wrap:anywhere; padding:6px 4px; }
+.skill-stat-side .skill-record-cell :is(ol,ul,dl,p) { padding-left:6px; padding-right:6px; max-width:100%; box-sizing:border-box; }
+.skill-stat-side .skill-stat-group th { min-width:0; width:auto; }
+.skill-stat-side .skill-group-hero { display:flex; width:auto; min-width:0; max-width:100%; flex-wrap:wrap; white-space:normal; }
+.skill-stat-side .skill-group-hero .hero-portrait-art { flex:0 0 44px; }
+.skill-damage-statistics { container-type:inline-size; }
+@container(max-width:760px) { .skill-stat-sides { grid-template-columns:minmax(0,1fr); } }
+
+/* Expanded records use the whole army column instead of a narrow table cell. */
+.skill-stat-side .data-table > tbody > tr:not(.skill-stat-group):not(.skill-detail-row) > td {
+ white-space:nowrap; overflow-wrap:normal; text-align:right; font-variant-numeric:tabular-nums; font-size:12px; padding:14px 6px;
+}
+.skill-stat-side .skill-art-name { display:flex; align-items:center; line-height:1.6; }
+.skill-stat-side .skill-detail-row > .skill-record-cell { padding:0 10px 12px; background:#fff7ec; }
+.skill-detail-panels { display:flex; flex-wrap:wrap; gap:8px; }
+.skill-stat-side .skill-record-cell details { flex:0 1 auto; margin:0; }
+.skill-stat-side .skill-record-cell details[open] { flex-basis:100%; }
+.skill-stat-side .skill-record-cell summary { padding:8px 10px; white-space:nowrap; overflow-wrap:normal; }
+.skill-stat-side .skill-record-cell .skill-round-list { list-style:none; padding:0 12px; margin:4px 0 10px; }
+.skill-stat-side .skill-round-list li { display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px 16px; padding:7px 0; margin:0; border-bottom:1px solid #eadcca; }
+.skill-stat-side .skill-round-list strong { font-variant-numeric:tabular-nums; white-space:nowrap; }
+.skill-stat-side .skill-record-cell dl { display:grid; grid-template-columns:auto 1fr; gap:8px 20px; padding:4px 12px 12px; margin:0; }
+.skill-stat-side .skill-record-cell dd { margin:0; }
+@container(max-width:940px) { .skill-stat-sides { grid-template-columns:minmax(0,1fr); } }
+
+.skill-round-defeats { display:flex; flex-direction:column; gap:8px; }
+.skill-round-defeats > span { display:grid; grid-template-columns:auto auto; gap:16px; align-items:center; }
+.skill-round-defeats > span > span { color:#8a7056; white-space:nowrap; }
+
+.skill-stat-side .skill-record-cell .skill-round-table { width:calc(100% - 24px); margin:4px 12px 12px; table-layout:fixed; border-collapse:collapse; }
+.skill-stat-side .skill-round-table th:first-child { width:40%; }
+.skill-stat-side .skill-round-table th:nth-child(2) { width:34%; }
+.skill-stat-side .skill-round-table :is(th,td) { padding:8px 6px; border:0; border-bottom:1px solid #eadcca; background:transparent; color:#705d48; font-size:12px; text-align:right; white-space:nowrap; overflow-wrap:normal; }
+.skill-stat-side .skill-round-table thead th:first-child, .skill-stat-side .skill-round-table td[rowspan], .skill-stat-side .skill-round-table tr > td:first-child:nth-last-child(3) { text-align:left; }
+.skill-stat-side .skill-round-table td[rowspan] { vertical-align:top; }
+.skill-stat-side .skill-round-table thead th { color:#8a7056; font-weight:600; }
+.skill-stat-side .skill-round-table strong { font-variant-numeric:tabular-nums; }
+
+/* Nested record tables must not inherit the outer statistics table minimum width. */
+.skill-stat-side .skill-record-cell .skill-round-table {
+ min-width:0 !important; max-width:calc(100% - 24px); width:calc(100% - 24px); table-layout:fixed;
+}
+.skill-stat-side .skill-record-cell .skill-round-table :is(th,td),
+.skill-stat-side .skill-record-cell .skill-round-table th:first-child {
+ min-width:0; max-width:none; white-space:normal; overflow-wrap:anywhere; box-sizing:border-box;
+}

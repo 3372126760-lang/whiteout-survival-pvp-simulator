@@ -1,3 +1,6 @@
+import { renderInnerEarthReport } from "./innerEarthReportView";
+import { troopIcon, troopPortrait, troopFrame, crystalBadge, t12SkillIcon } from "./gameArtwork";
+import { presentBodySkill } from "./bodySkillPresentation";
 import { renderHeroPortrait, renderWeaponArt, renderSkillArt } from "./heroArtwork";
 import { renderReportAttributeComparison } from "./reportConfigurationView";
 import { renderHistoricalBonusTable } from "./historicalBonusView";
@@ -162,7 +165,7 @@ const simpleRatioDrafts: Record<SideId, RallyTroopRatios | null> = { A: null, B:
 let advancedRatioDrafts: Record<SideId, RallyTroopRatios | null> = { A: null, B: null };
 let simpleDetailsOpen = false;
 let specialBuffsOpen = false;
-let configurationPopup: "buffs" | "troops" = "buffs";
+let configurationPopup: "buffs" | "troops" | "bodies" | "scene" = "buffs";
 let specialBuffsSide: SideId = "A";
 let playerSingleDetailsOpen = false;
 let lineupActionsOpen = false;
@@ -568,7 +571,7 @@ app.addEventListener("keydown", (event) => {
     const key = event as KeyboardEvent;
     if (key.key === "Escape") {
       event.preventDefault(); specialBuffsOpen = false; render();
-      app.querySelector<HTMLElement>(configurationPopup === "troops" ? '[data-action="troops-edit"]' : '.report-stat-source [data-action="special-buffs-open"]')?.focus(); return;
+      app.querySelector<HTMLElement>(configurationPopup === "scene" ? '[data-action="scene-edit"]' : configurationPopup === "bodies" ? '[data-action="bodies-edit"]' : configurationPopup === "troops" ? '[data-action="troops-edit"]' : '.report-stat-source [data-action="special-buffs-open"]')?.focus(); return;
     }
     if (key.key === "Tab") {
       const fields = [...app.querySelectorAll<HTMLElement>('.special-buffs-dialog button, .special-buffs-dialog input, .special-buffs-dialog select, .special-buffs-dialog summary')].filter(node => node.getClientRects().length > 0);
@@ -608,14 +611,16 @@ app.addEventListener("click", (event) => {
   if (!(target instanceof HTMLElement)) return;
   const actionTarget = target.closest<HTMLElement>("[data-action]");
   const action = actionTarget?.dataset.action;
-  if (action === "troops-edit" || action === "special-buffs-open" || action === "special-buffs-close" || action === "special-buffs-side") {
+  if (action === "scene-edit" || action === "bodies-edit" || action === "troops-edit" || action === "special-buffs-open" || action === "special-buffs-close" || action === "special-buffs-side") {
     captureExpandedSections();
     if (action === "troops-edit" || action === "special-buffs-open") configurationPopup = action === "troops-edit" ? "troops" : "buffs";
-    if (action === "troops-edit") specialBuffsSide = actionTarget?.dataset.side === "B" ? "B" : "A";
+    if (action === "scene-edit") configurationPopup = "scene";
+    if (action === "bodies-edit") configurationPopup = "bodies";
+    if (action === "troops-edit" || action === "bodies-edit") specialBuffsSide = actionTarget?.dataset.side === "B" ? "B" : "A";
     specialBuffsOpen = action !== "special-buffs-close";
     if (action === "special-buffs-side") specialBuffsSide = actionTarget?.dataset.side === "B" ? "B" : "A";
     render();
-    app.querySelector<HTMLElement>(specialBuffsOpen ? '.special-buffs-dialog [aria-selected="true"]' : configurationPopup === "troops" ? '[data-action="troops-edit"]' : '[data-action="special-buffs-open"]')?.focus();
+    app.querySelector<HTMLElement>(specialBuffsOpen ? '.special-buffs-dialog [aria-selected="true"]' : configurationPopup === "scene" ? '[data-action="scene-edit"]' : configurationPopup === "bodies" ? '[data-action="bodies-edit"]' : configurationPopup === "troops" ? '[data-action="troops-edit"]' : '[data-action="special-buffs-open"]')?.focus();
     return;
   }
   if ((action === "combat-buff-preset" || action === "apply-historical-base") && actionTarget) {
@@ -1338,7 +1343,7 @@ function renderApp(): void {
   const resultIsStale = recognitionPending ||
     (result !== null || threeQueueResult !== null) && isValidationResultStale(revisionState);
   if (editorMode === "simple") {
-    app.innerHTML = `<main class="shell simple-shell" ${simpleDetailsOpen ? "inert" : ""}>
+    app.innerHTML = `<main class="shell simple-shell report-theme" ${simpleDetailsOpen || specialBuffsOpen ? "inert" : ""}>
       ${renderModeHeader(editorMode)}
       ${errorMessage === null ? "" : `<div class="error-box" role="alert">${escapeHtml(errorMessage)}</div>`}
       ${stageNotice === null ? "" : `<div class="stage-notice" role="status">${escapeHtml(stageNotice)}</div>`}
@@ -1347,10 +1352,12 @@ function renderApp(): void {
         blocked: recognitionPending || (input.battleContext === "rally" && input.attributeInputMode === "prediction" && !rallyDeploymentValid()) ||
           ((isThreeQueueBattleInput(input) || input.scenarioType === "INNER_EARTH") && !threeQueueValid()),
         result: batchResult, troopModes: simpleTroopModes, ratioDrafts: simpleRatioDrafts,
-        detailsOpen: false, developer: developerToolsEnabled, renderAttributes: renderAttributeInputs, renderBuffs: renderExternalBuffs,
+        detailsOpen: false, developer: developerToolsEnabled,
+        renderConfiguration: input.scenarioType === "INNER_EARTH" ? renderScenarioReport : renderReportConfiguration,
+        renderAttributes: renderAttributeInputs, renderBuffs: renderExternalBuffs,
         renderMoreBuffs: renderSimpleMoreBuffs,
         renderFold: (key, summary, body) => lazyDetails.render(key, summary, body, 'class="simple-fold"'),
-      })}${developerToolsEnabled ? renderDeveloperTools(preview, resultIsStale) : ""}</main>${simpleDetailsOpen ? renderSimpleResultDrawer() : ""}`;
+      })}${developerToolsEnabled ? renderDeveloperTools(preview, resultIsStale) : ""}</main>${renderSpecialBuffDialog()}${simpleDetailsOpen ? renderSimpleResultDrawer() : ""}`;
     if (initial) {
       perfMark("initial render end"); perfMeasure("first render", "initial render start", "initial render end");
     }
@@ -1364,7 +1371,7 @@ function renderApp(): void {
       ${storageNotice === null ? "" : `<div class="stage-notice" role="status">${escapeHtml(storageNotice)}</div>`}
       ${errorMessage === null ? "" : `<div class="error-box" role="alert">${escapeHtml(errorMessage)}</div>`}
       ${renderAdvancedLineupActions(lineupActionsOpen, input.scenarioType === "INNER_EARTH")}
-      ${input.scenarioType === "INNER_EARTH" ? renderInnerEarthForm(input, "player", (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"')) : renderReportConfiguration()}
+      ${input.scenarioType === "INNER_EARTH" ? renderScenarioReport() : renderReportConfiguration()}
       ${lazyDetails.render("player-report-import", "战报 / 属性导入", renderReportImporter, 'class="advanced-fold advanced-more-settings"')}
       ${lazyDetails.render("player-profile-management", "阵容与预设管理", () => `${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}${renderPlayerProfiles()}`, 'class="advanced-fold advanced-more-settings"')}
       ${renderAdvancedRun(input, batchCount, batchRunning, batchProgress, playerRunBlocked())}
@@ -1373,7 +1380,7 @@ function renderApp(): void {
       ${batchResult === null ? "" : lazyDetails.render("player-result-statistics", "详细统计 · 回合、兵损与技能表现", () => renderAdvancedStatistics(batchResult!), 'class="advanced-fold advanced-more-settings"')}
       ${renderPlayerSingle(result, threeQueueResult, resultIsStale)}
       ${developerToolsEnabled ? renderDeveloperTools(preview, resultIsStale) : ""}
-      <footer class="simple-footer"><span>WHITEOUT BATTLE LAB · 高级阵容工具 · <a href="https://wos.h5joy-games.com/zh-CN/heroes/" target="_blank" rel="noreferrer">贴图来源</a></span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
+      <footer class="simple-footer"><span>WHITEOUT BATTLE LAB · 高级阵容工具 · <a href="https://wos.h5joy-games.com/zh-CN/heroes/" target="_blank" rel="noreferrer">SSR 贴图来源</a> · <a href="https://wosgift.com/zh-cn/heroes/" target="_blank" rel="noreferrer">R/SR 贴图来源</a></span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
     </main>${renderSpecialBuffDialog()}${renderAppDialog(appDialog)}${simpleDetailsOpen ? renderPlayerDetailsDrawer() : ""}
   `;
   if (initial) {
@@ -1427,8 +1434,8 @@ function renderSpecialBuffContent(sideId: SideId, side: ValidationSideInput): st
 
 function renderSpecialBuffDialog(): string {
   if (!specialBuffsOpen) return "";
-  const title = configurationPopup === "troops" ? "更改部队" : "特殊加成";
-  return `<div class="special-buffs-overlay"><div class="special-buffs-backdrop" data-action="special-buffs-close"></div><section class="report-theme special-buffs-dialog" role="dialog" aria-modal="true" aria-labelledby="special-buffs-title"><header><div><h2 id="special-buffs-title">${title}</h2><p>${configurationPopup === "troops" ? "调整出征兵力、比例、兵种等级和 T12 技能。" : "配置城镇、宠物、专家及领地增益。"}修改后自动保存。</p></div><button class="btn" data-action="special-buffs-close" aria-label="关闭${title}">关闭 ×</button></header><div class="special-buffs-tabs" role="tablist" aria-label="选择配置方">${(["A", "B"] as const).map(side => `<button class="btn" role="tab" aria-selected="${side === specialBuffsSide}" aria-controls="special-buffs-panel" id="special-buffs-tab-${side}" data-action="special-buffs-side" data-side="${side}">${side} 方${configurationPopup === "troops" ? "部队" : "特殊加成"}</button>`).join("")}</div><div id="special-buffs-panel" role="tabpanel" aria-labelledby="special-buffs-tab-${specialBuffsSide}">${configurationPopup === "troops" ? renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "troops") + renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "t12") : renderSpecialBuffContent(specialBuffsSide, getInputSide(specialBuffsSide))}</div><footer><span>修改即时生效，关闭后可查看双方对比。</span><button class="btn primary" data-action="special-buffs-close">完成</button></footer></section></div>`;
+  const title = configurationPopup === "scene" ? "模式专属设置" : configurationPopup === "bodies" ? "更改车身" : configurationPopup === "troops" ? "更改部队" : "特殊加成";
+  return `<div class="special-buffs-overlay"><div class="special-buffs-backdrop" data-action="special-buffs-close"></div><section class="report-theme special-buffs-dialog" role="dialog" aria-modal="true" aria-labelledby="special-buffs-title"><header><div><h2 id="special-buffs-title">${title}</h2><p>${configurationPopup === "bodies" ? "配置本场车身英雄与技能等级。" : configurationPopup === "troops" ? "调整出征兵力、比例、兵种等级和 T12 技能。" : "配置城镇、宠物、专家及领地增益。"}修改后自动保存。</p></div><button class="btn" data-action="special-buffs-close" aria-label="关闭${title}">关闭 ×</button></header><div class="special-buffs-tabs" ${configurationPopup === "scene" ? "hidden" : ""} role="tablist" aria-label="选择配置方">${(["A", "B"] as const).map(side => `<button class="btn" role="tab" aria-selected="${side === specialBuffsSide}" aria-controls="special-buffs-panel" id="special-buffs-tab-${side}" data-action="special-buffs-side" data-side="${side}">${side} 方${configurationPopup === "bodies" ? "车身" : configurationPopup === "troops" ? "部队" : "特殊加成"}</button>`).join("")}</div><div id="special-buffs-panel" role="tabpanel" aria-labelledby="special-buffs-tab-${specialBuffsSide}">${configurationPopup === "scene" ? renderScenarioEditor() : configurationPopup === "bodies" ? renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "bodyEditor") : configurationPopup === "troops" ? renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "troops") + renderAdvancedSide(specialBuffsSide, getInputSide(specialBuffsSide), "t12") : renderSpecialBuffContent(specialBuffsSide, getInputSide(specialBuffsSide))}</div><footer><span>修改即时生效，关闭后可查看双方对比。</span><button class="btn primary" data-action="special-buffs-close">完成</button></footer></section></div>`;
 }
 
 function renderReportTroops(): string {
@@ -1441,16 +1448,29 @@ function renderReportTroops(): string {
     const total = TROOP_TYPES.reduce((sum, t) => sum + counts[t], 0);
     return { id, side, counts, total };
   });
-  const icons = { shield: "🛡", lancer: "⚔", marksman: "🏹" };
-  return `<div class="report-troops-summary"><div class="report-troops-totals">${sides.map(({ id, total, counts }) => `<div class="side-${id.toLowerCase()}"><div class="report-side-caption">${id} · ${id === "A" ? "我方部队" : "对方部队"}<button class="btn btn-small" data-action="troops-edit" data-side="${id}" aria-haspopup="dialog">更改部队</button></div><p>初始部队</p><strong>${formatNumber(total)}</strong><div class="report-troops-ratio" aria-label="${id}方兵种比例">${TROOP_TYPES.map(t => `<span class="ratio-${t}" style="width:${total ? counts[t] / total * 100 : 0}%"></span>`).join("")}</div><div class="report-troops-legend">${TROOP_TYPES.map(t => `<span class="ratio-${t}">${troopName(t)} ${total ? (counts[t] / total * 100).toFixed(2) : "0.00"}%</span>`).join("")}</div></div>`).join("")}</div><table class="report-stat-table report-troops-table"><caption>参战部队详情</caption><thead><tr><th>A 方数量</th><th>兵种 / 等级</th><th>B 方数量</th></tr></thead>${TROOP_TYPES.map(t => {
-    const compositions = sides.map(({ side, counts }) => side.troops[t].levelMode === "mixed" ? getUiComposition(side.troops[t]) : [{ level: side.troops[t].troopLevel, aliveCount: counts[t] }]);
-    const levels = [...new Set(compositions.flatMap(rows => rows.map(row => row.level)))].sort((a,b) => getTroopConstant(b) - getTroopConstant(a));
-    return `<tbody><tr class="report-troop-divider"><th colspan="3">${icons[t]} ${troopName(t)}</th></tr>${levels.map(level => `<tr>${compositions.map((rows, index) => `${index === 1 ? `<th scope="row">${escapeHtml(level)}</th>` : ""}<td class="side-${index === 0 ? "a" : "b"}"><strong>${formatNumber(rows.filter(row => row.level === level).reduce((sum,row) => sum + row.aliveCount, 0))}</strong></td>`).join("")}</tr>`).join("")}<tr class="report-troops-skill"><td>${sides[0]!.side.troops[t].t12Level ?? 0} 级</td><th scope="row">T12 技能</th><td>${sides[1]!.side.troops[t].t12Level ?? 0} 级</td></tr></tbody>`;
-  }).join("")}</table><p class="hint">此处展示开战前配置；伤亡与剩余兵力在模拟完成后查看。</p></div>`;
+
+  return `<div class="report-troops-summary"><div class="report-troops-totals">${sides.map(({ id, total, counts }) => `<div class="side-${id.toLowerCase()}"><div class="report-side-caption">${id} · ${id === "A" ? "我方部队" : "对方部队"}<button class="btn btn-small" data-action="troops-edit" data-side="${id}" aria-haspopup="dialog">更改部队</button></div><p>初始部队</p><strong>${formatNumber(total)}</strong><div class="report-troops-ratio" aria-label="${id}方兵种比例">${TROOP_TYPES.map(t => `<span class="ratio-${t}" style="width:${total ? counts[t] / total * 100 : 0}%"></span>`).join("")}</div><div class="report-troops-legend">${TROOP_TYPES.map(t => `<span class="ratio-${t}">${troopName(t)} ${total ? (counts[t] / total * 100).toFixed(2) : "0.00"}%</span>`).join("")}</div></div>`).join("")}</div><div class="report-armies" aria-label="参战部队详情">${sides.map(({id,side,counts}) => `<div class="report-army side-${id.toLowerCase()}" aria-label="${id}方参战部队">${TROOP_TYPES.map(t => {
+ const rows = side.troops[t].levelMode === "mixed" ? getUiComposition(side.troops[t]) : [{level:side.troops[t].troopLevel,aliveCount:counts[t]}];
+ return `<article class="report-soldier"><h3>${troopIcon(t)}${troopName(t)}</h3>${rows.map(row => `<div class="report-soldier-level"><div class="report-soldier-image" data-frame="${troopFrame(row.level)}">${troopPortrait(t,row.level)}${crystalBadge(row.level)}<span class="report-soldier-rank">${/^T(\d+)/.exec(row.level)?.[1] ?? ""}.0级</span></div><span class="report-soldier-tier">${escapeHtml(row.level)}</span><strong>${row.aliveCount.toLocaleString("zh-CN")}</strong><small>人</small></div>`).join("")}<div class="report-soldier-skill">${t12SkillIcon(t)}<span>T12 技能<b>${side.troops[t].t12Level ?? 0} 级</b></span></div></article>`;
+ }).join("")}</div>`).join("")}</div><p class="hint">此处展示开战前配置；伤亡与剩余兵力在模拟完成后查看。</p></div>`;
+}
+
+function renderScenarioEditor(): string {
+ if (input.scenarioType === "INNER_EARTH") return renderInnerEarthForm(input, "player", (_key,title,body) => `<section><h3>${title}</h3>${body()}</section>`);
+ return `<div class="config-grid">${(["A","B"] as const).map(side => `<section><h3>${side}方三队阵容</h3>${renderIceFireSide(input,side,undefined,false,(_key,title,body)=>`<section><h4>${title}</h4>${body()}</section>`,index=>renderBonusContexts(side,getValidationThreeQueues(getInputSide(side))[index]!,index))}</section>`).join("")}</div>`;
+}
+function renderScenarioReport(): string {
+ const editor = renderScenarioEditor();
+ const summary = editor.replace(/<textarea\b[^>]*>([\s\S]*?)<\/textarea>/g, '<pre class="scenario-read-value">$1</pre>').replace(/<select\b[^>]*>([\s\S]*?)<\/select>/g, (_all, options: string) => {
+  const selected = /<option[^>]*selected[^>]*>([\s\S]*?)<\/option>/.exec(options) ?? /<option[^>]*>([\s\S]*?)<\/option>/.exec(options);
+  return `<span class="scenario-read-value">${selected?.[1] ?? "—"}</span>`;
+ }).replace(/<input\b[^>]*>/g, tag => `<span class="scenario-read-value">${/type="checkbox"/.test(tag) ? /checked/.test(tag) ? "已启用" : "未启用" : /value="([^"]*)"/.exec(tag)?.[1] ?? "—"}</span>`)
+ .replace(/<button\b[^>]*>[\s\S]*?<\/button>/g, "");
+ return `<section class="report-config-section scenario-report-summary"><header class="report-section-heading"><div><h2>战报阵容配置</h2><p>当前模式的英雄、兵力、属性与专属规则。</p></div><button class="btn" data-action="scene-edit" aria-haspopup="dialog">更改模式配置</button></header><div class="advanced-side-body">${input.scenarioType === "INNER_EARTH" ? renderInnerEarthReport(input) + `<details class="mini-details"><summary>查看英雄、增益及其他模式配置</summary>${summary}</details>` : summary}</div></section>`;
 }
 
 function renderReportConfiguration(): string {
-  if (isThreeQueueBattleInput(input)) return `<section class="config-grid advanced-config" aria-label="双方战斗配置">${renderAdvancedSide("A", input.sideA)}${renderAdvancedSide("B", input.sideB)}</section>`;
+  if (isThreeQueueBattleInput(input)) return renderScenarioReport();
   const role = (side: SideId) => input.scenarioType === "CITY_DEFENSE" ? side === "A" ? "进攻方阵容" : "守城方阵容" : input.scenarioType === "RALLY" ? side === "A" ? "集结进攻方" : "集结防守方" : side === "A" ? "我方阵容" : "对比阵容";
   const pair = (section: ReportConfigSection) => `<div class="report-pair">${(["A", "B"] as const).map(side => `<div class="advanced-side side-${side.toLowerCase()}"><div class="report-side-caption">${side} · ${role(side)}</div><div class="advanced-side-body">${renderAdvancedSide(side, getInputSide(side), section)}</div></div>`).join("")}</div>`;
   const block = (id: string, number: string, title: string, subtitle: string, content: string) => `<section id="${id}" class="report-config-section"><header class="report-section-heading"><span>${number}</span><div><h2>${title}</h2><p>${subtitle}</p></div></header>${content}</section>`;
@@ -1461,7 +1481,7 @@ function renderReportConfiguration(): string {
   </section>`;
 }
 
-type ReportConfigSection = "heroes" | "troops" | "attributes" | "buffs" | "t12" | "weapons" | "bodies";
+type ReportConfigSection = "heroes" | "troops" | "attributes" | "buffs" | "t12" | "weapons" | "bodies" | "bodyEditor";
 function renderAdvancedSide(sideId: SideId, side: ValidationSideInput, section?: ReportConfigSection): string {
   if (isThreeQueueBattleInput(input)) return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方三队阵容</h2></header><div class="advanced-side-body">${lazyDetails.render(`player-queues-${sideId}`, '三队英雄、兵种与属性设置', () => renderIceFireSide(input, sideId, undefined, false, (key, title, body) => lazyDetails.render(key, title, body, 'class="advanced-fold"'), index => renderBonusContexts(sideId, getValidationThreeQueues(side)[index]!, index)), 'class="advanced-fold"')}</div></article>`;
   const is333 = input.scenarioType === "THREE_THREE_THREE", display = is333 ? resolveThreeThreeThreeSide(side) : side;
@@ -1479,11 +1499,12 @@ function renderAdvancedSide(sideId: SideId, side: ValidationSideInput, section?:
     buffs: () => lazyDetails.render(`player-buffs-${sideId}`, '<span>城镇、宠物与专家 Buff</span><small>本次战斗的外部增益</small>', () => renderSpecialBuffContent(sideId, side), 'class="advanced-fold"'),
     t12: () => `${lazyDetails.render(`player-t12-${sideId}`, '<span>T12兵种技能</span><small>盾兵 / 矛兵 / 射手</small>', () => `${advancedHelp("设置当前盾、矛、射的T12兵种技能等级。该技能不属于战报12项攻防穿血。", "技能按现有兵种机制参与战斗；Lv0表示关闭。不同场景独立保存等级，切换不会覆盖集结的高等级设置。")}<p class="hint" data-t12-limit>当前为${maxT12SkillLevel(input, sideId) === 24 ? input.scenarioType === "CITY_DEFENSE" ? "守城" : "集结" : "非集结"}模式，最高Lv${maxT12SkillLevel(input, sideId)}。</p><div class="inline-fields">${TROOP_TYPES.map((troop) => `<label>${troopName(troop)}<select data-scope="t12" data-side="${sideId}" data-troop="${troop}">${Array.from({ length: maxT12SkillLevel(input, sideId) + 1 }, (_, level) => `<option value="${level}" ${level === (side.troops[troop].t12Level ?? 0) ? "selected" : ""}>Lv${level}</option>`).join("")}</select></label>`).join("")}</div>`, 'class="advanced-fold"')}`,
     weapons: () => `${lazyDetails.render(`player-weapons-${sideId}`, '<span>英雄专武</span><small>各英雄独立等级</small>', () => `${advancedHelp("设置实际参战英雄的专武等级。最终战报模式仍需设置，以运行专武战斗技能。", WEAPON_HELP)}${TROOP_TYPES.map((troop) => { const id = side.leaderHeroIds?.[troop]; return id ? renderWeaponLevelInput("simulation-weapon", sideId, id, `${catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? "英雄"}专武`, side.simulationWeaponLevels?.[id] ?? 0) : ""; }).join("") || '<p class="hint">先选择英雄。</p>'}`, 'class="advanced-fold"')}`,
-    bodies: () => `${input.scenarioType === "CITY_DEFENSE" ? sideId === "B" ? lazyDetails.render("player-city-body-B", "守城车身英雄 · 四个槽位", () => `<div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div>`, 'class="advanced-fold"') : '<p class="hint">进攻方沿用单撞规则，不配置车身。</p>' : ""}
+    bodies: () => input.scenarioType === "CITY_DEFENSE" && sideId === "A" ? '<p class="hint">进攻方不配置车身。</p>' : `<div class="body-name-summary"><button class="btn btn-small" data-action="bodies-edit" data-side="${sideId}" aria-haspopup="dialog">更改车身</button><p>${Array.from({length:4},(_,index) => { const id = side.bodySkills?.[index]?.skillId ?? side.selectedMemberSkillIds[index] ?? ""; const skill = presentBodySkill(id, side.bodySkills?.[index]?.skillLevel ?? 5); return `<span class="body-summary-slot">${skill ? renderSkillArt(skill.skillId) : ""}<span>${escapeHtml(skill?.heroName ?? "未选择")}</span></span>`; }).join("")}</p></div>`,
+    bodyEditor: () => `${input.scenarioType === "CITY_DEFENSE" ? sideId === "B" ? lazyDetails.render("player-city-body-B", "守城车身英雄 · 四个槽位", () => `<div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div>`, 'class="advanced-fold"') : '<p class="hint">进攻方沿用单撞规则，不配置车身。</p>' : ""}
     ${input.battleContext === "rally" ? lazyDetails.render(`player-rally-${sideId}`, '<span>集结详细设置</span><small>车身英雄 / 容量增益</small>', () => `${advancedHelp("仅用于集结场景的车身英雄、容量和集结相关配置。", "车身技能参与集结战斗；容量按现有部署规则使用，与普通战报属性分开。切换其他模式会保存本场景状态，再次返回集结时恢复。")}<h4>车身英雄</h4><div class="member-grid">${Array.from({ length: 4 }, (_, index) => renderMemberSelect(sideId, side, index)).join("")}</div><h4>容量增益</h4><div class="inline-fields"><label>集结容量增益 %<input data-scope="capacity" data-side="${sideId}" data-field="rallyCapacityBonus" type="text" inputmode="decimal" value="${(side.rallyCapacityBonus ?? 0) * 100}"></label><label>额外固定容量<input data-scope="capacity" data-side="${sideId}" data-field="rallyFixedCapacityBonus" type="number" min="0" value="${side.rallyFixedCapacityBonus ?? 0}"></label></div>`, 'class="advanced-fold"') : ""}`,
   };
   if (section !== undefined) return parts[section]();
-  return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方阵容</h2></header><div class="advanced-side-body">${Object.values(parts).map(render => render()).join("")}</div></article>`;
+  return `<article class="advanced-side side-${sideId.toLowerCase()}"><header><h2>${sideId}方阵容</h2></header><div class="advanced-side-body">${Object.entries(parts).filter(([key]) => key !== "bodyEditor").map(([,render]) => render()).join("")}</div></article>`;
 }
 function renderAdvancedAttributes(sideId: SideId, side: ValidationSideInput, showInputs = true): string {
   return `${advancedHelp("设置本次战斗使用的盾、矛、射攻防穿血。可直接输入最终战报属性，也可以输入基础属性后由下方Buff自动计算。", "最终战报包含普通外部属性增益，不能再次叠加。基础面板模式则使用正规城镇、宠物、专家及专武来源。历史反推是独立工具，只有点击还原按钮才会将结果写入基础属性。")}
@@ -3587,6 +3608,7 @@ function runBattle(): void {
 
 async function runBatch(): Promise<void> {
   if (batchRunning) return;
+  if ((["A", "B"] as const).some(side=>advancedRatioDrafts[side] !== null && !validSimpleRatios(advancedRatioDrafts[side]!))) return;
   if (editorMode === "simple" && (["A", "B"] as const).some((side) =>
     simpleTroopModes[side] === "ratio" && simpleRatioDrafts[side] !== null && !validSimpleRatios(simpleRatioDrafts[side]))) return;
   if (pendingRecognitionSides().length > 0) {

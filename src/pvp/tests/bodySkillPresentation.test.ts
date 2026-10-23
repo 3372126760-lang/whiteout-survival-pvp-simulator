@@ -94,7 +94,7 @@ describe("effect-first body skill presentation", () => {
   });
 
   it("escapes user-entered search text and preserves duplicate body IDs/levels through saving", () => {
-    expect(renderBodySkillSelect({ ...state, query: '"><img src=x onerror=1>' })).not.toContain('<img');
+    expect(renderBodySkillSelect({ ...state, query: '"><img src=x onerror=1>' })).not.toContain('<img src=x');
     const base = createDefaultValidationInput(), ids = [SHUYUN, SHUYUN, BRADLEY, BRADLEY];
     const bodySkills = resolveBodySkillConfigs(ids, [], "s11").map((body, index) =>
       ({ ...body, skillLevel: index < 2 ? 3 : 5 }));

@@ -3,7 +3,7 @@ import { createBattleState } from "../battle/createBattleState";
 import { createDamageEvent } from "../damage/createDamageEvent";
 import { resolvePendingDamage } from "../casualty/resolvePendingDamage";
 import { resolvePostBattleCasualties } from "../postBattle/casualtyResolver";
-import { attributeResolvedDamage, damageEventSkillIds, projectSkillDefeats } from "../statistics/skillDamageAttribution";
+import { attributeResolvedDamage, projectSkillDefeats } from "../statistics/skillDamageAttribution";
 import { runValidationBattle, compileValidationBattle } from "../validationUi/adapter";
 import { runBatchSimulation, deriveBatchSeed } from "../validationUi/batchSimulation";
 import { makeSide } from "./helpers";
@@ -38,35 +38,23 @@ function sums(run: ReturnType<typeof runValidationBattle>, side: "A" | "B") {
 }
 
 describe("settlement-only pooled skill attribution", () => {
-  it("credits both Ligeia skills when the 2B pool has no powder", () => {
-    const run = runValidationBattle(ligeiaDamagePoolInput(false));
-    const pooled = run.trace.rounds[1]!.damageEvents.find((e) => e.skillPoolComponents)!;
-    expect(pooled.skillCoefficient).toBe(2);
-    expect(damageEventSkillIds(pooled)).toEqual([LIGEIA_TWO, LIGEIA_THREE]);
-    const report = run.skillDamageStatistics!.bySide.A;
-    expect(report[LIGEIA_TWO]!.exited).toBeGreaterThan(0);
-    expect(report[LIGEIA_THREE]!.exited).toBeCloseTo(report[LIGEIA_TWO]!.exited, 12);
-    expect(report[LIGEIA_THREE]!.estimated).toBe(true);
-    expect(report[POWDER]).toBeUndefined();
-    for (const id of [LIGEIA_TWO, LIGEIA_THREE]) {
-      const row = run.skillSummary.find((s) => s.skillId === id)!;
-      expect(row.actualActivationCount).toBe(1);
-      expect(row.extraDamageEventCount).toBe(1);
-      expect(row.damageContribution).toEqual(report[id]);
-    }
-  });
-  it("splits the 2.875B pool by .875/1/1 instead of assigning all to powder", () => {
-    const run = runValidationBattle(ligeiaDamagePoolInput(true));
+  it.each([false,true])("settles Ligeia skills independently, powder=%s", powder => {
+    const run = runValidationBattle(ligeiaDamagePoolInput(powder));
     const round = run.simulation.rounds[1]!;
-    const event = round.trace.damageEvents.find((e) => e.skillPoolComponents)!;
-    expect(event.skillPoolComponents!.map((c) => c.coefficient)).toEqual([.875, 1, 1]);
-    expect(event.sourceSkillId).toBe(POWDER); // The actual battle event is deliberately unchanged.
-    const perRound = attributeResolvedDamage(round.stateAfterActionPhase.pendingDamageEvents, round.casualties);
-    const poolCasualties = round.casualties.find((c) => c.sourceEvents[0]?.id === event.id)!.casualties;
-    expect(perRound.bySide.A[POWDER]!.exited).toBeCloseTo(poolCasualties * .875 / 2.875, 12);
-    expect(perRound.bySide.A[LIGEIA_TWO]!.exited).toBeCloseTo(poolCasualties / 2.875, 12);
-    expect(perRound.bySide.A[LIGEIA_THREE]!.exited).toBeCloseTo(poolCasualties / 2.875, 12);
-    expect(perRound.bySide.A[LIGEIA_THREE]!.hpDamage).toBeGreaterThan(0);
+    const ids = [LIGEIA_TWO,LIGEIA_THREE,...(powder ? [POWDER] : [])];
+    const report = attributeResolvedDamage(round.trace.damageEvents,round.casualties);
+    for(const id of ids) {
+      const events = round.trace.damageEvents.filter(e=>e.sourceSide === "A" && e.sourceSkillId === id);
+      expect(events).toHaveLength(1);
+      expect(events[0]!.skillPoolComponents).toBeUndefined();
+      const exits = round.casualties.filter(c=>c.sourceEvents.some(e=>e.id === events[0]!.id)).reduce((sum,c)=>sum+c.casualties,0);
+      expect(report.bySide.A[id]!.exited).toBe(exits);
+      expect(report.bySide.A[id]!.estimated).toBe(false);
+      expect(Number.isInteger(exits)).toBe(true);
+    }
+    const order = round.trace.damageEvents.filter(e=>e.sourceSide === "A").map(e=>e.sourceSkillId);
+    expect(order.indexOf(LIGEIA_TWO)).toBeLessThan(order.indexOf(LIGEIA_THREE));
+    if(powder) expect(order.indexOf(LIGEIA_THREE)).toBeLessThan(order.indexOf(POWDER));
   });
   it("allocates only actual exits after rounding, shield absorption, HP cap and discarded overflow", () => {
     const { report, event, resolved, pending } = settlePool(310.6, [1, 2], 100, 2);

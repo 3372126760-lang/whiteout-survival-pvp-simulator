@@ -1,0 +1,275 @@
+[
+  {
+    "path": "assets/heroes-common/eugene.png",
+    "name": "尤金",
+    "source": "https://wosgift.com/images/heroes/eugene.png",
+    "page": "https://wosgift.com/zh-cn/heroes/eugene/",
+    "sha256": "d99fadeac6552225c53888b2119f2c150089bec157fe2d8e6a7c72474bb5190c"
+  },
+  {
+    "path": "assets/heroes-common/eugene-hero_skill_icon_500004.png",
+    "name": "祖传技艺",
+    "source": "https://wosgift.com/images/heroes/skills/eugene/hero_skill_icon_500004.png",
+    "page": "https://wosgift.com/zh-cn/heroes/eugene/",
+    "sha256": "366e289bc9066049c8163ca303d711bd26fdb5ff145bca764184720b4bd723e4"
+  },
+  {
+    "path": "assets/heroes-common/eugene-hero_skill_icon_500005.png",
+    "name": "伐木大师",
+    "source": "https://wosgift.com/images/heroes/skills/eugene/hero_skill_icon_500005.png",
+    "page": "https://wosgift.com/zh-cn/heroes/eugene/",
+    "sha256": "4b10282c8ef7b64cf1cd592fd82b21649786371e0907d7d1116631f2c7519cd9"
+  },
+  {
+    "path": "assets/heroes-common/smith.png",
+    "name": "史密斯",
+    "source": "https://wosgift.com/images/heroes/smith.png",
+    "page": "https://wosgift.com/zh-cn/heroes/smith/",
+    "sha256": "120b79c78b521a5d6e16c0ea6d659b3451d3a84bb91ae6a27b197be8c7956667"
+  },
+  {
+    "path": "assets/heroes-common/smith-hero_skill_icon_500014.png",
+    "name": "趁热打铁",
+    "source": "https://wosgift.com/images/heroes/skills/smith/hero_skill_icon_500014.png",
+    "page": "https://wosgift.com/zh-cn/heroes/smith/",
+    "sha256": "e48ca4a43145f6de6d363d0e9a6fb622c49cff37a58246945cab75818d371dd3"
+  },
+  {
+    "path": "assets/heroes-common/smith-hero_skill_icon_500015.png",
+    "name": "铁匠精神",
+    "source": "https://wosgift.com/images/heroes/skills/smith/hero_skill_icon_500015.png",
+    "page": "https://wosgift.com/zh-cn/heroes/smith/",
+    "sha256": "2c3c689ae810e474eaa8f2f11b817bf23a98d033733a0594094e5b8a069d1c10"
+  },
+  {
+    "path": "assets/heroes-common/charlie.png",
+    "name": "查理",
+    "source": "https://wosgift.com/images/heroes/charlie.png",
+    "page": "https://wosgift.com/zh-cn/heroes/charlie/",
+    "sha256": "054541d572567c4118334bac95b8b4f07202b7202fd95607e8d11492f6fb30f3"
+  },
+  {
+    "path": "assets/heroes-common/charlie-hero_skill_icon_500024.png",
+    "name": "爆破专精",
+    "source": "https://wosgift.com/images/heroes/skills/charlie/hero_skill_icon_500024.png",
+    "page": "https://wosgift.com/zh-cn/heroes/charlie/",
+    "sha256": "411ac209ae2196093a8b709cefefbfefa1b0ab7470a23ec4c15f1c1abdfa9596"
+  },
+  {
+    "path": "assets/heroes-common/charlie-hero_skill_icon_500025.png",
+    "name": "煤矿开采",
+    "source": "https://wosgift.com/images/heroes/skills/charlie/hero_skill_icon_500025.png",
+    "page": "https://wosgift.com/zh-cn/heroes/charlie/",
+    "sha256": "f47f61f5b076c9c1cab1151ba32b8fe69ea2e024f860bf56f046f994019a4e71"
+  },
+  {
+    "path": "assets/heroes-common/cloris-2.png",
+    "name": "克劳瑞斯",
+    "source": "https://wosgift.com/images/heroes/cloris-2.png",
+    "page": "https://wosgift.com/zh-cn/heroes/cloris-2/",
+    "sha256": "0a1717dd40ba04451b31b7486749ebef84684aa39b709236125d28ceb72e032d"
+  },
+  {
+    "path": "assets/heroes-common/cloris-2-hero_skill_icon_500034.png",
+    "name": "王牌猎人",
+    "source": "https://wosgift.com/images/heroes/skills/cloris-2/hero_skill_icon_500034.png",
+    "page": "https://wosgift.com/zh-cn/heroes/cloris-2/",
+    "sha256": "c6c22b84e619ca212376a1fa90bdaa0e0727e2b124e1a78604674ae1a6bb38df"
+  },
+  {
+    "path": "assets/heroes-common/cloris-2-hero_skill_icon_500035.png",
+    "name": "肉食者",
+    "source": "https://wosgift.com/images/heroes/skills/cloris-2/hero_skill_icon_500035.png",
+    "page": "https://wosgift.com/zh-cn/heroes/cloris-2/",
+    "sha256": "078ed7861d6be8e4e1fc26a4f3e8f4c37a509577862315504834cfce5790f5a9"
+  },
+  {
+    "path": "assets/heroes-common/sergey.png",
+    "name": "谢尔盖",
+    "source": "https://wosgift.com/images/heroes/sergey.png",
+    "page": "https://wosgift.com/zh-cn/heroes/sergey/",
+    "sha256": "e414586e996bda86aaf86edebbfb8240c5a071513c797faff4a1007d8cf2d7ff"
+  },
+  {
+    "path": "assets/heroes-common/sergey-hero_skill_icon_500044.png",
+    "name": "守护之力",
+    "source": "https://wosgift.com/images/heroes/skills/sergey/hero_skill_icon_500044.png",
+    "page": "https://wosgift.com/zh-cn/heroes/sergey/",
+    "sha256": "971ce7fb03ee44ca4ff58917a724b06f0ff9afd6b40a570b96c9a6abba5f6257"
+  },
+  {
+    "path": "assets/heroes-common/sergey-hero_skill_icon_500045.png",
+    "name": "虚弱打击",
+    "source": "https://wosgift.com/images/heroes/skills/sergey/hero_skill_icon_500045.png",
+    "page": "https://wosgift.com/zh-cn/heroes/sergey/",
+    "sha256": "6288b7788f479939fa4304d2dc96162d2eb0161362c985a0450205b3dfd6b78a"
+  },
+  {
+    "path": "assets/heroes-common/patrick.png",
+    "name": "帕特里克",
+    "source": "https://wosgift.com/images/heroes/patrick.png",
+    "page": "https://wosgift.com/zh-cn/heroes/patrick/",
+    "sha256": "440f621b218b90a9b3fdc8fc8ad7789d406e62221f85b47724b32947b0d774f9"
+  },
+  {
+    "path": "assets/heroes-common/patrick-hero_skill_icon_500054.png",
+    "name": "美食功效",
+    "source": "https://wosgift.com/images/heroes/skills/patrick/hero_skill_icon_500054.png",
+    "page": "https://wosgift.com/zh-cn/heroes/patrick/",
+    "sha256": "f445f07172beeb914de85a4c561113b2a51871f8f8ed11a414e629a496f016ce"
+  },
+  {
+    "path": "assets/heroes-common/patrick-hero_skill_icon_500055.png",
+    "name": "能量摄入",
+    "source": "https://wosgift.com/images/heroes/skills/patrick/hero_skill_icon_500055.png",
+    "page": "https://wosgift.com/zh-cn/heroes/patrick/",
+    "sha256": "27d1d6e5ab7ad02b8d8b38681c863e315761a076e458808f046db98fdeca477d"
+  },
+  {
+    "path": "assets/heroes-common/bahiti.png",
+    "name": "巴希提",
+    "source": "https://wosgift.com/images/heroes/bahiti.png",
+    "page": "https://wosgift.com/zh-cn/heroes/bahiti/",
+    "sha256": "35aa49e80f30fe3a1cab6733e3ab3911c78c87a1b74e7568ec42ba032845c448"
+  },
+  {
+    "path": "assets/heroes-common/bahiti-hero_skill_icon_500064.png",
+    "name": "危险感知",
+    "source": "https://wosgift.com/images/heroes/skills/bahiti/hero_skill_icon_500064.png",
+    "page": "https://wosgift.com/zh-cn/heroes/bahiti/",
+    "sha256": "2e4522866d46b1ed05ee821c61ae315517e618773b50ceeb33058a3cbc58282a"
+  },
+  {
+    "path": "assets/heroes-common/bahiti-hero_skill_icon_500065.png",
+    "name": "不稳定力场",
+    "source": "https://wosgift.com/images/heroes/skills/bahiti/hero_skill_icon_500065.png",
+    "page": "https://wosgift.com/zh-cn/heroes/bahiti/",
+    "sha256": "da814f18520d2498f3284ffedb520f4be9061e3cd10c5842a5f5402907d44024"
+  },
+  {
+    "path": "assets/heroes-common/jessie.png",
+    "name": "杰西",
+    "source": "https://wosgift.com/images/heroes/jessie.png",
+    "page": "https://wosgift.com/zh-cn/heroes/jessie/",
+    "sha256": "d537345d1b7551e684f3eadaa87fc20e9a7374b59cdf882d2797612145d0bbeb"
+  },
+  {
+    "path": "assets/heroes-common/jessie-hero_skill_icon_500074.png",
+    "name": "全副武装",
+    "source": "https://wosgift.com/images/heroes/skills/jessie/hero_skill_icon_500074.png",
+    "page": "https://wosgift.com/zh-cn/heroes/jessie/",
+    "sha256": "d188c705d371d16fa1a955c542f8467dc365d55ede19acc85e6e39e9e5fba477"
+  },
+  {
+    "path": "assets/heroes-common/jessie-hero_skill_icon_500075.png",
+    "name": "机械屏障",
+    "source": "https://wosgift.com/images/heroes/skills/jessie/hero_skill_icon_500075.png",
+    "page": "https://wosgift.com/zh-cn/heroes/jessie/",
+    "sha256": "707df002380c8ea46b9822187c16b3056937a7889435ec0c2afbf013e8853425"
+  },
+  {
+    "path": "assets/heroes-common/seo-yoon.jpg",
+    "name": "书允",
+    "source": "https://wosgift.com/images/heroes/seo-yoon.jpg",
+    "page": "https://wosgift.com/zh-cn/heroes/seo-yoon/",
+    "sha256": "35c90eae43f71987a3efa3b52aa20a71ee87f40ffdfffbe2a11d3535afd2d850"
+  },
+  {
+    "path": "assets/heroes-common/seo-yoon-hero_skill_icon_500274.png",
+    "name": "征伐的战鼓",
+    "source": "https://wosgift.com/images/heroes/skills/seo-yoon/hero_skill_icon_500274.png",
+    "page": "https://wosgift.com/zh-cn/heroes/seo-yoon/",
+    "sha256": "99073deff3a8fed46bac3f922981472e13c400ab5719917c3b2ea1a3e9982b01"
+  },
+  {
+    "path": "assets/heroes-common/seo-yoon-hero_skill_icon_500275.png",
+    "name": "疗愈之舞",
+    "source": "https://wosgift.com/images/heroes/skills/seo-yoon/hero_skill_icon_500275.png",
+    "page": "https://wosgift.com/zh-cn/heroes/seo-yoon/",
+    "sha256": "ffd7e6564c187c1d3ecfb4edb78890cd6d25bf71a7fb8b368475c82301e7d500"
+  },
+  {
+    "path": "assets/heroes-common/jasser.jpg",
+    "name": "杰塞尔",
+    "source": "https://wosgift.com/images/heroes/jasser.jpg",
+    "page": "https://wosgift.com/zh-cn/heroes/jasser/",
+    "sha256": "de90bc5a33bb5305cc620baede83799358af370fce884e4b4011bdbbea3b9b3a"
+  },
+  {
+    "path": "assets/heroes-common/jasser-hero_skill_icon_500284.png",
+    "name": "战术推演",
+    "source": "https://wosgift.com/images/heroes/skills/jasser/hero_skill_icon_500284.png",
+    "page": "https://wosgift.com/zh-cn/heroes/jasser/",
+    "sha256": "3f9c51b63b0b47a94f9ba5bc37c8091f0598ade24461bb7b42677da65d1cc62d"
+  },
+  {
+    "path": "assets/heroes-common/jasser-hero_skill_icon_500285.png",
+    "name": "博学多闻",
+    "source": "https://wosgift.com/images/heroes/skills/jasser/hero_skill_icon_500285.png",
+    "page": "https://wosgift.com/zh-cn/heroes/jasser/",
+    "sha256": "494ae6db1bd1e0bf30664686c6b5d0878b66ff7ab6604a80b6cd9da82f4e57f0"
+  },
+  {
+    "path": "assets/heroes-common/lumak-bokan.png",
+    "name": "卢姆·波根",
+    "source": "https://wosgift.com/images/heroes/lumak-bokan.png",
+    "page": "https://wosgift.com/zh-cn/heroes/lumak-bokan/",
+    "sha256": "cc9404a63529f593f9981f815da62b5ef542f8c4ca7663a129e0e9a5481a3e7e"
+  },
+  {
+    "path": "assets/heroes-common/lumak-bokan-hero_skill_icon_500294.png",
+    "name": "惑敌战术",
+    "source": "https://wosgift.com/images/heroes/skills/lumak-bokan/hero_skill_icon_500294.png",
+    "page": "https://wosgift.com/zh-cn/heroes/lumak-bokan/",
+    "sha256": "0670f420d4316ae59e0a45ce47630075d889f7aad34ce6e6dfbebd714d2ad51a"
+  },
+  {
+    "path": "assets/heroes-common/lumak-bokan-hero_skill_icon_500295.png",
+    "name": "彩虹桥勇士",
+    "source": "https://wosgift.com/images/heroes/skills/lumak-bokan/hero_skill_icon_500295.png",
+    "page": "https://wosgift.com/zh-cn/heroes/lumak-bokan/",
+    "sha256": "284478810e04d32c40e78d77d4257b56659fecaeb8cc8511e729eb8f833e860f"
+  },
+  {
+    "path": "assets/heroes-common/ling-shuang.jpg",
+    "name": "凌霜",
+    "source": "https://wosgift.com/images/heroes/ling-shuang.jpg",
+    "page": "https://wosgift.com/zh-cn/heroes/ling-shuang/",
+    "sha256": "fb68f057e6d5dbc5593dbc0e9ac98c0e3fa4daa2fcc3e14d8698961d6c72e684"
+  },
+  {
+    "path": "assets/heroes-common/ling-shuang---5.png",
+    "name": "威风八面",
+    "source": "https://wosgift.com/images/heroes/skills/ling-shuang/--5.png",
+    "page": "https://wosgift.com/zh-cn/heroes/ling-shuang/",
+    "sha256": "7c2289a375e176233cfbb37d1318deffbc33ae92c2f97e18005d86c738a8f3cc"
+  },
+  {
+    "path": "assets/heroes-common/ling-shuang---2.png",
+    "name": "治兵振旅",
+    "source": "https://wosgift.com/images/heroes/skills/ling-shuang/--2.png",
+    "page": "https://wosgift.com/zh-cn/heroes/ling-shuang/",
+    "sha256": "0809183af16ace199463b61b06391765ed217522596d89077955c9fab774c7ac"
+  },
+  {
+    "path": "assets/heroes-common/gina.png",
+    "name": "吉娜",
+    "source": "https://wosgift.com/images/heroes/gina.png",
+    "page": "https://wosgift.com/zh-cn/heroes/gina/",
+    "sha256": "603befa1562ce3a6f9066ffb81a676f2a000973e73da61116583bc4fbe3b293b"
+  },
+  {
+    "path": "assets/heroes-common/gina-hero_skill_icon_500084.png",
+    "name": "强劲体魄",
+    "source": "https://wosgift.com/images/heroes/skills/gina/hero_skill_icon_500084.png",
+    "page": "https://wosgift.com/zh-cn/heroes/gina/",
+    "sha256": "1ec496764171935750c19389c5b6804cfeeb4fe7510d47f3ba7e85954f0ff1c7"
+  },
+  {
+    "path": "assets/heroes-common/gina-hero_skill_icon_500085.png",
+    "name": "迅捷行动",
+    "source": "https://wosgift.com/images/heroes/skills/gina/hero_skill_icon_500085.png",
+    "page": "https://wosgift.com/zh-cn/heroes/gina/",
+    "sha256": "8ceccf230fc4f6bcbb6f1c7c62453ab2eb27d69565fb2cb7e171b4df535b2edf"
+  }
+]

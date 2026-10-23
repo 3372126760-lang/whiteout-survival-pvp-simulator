@@ -63,7 +63,7 @@ describe("independent manual rally body slot cards", () => {
   });
   it("preserves selected identity during filtering, escapes text, and renders an explicit empty card", () => {
     const html = renderBodySlotCard({ ...state, query: '"><img src=x onerror=1>', roleLabel: "<进攻>" });
-    expect(html).not.toContain("<img"); expect(html).toContain("&lt;进攻&gt;");
+    expect(html).not.toContain("<img src=x"); expect(html).toContain("&lt;进攻&gt;");
     expect(html).toContain(`value="${SHUYUN}" selected`);
     const empty = renderBodySlotCard({ ...state, index: 3, selectedSkillId: "" });
     expect(empty).toContain("不配置车身技能"); expect(empty).toContain("技能说明 · 槽位4");

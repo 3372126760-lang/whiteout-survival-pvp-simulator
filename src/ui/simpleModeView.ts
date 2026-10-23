@@ -1,3 +1,4 @@
+import { troopIcon } from "./gameArtwork";
 import { renderHeroPortrait, renderHeroExpeditionArt } from "./heroArtwork";
 import type { ValidationBattleInput, ValidationSideInput } from "../pvp/validationUi/types";
 import { renderBatchSkillDamageStatistics } from "./skillStatisticsView";
@@ -18,7 +19,7 @@ const e = (value: string): string => value.replaceAll("&", "&amp;").replaceAll("
 const n = (value: number, decimals = 0): string => value.toLocaleString("zh-CN", { maximumFractionDigits: decimals });
 const pct = (value: number): string => `${(value * 100).toFixed(1)}%`;
 const troopNames = { shield: "盾兵", lancer: "矛兵", marksman: "射手" };
-const troopIcons = { shield: "◈", lancer: "↟", marksman: "⌁" };
+const troopIcons = { shield: troopIcon("shield"), lancer: troopIcon("lancer"), marksman: troopIcon("marksman") };
 
 export function renderModeHeader(mode: EditorMode): string {
   return `<header class="mode-header"><div class="app-brand"><span class="brand-mark" aria-hidden="true">W</span><div><p class="eyebrow">${mode === "advanced" ? "WHITEOUT · ADVANCED" : "WHITEOUT · BATTLE LAB"}</p><h1>无尽冬日 PVP 战斗模拟器</h1><p class="subtitle">基于实际战报验证的非官方战斗模型 · Beta</p></div></div><div class="mode-header-right"><div class="mode-switch" role="group" aria-label="界面模式">${(["simple", "advanced"] as const).map((value) => `<button type="button" data-action="editor-mode" data-mode="${value}" aria-pressed="${mode === value}">${value === "simple" ? "普通模式" : "高级模式"}</button>`).join("")}</div><span class="model-version"><i></i> Model v${DISPLAY_MODEL_VERSION}</span></div></header>`;
@@ -35,6 +36,8 @@ export interface SimpleViewOptions {
   readonly ratioDrafts: Record<SideId, RallyTroopRatios | null>;
   readonly detailsOpen: boolean;
   readonly developer?: boolean;
+  readonly renderConfiguration?: (() => string) | undefined;
+  readonly renderComparisons?: (() => string) | undefined;
   readonly renderAttributes: (side: SideId, value: ValidationSideInput) => string;
   readonly renderBuffs: (side: SideId, value: ValidationSideInput) => string;
   readonly renderMoreBuffs: (side: SideId, value: ValidationSideInput) => string;
@@ -48,7 +51,7 @@ export function renderSimpleMode(options: SimpleViewOptions): string {
   const blocked = options.blocked || invalidRatio;
   return `<div class="simple-intro"><div><span class="simple-kicker">阵容对比，一目了然</span><h2>下一场交锋，谁更胜一筹？</h2><p>选好英雄、填入兵力，用多场模拟看看阵容的表现。</p></div><div class="simple-intro-actions"><span class="scene-pill">${e(battleSceneLabel(input))}</span><button class="btn btn-small" data-action="simple-share" ${invalidRatio ? "disabled" : ""}>↗ 分享阵容</button></div></div>
     <div class="simple-section-heading"><h2><span>01</span> 配置双方阵容</h2><p>A / B 使用相同的战斗规则</p></div>
-    <fieldset class="simple-editor" ${running ? "disabled" : ""}><label class="simple-stage simple-global-stage">服务器阶段<select data-scope="server-stage">${SERVER_STAGES.map((stage) => `<option value="${stage.id}" ${stage.id === validationStageId(input) ? "selected" : ""}>${stage.label} · 最高 S${stage.maxHeroGeneration}</option>`).join("")}</select></label><div class="simple-side-grid">${renderSimpleSide("A", input.sideA, options)}${renderSimpleSide("B", input.sideB, options)}</div></fieldset>
+    <fieldset class="simple-editor" ${running ? "disabled" : ""}><label class="simple-stage simple-global-stage">服务器阶段<select data-scope="server-stage">${SERVER_STAGES.map((stage) => `<option value="${stage.id}" ${stage.id === validationStageId(input) ? "selected" : ""}>${stage.label} · 最高 S${stage.maxHeroGeneration}</option>`).join("")}</select></label>${options.renderConfiguration ? options.renderConfiguration() : `<div class="simple-side-grid">${renderSimpleSide("A", input.sideA, options)}${renderSimpleSide("B", input.sideB, options)}</div>${options.renderComparisons?.() ?? ""}` }</fieldset>
     <section class="simple-run-card" aria-label="模拟设置"><div><h2><span class="step-number">02</span> 开始模拟</h2><p>多场独立战斗，观察胜率与兵力分布。</p></div><div class="simple-run-settings"><label>模拟次数<select data-scope="batch-count" ${running ? "disabled" : ""}>${[...new Set([100, 1000, 10000, count])].sort((a, b) => a - b).map((value) => `<option value="${value}" ${count === value ? "selected" : ""}>${n(value)} 场</option>`).join("")}</select></label><label class="simple-random"><input data-scope="simple-random" type="checkbox" ${input.simulationMode === "random" ? "checked" : ""} ${running ? "disabled" : ""}> 随机模拟</label><button class="btn btn-primary simple-cta" data-action="run-batch" ${running || blocked ? "disabled" : ""}>${running ? `模拟中 ${n(progress)} / ${n(count)}` : "开始模拟"}<span aria-hidden="true"> →</span></button></div>${running ? `<div class="simple-progress" role="status" aria-live="polite"><progress max="${count}" value="${progress}"></progress><span data-simple-progress>已完成 ${n(progress)} / ${n(count)} 场</span></div>` : ""}${blocked ? '<p class="simple-run-error" role="alert">请先检查配兵比例或完成高级配置中的待确认项目。</p>' : ""}</section>
     ${renderSimpleResults(result)}
     <footer class="simple-footer"><span>WHITEOUT BATTLE LAB <b>·</b> 非官方玩家工具</span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
@@ -60,9 +63,10 @@ function renderSimpleSide(side: SideId, value: ValidationSideInput, options: Sim
   const complexScene = input.scenarioType !== undefined && !["SINGLE", "RALLY"].includes(input.scenarioType);
   return `<article class="simple-side side-${side.toLowerCase()}"><div class="simple-side-head"><h3><span>${side}</span> ${side === "A" ? "我方阵容" : "对比阵容"}</h3><span class="side-label">${side === "A" ? "AMBER" : "ICE"}</span></div><div class="simple-side-body">
     ${complexScene ? '<div class="simple-preserved">当前多队阵容已保留。<button class="simple-text-button" data-action="editor-mode" data-mode="advanced">在高级模式编辑队伍 →</button></div>' : `<div class="simple-heroes">${TROOP_TYPES.map((troop) => renderSimpleHero(side, value, troop, input, options.developer)).join("")}</div>`}
-    <div class="simple-troop-heading"><h4>兵力配置</h4>${editable ? `<div class="simple-mini-switch" role="group" aria-label="${side}方兵量输入方式">${(["count", "ratio"] as const).map((mode) => `<button type="button" data-action="simple-troop-mode" data-side="${side}" data-value="${mode}" aria-pressed="${options.troopModes[side] === mode}">${mode === "count" ? "数量" : "比例"}</button>`).join("")}</div>` : ""}</div>
+    ${options.renderComparisons ? "" : `<div class="simple-troop-heading"><h4>兵力配置</h4>${editable ? `<div class="simple-mini-switch" role="group" aria-label="${side}方兵量输入方式">${(["count", "ratio"] as const).map((mode) => `<button type="button" data-action="simple-troop-mode" data-side="${side}" data-value="${mode}" aria-pressed="${options.troopModes[side] === mode}">${mode === "count" ? "数量" : "比例"}</button>`).join("")}</div>` : ""}</div>
     ${editable ? renderSimpleTroops(side, value, options) : `<p class="simple-preserved">沿用高级模式的配兵与容量设置。<button class="simple-text-button" data-action="editor-mode" data-mode="advanced">查看配兵 →</button></p>`}
     ${complexScene ? "" : options.renderFold(`simple-attributes-${side}`, '<span>填写战报属性</span><small>攻击 / 防御 / 穿透 / 生命</small>', () => `<p class="hint">${input.attributeInputMode === "prediction" ? "当前为基础面板预测输入，沿用高级模式的历史阵容和加成设置。" : "填写最终战报百分数，已含英雄、专武与外部增益，不会重复叠加。"}</p>${options.renderAttributes(side, value)}<button class="btn btn-small" data-action="simple-copy-attributes" data-side="${side}">复制到另一方</button>`)}
+    `}
     ${complexScene ? "" : options.renderFold(`simple-buffs-${side}`, '<span>增益与 Buff</span><small>城镇 / 宠物 / 专家 / 专武</small>', () => `<label>属性口径<select data-scope="player-attribute-source"><option value="report" ${input.attributeInputMode !== "prediction" ? "selected" : ""}>最终战报 · 已含增益</option><option value="base" ${input.attributeInputMode === "prediction" ? "selected" : ""}>基础面板 · 另行配置增益</option></select></label><p class="hint">${input.attributeInputMode === "prediction" ? "选择增益后自动用于当前战斗；历史战报的加成可在更多设置中调整。" : "增益可以编辑并保存。最终战报已含属性增益，当前模拟不再叠加；使用基础面板时按这些设置计算。"}</p>${options.renderBuffs(side, value)}${options.renderFold(`simple-more-buffs-${side}`, '<span>更多Buff设置</span><small>英雄专武 / 车身英雄 / 历史加成</small>', () => options.renderMoreBuffs(side, value))}`)}
   </div></article>`;
 }

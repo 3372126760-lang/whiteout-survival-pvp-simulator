@@ -209,6 +209,7 @@ describe("Advanced scenario persistence and final attribute semantics", () => {
     const ui = await mountStartup({ ...createDefaultValidationInput(), scenarioType: "CITY_DEFENSE", battleContext: "cityDefense", attributeInputMode: "prediction" });
     expect(ui.app.innerHTML).toContain("进攻方阵容");
     expect(ui.app.innerHTML).toContain("守城方阵容");
+    ui.click("bodies-edit", { side: "B" });
     expect(ui.app.innerHTML).toContain("守城车身英雄");
     expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "A" }), ui.app.innerHTML)).not.toContain('data-scope="city-territory"');
     expect((ui.click("special-buffs-open"), ui.click("special-buffs-side", { side: "B" }), ui.app.innerHTML)).toContain('data-scope="city-territory"');

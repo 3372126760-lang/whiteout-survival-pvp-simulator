@@ -72,6 +72,7 @@ export interface HeroSkillSystemConfig {
 }
 
 export interface HeroSkillRoundPreparation {
+  readonly damageSkillOrder: (skillId: string) => number | undefined;
   readonly state: BattleState;
   readonly targetingEffectProvider: TargetingEffectProvider;
   readonly additionalDamageGenerator: AdditionalDamageGenerator;
@@ -202,6 +203,10 @@ function prepareHeroSkillRound(
   }
 
   return {
+    damageSkillOrder: (skillId) => {
+      const definition = definitions.get(skillId);
+      return definition ? (definition.positionRule.kind === "expeditionSkillSlot" ? definition.positionRule.expeditionSkillSlot : 4) : undefined;
+    },
     state,
     mainAttackLifecycleProvider: {
       id: "hero-skill-main-attack-lifecycle",

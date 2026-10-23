@@ -1,0 +1,248 @@
+[
+  {
+    "file": "soldier_icon_type_001.png",
+    "source": "玩家攻略_素材需求\\兵种类型图标\\soldier_icon_type_001.png",
+    "sha256": "491f34b22de594f21c2717c040e6233429298573a4d7de5f4dff01caaf39b02e"
+  },
+  {
+    "file": "soldier_icon_type_002.png",
+    "source": "玩家攻略_素材需求\\兵种类型图标\\soldier_icon_type_002.png",
+    "sha256": "f7a27a14fc36875eb7deb6c4b1b8641c836d155d49f6e3f77b8005a7ee5f3fa1"
+  },
+  {
+    "file": "soldier_icon_type_003.png",
+    "source": "玩家攻略_素材需求\\兵种类型图标\\soldier_icon_type_003.png",
+    "sha256": "5c06709c023c5fc616941a297d50e866320badc248856e296de8a82705844629"
+  },
+  {
+    "file": "item_icon_10100.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10100.png",
+    "sha256": "22e6888a310d68ccfe16c4290bb910cfb05139db3e7923e4d87eac693825e294"
+  },
+  {
+    "file": "item_icon_10200.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10200.png",
+    "sha256": "ef202bd7d1707cccee078b093650415623021a311117c508cad3b9df4f47123b"
+  },
+  {
+    "file": "item_icon_10300.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10300.png",
+    "sha256": "2196c71f2d20c870526b889f2f4202ad47810cefe048956155105ca4f7cd7b04"
+  },
+  {
+    "file": "item_icon_10400.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10400.png",
+    "sha256": "10e0a113d117a09e053b964c689fd4734ca9ee21d72267ad895863874da36fc3"
+  },
+  {
+    "file": "item_icon_10500.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10500.png",
+    "sha256": "26114306fd24fd7911f55adf921eaad4d84d4d407513064fc10e5ece0ac3c9ac"
+  },
+  {
+    "file": "item_icon_10600.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10600.png",
+    "sha256": "f050b382b55b89f1a36390e8de37a93ed416d74d13e0b649a4b8da7a8f39f6af"
+  },
+  {
+    "file": "item_icon_10700.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10700.png",
+    "sha256": "dc543a197bc3c2f5d48cfb1abab97044fa11ecfacc0c0fac2b6bf6035cdf9e3e"
+  },
+  {
+    "file": "item_icon_10800.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10800.png",
+    "sha256": "cd677e7b873c4bc3957d3638e760122691038ebd5aa86fbf25d5df0a8283c557"
+  },
+  {
+    "file": "item_icon_10900.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_10900.png",
+    "sha256": "dd9cb97b1a615bd4ff744abf834f9880504f70152d98f43d50c9f5cfb057badf"
+  },
+  {
+    "file": "item_icon_11000.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_11000.png",
+    "sha256": "51d8519b0bbd53b94baf7bca5b12ef442cea3fee078b5f2dfbd760d1d21cfa96"
+  },
+  {
+    "file": "item_icon_11100.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_11100.png",
+    "sha256": "a13183140b52e24165a68f418efdb5dee61e874af5b1a833e9dc40a925e8fdf7"
+  },
+  {
+    "file": "item_icon_20100.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20100.png",
+    "sha256": "d10d3d2b8e3c5d3f89ab2d447a6c1022f46b1ab29253a69fcd375271d9390a75"
+  },
+  {
+    "file": "item_icon_20200.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20200.png",
+    "sha256": "c789839ba4eb8de306734d2c63a444dc0a2635e5fb4d7456028c4cb1085e37d9"
+  },
+  {
+    "file": "item_icon_20300.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20300.png",
+    "sha256": "176fb8d5dd9f9e0c906cfd781e8128a5f9bc51ba6f77f5e3570bf3e9d2527107"
+  },
+  {
+    "file": "item_icon_20400.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20400.png",
+    "sha256": "bbda857e9b3d3a9a3e4bbea8ecd472eb8dfda34d13fa32a253e7ee9243722547"
+  },
+  {
+    "file": "item_icon_20500.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20500.png",
+    "sha256": "20d8341436dd432611da0962bdde3ad4ee6615b8440ddab7271f922ca1af944a"
+  },
+  {
+    "file": "item_icon_20600.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20600.png",
+    "sha256": "7c92ed01797ff4fa59db126187c3d64f13f3a4462049b316742e5f0a46b33cc9"
+  },
+  {
+    "file": "item_icon_20700.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20700.png",
+    "sha256": "cf01af61f75abf29103d54dbc0203515890b86e0c620c77d3763383537e0dd31"
+  },
+  {
+    "file": "item_icon_20800.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20800.png",
+    "sha256": "303e093d9cdb8d3d75035c2050d0ec0044d80ca7e28094fb0702b94778b2fad0"
+  },
+  {
+    "file": "item_icon_20900.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_20900.png",
+    "sha256": "972018151dd5ef571b4c38fcf3ad3bd1f1084770cdd8481394887a69eefbf106"
+  },
+  {
+    "file": "item_icon_21000.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_21000.png",
+    "sha256": "a5f887ceba509255a42f283da73fb2f1fc04dee8f04267dfc0b718da3bd13a21"
+  },
+  {
+    "file": "item_icon_21100.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_21100.png",
+    "sha256": "d6cf088d3f21dddf86633769f42bb57308913a92a9e4d03d7efc2d96dbb614c5"
+  },
+  {
+    "file": "item_icon_30100.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30100.png",
+    "sha256": "b2d5fb806038c865f8ba2ada6a532a72e8cc63dd3c76dd34d479dd74a32039f4"
+  },
+  {
+    "file": "item_icon_30200.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30200.png",
+    "sha256": "503fb4cd25aca6d7307c01e0b92e75039dc8ee3c51dfb7443591c780908350d7"
+  },
+  {
+    "file": "item_icon_30300.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30300.png",
+    "sha256": "00b06db4bf04ef84ea6aa59e4a2a7e21cd4a466f2f60057ca5eaabde386c9bbf"
+  },
+  {
+    "file": "item_icon_30400.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30400.png",
+    "sha256": "3247400198c037d651ed1d4929b0608ebc4f4a02c00f01d8935da723196486d1"
+  },
+  {
+    "file": "item_icon_30500.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30500.png",
+    "sha256": "883c49eff0483569ef7d3914fc6a6a26ded31b7c783cf1e2cdf74b1c87c185c0"
+  },
+  {
+    "file": "item_icon_30600.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30600.png",
+    "sha256": "4edbd31f543cb76996b3a8666396c61a683b0252195df3e657d047656709410d"
+  },
+  {
+    "file": "item_icon_30700.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30700.png",
+    "sha256": "2913f4790b1e45c02a5b12131abf4dc42cab47972376159689983c6d0e4172f7"
+  },
+  {
+    "file": "item_icon_30800.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30800.png",
+    "sha256": "be1fbcfcd06313d3da7a861c038ce759cca0de7344330cbe159a17161f66509f"
+  },
+  {
+    "file": "item_icon_30900.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_30900.png",
+    "sha256": "9679f0baf5c554a1718d2dadfbc45f297a3bdc8f50a4d6235e394df47aee7dfd"
+  },
+  {
+    "file": "item_icon_31000.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_31000.png",
+    "sha256": "fcc30bc86d52a7e26f9b73a52cfb737564cb47a79c96a02f4d35d64b718344c3"
+  },
+  {
+    "file": "item_icon_31100.png",
+    "source": "玩家攻略_素材需求\\士兵头像\\item_icon_31100.png",
+    "sha256": "2a33e7f0527c637ad0c24993e4015f0ed8289a16c5aca93946fb9439299230ae"
+  },
+  {
+    "file": "fc-1.png",
+    "source": "玩家攻略_素材需求\\火晶等级\\1.png",
+    "sha256": "dcb39855c7e2989aeec1a11faad9157827b03644bca72cc0568ef3a84f264e3d"
+  },
+  {
+    "file": "fc-3.png",
+    "source": "玩家攻略_素材需求\\火晶等级\\3.png",
+    "sha256": "ba64e75b172e227b10ba6ddd1e356bcf61622396c8be74ccc6aba88dd183ed39"
+  },
+  {
+    "file": "fc-4.png",
+    "source": "玩家攻略_素材需求\\火晶等级\\4.png",
+    "sha256": "b15497dc7988e150bfccdf1a2edc5c5819cfbaeb0e38e9cce6077d2307012d05"
+  },
+  {
+    "file": "fc-5.png",
+    "source": "玩家攻略_素材需求\\火晶等级\\5.png",
+    "sha256": "b6b49eab9ce9e5f4b3e41201f771740a4176aca7d52bc8ff85c2089bc215bb98"
+  },
+  {
+    "file": "fc-6.png",
+    "source": "玩家攻略_素材需求\\火晶等级\\6.png",
+    "sha256": "989e5dd286f663c441a8834ba48212a66df2460c06f5f85802f755ca615e89c3"
+  },
+  {
+    "file": "fc-7.png",
+    "source": "玩家攻略_素材需求\\火晶等级\\7.png",
+    "sha256": "7762cdc53fd85d8d2f47c11c5035ec0f74ed706e8b8a26827dd09150edd024f8"
+  },
+  {
+    "file": "t12-shield-tech.png",
+    "source": "science_icon_10006.png",
+    "reference": "https://wos.h5joy-games.com/fire-crystal-tech/exalted-infantry/",
+    "sha256": "d1b0c598df367c00f0c63da62109fa2673cb5982a13f0c46e2558d849f524152"
+  },
+  {
+    "file": "t12-shield-skill.png",
+    "source": "science_icon_10011.png",
+    "reference": "https://wos.h5joy-games.com/fire-crystal-tech/exalted-infantry/",
+    "sha256": "8b63a6753755a14cccbe093415967c6526a6f15caf8fa082b4ddbc8ffc692454"
+  },
+  {
+    "file": "t12-lancer-tech.png",
+    "source": "science_icon_11006.png",
+    "reference": "https://wos.h5joy-games.com/fire-crystal-tech/exalted-lancer/",
+    "sha256": "5a837d89dd0bad849e6b6134f1834ccaf7ddde26a3cd9344985184243bd02b5a"
+  },
+  {
+    "file": "t12-lancer-skill.png",
+    "source": "science_icon_11011.png",
+    "reference": "https://wos.h5joy-games.com/fire-crystal-tech/exalted-lancer/",
+    "sha256": "ffb8c1a7e8b64dcbd77cf879a5bbb8e50f7bcbb5721dbde9b673176c18cae9e8"
+  },
+  {
+    "file": "t12-marksman-tech.png",
+    "source": "science_icon_12006.png",
+    "reference": "https://wos.h5joy-games.com/fire-crystal-tech/exalted-marksman/",
+    "sha256": "529c6f72810c9dd6684bca665791c0c1b623642aa23a5fa7af2b55135bc72010"
+  },
+  {
+    "file": "t12-marksman-skill.png",
+    "source": "science_icon_12011.png",
+    "reference": "https://wos.h5joy-games.com/fire-crystal-tech/exalted-marksman/",
+    "sha256": "0e194c3ba7ea6cee60d2f2c50286d6a729c8fb48b52b3c2e555e7b166ca36bd9"
+  }
+]

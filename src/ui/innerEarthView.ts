@@ -1,3 +1,4 @@
+import { troopPortrait, troopFrame } from "./gameArtwork";
 import { renderHeroPortrait } from "./heroArtwork";
 import { TROOP_TYPES, type TroopType } from "../pvp/types";
 import { getValidationCatalog, validationStageId, type ValidationBattleInput,
@@ -92,7 +93,7 @@ export function renderInnerEarthForm(input: ValidationBattleInput, presentation:
     ? '<label>敌方容量<output>150000（固定）</output></label>' : field("敌方出征容量", config.enemy.shared.capacity, { field: "enemy-capacity" });
   const allyCapacity = config.subMode === "HERO_LAND" ? '<label>我方每队容量<output>190410（固定）</output></label>' :
     queued ? field("我方每队共用出征容量", config.ally.shared.capacity, { field: "ally-capacity" }) : "";
-  const tiers = config.subMode === "HEART_OF_EARTH" || config.subMode === "UNDERGROUND_LAB" ? `<h3>我方兵种等级</h3><div class="inline-fields">${TROOP_TYPES.map((troop) => {
+  const tiers = config.subMode === "HEART_OF_EARTH" || config.subMode === "UNDERGROUND_LAB" ? `<h3>我方兵种等级</h3><div class="report-army">${TROOP_TYPES.map(t => `<div class="report-soldier"><div class="report-soldier-image" data-frame="${troopFrame(config.ally.troopTiers[t])}">${troopPortrait(t, config.ally.troopTiers[t])}</div><p>${names[t]} · ${config.ally.troopTiers[t]}</p></div>`).join("")}</div><div class="inline-fields">${TROOP_TYPES.map((troop) => {
     const options = config.subMode === "UNDERGROUND_LAB" ? ["T10", "LAB_T11", "LAB_T12"] :
       SUPPORTED_TROOP_LEVELS.filter((level) => isTroopLevelAvailableAtStage(level, validationStageId(input)));
     return `<label>我方${names[troop]}兵种等级<select data-scope="inner-earth" data-field="tier" data-side="ally" data-troop="${troop}">${options.map((tier) =>

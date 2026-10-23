@@ -157,6 +157,7 @@ function resolveRoundInternal(
   const snapshot = createRoundStartSnapshot(roundState);
   const action = runActionPhase(roundState, snapshot, {
     ...options,
+    damageSkillOrder: heroRound?.damageSkillOrder ?? options.damageSkillOrder,
     additionalDamageGenerators: [
       ...(options.additionalDamageGenerators ?? []),
       ...(skillRound === undefined ? [] : [skillRound.additionalDamageGenerator]),

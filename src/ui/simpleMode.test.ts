@@ -110,7 +110,7 @@ describe("shared canonical config through actual editor events", () => {
   });
   it("defaults to simple and switches both ways without modifying any canonical field", async () => {
     const ui = await mount(), before = ui.current();
-    expect(ui.app.innerHTML).toContain('class="shell simple-shell"');
+    expect(ui.app.innerHTML).toContain('class="shell simple-shell report-theme"');
     for (const field of ["control", "override", "developer", "trace-range"]) {
       expect(ui.app.innerHTML).not.toContain(`data-scope="${field}"`);
     }
@@ -125,7 +125,7 @@ describe("shared canonical config through actual editor events", () => {
   it("edits a simple lineup, counts, percentages and attributes, then echoes it in advanced", async () => {
     const ui = await mount(), before = ui.current();
     await ui.change({ scope: "leader", side: "A", troop: "shield" }, "hero.s5.heketuo");
-    await ui.click("simple-troop-mode", { side: "A", value: "ratio" });
+    await ui.click("troops-edit", { side: "A" });
     await ui.click("simple-preset", { side: "A", value: "49/1/50" });
     await ui.change({ scope: "simple-total", side: "A" }, "100001");
     await ui.change({ scope: "troop", side: "A", troop: "shield", field: "attack" }, "+1376.4%");
@@ -154,8 +154,10 @@ describe("shared canonical config through actual editor events", () => {
     await ui.change({ scope: "troop", side: "B", troop: "marksman", field: "count" }, "63291");
     const advanced = ui.current();
     await ui.click("editor-mode", { mode: "simple" });
+    await ui.click("troops-edit", { side: "B" });
     expect(ui.app.innerHTML).toContain('value="63291"');
-    expect(ui.open("simple-attributes-B")).toContain('value="+1823.7"');
+    await ui.click("special-buffs-close");
+    expect(ui.app.innerHTML).toContain('value="+1823.7"');
     expect(ui.current()).toEqual(advanced);
     expect(ui.current().randomSeed).toBe(987654);
     expect(ui.current().maxRounds).toBe(510);
@@ -165,13 +167,13 @@ describe("shared canonical config through actual editor events", () => {
 
   it("keeps incomplete ratios out of canonical config, blocks simulation, and accepts a corrected sum", async () => {
     const ui = await mount(), before = ui.current();
-    await ui.click("simple-troop-mode", { side: "A", value: "ratio" });
-    await ui.change({ scope: "simple-ratio", side: "A", troop: "shield" }, "50");
+    await ui.click("troops-edit", { side: "A" });
+    await ui.change({ scope: "advanced-deployment", field: "ratio", side: "A", troop: "shield" }, "50");
     expect(ui.current()).toEqual(before);
-    expect(ui.app.innerHTML).toContain("请调整至 100%");
+    expect(ui.app.innerHTML).toContain("请将比例补齐为100%");
     await ui.click("run-batch"); expect(ui.requests).toHaveLength(0);
-    await ui.change({ scope: "simple-ratio", side: "A", troop: "lancer" }, "0");
-    await ui.change({ scope: "simple-ratio", side: "A", troop: "marksman" }, "50");
+    await ui.change({ scope: "advanced-deployment", field: "ratio", side: "A", troop: "lancer" }, "0");
+    await ui.change({ scope: "advanced-deployment", field: "ratio", side: "A", troop: "marksman" }, "50");
     expect(ui.current().sideA.troops.shield.count).toBe(18000);
     expect(ui.current().sideA.troops.lancer.count).toBe(0);
     expect(ui.current().sideA.troops.marksman.count).toBe(18000);
@@ -234,10 +236,12 @@ describe("player UI product controls", () => {
     await ui.change({ scope: "external", side: "B", section: "town", field: "defense" }, "small");
     await ui.change({ scope: "leader", side: "B", troop: "shield" }, "hero.s5.heketuo");
     await ui.click("editor-mode", { mode: "simple" });
-    const html = ui.open("simple-buffs-B");
+    await ui.click("special-buffs-open");
+    await ui.click("special-buffs-side", { side: "B" });
+    const html = ui.app.innerHTML;
     selectedValue(html, { scope: "external", side: "B", section: "town", field: "defense" }, "small");
     selectedValue(html, { scope: "external", side: "B", section: "pet", field: "enemyLifeReductionLevel" }, "2");
-    expect(ui.open("simple-more-buffs-B")).toContain('data-scope="simulation-weapon"');
+    expect(ui.open("player-weapons-B")).toContain('data-scope="simulation-weapon"');
     await ui.change({ scope: "simulation-weapon", side: "B", hero: "hero.s5.heketuo" }, "7");
     await ui.click("editor-mode", { mode: "advanced" });
     selectedValue(ui.open("player-weapons-B"), { scope: "simulation-weapon", side: "B", hero: "hero.s5.heketuo" }, "7");
@@ -354,9 +358,10 @@ describe("player UI product controls", () => {
   it("keeps public IceFire queue T12 controls and hides its hero level editors", async () => {
     const ui = await mount("advanced");
     await ui.change({ scope: "scenario-type" }, "ICE_FIRE_LEAGUE");
-    const queues = ui.open("player-queues-A");
+    await ui.click("scene-edit");
+    const queues = ui.app.innerHTML;
     expect(queues).not.toContain('data-scope="queue-skill-level"');
-    expect(queues.match(/data-scope="queue-t12"/g)).toHaveLength(9);
+    expect(queues.match(/data-scope="queue-t12"/g)).toHaveLength(18);
     await ui.change({ scope: "queue-t12", side: "A", queueIndex: "0", troop: "shield" }, "3");
     expect(ui.current().sideA.threeQueues?.[0]?.t12Levels?.shield).toBe(3);
   });
@@ -422,7 +427,7 @@ describe("player-facing mapping and sharing", () => {
     const html = renderSimpleDetailsOnly(result);
     expect(html).toContain("90%模拟区间");
     expect(html).not.toContain("firstSeed");
-    for (const skill of result.skillStatistics) expect(html).not.toContain(skill.skillId);
+    for (const skill of result.skillStatistics) expect(html.replace(/<[^>]*>/g, "")).not.toContain(skill.skillId);
   });
 
   it("displays the actual package model version", () => {

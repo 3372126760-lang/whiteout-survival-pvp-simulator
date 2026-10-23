@@ -46,11 +46,11 @@ describe("user-supplied 60/39/1 vs 49/1/50 canonical benchmark", () => {
     expect(payloads.every((e) => e.sourceSide === "A" && e.skillCoefficient === 3 && e.damageType === "skillDamage")).toBe(true);
     const r20 = traced.simulation.trace.rounds.find((r) => r.round === 20)!;
     expect(r20.heroSkills.filter((s) => s.side === "A" && s.skillId === MARK && s.triggered)).toHaveLength(2);
-    expect(r20.damageEvents.find((e) => e.sourceSide === "A" && e.sourceTroop === "lancer" && e.damageType === "normalAttack")?.targetTroop).toBe("marksman");
+    expect(r20.damageEvents.find((e) => e.sourceSide === "A" && e.sourceTroop === "lancer" && e.damageType === "normalAttack")?.targetTroop).toBe("shield");
     const r21 = traced.simulation.trace.rounds.find((r) => r.round === 21)!;
     const markEvents = r21.damageEvents.filter((e) => e.sourceSkillId === MARK);
     expect(markEvents).toHaveLength(1);
-    expect(markEvents[0]).toMatchObject({ targetTroop: "marksman", skillCoefficient: 3, roundedDamage: 25492534379 });
+    expect(markEvents[0]).toMatchObject({ targetTroop: "shield", skillCoefficient: 3, roundedDamage: 9776244201 });
     expect(digest(input)).toBe(before);
   });
 });

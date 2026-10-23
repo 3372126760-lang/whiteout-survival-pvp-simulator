@@ -98,10 +98,10 @@ describe("S12–S16 provisional PVP rules", () => {
       { shield: 100 }), { maxRounds: 3, heroSkillSystem: system() });
     const second = result.trace.rounds[1]!;
     const pooled = second.damageEvents.filter((event) => event.damageSubtype === "extraDamage");
-    expect(pooled).toHaveLength(1);
-    expect(pooled[0]).toMatchObject({ damageBasis: "parentBaseDamage", skillCoefficient: 2,
+    expect(pooled).toHaveLength(2);
+    expect(pooled[0]).toMatchObject({ damageBasis: "parentBaseDamage", skillCoefficient: 1,
       targetTroop: "shield" });
-    expect(pooled[0]!.skillPoolComponents).toHaveLength(2);
+    expect(pooled.every(e=>e.skillPoolComponents === undefined)).toBe(true);
     const third = result.trace.rounds[2]!;
     expect(main(third, "A", "marksman").increaseGroups.find((group) =>
       group.group === "vulnerability")?.summedValue).toBeCloseTo(.25);

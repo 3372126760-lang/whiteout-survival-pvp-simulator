@@ -121,6 +121,7 @@ export interface DamageEventEffectProvider {
 }
 
 export interface ActionPhaseOptions {
+  readonly damageSkillOrder?: ((skillId: string) => number | undefined) | undefined;
   /** Internal performance mode; full remains the default for audit runs. */
   readonly recordBattleLog?: boolean;
   readonly actionOrder?: readonly ActionSlot[];
@@ -349,46 +350,13 @@ export function runActionPhase(
       });
       additionalDrafts.push(...drafts);
     }
-    const poolKey = (draft: DamageEventInput): string | null =>
-      draft.damageType === "skillDamage" && draft.damageSubtype === "extraDamage" &&
-      draft.damageBasis === "parentBaseDamage" && draft.parentEventId === primary.id
-        ? `${draft.sourceSide}:${draft.sourceTroop}:${draft.targetSide}:${draft.targetTroop}:${draft.actionOrder}`
-        : null;
-    const pools = new Map<string, DamageEventInput[]>();
+    // Independent skills run their own modifiers, rounding and casualty settlement.
+    // Stable ordering keeps hero expedition slots before troop skills.
+    additionalDrafts.sort((a, b) =>
+      (options.damageSkillOrder?.(a.sourceSkillId ?? "") ?? 5) -
+      (options.damageSkillOrder?.(b.sourceSkillId ?? "") ?? 5));
     for (const draft of additionalDrafts) {
-      const key = poolKey(draft);
-      if (key !== null) pools.set(key, [...(pools.get(key) ?? []), draft]);
-    }
-    const emittedPools = new Set<string>();
-    for (const draft of additionalDrafts) {
-      const key = poolKey(draft);
-      if (key !== null && emittedPools.has(key)) continue;
-      if (key !== null) emittedPools.add(key);
-      const members = key === null ? [draft] : pools.get(key)!;
-      const pooledDraft: DamageEventInput = members.length === 1 ? draft : {
-        ...draft,
-        baseDamage: members.reduce((sum, member) => sum + member.baseDamage, 0),
-        skillCoefficient: members.reduce((sum, member) =>
-          sum + (member.skillCoefficient ??
-            (primary.baseDamage === 0 ? 0 : member.baseDamage / primary.baseDamage)), 0),
-        skillPoolComponents: members.map((member) => ({
-          id: member.id,
-          sourceSkillId: member.sourceSkillId ?? "unknown",
-          coefficient: member.skillCoefficient ??
-            (primary.baseDamage === 0 ? 0 : member.baseDamage / primary.baseDamage),
-          baseDamage: member.baseDamage,
-        })),
-      };
-      const event = createEventWithProviders(pooledDraft, snapshot, action, options);
-      if (draft.sameMainAttackSegment === true) {
-          const primaryIndex = generatedEvents.findIndex((candidate) => candidate.id === primary.id);
-          if (primaryIndex < 0 || event.sourceSkillId === undefined) {
-            throw new Error("Same-main-attack segment requires its primary event and skill source.");
-          }
-          generatedEvents[primaryIndex] = mergeMainAttackSegment(generatedEvents[primaryIndex]!, event);
-      } else {
-        addUniqueEvent(event, ids, generatedEvents);
-      }
+      addUniqueEvent(createEventWithProviders(draft, snapshot, action, options), ids, generatedEvents);
     }
   });
 
@@ -419,31 +387,6 @@ export function runActionPhase(
         })),
       ],
     },
-  };
-}
-
-function mergeMainAttackSegment(primary: DamageEvent, segment: DamageEvent): DamageEvent {
-  if (primary.rootEventId !== segment.rootEventId || primary.targetTroop !== segment.targetTroop) {
-    throw new Error("Same-main-attack segment must inherit root and target.");
-  }
-  const roundedDamage = primary.roundedDamage + segment.roundedDamage;
-  return {
-    ...primary,
-    baseDamage: primary.baseDamage + segment.baseDamage,
-    rawDamage: primary.rawDamage + segment.rawDamage,
-    modifiedDamage: primary.modifiedDamage + segment.modifiedDamage,
-    roundedDamage,
-    finalDamage: roundedDamage,
-    internalSegments: [
-      ...(primary.internalSegments ?? []),
-      {
-        sourceSkillId: segment.sourceSkillId!,
-        basis: segment.baseDamage,
-        rawDamage: segment.rawDamage,
-        modifiedDamage: segment.modifiedDamage,
-        roundedDamage: segment.roundedDamage,
-      },
-    ],
   };
 }
 

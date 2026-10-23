@@ -96,15 +96,10 @@ describe("latest PVP mathematical baseline", () => {
       }),
     });
     const round3 = simulation.trace.rounds[2]!;
-    const pooled = round3.damageEvents.find((event) =>
-      event.sourceSide === "A" && event.sourceTroop === "lancer" &&
-      event.skillPoolComponents?.length === 2);
-    expect(pooled?.skillCoefficient).toBeCloseTo(3);
-    expect(pooled?.skillPoolComponents?.map((part) => part.sourceSkillId)).toEqual(
-      expect.arrayContaining(["lancer-crystal-spear", "hero-skill.ruini.dream-mark"]));
-    expect(round3.damageEvents.filter((event) =>
-      event.sourceSide === "A" && event.sourceTroop === "lancer" &&
-      event.damageType === "skillDamage" && event.targetTroop === "shield")).toHaveLength(1);
+    const skills = round3.damageEvents.filter(e=>e.sourceSide === "A" && e.sourceTroop === "lancer" && e.damageType === "skillDamage");
+    expect(skills.map(e=>e.sourceSkillId)).toEqual(["hero-skill.ruini.dream-mark","lancer-crystal-spear"]);
+    expect(skills.map(e=>e.skillCoefficient)).toEqual([2,.1e1]);
+    expect(skills.every(e=>e.skillPoolComponents === undefined)).toBe(true);
   });
 
   it("uses final report attributes and counts without repeating external sources", () => {
