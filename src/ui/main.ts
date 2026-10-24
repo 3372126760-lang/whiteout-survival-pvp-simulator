@@ -39,7 +39,8 @@ import { renderAdvancedLineupActions, renderAdvancedScene, renderAdvancedRun, re
 import { EDITOR_MODE_KEY, copySimpleAttributes, setSimpleCounts,
   setSimpleRatios, simpleTroopRatios, simpleTroopTotal, validSimpleRatios, type EditorMode } from "./simpleMode";
 import { renderModeHeader, renderModelNotice, renderSimpleMode, renderSimpleDetailsOnly, renderSimpleHero } from "./simpleModeView";
-import { encodeSimpleShare, decodeSimpleShare } from "./simpleShare";
+import { decodeSimpleShare } from "./simpleShare";
+import { shareOrDownloadConfig } from "./configFileSharing";
 import { createPlayerDefaultInput, normalizePlayerHeroLevels } from "./playerConfig";
 import type { RallyTroopRatios } from "../pvp/validationUi/rallyDeployment";
 import { perfMark, perfMeasure, timeUiSection, recordOcrBackend } from "./startupPerformance";
@@ -754,11 +755,23 @@ app.addEventListener("click", (event) => {
     if (raw) { raw.open = true; lazyDetails.toggle(raw); raw.scrollIntoView({ block: "start" }); }
     return;
   }
-  if (action === "simple-share") {
+  if (action === "simple-share" || action === "export-config") {
     try {
-      const url = new URL(location.href); url.search = "";
-      url.hash = new URLSearchParams({ s: encodeSimpleShare(input, batchCount) }).toString();
-      void copyText(url.href, "分享链接已复制");
+      const json = exportPersistedJson(input, batchCount, optimizationConfig,
+        simpleOptimizerOptions, threeQueueOptimizerOptions);
+      const name = `${getServerStage(validationStageId(input)).label}-${input.scenarioType ?? "SINGLE"}`;
+      const download = () => downloadConfig(json, name);
+      if (action === "export-config") {
+        download();
+      } else {
+        const file = new File([json], `wos-pvp-${filenamePart(name)}-${new Date().toISOString().slice(0, 10)}.json`, { type: "application/json" });
+        void shareOrDownloadConfig(file, navigator, download).then(status => {
+          if (status === "downloaded") {
+            appDialog = { title: "配置文件已导出", message: "当前浏览器不支持直接分享文件，已改为下载 JSON 配置。可以把文件发给对方，对方通过“导入配置”选择文件即可；无需复制长链接。若内置浏览器未显示下载，请在系统浏览器中打开本站后导出。", confirmLabel: "知道了", onConfirm: () => {} };
+            render();
+          }
+        }).catch(error => { errorMessage = error instanceof Error ? error.message : String(error); render(); });
+      }
     } catch (error) { errorMessage = error instanceof Error ? error.message : String(error); render(); }
     return;
   }
@@ -948,7 +961,7 @@ app.addEventListener("click", (event) => {
     return;
   }
   if (["save-profile", "load-profile", "rename-profile", "copy-profile",
-    "delete-profile", "export-profile", "export-config"].includes(action)) {
+    "delete-profile", "export-profile"].includes(action)) {
     try {
       const storage = requireConfigStorage();
       if (action === "save-profile") {
@@ -986,11 +999,6 @@ app.addEventListener("click", (event) => {
       if (action === "export-profile" && actionTarget !== null) {
         const profile = profileByAction(actionTarget);
         downloadConfig(JSON.stringify(profileEnvelope(profile), null, 2), profile.name);
-      }
-      if (action === "export-config") {
-        downloadConfig(exportPersistedJson(input, batchCount, optimizationConfig,
-          simpleOptimizerOptions, threeQueueOptimizerOptions),
-          `${getServerStage(validationStageId(input)).label}-${input.scenarioType ?? "SINGLE"}`);
       }
       refreshSavedProfiles();
       errorMessage = null;

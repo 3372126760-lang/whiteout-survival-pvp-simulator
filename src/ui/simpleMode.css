@@ -23,6 +23,8 @@
 .simple-intro h2 { font-size: 25px; margin: 9px 0 8px; font-weight: 650; letter-spacing: .02em; }
 .simple-intro p { margin: 0; color: #8398a8; font-size: 12px; }
 .simple-intro-actions { display: flex; align-items: center; gap: 12px; }
+.simple-intro-actions { flex-wrap: wrap; min-width: 0; }
+.simple-file-actions { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .simple-intro-actions .btn { background: #14232f; border-color: transparent; font-size: 12px; font-weight: 500; padding: 8px 13px; }
 .scene-pill { background: #152936; color: #a8c5d4; padding: 7px 12px; border-radius: 20px; font-size: 11px; }
 .simple-section-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
