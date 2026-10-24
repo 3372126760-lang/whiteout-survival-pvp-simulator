@@ -127,7 +127,7 @@ import { renderInnerEarthForm, renderInnerEarthModePicker, renderInnerEarthPets,
   changeInnerEarthMode, updateInnerEarthDeployment, INNER_EARTH_MODE_LABELS } from "./innerEarthView";
 import { createReportRecognitionState, mergeRecognitionImage, clearRecognitionContext,
   pendingRecognitionSides as pendingDraftSides } from "./reportImportDrafts";
-import { applyRecognizedAttributeReport, attributeImportSchema, attributePreviewGroups, confirmAttributeGroup } from "../pvp/battleReportRecognition/attributeImport";
+import { applyRecognizedAttributes, applyRecognizedAttributeReport, attributeImportSchema, attributePreviewGroups, confirmAttributeGroup } from "../pvp/battleReportRecognition/attributeImport";
 import { optimizerRoute } from "./optimizerRoute";
 import { renderAppDialog, type AppDialog } from "./appDialog";
 import {
@@ -187,6 +187,7 @@ let finalReportDraft: ParsedBattleReport | null = null;
 let finalReportApplied = false;
 let finalReportLeftTarget: SideId = "A";
 let reportImportBusy = false;
+let reportOcrProgress = "";
 let result: ValidationBattleResult | null = null;
 let threeQueueResult: ThreeQueueScenarioResult | null = null;
 let batchCount = DEFAULT_BATCH_SIMULATION_COUNT;
@@ -829,7 +830,9 @@ app.addEventListener("click", (event) => {
       const context = recognitionState[side];
       const parsed = draft[context.selectedSourceSide];
       if (parsed === undefined) throw new Error("未识别到所选侧，请切换读取侧。");
-      input = applyRecognizedAttributeReport(input, draft, context.selectedSourceSide, side, context.specialBonusCompleteness, reportQueueTargets[side]);
+      input = !import.meta.env.DEV && input.attributeInputMode !== "prediction"
+        ? applyRecognizedAttributes(input, parsed, side, reportQueueTargets[side])
+        : applyRecognizedAttributeReport(input, draft, context.selectedSourceSide, side, context.specialBonusCompleteness, reportQueueTargets[side]);
       reportApplied[side] = true;
       revisionState = markValidationInputChanged(revisionState);
       errorMessage = null;
@@ -1412,7 +1415,7 @@ function renderApp(): void {
       ${errorMessage === null ? "" : `<div class="error-box" role="alert">${escapeHtml(errorMessage)}</div>`}
       ${renderAdvancedLineupActions(lineupActionsOpen, input.scenarioType === "INNER_EARTH")}
       ${input.scenarioType === "INNER_EARTH" ? renderScenarioReport() : renderReportConfiguration()}
-      ${import.meta.env.DEV ? lazyDetails.render("player-report-import", "战报 / 属性导入", renderReportImporter, 'class="advanced-fold advanced-more-settings"') : ""}
+      ${lazyDetails.render("player-report-import", "战报 / 属性导入", renderReportImporter, 'class="advanced-fold advanced-more-settings"')}
       ${lazyDetails.render("player-profile-management", "阵容与预设管理", () => `${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}${renderPlayerProfiles()}`, 'class="advanced-fold advanced-more-settings"')}
       ${renderAdvancedRun(input, batchCount, batchRunning, batchProgress, playerRunBlocked())}
       ${optimizerPanelOpen ? renderPlayerOptimizer() : ""}
@@ -1707,10 +1710,10 @@ function renderStoragePanel(): string {
 }
 
 function renderReportImporter(): string {
-  if (!import.meta.env.DEV) return "";
-  return `<section class="panel report-import"><header class="panel-head"><h2>本地战报识图</h2>
+  return `<section class="panel report-import"><header class="panel-head"><h2>${import.meta.env.DEV ? "本地战报识图" : "战报图片识别"}</h2>
     <span class="tag tag-cyan">属性与特殊加成校对</span></header><div class="panel-body">
-    <p class="hint">整图本地中文 OCR，识别攻击、防御、穿透、生命及特殊加成；不识别兵种等级、火晶或兵种图标。兵量与等级由手填或玩法规则确定。按当前玩法归并为 1 / 2 / 4 / 6 / 9 / 12 项；装备锻炉我方9项中攻击、防御独立，穿透/生命按兵种配对。冲突及低置信度值须逐项确认。应用前仅保存在预览中。确认属性与特殊加成后按历史战报公式反推，并一次性应用；正式配置在确认前保持隔离。${reportImportBusy ? "识别中…" : ""}</p>
+    <p class="hint">${import.meta.env.DEV ? "整图本地中文 OCR，识别攻击、防御、穿透、生命及特殊加成；不识别兵种等级、火晶或兵种图标。兵量与等级由手填或玩法规则确定。按当前玩法归并为 1 / 2 / 4 / 6 / 9 / 12 项；装备锻炉我方9项中攻击、防御独立，穿透/生命按兵种配对。冲突及低置信度值须逐项确认。应用前仅保存在预览中。确认属性与特殊加成后按历史战报公式反推，并一次性应用；正式配置在确认前保持隔离。" : "图片仅在当前设备识别，不会上传到服务器。首次需下载约 9 MB 的识别资源，后续会缓存；手机可能较慢，请保持页面在前台。支持属性和特殊加成截图，兵力、兵种等级请手动填写。识别可能漏字或误读，请逐项校对；确认应用前不会更改阵容。"}</p>
+    <p class="hint report-ocr-progress" role="status" aria-live="polite">${escapeHtml(reportOcrProgress || (reportImportBusy ? "识别中…" : ""))}</p>
     <div class="report-sides">${(["A", "B"] as const).map(renderPredictionImportSide).join("")}</div></div></section>`;
 }
 
@@ -1766,6 +1769,7 @@ function updateOwnedWeapon(target: HTMLSelectElement): void {
 }
 
 function renderPredictionImportSide(side: SideId): string {
+  const finalOnly = !import.meta.env.DEV && input.attributeInputMode !== "prediction";
   const context = recognitionState[side], report = context.reportContext, source = context.selectedSourceSide;
   const schema = attributeImportSchema(input, side), groups = attributePreviewGroups(report?.[source], schema);
   const innerThree = input.scenarioType === "INNER_EARTH" && ["HEART_OF_EARTH", "HERO_LAND"].includes(getInnerEarthConfig(input).subMode);
@@ -1775,18 +1779,18 @@ function renderPredictionImportSide(side: SideId): string {
       [`${troop}AttackDefense`, `${troopName(troop)}攻击 / 防御`], [`${troop}PenetrationLife`, `${troopName(troop)}穿透 / 生命`],
     ])) };
   return `<div class="report-import-side"><h3>${side} 方属性识图</h3>
-    <label>上传属性图片<input data-scope="report-image" data-import-kind="prediction-attributes" data-side="${side}" type="file" accept="image/*" multiple></label>
-    <label>补充特殊加成图片<input data-scope="report-image" data-import-kind="special" data-side="${side}" type="file" accept="image/*" multiple></label>
+    <label>上传属性图片<input data-scope="report-image" data-import-kind="prediction-attributes" data-side="${side}" type="file" accept="image/*" multiple ${reportImportBusy ? "disabled" : ""}></label>
+    ${finalOnly ? '<p class="hint">当前填写最终战报，确认属性后直接应用，不需要补充特殊加成。</p>' : `<label>补充特殊加成图片<input data-scope="report-image" data-import-kind="special" data-side="${side}" type="file" accept="image/*" multiple ${reportImportBusy ? "disabled" : ""}></label>`}
     <label>读取侧<select data-scope="report-source" data-side="${side}"><option value="left" ${source === "left" ? "selected" : ""}>左侧</option><option value="right" ${source === "right" ? "selected" : ""}>右侧</option></select></label>
     ${isThreeQueueBattleInput(input) || innerThree && side === "A" ? `<label>应用到队列<select data-scope="report-queue-target" data-side="${side}">${([0, 1, 2] as const).map((index) => `<option value="${index}" ${reportQueueTargets[side] === index ? "selected" : ""}>第 ${index + 1} 队</option>`).join("")}</select></label>` : ""}
     ${innerThree && side === "B" ? '<p class="hint">敌方属性一次应用到 B1 / B2 / B3。</p>' : ""}
     <p>已识别属性：${groups.filter((group) => group.item !== undefined).length}/${groups.length}${reportApplied[side] ? " · 已应用" : ""}</p>
-    ${report === null ? "" : `<div class="table-scroll"><table class="data-table"><thead><tr><th>属性 %</th><th>识别值 / 手动校对</th><th>原始属性预览</th><th>状态</th></tr></thead><tbody>${groups.map((group) => {
+    ${report === null ? "" : `<div class="table-scroll"><table class="data-table"><thead><tr><th>属性 %</th><th>识别值 / 手动校对</th><th>${finalOnly ? "应用属性" : "原始属性预览"}</th><th>状态</th></tr></thead><tbody>${groups.map((group) => {
       const parts = group.key.split("."), label = labels[group.key] ?? (parts.length === 2 ? `${troopName(parts[0] as TroopType)}${attributeName(parts[1] as typeof reportAttributes[number])}` : attributeName(group.key as typeof reportAttributes[number]));
       return `<tr class="${group.needsConfirmation ? "ocr-low-confidence" : ""}"><td>${label}</td><td><input data-scope="attribute-report-field" data-side="${side}" data-key="${group.key}" type="text" inputmode="decimal" value="${group.item?.value ?? ""}" title="${escapeAttr(group.cells.map((cell) => `${cell.value.rawText ?? ""} bbox:${JSON.stringify(cell.value.box)}`).join("; "))}"></td>
-        <td>${renderReportRawAttributePreview(report, source, side, context.specialBonusCompleteness, group.cells)}</td><td>${group.conflict ? `数值冲突：${group.cells.map((cell) => cell.value.value).join(" / ")}` : group.item === undefined ? "未识别" : `${((group.item.finalConfidence ?? group.item.confidence) * 100).toFixed(0)}%`}${group.needsConfirmation ? `<button class="btn btn-small" data-action="confirm-attribute-group" data-side="${side}" data-key="${group.key}">确认此值</button>` : " · 已确认"}</td></tr>`;
+        <td>${finalOnly ? group.item === undefined ? "待填写" : `${group.item.value}%` : renderReportRawAttributePreview(report, source, side, context.specialBonusCompleteness, group.cells)}</td><td>${group.conflict ? `数值冲突：${group.cells.map((cell) => cell.value.value).join(" / ")}` : group.item === undefined ? "未识别" : `${((group.item.finalConfidence ?? group.item.confidence) * 100).toFixed(0)}%`}${group.needsConfirmation ? `<button class="btn btn-small" data-action="confirm-attribute-group" data-side="${side}" data-key="${group.key}">确认此值</button>` : " · 已确认"}</td></tr>`;
     }).join("")}</tbody></table></div>
-    ${renderReportSpecialBonuses(report, side, source, context.specialBonusCompleteness)}
+    ${finalOnly ? "" : renderReportSpecialBonuses(report, side, source, context.specialBonusCompleteness)}
     <button class="btn btn-primary" data-action="apply-report-side" data-side="${side}">确认并应用到 ${side} 方</button>
     <button class="btn btn-small" data-action="clear-report-context" data-side="${side}">清除本方识图预览</button>`}
     </div>`;
@@ -1801,13 +1805,14 @@ function updateAttributeReportField(side: SideId, key: string, raw: string): voi
 }
 
 async function importReportImage(target: HTMLInputElement): Promise<void> {
-  if (!import.meta.env.DEV) return;
   const files = [...(target.files ?? [])];
   const kind = target.dataset.importKind;
   const owner = kind === "final" ? null : requireSide(target.dataset.side);
   if (files.length === 0) return;
+  if (files.length > 8) { errorMessage = "每次请选择 1～8 张图片。"; render(); return; }
   const requestKey = owner ?? "final";
   const requestVersion = ++reportRequestVersions[requestKey];
+  const ocrInputRevision = revisionState.inputRevision;
   pendingReportImports += 1;
   perfMark("OCR request start");
   if (owner !== null) {
@@ -1817,6 +1822,7 @@ async function importReportImage(target: HTMLInputElement): Promise<void> {
   }
   else finalReportApplied = false;
   reportImportBusy = true;
+  reportOcrProgress = "正在读取图片…";
   render();
   try {
     const images = await Promise.all(files.map(async (file) => {
@@ -1829,13 +1835,20 @@ async function importReportImage(target: HTMLInputElement): Promise<void> {
         reader.onerror = () => reject(new Error("图片读取失败。"));
         reader.readAsDataURL(file);
       });
-      return { imageId: `${file.name}:${file.lastModified}`, dataBase64 };
+      return { imageId: `${file.name}:${file.lastModified}`, dataBase64, mimeType: file.type };
     }));
-    const { recognizeLocalReport } = await import("./recognizeLocalReport");
-    const payload = await recognizeLocalReport(images);
+    const payload = import.meta.env.DEV
+      ? await (await import("./recognizeLocalReport")).recognizeLocalReport(images)
+      : await (await import("./recognizeBrowserReport")).recognizeBrowserReport(images, text => {
+        reportOcrProgress = text;
+        document.querySelectorAll(".report-ocr-progress").forEach(node => { node.textContent = text; });
+      });
     if (payload.performance !== undefined) recordOcrBackend(payload.performance);
     const { normalizeRecognitionResult } = await import("../pvp/battleReportRecognition/recognize");
     if (reportRequestVersions[requestKey] !== requestVersion) return;
+    if (!import.meta.env.DEV && revisionState.inputRevision !== ocrInputRevision) {
+      reportOcrProgress = "配置已变化，本次结果未应用，请重新选择图片。"; return;
+    }
     let nextRecognitionState = recognitionState;
     for (const [index, image] of payload.images.entries()) {
       const parsed = normalizeRecognitionResult(image, owner === null ? "FULL_12" : attributeImportSchema(input, owner));
@@ -1846,8 +1859,9 @@ async function importReportImage(target: HTMLInputElement): Promise<void> {
       }
     }
     recognitionState = nextRecognitionState;
+    reportOcrProgress = "识别完成，请校对数值并确认后再应用。";
     errorMessage = null;
-  } catch (error) { errorMessage = error instanceof Error ? error.message : String(error); }
+  } catch (error) { reportOcrProgress = "识别未完成，可重新选择图片重试或手动填写。"; errorMessage = error instanceof Error ? error.message : String(error); }
   finally {
     pendingReportImports -= 1;
     reportImportBusy = pendingReportImports > 0;

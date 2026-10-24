@@ -2,7 +2,7 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist/**", "dist-ui/**", "coverage/**", "node_modules/**", ".venv-ocr/**", "artifacts/**"] },
+  { ignores: ["dist/**", "dist-ui/**", "coverage/**", "node_modules/**", ".venv-ocr/**", "artifacts/**", "public/browser-ocr/**"] },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {

@@ -1,6 +1,6 @@
 # 无尽冬日 PVP 战斗模拟器
 
-**当前版本：v1.0.2 正式版** · [版本变更记录](CHANGELOG.md)
+**当前版本：v1.1.0 正式版** · [版本变更记录](CHANGELOG.md)
 
 这是用于比较《无尽冬日》PVP 阵容与模拟战斗表现的非官方工具。网页提供面向普通玩家的普通模式、包含更多配置的高级模式，以及通过 `?dev=1` 打开的开发者工具。模拟结果用于研究和参考，当前为正式发布版，部分技能机制仍在验证，已知规则边界和界面问题会继续完善。
 
@@ -27,7 +27,7 @@ npm run build
 
 本站使用 GitHub Pages 发布到 <https://3372126760-lang.github.io/whiteout-survival-pvp-simulator/>。推送到 `main` 后，[GitHub Actions 工作流](.github/workflows/deploy-pages.yml)会运行 `npm ci`、`npm run build`，并将 `dist-ui/` 上传和部署到 Pages；也可在 Actions 页面手动运行。首次部署时，在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。无需额外的 SPA 404 回退：模式由查询参数控制，分享阵容保存在 `#s=...` 中，刷新仍访问仓库根页面。例如 `?mode=simple`、`?mode=advanced`、`?mode=advanced&dev=1`。
 
-**公开版限制：**战报图片 OCR 依赖本地开发服务的 `/api/local-ocr` 接口。GitHub Pages 公开版不提供此接口，因此隐藏识图区域与入口；本地 `npm run dev` 仍保留 OCR。手工配置、模拟及分享链接不依赖 OCR。
+**公开版识图：**高级模式展开“战报 / 属性导入”，按 A/B 方选择图片与读取侧，校对后确认应用。公开版在浏览器内识别，图片不会上传到服务器；首次下载约 9 MB 的自托管识别资源，后续模型会缓存。手机可能较慢，请保持页面在前台。识别可能漏读或误读，低置信度及冲突数值须确认；兵力、兵种等级仍需手填。本地开发服务继续使用原 RapidOCR。见 [公开版战报识图](docs/browser-report-ocr.md)。
 
 ## 模型与开发资料
 
