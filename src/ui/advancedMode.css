@@ -724,7 +724,7 @@ body:has(.report-theme) .simple-drawer-backdrop { background:rgb(65 48 32 / 38%)
  .report-pair { grid-template-columns:minmax(0,1fr); }
  .report-pair > .side-a { border-right:0; border-bottom:1px solid #d7c4ae; }
  .report-stats-editor .report-stat-table,
- .report-stats-editor .report-stat-table :is(thead,tbody) { display:block; width:100%; }
+ .report-stats-editor .report-stat-table :is(caption,thead,tbody) { display:block; width:100%; box-sizing:border-box; }
  .report-stats-editor .report-stat-table tr { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
  .report-stats-editor .report-stat-table thead th:nth-child(2) { display:none; }
  .report-stats-editor .report-stat-table tbody th { grid-column:1/-1; width:auto; }
