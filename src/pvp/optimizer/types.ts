@@ -46,7 +46,7 @@ export interface OptimizationConfig {
   readonly adaptiveSearch?: Partial<AdaptiveSearchOptions>;
   readonly profiling?: boolean;
   readonly criterion?: Partial<CriterionSearchOptions>;
-  readonly objectiveMode: "singleWin" | "minRallies" | "auto";
+  readonly objectiveMode: "singleWin" | "enemyAttrition" | "minRallies" | "auto";
   readonly constraints: SearchConstraint;
   readonly stages: readonly [OptimizationStage, OptimizationStage, OptimizationStage];
   readonly verificationTrials: number;
@@ -91,6 +91,8 @@ export interface TroopSurvivors {
 }
 
 export interface CandidateEvaluation {
+  /** Fixed-reference weighted enemy survivors, pre-battle=100, lower is better. */
+  readonly enemyRemainingQuality?: BatchMetricDistribution;
   readonly candidate: RallyCandidate;
   readonly actualCounts: TroopSurvivors;
   readonly trials: number;
@@ -186,7 +188,7 @@ export interface OptimizationResult {
   readonly seed: number;
   readonly currentEvaluation: CandidateEvaluation;
   readonly requestedMode: OptimizationConfig["objectiveMode"];
-  readonly selectedMode: "singleWin" | "minRallies";
+  readonly selectedMode: "singleWin" | "enemyAttrition" | "minRallies";
   readonly singleWaveTop: readonly CandidateEvaluation[];
   readonly multiWaveTop: readonly MultiWaveEvaluation[];
   readonly evaluatedCandidates: number;

@@ -8,7 +8,9 @@ import { optimizerPoolAudit, optimizationHeroPoolFilterAudit } from "../heroPool
 import { enumerateCanonicalBodyPool } from "./canonicalBodies";
 import { prepareCriterionHead, compileCriterionTemplate } from "../criterion/compiler";
 import { criterionBattle } from "../criterion/solver";
-import type { Triple } from "../criterion/types";
+import type { Triple,CriterionBattleResult } from "../criterion/types";
+import {createEnemyQualityMetric,compareEnemyAttrition} from "../enemyAttrition";
+import {summarizeBatchMetric} from "../../validationUi/batchSimulation";
 import { emptyCriterionAudit } from "../criterion/searchTypes";
 import { knownRallyStructureReferences, recordCriterionCoverage } from "./references";
 import { createTheoryTemplateBuilder, defaultTheoryOptions, estimateTheoryCandidate, headLineupKey } from "../theory";
@@ -25,14 +27,19 @@ import { JOINT_TOP_K, resolveJointPipelineOptions, type JointPipelineAudit, type
 import { mergePeakRecall, peakPairKey } from "./recall";
 import { createJointRankInspector } from "./rankDiagnostics";
 import { localRatioGrid, localRatioBounds } from "./ratioGrid";
+import {recallFormalCandidates} from "./formalRecall";
+import { diverseCombatParents, localCombatNeighbors } from "./localCombat";
 
 export function* createPeakJointWorkflow(input: OptimizationInput, config: OptimizationConfig,
   onProgress?: (progress: OptimizationProgress) => void, profiler?: OptimizerProfiler): OptimizationWorkflow<SingleSearchResult> {
   const started = performance.now(), settings = resolveJointPipelineOptions(config.jointPipeline);
   const side = config.candidateSide ?? "A", enemy = side === "A" ? "B" : "A", own = input[side === "A" ? "sideA" : "sideB"];
+  const quality = config.objectiveMode === "enemyAttrition" && side === "A" && input.scenarioType !== "CITY_DEFENSE" && input.rallyMode !== "multi" ? createEnemyQualityMetric(input) : null;
+  const compareCriterion=(a:CriterionBattleResult,b:CriterionBattleResult)=>quality
+    ? quality.score(a.bRemaining)-quality.score(b.bRemaining) || b.margin-a.margin : b.margin-a.margin;
   const theoryOptions = config.theory ?? defaultTheoryOptions(), audit = emptyCriterionAudit();
   const { dimensions, headConstraints } = jointHeadPolicy(input, config);
-  Object.assign(audit, dimensions, optimizationContextAudit(createOptimizationContext(input, side)), optimizationHeroPoolFilterAudit(input, side));
+  Object.assign(audit, dimensions, optimizationContextAudit(createOptimizationContext(input, side,quality?"minEnemyRemainingQuality":"candidateSideWinRate")), optimizationHeroPoolFilterAudit(input, side));
   const progress = (stage: string, completed: number, total: number) => onProgress?.({ stage, completed, total });
   let time = performance.now(); profiler?.begin("H0 · 合法车头生成", 1);
   const formations = [...generateAllHeadFormations(input, headConstraints, undefined, side)].sort((a, b) =>
@@ -115,7 +122,7 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     for (const ratios of grid) {
       const estimate = criterionBattle(template, TROOP_TYPES.map((t) => total * ratios[t] / 100) as unknown as Triple);
       criterionEvaluations++;
-      if (!best || estimate.margin > best.criterionEstimate!.margin) best = { ...candidate, ratios, criterionRatio: ratios,
+      if (!best || compareCriterion(estimate,best.criterionEstimate!)<0) best = { ...candidate, ratios, criterionRatio: ratios,
         criterionEstimate: estimate, criterionPerspectiveSide: side, selectionReasons: ["matrixCriterion"] };
     }
     if (!best) throw new Error("Local 5% simplex grid is empty.");
@@ -123,7 +130,7 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     if (!initialRanks.has(peakPairKey(peak))) recall.audit.addedOnlyCriterionElapsedMs = (recall.audit.addedOnlyCriterionElapsedMs ?? 0) + performance.now() - pairStarted;
     progress("Criterion · 局部 5% 粗筛", index + 1, peaks.length);
   }
-  criterionRows.sort((a, b) => b.candidate.criterionEstimate!.margin - a.candidate.criterionEstimate!.margin || a.peak.head - b.peak.head || a.peak.body - b.peak.body);
+  criterionRows.sort((a, b) => compareCriterion(a.candidate.criterionEstimate!,b.candidate.criterionEstimate!) || a.peak.head - b.peak.head || a.peak.body - b.peak.body);
   const criterionKeep = criterionRows.slice(0, settings.criterionKeep); profiler?.end(); audit.matrixCriterionTime = performance.now() - time;
   audit.matrixCriterionCandidates = audit.criterionEvaluations = criterionEvaluations;
   time = performance.now(); profiler?.begin("Criterion · 局部 1% 细筛", criterionKeep.length);
@@ -135,18 +142,21 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     let best: RallyCandidate | undefined;
     for (const ratios of grid) {
       const estimate = criterionBattle(template, TROOP_TYPES.map((t) => total * ratios[t] / 100) as unknown as Triple); criterionFineEvaluations++;
-      if (!best || estimate.margin > best.criterionEstimate!.margin) best = { ...row.candidate, ratios, criterionRatio: ratios, criterionEstimate: estimate };
+      if (!best || compareCriterion(estimate,best.criterionEstimate!)<0) best = { ...row.candidate, ratios, criterionRatio: ratios, criterionEstimate: estimate };
     }
     if (!best) throw new Error("Local 1% Criterion grid is empty.");
     criterionFineRows.push({ peak: row.peak, candidate: best }); progress("Criterion · 局部 1% 细筛", index + 1, criterionKeep.length);
   }
-  criterionFineRows.sort((a, b) => b.candidate.criterionEstimate!.margin - a.candidate.criterionEstimate!.margin || a.peak.head - b.peak.head || a.peak.body - b.peak.body);
+  criterionFineRows.sort((a, b) => compareCriterion(a.candidate.criterionEstimate!,b.candidate.criterionEstimate!) || a.peak.head - b.peak.head || a.peak.body - b.peak.body);
   const criterionFineKeep = criterionFineRows.slice(0, settings.criterionFineKeep); profiler?.end();
   audit.matrixCriterionTime += performance.now() - time;
   audit.matrixCriterionCandidates += criterionFineEvaluations; audit.criterionEvaluations += criterionFineEvaluations;
   const buildTheory = createTheoryTemplateBuilder(theoryOptions); time = performance.now(); profiler?.begin("Theory · 局部 1% 细筛", criterionFineKeep.length);
   const theoryRows: Pair[] = [];
   for (const [index, row] of criterionFineKeep.entries()) {
+    // The attrition target keeps the goal-aware 1% search result. A win-oriented
+    // Theory rerank would discard precisely the losing-but-damaging candidates.
+    if(quality){theoryRows.push(row);progress("削弱目标 · 剩余战力候选筛选",index+1,criterionFineKeep.length);continue;}
     const template = buildTheory(candidateToInput(input, row.candidate, side), side);
     const grid = localRatioGrid(row.candidate.ratios, settings.theoryRadius, 1, localRatioBounds(row.peak.ratio, 10));
     let best: RallyCandidate | undefined;
@@ -158,14 +168,17 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     if (!best) throw new Error("Local 1% simplex grid is empty.");
     theoryRows.push({ peak: row.peak, candidate: best }); progress("Theory · 局部 1% 细筛", index + 1, criterionFineKeep.length);
   }
-  theoryRows.sort((a, b) => b.candidate.theoryEstimate!.theoryScore - a.candidate.theoryEstimate!.theoryScore || a.peak.head - b.peak.head || a.peak.body - b.peak.body);
-  const formal = theoryRows.slice(0, settings.theoryKeep); profiler?.end(); audit.deterministicTheoryTime = performance.now() - time;
+  theoryRows.sort((a, b) => (quality?compareCriterion(a.candidate.criterionEstimate!,b.candidate.criterionEstimate!):b.candidate.theoryEstimate!.theoryScore - a.candidate.theoryEstimate!.theoryScore) || a.peak.head - b.peak.head || a.peak.body - b.peak.body);
+  const formalCandidates = recallFormalCandidates(theoryRows.map(row=>row.candidate),
+    criterionFineRows.map(row=>row.candidate),settings.theoryKeep);
+  const formalPairs = new Map([...theoryRows,...criterionFineRows].map(row=>[row.candidate,row]));
+  const formal = formalCandidates.map(candidate=>formalPairs.get(candidate)!); profiler?.end(); audit.deterministicTheoryTime = performance.now() - time;
   audit.deterministicTheoryCandidates = theoryEvaluations; audit.battleEngineCandidates = formal.length;
   const pipeline: JointPipelineAudit = { recallAudit: recall.audit, body: bodyPool.audit.canonical!, peak: peakProfile, criterionPairs: peaks.length, criterionEvaluations,
     averageLocal5PercentRatios: criterionEvaluations / peaks.length, criterionFinePairs: criterionKeep.length, criterionFineEvaluations,
     theoryPairs: criterionFineKeep.length, theoryEvaluations,
     formalPairs: formal.length, formalRatioCandidates: 0, finalOptimizerCandidates: 0, comparisonCandidates: 0, finalTrials: Math.max(1000, config.verificationTrials) };
-  const seeds = adaptiveSeedPools(config.firstSeed, 300, pipeline.finalTrials), integrity = emptySearchIntegrityReport(seeds.finalScreeningPrefix);
+  const seeds = adaptiveSeedPools(config.firstSeed, 300, pipeline.finalTrials, true), integrity = emptySearchIntegrityReport(seeds.finalScreeningPrefix);
   const current: RallyCandidate = { initialJRank: null, initialGlobalJRank: null, recalledBy: ["currentConfig"], formalBestRatio: currentRallyRatios(input, side), leaderHeroIds: currentHeadHeroIds(input, side), headWeaponLevels: currentHeadWeaponLevels(input, side),
     memberSkillIds: input.scenarioType === "CITY_DEFENSE" && side === "A" ? [] : own.bodySkills?.map((b) => b.skillId) ?? own.selectedMemberSkillIds,
     bodySkillLevels: own.bodySkills?.map((b) => b.skillLevel) ?? own.selectedMemberSkillIds.map(() => 5), troopLevels,
@@ -181,7 +194,7 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
   const counts = resolveValidationTroopCounts(own, input.scenarioType === "CITY_DEFENSE" ? "challenge" : "rally", input.attributeInputMode ?? "finalReport"), total = TROOP_TYPES.reduce((sum, t) => sum + counts[t], 0);
   const records: { stage: string; candidates: number; trials: number; retained: number; simulatedTrials: number }[] = [];
   const visited = new Map<string, RallyCandidate["leaderHeroIds"]>();
-  const compare = (a: CandidateEvaluation, b: CandidateEvaluation) => SingleWinObjective.compare(a, b) || (candidateKey(a.candidate) < candidateKey(b.candidate) ? -1 : 1);
+  const compare = (a: CandidateEvaluation, b: CandidateEvaluation) => (quality?compareEnemyAttrition(a,b):SingleWinObjective.compare(a, b)) || (candidateKey(a.candidate) < candidateKey(b.candidate) ? -1 : 1);
   const stage = function* (name: string, candidates: readonly RallyCandidate[], stageSeeds: readonly number[]): OptimizationWorkflow<CandidateEvaluation[]> {
     const list = unique(candidates), startedAt = performance.now();
     const record: AdaptiveStageAudit = { stage: name, candidatesEntered: list.length, candidatesAdvanced: list.length, candidatesEliminated: 0,
@@ -189,11 +202,12 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     integrity.perStage.push(record); profiler?.begin(name, list.length); progress(name, 0, list.length);
     yield* ledger.sample(list, stageSeeds, record, (n) => progress(name, n, list.length));
     const rows = list.map((candidate) => {
-      if (candidate.recalledBy?.some((source) => source === "globalTopJ" || source === "perHeadBestJ"))
+      if (candidate.recalledBy?.some((source) => source === "globalTopJ" || source === "perHeadBestJ" || source === "localBattleNeighbor"))
         visited.set(headLineupKey(candidate.leaderHeroIds), candidate.leaderHeroIds);
-      return evaluateSingleCandidate(candidate, total, stageSeeds, () => ledger.outcomes(candidate, stageSeeds).map((r) => ({
+      const evaluation=evaluateSingleCandidate(candidate, total, stageSeeds, () => ledger.outcomes(candidate, stageSeeds).map((r) => ({
         outcome: r.outcome === side ? "A" as const : r.outcome === enemy ? "B" as const : r.outcome,
         self: r.remaining[side], enemy: r.remaining[enemy], rounds: r.roundCount })));
+      return quality?{...evaluation,enemyRemainingQuality:summarizeBatchMetric(ledger.outcomes(candidate,stageSeeds).map(r=>quality.score(r.remaining[enemy])))}:evaluation;
     }).sort(compare);
     profiler?.end(); record.elapsedMs = performance.now() - startedAt;
     records.push({ stage: name, candidates: list.length, trials: stageSeeds.length, retained: list.length, simulatedTrials: record.executedBattles });
@@ -241,6 +255,39 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
     }
     pool = top.map((r) => r.candidate);
   }
+  const inspector = createJointRankInspector(table, input, config, formations, bodies, globalPeaks, side);
+  // At most four first-round parents and three second-round parents, each with
+  // six ratio + sixteen Body neighbors. Independent Head recall bypasses the
+  // global J cutoff; shared seeds/cache and the final quota remain unchanged.
+  const legal = (rows: readonly RallyCandidate[]) => unique(rows).filter(parent => inspector.indices(parent) !== undefined);
+  const parents = legal([current, ...diverseCombatParents(legal([
+    ...pool, ...formalCandidates, ...criterionFineRows.map(row => row.candidate),
+  ]), 3)]);
+  const neighbors = (parents: readonly RallyCandidate[]) => parents.flatMap(parent => {
+    const pair = inspector.indices(parent);
+    return localCombatNeighbors(parent, bodies, pair?.body,
+      body => pair ? evaluateJointJ(table, pair.head, body, parent.ratios) : 0, 16);
+  });
+  if (parents.length) {
+    let local = yield* stage("Local 20 · 多入口真实战斗探索", unique([...parents, ...neighbors(parents)]), seeds.screening.slice(0, 20));
+    const advance = (keep: number) => {
+      const record = integrity.perStage.at(-1)!;
+      record.candidatesAdvanced = Math.min(local.length, keep);
+      record.candidatesEliminated = local.length - record.candidatesAdvanced;
+      records.at(-1)!.retained = record.candidatesAdvanced;
+    };
+    const nextParents = diverseCombatParents(local.map(row => row.candidate), 3);
+    advance(nextParents.length);
+    local = yield* stage("Local 20 round 2 · 迭代车身探索", unique([
+      ...local.map(row => row.candidate), ...neighbors(nextParents),
+    ]), seeds.screening.slice(0, 20));
+    advance(6);
+    local = yield* stage("Local 100 · 邻域候选复查", local.slice(0, 6).map(r => r.candidate), seeds.screening.slice(0, 100));
+    advance(2);
+    local = yield* stage("Local 300 · 邻域候选确认", local.slice(0, 2).map(r => r.candidate), seeds.screening);
+    const merged = new Map([...top, ...local].map(row => [candidateKey(row.candidate), row]));
+    pool = [...merged.values()].sort(compare).slice(0, settings.formalStages[3]!.keep).map(row => row.candidate);
+  }
   pipeline.finalOptimizerCandidates = pool.length;
   // Comparisons never occupy J, Criterion, Theory or Formal promotion slots.
   const references = [...(config.protectedCandidates ?? []), ...knownRallyStructureReferences(input, config)]
@@ -249,7 +296,6 @@ export function* createPeakJointWorkflow(input: OptimizationInput, config: Optim
   const verified = yield* stage(`Final ${pipeline.finalTrials} · common seeds 复验`, unique([...pool, ...comparisons]), seeds.final);
   const baseline = verified.find((r) => candidateKey(r.candidate) === currentKey)!;
   if (!baseline) throw new Error("Exact baseline was not verified.");
-  const inspector = createJointRankInspector(table, input, config, formations, bodies, globalPeaks, side);
   for (let i = 0; i < verified.length; i++) {
     const row = verified[i]!, candidate = { ...row.candidate, ...inspector.diagnose(row.candidate), formalBestRatio: row.candidate.ratios };
     const pair = inspector.indices(candidate);

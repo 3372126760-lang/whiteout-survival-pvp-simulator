@@ -337,6 +337,35 @@ function fakeOptimizationResult(input: ValidationBattleInput, recommendation: Ra
     performance: emptyOptimizationPerformance(), approximation: null };
 }
 
+it("offers attacker attrition, suggests it below 30%, renders its result and applies only A",async()=>{
+ vi.useFakeTimers();
+ const before=distinctRallyInput(),ui=await mountStartup(before);
+ ui.click("open-optimizer");
+ expect(selectMarkup(ui.app.innerHTML,{scope:"optimizer",field:"objectiveMode"})).toContain('value="enemyAttrition"');
+ ui.click("run-optimizer");
+ const recommendation:RallyCandidate={leaderHeroIds:before.sideA.leaderHeroIds??{},memberSkillIds:before.sideA.selectedMemberSkillIds,ratios:{shield:50,lancer:10,marksman:40}};
+ const initial=fakeOptimizationResult(before,recommendation);
+ const low:OptimizationResult={...initial,optimizationContext:createOptimizationContext(before,"A"),
+  currentEvaluation:{...initial.currentEvaluation,winRate:.1},singleWaveTop:initial.singleWaveTop.map(row=>({...row,winRate:.2}))};
+ ui.workers[0]!.onmessage!({data:{type:"complete",result:low}} as MessageEvent);
+ await vi.runOnlyPendingTimersAsync();
+ expect(ui.app.innerHTML).toContain('data-action="rally-attrition-search"');
+ ui.click("rally-attrition-search");
+ expect(ui.workers[1]!.postMessage).toHaveBeenCalledWith(expect.objectContaining({task:"optimize",config:expect.objectContaining({objectiveMode:"enemyAttrition"})}));
+ const stats={mean:12,p05:10,p50:12,p95:15,min:10,max:15};
+ const weakened:OptimizationResult={...low,requestedMode:"enemyAttrition",selectedMode:"enemyAttrition",
+  currentEvaluation:{...low.currentEvaluation,enemyRemainingQuality:{...stats,mean:50}},
+  singleWaveTop:low.singleWaveTop.map(row=>({...row,enemyRemainingQuality:stats}))};
+ ui.workers[1]!.onmessage!({data:{type:"complete",result:weakened}} as MessageEvent);
+ await vi.runOnlyPendingTimersAsync();
+ expect(ui.app.innerHTML).toContain("剩余战力 12.00%");
+ expect(ui.app.innerHTML).toContain("本次单集结胜率 20.00%");
+ ui.click("apply-rally-optimizer",{index:"0"});
+ await vi.runOnlyPendingTimersAsync();
+ expect(ui.restoreSaved().input.sideB).toEqual(restorePersistedConfig(createPersistedEnvelope(before,100)).input.sideB);
+ expect(ui.restoreSaved().optimizationConfig.objectiveMode).toBe("enemyAttrition");
+});
+
 function fakeInnerEarthRatioResult(input: ValidationBattleInput): InnerEarthOptimizationResult {
   const candidate = { ...createEmptyHeadCandidate(), ratios: { shield: 50, lancer: 10, marksman: 40 } };
   const context = createOptimizationContext({ ...input, scenarioType: "SINGLE" }, "A");

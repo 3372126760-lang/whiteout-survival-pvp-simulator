@@ -1,3 +1,5 @@
+import {shouldSuggestEnemyAttrition} from "../pvp/optimizer/enemyAttrition";
+import type {ConfiguredMultiRallyResult,ConfiguredMultiRallyOptimizationResult} from "../pvp/optimizer/configuredMultiRally";
 import { renderInnerEarthReport } from "./innerEarthReportView";
 import { troopIcon, troopPortrait, troopFrame, crystalBadge, t12SkillIcon } from "./gameArtwork";
 import { presentBodySkill } from "./bodySkillPresentation";
@@ -28,7 +30,7 @@ import "./simpleMode.css";
 import "./advancedMode.css";
 import { resolveEditorLayers } from "./editorLayers";
 import { playerOptimizationProgress } from "./optimizerProgressView";
-import { rallyRecommendationDetails } from "./rallyRecommendationView";
+import { rallyRecommendationDetails, compressedRallyBodyNames } from "./rallyRecommendationView";
 import { createOptimizerBenchmarkFixture, restoreOptimizerBenchmarkFixture } from "./optimizerBenchmarkFixture";
 import { resolveJointPipelineOptions } from "../pvp/optimizer/jointPipeline/types";
 import { jointHeadPolicy } from "../pvp/optimizer/jointPipeline/domain";
@@ -36,7 +38,7 @@ import { renderAdvancedLineupActions, renderAdvancedScene, renderAdvancedRun, re
   renderPlayerSingleDrawer, renderAdvancedBatchDrawer } from "./advancedModeView";
 import { EDITOR_MODE_KEY, copySimpleAttributes, setSimpleCounts,
   setSimpleRatios, simpleTroopRatios, simpleTroopTotal, validSimpleRatios, type EditorMode } from "./simpleMode";
-import { renderModeHeader, renderSimpleMode, renderSimpleDetailsOnly, renderSimpleHero } from "./simpleModeView";
+import { renderModeHeader, renderModelNotice, renderSimpleMode, renderSimpleDetailsOnly, renderSimpleHero } from "./simpleModeView";
 import { encodeSimpleShare, decodeSimpleShare } from "./simpleShare";
 import { createPlayerDefaultInput, normalizePlayerHeroLevels } from "./playerConfig";
 import type { RallyTroopRatios } from "../pvp/validationUi/rallyDeployment";
@@ -154,6 +156,11 @@ perfMark("app init start");
 
 const catalog = getValidationCatalog();
 const headPoolOwnershipMigrationNotice = "已将旧英雄可用列表迁移为我的英雄，并补充当前手动阵容已选英雄；升代时自动加入新开放车头。已有参与开关和专武等级保留。";
+let multiRallyResult:ConfiguredMultiRallyResult|null=null;
+let multiRallyOptimization:ConfiguredMultiRallyOptimizationResult|null=null;
+let multiRallyStatus="";
+let multiRallyRevision=-1;
+let multiRallyWorker:Worker|null=null;
 let input = createPlayerDefaultInput();
 let editorMode: EditorMode = "simple";
 let developerToolsEnabled = new URLSearchParams(location.search).get("dev") === "1";
@@ -611,6 +618,38 @@ app.addEventListener("click", (event) => {
   if (!(target instanceof HTMLElement)) return;
   const actionTarget = target.closest<HTMLElement>("[data-action]");
   const action = actionTarget?.dataset.action;
+  if(action === "rally-attrition-search" && input.scenarioType==="RALLY" && !isMultiRally() && optimizationConfig.candidateSide!=="B" && !optimizationRunning){
+   optimizationConfig={...optimizationConfig,objectiveMode:"enemyAttrition"};
+   void runOptimizer();return;
+  }
+  if(action === "multi-rally-cancel"){
+   multiRallyWorker?.terminate();multiRallyWorker=null;multiRallyStatus="";render();return;
+  }
+  if(action === "multi-rally-apply" && multiRallyOptimization && multiRallyRevision===revisionState.inputRevision){
+   const attacks=multiRallyOptimization.recommended.attacks;
+   input={...input,rallyAttacks:attacks,sideA:attacks[input.rallyActiveAttack??0]!};
+   revisionState=markValidationInputChanged(revisionState);multiRallyOptimization=null;multiRallyResult=null;render();return;
+  }
+  if(action === "rally-mode" || action === "rally-attack" || action === "rally-add" || action === "rally-remove"){
+   if(multiRallyWorker)return;
+   syncRallyAttacks();const attacks=[...(input.rallyAttacks?.length?input.rallyAttacks:[input.sideA])];
+   let index=input.rallyActiveAttack??0;
+   if(action === "rally-mode"){
+    const multi=actionTarget?.dataset.mode === "multi";
+    input={...input,rallyMode:multi?"multi":"single",rallyAttacks:attacks,rallyActiveAttack:index,
+     ...(multi&&!isMultiRally()?{rallySingleAttack:input.sideA}:{}),
+     sideA:multi?attacks[index]!:input.rallySingleAttack??attacks[0]!};
+   }
+   else {
+    if(action === "rally-attack")index=Math.min(Number(actionTarget?.dataset.index)||0,attacks.length-1);
+    if(action === "rally-add" && attacks.length<10){attacks.push(structuredClone(input.sideA));index=attacks.length-1;}
+    if(action === "rally-remove" && attacks.length>1){attacks.splice(index,1);index=Math.min(index,attacks.length-1);}
+    input={...input,rallyAttacks:attacks,rallyActiveAttack:index,sideA:attacks[index]!};
+   }
+   if(action === "rally-attack"){render();return;}
+   multiRallyResult=null;multiRallyOptimization=null;result=null;batchResult=null;optimizationResult=null;
+   revisionState=markValidationInputChanged(revisionState);render();return;
+  }
   if (action === "scene-edit" || action === "bodies-edit" || action === "troops-edit" || action === "special-buffs-open" || action === "special-buffs-close" || action === "special-buffs-side") {
     captureExpandedSections();
     if (action === "troops-edit" || action === "special-buffs-open") configurationPopup = action === "troops-edit" ? "troops" : "buffs";
@@ -1327,6 +1366,7 @@ async function importConfigFile(file: File | null): Promise<void> {
 }
 
 function render(): void {
+  syncRallyAttacks();
   input = normalizeBattleInputPolicy(input);
   if (!developerToolsEnabled) input = normalizePlayerHeroLevels(input);
   const popupScroll = app.querySelector<HTMLElement>('.special-buffs-dialog')?.scrollTop ?? 0;
@@ -1376,11 +1416,12 @@ function renderApp(): void {
       ${lazyDetails.render("player-profile-management", "阵容与预设管理", () => `${input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty" ? "" : renderOwnedHeroes()}${renderPlayerProfiles()}`, 'class="advanced-fold advanced-more-settings"')}
       ${renderAdvancedRun(input, batchCount, batchRunning, batchProgress, playerRunBlocked())}
       ${optimizerPanelOpen ? renderPlayerOptimizer() : ""}
-      ${renderAdvancedBatch(batchResult)}
+      ${batchResult!==null || (result===null && threeQueueResult===null && !isMultiRally()) ? renderAdvancedBatch(batchResult) : ""}
       ${batchResult === null ? "" : lazyDetails.render("player-result-statistics", "详细统计 · 回合、兵损与技能表现", () => renderAdvancedStatistics(batchResult!), 'class="advanced-fold advanced-more-settings"')}
       ${renderPlayerSingle(result, threeQueueResult, resultIsStale)}
       ${developerToolsEnabled ? renderDeveloperTools(preview, resultIsStale) : ""}
-      <footer class="simple-footer"><span>WHITEOUT BATTLE LAB · 高级阵容工具 · <a href="https://wos.h5joy-games.com/zh-CN/heroes/" target="_blank" rel="noreferrer">SSR 贴图来源</a> · <a href="https://wosgift.com/zh-cn/heroes/" target="_blank" rel="noreferrer">R/SR 贴图来源</a></span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
+      <footer class="simple-footer"><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
+      ${renderModelNotice()}
     </main>${renderSpecialBuffDialog()}${renderAppDialog(appDialog)}${simpleDetailsOpen ? renderPlayerDetailsDrawer() : ""}
   `;
   if (initial) {
@@ -1469,12 +1510,59 @@ function renderScenarioReport(): string {
  return `<section class="report-config-section scenario-report-summary"><header class="report-section-heading"><div><h2>战报阵容配置</h2><p>当前模式的英雄、兵力、属性与专属规则。</p></div><button class="btn" data-action="scene-edit" aria-haspopup="dialog">更改模式配置</button></header><div class="advanced-side-body">${input.scenarioType === "INNER_EARTH" ? renderInnerEarthReport(input) + `<details class="mini-details"><summary>查看英雄、增益及其他模式配置</summary>${summary}</details>` : summary}</div></section>`;
 }
 
+function isMultiRally(){return input.scenarioType === "RALLY" && input.rallyMode === "multi";}
+function syncRallyAttacks(){
+ if(!isMultiRally()){
+  if(input.scenarioType === "RALLY" && input.rallySingleAttack)input={...input,rallySingleAttack:input.sideA};
+  return;
+ }
+ const attacks=[...(input.rallyAttacks?.length ? input.rallyAttacks : [input.sideA])];
+ const index=Math.min(Math.max(input.rallyActiveAttack??0,0),attacks.length-1);
+ attacks[index]=input.sideA;
+ input={...input,rallyAttacks:attacks,rallyActiveAttack:index};
+}
+function renderRallyMode(){
+ if(input.scenarioType !== "RALLY")return "";
+ return `<section class="rally-mode-picker"><div role="group" aria-label="集结子模式"><button class="btn" data-action="rally-mode" data-mode="single" aria-pressed="${!isMultiRally()}">单集结</button><button class="btn" data-action="rally-mode" data-mode="multi" aria-pressed="${isMultiRally()}">多集结</button></div>${isMultiRally()?`<p>防守方 B 始终为同一支部队。选择下方集结，编辑它独立的英雄、兵种、属性及特殊加成。</p><nav aria-label="进攻集结">${(input.rallyAttacks??[input.sideA]).map((_,index)=>`<button class="btn" data-action="rally-attack" data-index="${index}" aria-pressed="${index===(input.rallyActiveAttack??0)}">集结 ${index+1}</button>`).join("")}<button class="btn" data-action="rally-add" ${(input.rallyAttacks?.length??1)>=10?"disabled":""}>添加集结</button><button class="btn" data-action="rally-remove" ${(input.rallyAttacks?.length??1)<=1?"disabled":""}>删除当前集结</button></nav>`:""}${multiRallyResult&&isMultiRally()&&multiRallyRevision===revisionState.inputRevision?`<article class="panel"><h3>多集结结果 · 整体胜率 ${formatPercent(multiRallyResult.winRate)}</h3><p>${multiRallyResult.trials} 条完整轨迹，固定 ${multiRallyResult.attacks.length} 支进攻部队</p>${multiRallyResult.waveWinRates.map((rate,i)=>`<p>第 ${i+1} 支结束后累计胜率 ${formatPercent(rate)}</p>`).join("")}<p>防守方平均剩余：${TROOP_TYPES.map(t=>`${troopName(t)} ${formatNumber(multiRallyResult!.enemyRemainingMean[t])}`).join(" / ")}</p></article>`:""}<p data-multi-status role="status">${escapeHtml(multiRallyStatus)}</p>${multiRallyWorker?'<button class="btn" data-action="multi-rally-cancel">取消运行</button>':""}</section>`;
+}
+function runConfiguredRallies(count:number,optimize=false){
+ if(multiRallyWorker || optimizationRunning || batchRunning)return;
+ if((["A","B"] as const).some(side=>advancedRatioDrafts[side]!==null&&!validSimpleRatios(advancedRatioDrafts[side]!))){
+  errorMessage="请先将兵种比例调整为合计100%。";render();return;
+ }
+ if(pendingRecognitionSides().length || playerRunBlocked()){
+  errorMessage="请先确认输入及识图预览，再运行多集结。";render();return;
+ }
+ input=prepareValidationRunInput(input);
+ syncRallyAttacks();
+ multiRallyResult=null;multiRallyOptimization=null;errorMessage=null;
+ multiRallyRevision=revisionState.inputRevision;
+ const revision=multiRallyRevision;
+ multiRallyStatus=optimize?"正在搜索各支集结，再比较整体胜率…":"正在模拟完整多集结轨迹…";
+ let worker:Worker;
+ try{worker=new Worker(new URL("./configuredMultiRallyWorker.ts",import.meta.url),{type:"module"});}
+ catch(error){multiRallyStatus="";errorMessage=error instanceof Error?error.message:"无法启动多集结计算";render();return;}
+ multiRallyWorker=worker;
+ worker.onmessage=(event:MessageEvent<{result?:ConfiguredMultiRallyResult;optimization?:ConfiguredMultiRallyOptimizationResult;progress?:string;error?:string}>)=>{
+  if(event.data.progress){multiRallyStatus=event.data.progress;const status=app.querySelector('[data-multi-status]');if(status)status.textContent=multiRallyStatus;return;}
+  if(revisionState.inputRevision===revision){multiRallyResult=event.data.result??null;multiRallyOptimization=event.data.optimization??null;}
+  else storageNotice="配置已改变，本次多集结结果已作废。";
+  errorMessage=event.data.error??null;worker.terminate();multiRallyWorker=null;multiRallyStatus="";render();
+ };
+ worker.onerror=(event)=>{errorMessage=event.message||"多集结运行失败";worker.terminate();multiRallyWorker=null;multiRallyStatus="";render();};
+ worker.postMessage({input,count,...(optimize?{config:optimizationConfig}:{})});
+ render();
+}
+function renderMultiRallyOptimizer():string{
+ const value=multiRallyRevision===revisionState.inputRevision?multiRallyOptimization:null;
+ return `<section class="panel"><header class="panel-head"><h2>多集结配队优化</h2></header><div class="panel-body"><p>固定当前 ${input.rallyAttacks?.length??1} 支集结及唯一防守方。先分别搜索各波候选，再用完整连续战斗比较整体胜率；不会增加或减少集结数量。</p><p>每支集结保留自身的属性与特殊加成。最终使用独立共同种子复验当前配置与推荐配置。</p><label>最终复验场次<input type="number" min="1000" max="100000" data-scope="optimizer" data-field="verificationTrials" value="${Math.max(1000,optimizationConfig.verificationTrials)}"></label>${input.attributeInputMode === "prediction"?`<label>固定每波现有车头<input type="checkbox" data-scope="optimizer" data-field="fixedLeaders" ${optimizationConfig.constraints.fixedLeaders?"checked":""}></label>`:""}<label>固定每波现有车身<input type="checkbox" data-scope="optimizer" data-field="fixedMemberSkillIds" ${optimizationConfig.constraints.fixedBodyExact?"checked":""}></label><button class="btn" data-action="run-optimizer" ${multiRallyWorker?"disabled":""}>优化多集结整体胜率</button>${value?`<p>当前整体胜率 ${formatPercent(value.current.winRate)} → 推荐 ${formatPercent(value.recommended.winRate)}（各 ${value.current.trials} 场独立复验）</p><details><summary>查看各支推荐配置</summary>${value.recommended.attacks.map((side,i)=>`<article><h3>集结 ${i+1}</h3><p>${TROOP_TYPES.map(t=>{const id=side.leaderHeroIds?.[t];return catalog.leaderHeroes.find(h=>h.heroId===id)?.name??"未配置";}).join(" / ")}</p><p>盾 / 矛 / 射：${TROOP_TYPES.map(t=>formatNumber(resolveValidationTroopCounts(side,"rally",input.attributeInputMode??"finalReport")[t])).join(" / ")}</p><p>车身：${compressedRallyBodyNames(side.bodySkills?.map(b=>b.skillId)??side.selectedMemberSkillIds)}</p></article>`).join("")}</details><button class="btn" data-action="multi-rally-apply">应用整套推荐</button>`:""}</div></section>`;
+}
 function renderReportConfiguration(): string {
   if (isThreeQueueBattleInput(input)) return renderScenarioReport();
   const role = (side: SideId) => input.scenarioType === "CITY_DEFENSE" ? side === "A" ? "进攻方阵容" : "守城方阵容" : input.scenarioType === "RALLY" ? side === "A" ? "集结进攻方" : "集结防守方" : side === "A" ? "我方阵容" : "对比阵容";
   const pair = (section: ReportConfigSection) => `<div class="report-pair">${(["A", "B"] as const).map(side => `<div class="advanced-side side-${side.toLowerCase()}"><div class="report-side-caption">${side} · ${role(side)}</div><div class="advanced-side-body">${renderAdvancedSide(side, getInputSide(side), section)}</div></div>`).join("")}</div>`;
   const block = (id: string, number: string, title: string, subtitle: string, content: string) => `<section id="${id}" class="report-config-section"><header class="report-section-heading"><span>${number}</span><div><h2>${title}</h2><p>${subtitle}</p></div></header>${content}</section>`;
-  return `<section class="battle-report-config" aria-label="双方战斗配置"><header class="report-config-banner"><p>战报阵容录入</p><h2>逐项对照，还原这场战斗</h2><div class="report-opponents"><div class="report-opponent side-a"><b>A</b><span>${role("A")}</span><strong>${formatNumber(TROOP_TYPES.reduce((sum,t)=>sum+input.sideA.troops[t].count,0))}<small> 出征部队</small></strong></div><span class="report-versus">VS</span><div class="report-opponent side-b"><b>B</b><span>${role("B")}</span><strong>${formatNumber(TROOP_TYPES.reduce((sum,t)=>sum+input.sideB.troops[t].count,0))}<small> 出征部队</small></strong></div></div><nav aria-label="战报录入导航"><a href="#report-heroes">英雄对比</a><a href="#report-troops">部队对比</a><a href="#report-stats">属性加成</a><button class="report-buffs-link" data-action="special-buffs-open">特殊加成</button></nav></header>
+  return `${renderRallyMode()}<section class="battle-report-config" aria-label="双方战斗配置"><header class="report-config-banner"><p>战报阵容录入</p><h2>逐项对照，还原这场战斗</h2><div class="report-opponents"><div class="report-opponent side-a"><b>A</b><span>${role("A")}</span><strong>${formatNumber(TROOP_TYPES.reduce((sum,t)=>sum+resolveValidationTroopCounts(input.sideA,input.battleContext??"challenge",input.attributeInputMode??"finalReport")[t],0))}<small> 出征部队</small></strong></div><span class="report-versus">VS</span><div class="report-opponent side-b"><b>B</b><span>${role("B")}</span><strong>${formatNumber(TROOP_TYPES.reduce((sum,t)=>sum+resolveValidationTroopCounts(input.sideB,input.battleContext??"challenge",input.attributeInputMode??"finalReport")[t],0))}<small> 出征部队</small></strong></div></div><nav aria-label="战报录入导航"><a href="#report-heroes">英雄对比</a><a href="#report-troops">部队对比</a><a href="#report-stats">属性加成</a><button class="report-buffs-link" data-action="special-buffs-open">特殊加成</button></nav></header>
     ${block("report-heroes", "01", "英雄对比", "按战报双方英雄栏录入；专武等级在下方展开设置。", pair("heroes") + pair("weapons") + (input.scenarioType === "RALLY" || input.scenarioType === "CITY_DEFENSE" ? pair("bodies") : ""))}
     ${block("report-troops", "02", "部队对比", "双方初始部队与兵种等级，按战报顺序对照。", renderReportTroops())}
     ${block("report-stats", "03", "属性加成", "按战报属性顺序逐行录入，左右两栏始终对应 A 方和 B 方。", renderReportAttributeComparison(input) + pair("attributes"))}
@@ -1536,13 +1624,27 @@ function renderPlayerDetailsDrawer(): string {
   return developerToolsEnabled ? markup.replace('</section>', '<footer><button class="btn" data-action="developer-focus-raw">查看原始调试数据</button></footer></section>') : markup;
 }
 
+function renderRallyObjectiveControl():string{
+ if(input.scenarioType!=="RALLY" || isMultiRally() || optimizationConfig.candidateSide==="B")return '<label>目标<output>最高防守方胜率</output></label>';
+ return `<label>优化目标<select data-scope="optimizer" data-field="objectiveMode"><option value="singleWin" ${optimizationConfig.objectiveMode!=="enemyAttrition"?"selected":""}>最高单集结胜率</option><option value="enemyAttrition" ${optimizationConfig.objectiveMode==="enemyAttrition"?"selected":""}>削弱对方后续战力</option></select></label><p class="hint">最高复验胜率低于30%时，建议尝试削弱目标；不会自动切换。</p>`;
+}
+function renderAttritionSuggestion(value:OptimizationResult):string{
+ if(input.scenarioType!=="RALLY" || isMultiRally() || optimizationConfig.candidateSide==="B" || !shouldSuggestEnemyAttrition(value))return "";
+ const best=Math.max(value.currentEvaluation.winRate,...value.singleWaveTop.map(row=>row.winRate));
+ return `<div class="notice warning"><p>本轮搜索中最高复验胜率为 ${formatPercent(best)}，低于30%。可尝试“削弱对方后续战力”，为后续集结创造更好条件。</p><button class="btn" data-action="rally-attrition-search" ${optimizationRunning?"disabled":""}>按削弱目标重新搜索</button></div>`;
+}
+function renderAttritionResults(value:OptimizationResult):string{
+ const quality=(row:CandidateEvaluation)=>row.enemyRemainingQuality?row.enemyRemainingQuality.mean.toFixed(2)+"%":"未统计";
+ return `<section class="panel"><header class="panel-head"><h2>削弱对方后续战力 · 优化结果</h2></header><div class="panel-body"><p>按对方战后剩余战力指数从低到高排序，开战前为100%。当前方案战后剩余：${quality(value.currentEvaluation)}。</p><p class="hint">固定参考阵容下，结合剩余兵种、等级、有效输出与承伤能力加权；不只比较人数，也不等同后续实际胜率。所有推荐与当前方案使用相同的新种子复验。</p>${value.singleWaveTop.map((row,index)=>`<article class="player-optimization-card"><h3>方案 ${index+1} · 剩余战力 ${quality(row)}</h3><p>本次单集结胜率 ${formatPercent(row.winRate)} · ${row.trials} 场独立复验</p><p>对方平均剩余：${TROOP_TYPES.map(t=>`${troopName(t)} ${Math.round(row.enemyRemaining[t].mean).toLocaleString("zh-CN")}`).join(" / ")}</p><p>${rallyRecommendationDetails(row.candidate,TROOP_TYPES.map(t=>input.sideA.troops[t].troopLevel),false)}</p><button class="btn" data-action="apply-rally-optimizer" data-index="${index}">应用此方案</button></article>`).join("")}<p class="hint">${escapeHtml(value.approximation??"")}</p></div></section>`;
+}
 function renderPlayerOptimizer(): string {
+  if(isMultiRally())return renderMultiRallyOptimizer();
   const route = optimizerRoute(input.scenarioType);
   const field = (scope: string, key: string, value: number, label: string) => `<label>${label}<input data-scope="${scope}" data-field="${key}" type="number" min="1" value="${value}"></label>`;
   const chooseSide = (scope: string, key: string, value: SideId) => `<label>优化哪一方<select data-scope="${scope}" data-field="${key}"><option value="A" ${value === "A" ? "selected" : ""}>${scope === "optimizer" ? "集结进攻方" : "A方"}</option><option value="B" ${value === "B" ? "selected" : ""}>${scope === "optimizer" ? "集结防守方" : "B方"}</option></select></label>`;
   let fields = "";
-  if (input.scenarioType === "CITY_DEFENSE") fields = `<label>优化哪一方<select data-scope="optimizer" data-field="candidateSide"><option value="A" ${(optimizationConfig.candidateSide ?? "A") === "A" ? "selected" : ""}>单撞进攻方</option><option value="B" ${optimizationConfig.candidateSide === "B" ? "selected" : ""}>守城防守方</option></select></label><label>目标<output>最高本方单场胜率</output></label>${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}${optimizationConfig.candidateSide === "B" ? `<label>固定当前四个车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>` : ""}${input.attributeInputMode === "prediction" ? `<label>固定当前英雄<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
-  else if (route === "rally") fields = `${chooseSide("optimizer", "candidateSide", optimizationConfig.candidateSide ?? "A")}${(optimizationConfig.candidateSide ?? "A") === "A" ? `<label>目标<select data-scope="optimizer" data-field="objectiveMode">${([['auto', '自动选择'], ['singleWin', '最高单波胜率'], ['minRallies', '最少集结击破']] as const).map(([value, name]) => `<option value="${value}" ${optimizationConfig.objectiveMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label>` : ""}${field("optimizer", "verificationTrials", optimizationConfig.verificationTrials, "最终复验场次")}<label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>${input.attributeInputMode === "prediction" ? `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
+  if (input.scenarioType === "CITY_DEFENSE") fields = `<label>优化哪一方<select data-scope="optimizer" data-field="candidateSide"><option value="A" ${(optimizationConfig.candidateSide ?? "A") === "A" ? "selected" : ""}>单撞进攻方</option><option value="B" ${optimizationConfig.candidateSide === "B" ? "selected" : ""}>守城防守方</option></select></label><label>目标<output>最高本方单场胜率</output></label>${field("optimizer", "verificationTrials", Math.max(1000,optimizationConfig.verificationTrials), "最终复验场次")}${optimizationConfig.candidateSide === "B" ? `<label>固定当前四个车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>` : ""}${input.attributeInputMode === "prediction" ? `<label>固定当前英雄<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
+  else if (route === "rally") fields = `${chooseSide("optimizer", "candidateSide", optimizationConfig.candidateSide ?? "A")}${renderRallyObjectiveControl()}${field("optimizer", "verificationTrials", Math.max(1000,optimizationConfig.verificationTrials), "最终复验场次")}<label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${optimizationConfig.constraints.fixedBodyExact ? "checked" : ""}></label>${input.attributeInputMode === "prediction" ? `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${optimizationConfig.constraints.fixedLeaders ? "checked" : ""}></label>` : ""}`;
   else if (route === "threeQueue" || route === "innerEarth" && ["HEART_OF_EARTH", "HERO_LAND"].includes(getInnerEarthConfig(input).subMode)) fields = `${route === "innerEarth" ? '<label>优化对象<output>A方</output></label>' : chooseSide("three-queue-optimizer", "side", threeQueueOptimizerOptions.side)}${field("three-queue-optimizer", "finalValidationCount", threeQueueOptimizerOptions.finalValidationCount, "最终复验场次")}${field("three-queue-optimizer", "finalCandidateCount", threeQueueOptimizerOptions.finalCandidateCount, "最终候选数")}<label>对手变阵<select data-scope="three-queue-optimizer" data-field="enemyPermutationMode">${([['fixedCurrent', '当前顺序'], ['allPermutations', '全部六种排列'], ['worstCase', '最不利顺序']] as const).map(([value, name]) => `<option value="${value}" ${threeQueueOptimizerOptions.enemyPermutationMode === value ? "selected" : ""}>${name}</option>`).join("")}</select></label><label>固定我方队伍顺序<input data-scope="three-queue-optimizer" data-field="fixedOwnQueueOrder" type="checkbox" ${threeQueueOptimizerOptions.fixedOwnQueueOrder ? "checked" : ""}></label><div class="advanced-queue-locks">${[0, 1, 2].map((index) => `<label>固定第${index + 1}队英雄<input data-scope="three-queue-optimizer" data-field="lockHeroes" data-queue-index="${index}" type="checkbox" ${threeQueueOptimizerOptions.lockHeroes[index] ? "checked" : ""}></label><label>固定第${index + 1}队比例<input data-scope="three-queue-optimizer" data-field="lockRatios" data-queue-index="${index}" type="checkbox" ${threeQueueOptimizerOptions.lockRatios[index] ? "checked" : ""}></label>`).join("")}</div>`;
   else fields = `${route === "innerEarth" ? '<label>优化对象<output>A方兵种比例</output></label>' : chooseSide("simple-optimizer", "side", simpleOptimizerOptions.side)}${field("simple-optimizer", "verificationTrials", simpleOptimizerOptions.verificationTrials, "最终复验场次")}${field("simple-optimizer", "topN", simpleOptimizerOptions.topN, "最终候选数")}${input.attributeInputMode === "prediction" && route !== "innerEarth" ? `<label>固定当前英雄<input data-scope="simple-optimizer" data-field="fixedHeroes" type="checkbox" ${simpleOptimizerOptions.fixedHeroes ? "checked" : ""}></label>` : ""}<label>固定当前配兵<input data-scope="simple-optimizer" data-field="fixedRatio" type="checkbox" ${simpleOptimizerOptions.fixedRatio ? "checked" : ""}></label>`;
   const noHeroes = input.scenarioType === "INNER_EARTH" && getInnerEarthRule(getInnerEarthConfig(input).subMode).heroMode === "empty";
@@ -1550,6 +1652,7 @@ function renderPlayerOptimizer(): string {
 }
 
 function renderPlayerOptimizationResults(): string {
+  if(optimizerRoute(input.scenarioType)==="rally" && optimizationResult?.selectedMode==="enemyAttrition")return renderAttritionResults(optimizationResult);
   const heroNames = (leaders: Readonly<Partial<Record<TroopType, string | null>>>, weapons?: Readonly<Record<string, number>>) => TROOP_TYPES.map((troop) => {
     const id = leaders[troop], name = catalog.leaderHeroes.find((hero) => hero.heroId === id)?.name ?? "未配置";
     return name + (id && weapons?.[id] ? ` · 专武 Lv${weapons[id]}` : "");
@@ -1560,7 +1663,7 @@ function renderPlayerOptimizationResults(): string {
     return `<h3>地心优化结果</h3>${rows.map((row, index) => { const candidate = row.candidate; const ratios = "ratios" in candidate ? candidate.ratios : undefined; return card(index, row.winRate, row.trials, "queues" in candidate ? candidate.queues.map((queue) => heroNames(queue.leaderHeroIds, queue.headWeaponLevels)).join("；") : `${heroNames(candidate.leaderHeroIds, candidate.headWeaponLevels)} · 配比 ${ratios ? TROOP_TYPES.map((troop) => ratios[troop]).join(" / ") : "1:1:1"}`, "apply-inner-earth-optimizer"); }).join("")}`;
   }
   if (isThreeQueueBattleInput(input) && threeQueueOptimizationResult !== null && threeQueueResultRevision === revisionState.inputRevision) return threeQueueOptimizationResult.topCandidates.map((row, index) => card(index, row.winRate, row.trials, row.candidate.queues.map((queue, qi) => `第${qi + 1}队 ${heroNames(queue.leaderHeroIds, queue.headWeaponLevels)} · ${TROOP_TYPES.map((troop) => queue.ratiosBp[troop] / 100).join(" / ")}`).join("；"), "apply-three-queue-optimizer")).join("");
-  if (optimizerRoute(input.scenarioType) === "rally" && optimizationResult !== null) return `<h3>${optimizationTargetLabel(input.scenarioType, optimizationConfig.candidateSide ?? "A")}优化结果</h3>${optimizationResult.singleWaveTop.map((row, index) => card(index, row.winRate, row.trials, rallyRecommendationDetails(row.candidate, TROOP_TYPES.map((t) => input[(optimizationConfig.candidateSide ?? "A") === "A" ? "sideA" : "sideB"].troops[t].troopLevel), developerToolsEnabled), "apply-rally-optimizer")).join("")}${optimizationResult.multiWaveTop.map((plan, index) => `<article class="player-optimization-card"><h3>多波方案 ${index + 1}</h3><p>${plan.targetWaves === null ? "当前验证未达到目标击破概率" : `${plan.targetWaves} 波达到目标击破概率`}</p>${plan.waves.map((wave) => `<p>第${wave.wave}波累计击破 ${formatPercent(wave.defeatProbability)}</p>`).join("")}<button class="btn" data-action="apply-rally-wave" data-index="${index}">应用第1波阵容</button></article>`).join("")}`;
+  if (optimizerRoute(input.scenarioType) === "rally" && optimizationResult !== null) return `${renderAttritionSuggestion(optimizationResult)}<h3>${optimizationTargetLabel(input.scenarioType, optimizationConfig.candidateSide ?? "A")}优化结果</h3>${optimizationResult.singleWaveTop.map((row, index) => card(index, row.winRate, row.trials, rallyRecommendationDetails(row.candidate, TROOP_TYPES.map((t) => input[(optimizationConfig.candidateSide ?? "A") === "A" ? "sideA" : "sideB"].troops[t].troopLevel), developerToolsEnabled), "apply-rally-optimizer")).join("")}${optimizationResult.multiWaveTop.map((plan, index) => `<article class="player-optimization-card"><h3>多波方案 ${index + 1}</h3><p>${plan.targetWaves === null ? "当前验证未达到目标击破概率" : `${plan.targetWaves} 波达到目标击破概率`}</p>${plan.waves.map((wave) => `<p>第${wave.wave}波累计击破 ${formatPercent(wave.defeatProbability)}</p>`).join("")}<button class="btn" data-action="apply-rally-wave" data-index="${index}">应用第1波阵容</button></article>`).join("")}`;
   if (simpleOptimizationResult !== null && simpleResultRevision === revisionState.inputRevision) return simpleOptimizationResult.topCandidates.map((row, index) => card(index, row.winRate, row.trials, `${heroNames(row.candidate.leaderHeroIds, row.candidate.headWeaponLevels)} · 配比 ${row.candidate.ratios ? TROOP_TYPES.map((troop) => row.candidate.ratios![troop]).join(" / ") : "1:1:1"}`, "apply-simple-optimizer")).join("");
   return "";
 }
@@ -1604,7 +1707,7 @@ function renderStoragePanel(): string {
 }
 
 function renderReportImporter(): string {
-  if (!import.meta.env.DEV) return `<section class="panel report-import"><header class="panel-head"><h2>战报图片识别</h2></header><div class="panel-body"><p>战报图片识别功能暂未在公开 Beta 开放。</p></div></section>`;
+  if (!import.meta.env.DEV) return `<section class="panel report-import"><header class="panel-head"><h2>战报图片识别</h2></header><div class="panel-body"><p>战报图片识别功能暂未在公开版开放。</p></div></section>`;
   return `<section class="panel report-import"><header class="panel-head"><h2>本地战报识图</h2>
     <span class="tag tag-cyan">属性与特殊加成校对</span></header><div class="panel-body">
     <p class="hint">整图本地中文 OCR，识别攻击、防御、穿透、生命及特殊加成；不识别兵种等级、火晶或兵种图标。兵量与等级由手填或玩法规则确定。按当前玩法归并为 1 / 2 / 4 / 6 / 9 / 12 项；装备锻炉我方9项中攻击、防御独立，穿透/生命按兵种配对。冲突及低置信度值须逐项确认。应用前仅保存在预览中。确认属性与特殊加成后按历史战报公式反推，并一次性应用；正式配置在确认前保持隔离。${reportImportBusy ? "识别中…" : ""}</p>
@@ -2125,8 +2228,8 @@ function searchScopeText(audit: SearchDimensionsAudit): string {
 }
 
 function currentBestText(audit: SearchDimensionsAudit): string {
-  return audit.headSearchEnabled ? "当前方案已是本次搜索空间中的最佳候选" :
-    `当前固定车头下，当前${audit.searchDimensions.map((dimension) => ({ head: "车头", ratio: "比例", body: "车身" })[dimension]).join("与") || "配置"}已是本次搜索空间最佳候选`;
+  return audit.headSearchEnabled ? "当前方案是本轮已验证候选中的最佳方案" :
+    `当前固定车头下，当前${audit.searchDimensions.map((dimension) => ({ head: "车头", ratio: "比例", body: "车身" })[dimension]).join("与") || "配置"}是本轮已验证候选中的最佳方案`;
 }
 
 function renderOptimizerCard(title: string, winRate: number, trials: number,
@@ -2287,6 +2390,7 @@ function renderSimpleOptimizer(): string {
 }
 
 function renderRallyOptimizer(): string {
+  if(isMultiRally())return renderMultiRallyOptimizer();
   if (input.scenarioType === "CITY_DEFENSE") return renderPlayerOptimizer();
   const candidateSide = optimizationConfig.candidateSide ?? "A";
   const constraints = optimizationConfig.constraints;
@@ -2296,29 +2400,20 @@ function renderRallyOptimizer(): string {
     <header class="panel-head"><h2>集结自动配队</h2><span class="tag tag-cyan">复用当前战斗配置与引擎</span></header>
     <div class="panel-body">
       <p class="hint">合法 Head × canonical Body 完整求 J 峰值；Global Top10000 ∪ 每 Head Top1 召回，局部 5% Criterion → 1% Criterion → Theory → Formal20/50/100 → 比例复核 A/B → Formal300 → Final 至少1000 场共同种子复验。</p>
+      <p class="hint">J 初筛按目标盾兵 ×1、矛兵 ×3、射手 ×4折算输出；奇袭按索敌概率加权，跨兵种额外伤害按各目标分别计入。不同车头与车身效果分配探索名额，两轮20场探索后按100/300场复查，最终按独立正式复验胜率排序。</p>
       <div class="optimizer-fields">
         <label>优化对象<select data-scope="optimizer" data-field="candidateSide"><option value="A" ${candidateSide === "A" ? "selected" : ""}>集结进攻方</option><option value="B" ${candidateSide === "B" ? "selected" : ""}>集结防守方</option></select></label>
-        ${candidateSide === "B" ? '<label>目标<output>最高防守方胜率</output></label>' : `<label>目标<select data-scope="optimizer" data-field="objectiveMode">
-          <option value="auto" ${optimizationConfig.objectiveMode === "auto" ? "selected" : ""}>自动选择</option>
-          <option value="singleWin" ${optimizationConfig.objectiveMode === "singleWin" ? "selected" : ""}>最高单波胜率</option>
-          <option value="minRallies" ${optimizationConfig.objectiveMode === "minRallies" ? "selected" : ""}>最少集结击破</option>
-        </select></label>`}
+        ${renderRallyObjectiveControl()}
         <label>J 全局保留<output>Top10000 Head × Body</output></label>
         ${([ ["perHeadProtectedK", "每 Head 保护 TopK", joint.perHeadProtectedK], ["criterionKeep", "5% Criterion 保留", joint.criterionKeep], ["criterionFineKeep", "1% Criterion 保留", joint.criterionFineKeep], ["theoryKeep", "Theory 保留", joint.theoryKeep], ["formalRatioKeep", "比例复核后进入 300 场", joint.formalRatioKeep] ] as const).map(([field,label,value]) => `<label>${label}<input data-scope="optimizer" data-field="joint-${field}" type="number" min="1" ${field === "perHeadProtectedK" ? "" : 'max="10000"'} value="${value}"></label>`).join("")}
         ${joint.formalStages.map((stage,i) => `<label>${stage.trials} 场后保留<input data-scope="optimizer" data-field="joint-formal-keep-${i}" type="number" min="1" value="${stage.keep}"></label>`).join("")}
-        ${candidateSide === "B" || optimizationConfig.objectiveMode === "singleWin" ? "" : `
-          <label>目标击破概率 %<input data-scope="optimizer" data-field="targetDefeatProbability" type="text" inputmode="decimal" value="${optimizationConfig.targetDefeatProbability * 100}"></label>
-          <label>最多集结波数<input data-scope="optimizer" data-field="maxWaves" type="number" min="1" max="10" step="1" value="${optimizationConfig.maxWaves}"></label>
-          <label>多波粗筛轨迹数<input data-scope="optimizer" data-field="beamTrials" type="number" min="1" max="100000" step="1" value="${optimizationConfig.beamTrials}"></label>
-          <label>保留多波路径数<input data-scope="optimizer" data-field="beamWidth" type="number" min="1" max="20" step="1" value="${optimizationConfig.beamWidth}"></label>`}
-        <label>Final 复验场次<input data-scope="optimizer" data-field="verificationTrials" type="number" min="1" max="100000" step="1" value="${optimizationConfig.verificationTrials}"></label>
+                <label>Final 复验场次<input data-scope="optimizer" data-field="verificationTrials" type="number" min="1" max="100000" step="1" value="${optimizationConfig.verificationTrials}"></label>
         <label>随机种子<input data-scope="optimizer" data-field="firstSeed" type="number" step="1" value="${optimizationConfig.firstSeed}"></label>
-        ${candidateSide === "A" && optimizationConfig.objectiveMode === "auto" ? `<label>自动切多波阈值 %<input data-scope="optimizer" data-field="singleFightThresholdLow" type="text" inputmode="decimal" value="${optimizationConfig.singleFightThresholdLow * 100}"></label>` : ""}
         ${finalReport ? "" : `<label>固定当前车头<input data-scope="optimizer" data-field="fixedLeaders" type="checkbox" ${TROOP_TYPES.every((troop) => constraints.fixedLeaders?.[troop] !== undefined) ? "checked" : ""}></label>`}
         <label>固定当前车身<input data-scope="optimizer" data-field="fixedMemberSkillIds" type="checkbox" ${constraints.fixedBodyExact ? "checked" : ""}></label>
       </div>
 
-      ${candidateSide === "A" && optimizationConfig.objectiveMode === "auto" ? `<p class="hint">自动选择：最终复验最佳单波胜率不高于 ${formatPercent(optimizationConfig.singleFightThresholdLow)} 时进入多波搜索，否则优先单波。</p>` : ""}
+
       <button class="btn btn-primary" data-action="run-optimizer" ${!rallyDeploymentValid() || optimizationRunning ? "disabled" : ""}>${optimizationRunning ? "搜索中…" : "开始自动配队"}</button>
       <span class="hint optimizer-progress">${escapeHtml(optimizerProgressText(optimizationProgress, optimizationPerformanceReport))}</span>
     <div class="optimizer-performance-host">${renderOptimizerPerformance(optimizationPerformanceReport)}</div>
@@ -2394,6 +2489,7 @@ function renderSimpleOptimizationResult(value: SimpleScenarioOptimizationResult,
 }
 
 function renderOptimizationResult(value: OptimizationResult | null): string {
+  if(value?.selectedMode==="enemyAttrition")return renderAttritionResults(value);
   if (value === null) return "";
   const candidateSide=value.optimizationContext?.candidateSide??value.searchDiagnostics?.optimizationTargetSide??"A";
   const audit=value.searchDimensionAudit??optimizerDimensions();
@@ -2445,7 +2541,7 @@ function renderOptimizationResult(value: OptimizationResult | null): string {
   const recommendationIsCurrent = recommendation !== undefined &&
     candidateKey(recommendation) === candidateKey(value.currentEvaluation.candidate);
   return `<section class="panel optimizer-results"><header class="panel-head"><h2>${candidateLabel}优化结果</h2><span class="tag tag-cyan">${value.status === "target_not_met" ? "目标未达成" : "搜索完成"}</span></header><div class="panel-body">
-    <p class="hint">${value.selectedMode === "singleWin" ? `${candidateLabel}胜率` : "多波击破"} · 最终复验 ${value.currentEvaluation.trials} 场</p>
+    ${renderAttritionSuggestion(value)}<p class="hint">${value.selectedMode === "singleWin" ? `${candidateLabel}胜率` : "多波击破"} · 最终复验 ${value.currentEvaluation.trials} 场</p>
     <p class="hint">${escapeHtml(searchScopeText(audit))}</p>
     ${renderOptimizationPerformance(value)}
     ${(value.searchDiagnostics?.criterionAudit?.warnings??[]).map((warning)=>`<p class="notice warning">SEARCH_SPACE_EXPLOSION_WARNING：${escapeHtml(warning.stage)} ${warning.actual.toLocaleString()}（警戒值 ${warning.threshold.toLocaleString()}）</p>`).join("")}
@@ -3578,6 +3674,7 @@ function previewInitialTroopCount(): number | null {
 }
 
 function runBattle(): void {
+  if(isMultiRally()){runConfiguredRallies(1);return;}
   try {
     if (pendingRecognitionSides().length > 0)
       throw new Error("请先确认并应用识图预览，再运行战斗。");
@@ -3607,6 +3704,7 @@ function runBattle(): void {
 }
 
 async function runBatch(): Promise<void> {
+  if(isMultiRally()){runConfiguredRallies(batchCount);return;}
   if (batchRunning) return;
   if ((["A", "B"] as const).some(side=>advancedRatioDrafts[side] !== null && !validSimpleRatios(advancedRatioDrafts[side]!))) return;
   if (editorMode === "simple" && (["A", "B"] as const).some((side) =>
@@ -3648,6 +3746,7 @@ async function runBatch(): Promise<void> {
 }
 
 async function runOptimizer(): Promise<void> {
+  if(isMultiRally()){runConfiguredRallies(Math.max(1000,optimizationConfig.verificationTrials),true);return;}
   if (optimizationRunning) return;
   if (pendingRecognitionSides().length > 0) {
     errorMessage = "请先确认并应用识图预览，再开始配队优化。";
@@ -3824,7 +3923,7 @@ async function verifyOptimizerCandidate(target: HTMLElement): Promise<void> {
       };
       worker.postMessage({ task: "verify", input,
         candidateSide: resultAtStart.optimizationContext?.candidateSide ?? resultAtStart.searchDiagnostics?.optimizationTargetSide ?? "A",
-        candidate: original.candidate, trials: 10_000, firstSeed: optimizationConfig.firstSeed });
+        candidate: original.candidate, objectiveMode:resultAtStart.selectedMode, trials: 10_000, firstSeed: optimizationConfig.firstSeed });
     });
     if (revisionState.inputRevision === revisionAtStart && optimizationResult === resultAtStart) {
       const updated = [...resultAtStart.singleWaveTop];

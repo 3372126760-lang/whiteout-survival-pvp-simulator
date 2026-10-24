@@ -25,6 +25,8 @@ import { OptimizerProfiler, profileOptimizationWorkflow } from "../optimizer/pro
 import { rallyHeadSearchFixture, OPPONENT_HEAD } from "./fixtures/rallyHeadSearch";
 import { compressedRallyBodyNames, rallyRecommendationDetails } from "../../ui/rallyRecommendationView";
 import { playerOptimizationProgress } from "../../ui/optimizerProgressView";
+import { fixedMainTargets, fixedTargetValue } from "../optimizer/jointPipeline/targetValue";
+import { MIA_DOOM_ENTANGLEMENT } from "../heroSkills/definitions/s3Heroes";
 import { createPersistedEnvelope, restorePersistedConfig } from "../../storage";
 
 const emptyBody = { fixedBodyExact: true, fixedMemberSkillIds: [] };
@@ -141,6 +143,50 @@ describe("direct PDF coefficients and exact reduction expectations", () => {
   it("multiplies different damage groups", () => {
     const base = coefficient(numericTable().table), actual = coefficient(tableWithSkills([skill("damage", [damage("g", .2), damage("h", .15)])]));
     expect(actual.o[0]! / base.o[0]!).toBeCloseTo(1.2 * 1.15, 12);
+  });
+  it("values a 20% shield-to-marksman redirect at 1.6 without changing other troops", () => {
+    const fixture = numericTable(), baseInput = { ...fixture.input, sideA: { ...fixture.input.sideA,
+      troops: { ...fixture.input.sideA.troops, lancer: { ...fixture.input.sideA.troops.lancer, troopLevel: "T7" } } } };
+    const input = { ...baseInput, disabledSkillIds: fixture.input.disabledSkillIds.filter(id => id !== "lancer-ambush") };
+    const actual = coefficient(createJointCoefficientTable(input, fixture.config, fixture.heads, fixture.bodies));
+    const base = coefficient(createJointCoefficientTable(baseInput, fixture.config, fixture.heads, fixture.bodies));
+    expect(actual.o[1]! / base.o[1]!).toBeCloseTo(1.6, 12);
+    expect(actual.o[0]).toBe(base.o[0]); expect(actual.o[2]).toBe(base.o[2]);
+  });
+  it("weights cross-target extra damage by 1/3/4 exactly once per attack interval", () => {
+    const definition = skill("cross-target", [
+      { id: "to-lancer", name: "to-lancer", recipient: "selfArmy", scope: { source: "marksman", target: "lancer" }, kind: "extraDamage", coefficient: .4, basis: "parentBaseDamage" },
+      { id: "to-marksman", name: "to-marksman", recipient: "selfArmy", scope: { source: "marksman", target: "marksman" }, kind: "extraDamage", coefficient: .2, basis: "parentBaseDamage" },
+    ]);
+    const actual = coefficient(tableWithSkills([{ ...definition, trigger: "beforeAttack", actionMechanic: {
+      kind: "attackCountTrigger", schedule: { source: "marksman", interval: 2, mode: "onCompleted" } } }]));
+    const base = coefficient(numericTable().table);
+    expect(actual.o[2]! / base.o[2]!).toBeCloseTo(2, 12);
+    expect(actual.o[0]).toBe(base.o[0]); expect(actual.o[1]).toBe(base.o[1]);
+  });
+  it("does not score absent fixed targets and falls back for main targeting", () => {
+    expect(fixedTargetValue("marksman", [1, 1, 0])).toBe(0);
+    expect(fixedTargetValue("all", [1, 1, 0])).toBe(4);
+    expect(fixedMainTargets([], [0, 1, 1]).weights).toEqual([3, 3, 3]);
+  });
+  it("refreshes Miya every round and unions three attacks and duplicate sources", () => {
+    const base = coefficient(numericTable().table);
+    const miya = { ...MIA_DOOM_ENTANGLEMENT, id: "test-miya" };
+    const one = coefficient(tableWithSkills([miya]));
+    const two = coefficient(tableWithSkills([miya, miya]));
+    expect(one.o[0]! / base.o[0]!).toBeCloseTo(1 + .5 * (1 - .5 ** 3) * 19 / 20, 12);
+    expect(two.o[0]! / base.o[0]!).toBeCloseTo(1 + .5 * (1 - .5 ** 6) * 19 / 20, 12);
+  });
+  it("unions the same Miya family across Head and Body instead of adding two vulnerabilities", () => {
+    const fixture = numericTable();
+    const input = { ...fixture.input, sideA: { ...fixture.input.sideA,
+      leaderHeroIds: { ...fixture.input.sideA.leaderHeroIds, lancer: "hero.s3.miya" } },
+      disabledSkillIds: fixture.input.disabledSkillIds.filter(id => id !== MIA_DOOM_ENTANGLEMENT.id) };
+    const head = [{ leaderHeroIds: input.sideA.leaderHeroIds, memberSkillIds: [] }];
+    const body = enumeratePreprocessedBodyPool(input, { fixedBodyExact: true, fixedMemberSkillIds: [MIA_DOOM_ENTANGLEMENT.id] }, head[0]!.leaderHeroIds, { jointPolicy: true }).bodies;
+    const without = coefficient(createJointCoefficientTable({ ...input, disabledSkillIds: fixture.input.disabledSkillIds }, fixture.config, head, body));
+    const actual = coefficient(createJointCoefficientTable(input, fixture.config, head, body));
+    expect(actual.o[0]! / without.o[0]!).toBeCloseTo(1 + .5 * (1 - .5 ** 6) * 19 / 20, 12);
   });
   it("adds typed p*r penetration to its own group", () => {
     const base = coefficient(numericTable().table), actual = coefficient(tableWithSkills([skill("proc", [effect("penetration", .5)], .4)]));
@@ -259,8 +305,11 @@ describe("formal evidence, full recommendation DTO and progress", () => {
     if (job.kind !== "battle") return execute(job);
     dispatched.push(job);
     const ratio = job.rallyCandidate!.ratios;
+    // Make the searched Head beat the protected baseline independently of J's
+    // ratio peak; this fixture tests DTO/seed plumbing, not score calibration.
+    const headBonus = job.rallyCandidate!.leaderHeroIds.shield === OPPONENT_HEAD.shield ? 1000 : 0;
     const outcomes = job.seeds.map(() => ({ outcome: "A", roundCount: 12, remaining: {
-      A: { shield: ratio.shield, lancer: ratio.lancer, marksman: ratio.marksman * 10 }, B: { shield: 0, lancer: 0, marksman: 0 } } } as FastBattleResult));
+      A: { shield: ratio.shield, lancer: ratio.lancer, marksman: ratio.marksman * 10 + headBonus }, B: { shield: 0, lancer: 0, marksman: 0 } } } as FastBattleResult));
     return { samples: { trials: outcomes.length, requestedTrials: outcomes.length, wins: outcomes.length, losses: 0, failedTrials: 0, pruned: false, outcomes },
       performance: { simulatedTrials: outcomes.length, skippedTrials: 0, prunedCandidates: 0, templateBuilds: 1, templateHits: 0 }, timing: { battleCount: outcomes.length, battleElapsedMs: 1 } };
   });
@@ -270,16 +319,16 @@ describe("formal evidence, full recommendation DTO and progress", () => {
   it("uses formal local comparison to advance a changed ratio", () => {
     const initial = dispatched[0]!.rallyCandidate!, selected = result.top[0]!.candidate; expect(selected.ratios.marksman).toBeGreaterThan(initial.ratios.marksman);
   });
-  it("reuses 300 samples in a final 1000 common-seed verification", () => {
-    const row = result.searchDiagnostics.searchIntegrityReport!.perStage.at(-1)!; expect(row.reusedBattles).toBeGreaterThanOrEqual(300);
+  it("keeps 1000 final common-seed trials independent of screening", () => {
+    const row = result.searchDiagnostics.searchIntegrityReport!.perStage.at(-1)!; expect(row.reusedBattles).toBe(0);
     expect(result.top.every((r) => r.trials === 1000)).toBe(true);
     const topJobs = dispatched.filter((j) => candidateKey(j.rallyCandidate!) === candidateKey(result.top[0]!.candidate));
-    expect(new Set(topJobs.flatMap((j) => j.seeds)).size).toBe(1000);
+    expect(new Set(topJobs.flatMap((j) => j.seeds)).size).toBe(1300);
   });
   it("uses the same final seeds for comparisons and optimization finalists", () => {
-    const seeds = adaptiveSeedPools(19, 300, 1000).final;
+    const seeds = adaptiveSeedPools(19, 300, 1000, true).final;
     const grouped = new Map<string, number[]>(); for (const j of dispatched) { const key = candidateKey(j.rallyCandidate!); grouped.set(key, [...(grouped.get(key) ?? []), ...j.seeds]); }
-    for (const row of result.top) expect(new Set(grouped.get(candidateKey(row.candidate)))).toEqual(new Set(seeds));
+    for (const row of result.top) expect(new Set(grouped.get(candidateKey(row.candidate))!.filter(seed=>seeds.includes(seed)))).toEqual(new Set(seeds));
   });
   it("keeps baseline independent of the J/criterion/theory slots", () => {
     const a = result.searchDiagnostics.jointPipeline!; expect(a.peak.retainedCount).toBe(1); expect(a.criterionPairs).toBe(1); expect(a.formalPairs).toBe(1); expect(a.comparisonCandidates).toBe(1);

@@ -694,3 +694,40 @@ body:has(.report-theme) .simple-drawer-backdrop { background:rgb(65 48 32 / 38%)
 .skill-stat-side .skill-record-cell .skill-round-table th:first-child {
  min-width:0; max-width:none; white-space:normal; overflow-wrap:anywhere; box-sizing:border-box;
 }
+
+/* Attribute cells must never inherit generic input/label intrinsic widths. */
+.report-stats-editor { min-width:0; max-width:100%; }
+.report-theme .report-stat-table { width:100%; min-width:0; table-layout:fixed; }
+.report-theme .report-stat-table :is(th,td) { min-width:0; box-sizing:border-box; overflow-wrap:anywhere; }
+.report-theme .report-stat-value > label { display:block; width:100%; min-width:0; max-width:100%; }
+.report-theme .report-percent { display:flex; width:100%; min-width:0; max-width:100%; box-sizing:border-box; padding:3px 6px; }
+.report-theme .report-percent input { flex:1 1 0%; width:0; min-width:0; max-width:100%; box-sizing:border-box; padding-inline:2px; }
+@media(max-width:640px) {
+ .report-theme .report-stat-table td { padding:7px 2px; }
+ .report-theme .report-stat-table thead th { padding:8px 2px; }
+ .report-theme .report-stat-table tbody th[scope=row] { font-size:12px; padding:6px 2px; }
+ .report-theme .report-percent input,.report-theme.simple-shell .report-percent input { font-size:clamp(12px,3.4vw,17px); }
+ .report-theme .report-percent > span { font-size:12px; }
+ .report-theme .report-stat-source { flex-wrap:wrap; }
+ .report-theme .report-stat-source > * { min-width:0; max-width:100%; }
+}
+
+.rally-mode-picker {padding:16px 0;min-width:0;}
+.rally-mode-picker nav,.rally-mode-picker [role=group] {display:flex;flex-wrap:wrap;gap:8px;}
+.rally-mode-picker [aria-pressed=true] {outline:2px solid #b8894e;outline-offset:2px;}
+.special-buffs-dialog { box-sizing:border-box; min-width:0; }
+.special-buffs-dialog > header > div { min-width:0; flex:1 1 auto; }
+.special-buffs-dialog > header > button { flex:0 0 auto; min-width:64px; white-space:nowrap; }
+.special-buffs-dialog > footer { flex-wrap:wrap; }
+.special-buffs-dialog > footer > button { flex:0 0 auto; white-space:nowrap; }
+@media(max-width:420px) {
+ .report-pair { grid-template-columns:minmax(0,1fr); }
+ .report-pair > .side-a { border-right:0; border-bottom:1px solid #d7c4ae; }
+ .report-stats-editor .report-stat-table,
+ .report-stats-editor .report-stat-table :is(thead,tbody) { display:block; width:100%; }
+ .report-stats-editor .report-stat-table tr { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .report-stats-editor .report-stat-table thead th:nth-child(2) { display:none; }
+ .report-stats-editor .report-stat-table tbody th { grid-column:1/-1; width:auto; }
+ .report-stats-editor .report-stat-table tbody th[scope=row] { order:-1; text-align:center; padding:8px 2px 0; }
+ .report-stats-editor .report-stat-table .report-stat-value { width:auto; padding:6px 3px 10px; }
+}

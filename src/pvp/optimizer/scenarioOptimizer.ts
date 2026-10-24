@@ -69,6 +69,8 @@ export function defaultSimpleScenarioOptimizationOptions(seed: number):
     fixedHeroes: false, fixedRatio: false };
 }
 export interface SimpleScenarioEvaluation {
+  /** Secondary ranking only when sampled win rates tie. No extra simulations. */
+  readonly remainingMargin?: number;
   readonly candidate: SimpleScenarioCandidate;
   readonly trials: number;
   readonly wins: number;

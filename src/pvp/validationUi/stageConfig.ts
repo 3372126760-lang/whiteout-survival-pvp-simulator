@@ -155,7 +155,11 @@ export function sanitizeConfigForStage(input: ValidationBattleInput,
   });
   const sideA = cleanSide(input.sideA);
   const sideB = cleanSide(input.sideB);
-  return { input: { ...input, serverStage: stage, sideA, sideB },
+  const rallyAttacks = input.rallyAttacks?.map(cleanSide);
+  const rallySingleAttack = input.rallySingleAttack && cleanSide(input.rallySingleAttack);
+  return { input: { ...input, serverStage: stage, sideA, sideB,
+    ...(rallyAttacks ? { rallyAttacks } : {}),...(rallySingleAttack ? {rallySingleAttack} : {}) },
     changed: JSON.stringify(sideA) !== JSON.stringify(input.sideA) ||
-      JSON.stringify(sideB) !== JSON.stringify(input.sideB) };
+      JSON.stringify(sideB) !== JSON.stringify(input.sideB) ||
+      JSON.stringify(rallyAttacks) !== JSON.stringify(input.rallyAttacks) || JSON.stringify(rallySingleAttack) !== JSON.stringify(input.rallySingleAttack) };
 }

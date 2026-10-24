@@ -16,6 +16,7 @@ import { createValidationPreviewState, getValidationThreeQueues } from "../pvp/v
 import { getValidationCatalog } from "../pvp/validationUi/catalog";
 import { getBodySkillOptions } from "./bodySkillPresentation";
 import { renderBodySlotCard } from "./bodySkillSelectView";
+import {createConfiguredMultiRallyEvaluator} from "../pvp/optimizer/configuredMultiRally";
 
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); vi.resetModules(); });
 
@@ -433,4 +434,47 @@ describe("player-facing mapping and sharing", () => {
   it("displays the actual package model version", () => {
     expect(DISPLAY_MODEL_VERSION).toBe((JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8")) as { version: string }).version);
   });
+});
+
+it("edits each rally independently while keeping a single shared defender",async()=>{
+ const base=createDefaultValidationInput();
+ const ui=await mount("advanced",false,{...base,scenarioType:"RALLY",battleContext:"rally"});
+ const defender=ui.current().sideB;
+ await ui.click("rally-mode",{mode:"multi"});
+ await ui.change({scope:"troop",side:"A",troop:"shield",field:"attack"},"123.4");
+ await ui.click("rally-add");
+ await ui.change({scope:"troop",side:"A",troop:"shield",field:"attack"},"456.7");
+ await ui.click("rally-attack",{index:"0"});
+ expect(ui.current().sideA.troops.shield.attack).toBe(123.4);
+ expect(ui.current().rallyAttacks![1]!.troops.shield.attack).toBe(456.7);
+ expect(ui.current().sideB).toEqual(defender);
+ await ui.click("rally-mode",{mode:"single"});
+ expect(ui.current().sideA.troops.shield.attack).toBe(base.sideA.troops.shield.attack);
+ await ui.change({scope:"troop",side:"A",troop:"shield",field:"attack"},"789");
+ await ui.click("rally-mode",{mode:"multi"});
+ expect(ui.current().sideA.troops.shield.attack).toBe(123.4);
+ expect(ui.current().rallyAttacks![1]!.troops.shield.attack).toBe(456.7);
+ await ui.click("rally-mode",{mode:"single"});
+ expect(ui.current().sideA.troops.shield.attack).toBe(789);
+});
+
+it("renders and applies a completed multi-rally recommendation without losing the defender",async()=>{
+ const base=createDefaultValidationInput();
+ const input:ValidationBattleInput={...base,maxRounds:2,scenarioType:"RALLY",battleContext:"rally",rallyMode:"multi",rallyAttacks:[base.sideA,base.sideA]};
+ const row=createConfiguredMultiRallyEvaluator(input)(input.rallyAttacks!,[91]);
+ const ui=await mount("advanced",false,input);
+ class RecommendationWorker {
+  onmessage:((event:MessageEvent)=>void)|null=null;
+  onerror:((event:ErrorEvent)=>void)|null=null;
+  terminate(){}
+  postMessage(){this.onmessage?.({data:{optimization:{current:row,recommended:row,screeningTrials:1}}} as MessageEvent);}
+ }
+ vi.stubGlobal("Worker",RecommendationWorker);
+ await ui.click("open-optimizer");
+ await ui.click("run-optimizer");
+ expect(ui.app.innerHTML).toContain("查看各支推荐配置");
+ expect(ui.app.innerHTML).toContain("应用整套推荐");
+ await ui.click("multi-rally-apply");
+ expect(ui.current().rallyAttacks).toHaveLength(2);
+ expect(ui.current().sideB).toEqual(restorePersistedConfig(createPersistedEnvelope(base,100)).input.sideB);
 });

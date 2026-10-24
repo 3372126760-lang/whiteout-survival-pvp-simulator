@@ -29,12 +29,12 @@ export function* createAdaptiveSimpleStages(input: ValidationBattleInput, option
     !Number.isSafeInteger(row.keep) || row.keep < 1 || (i > 0 && row.trials < schedule[i - 1]!.trials)))
     throw new Error("Cumulative Monte Carlo budgets must be nondecreasing.");
   const budget = Math.max(...schedule.map((row) => row.trials));
-  const pools = adaptiveSeedPools(options.seed, budget, options.verificationTrials);
+  const pools = adaptiveSeedPools(options.seed, budget, options.verificationTrials, true);
   const integrity = emptySearchIntegrityReport(pools.finalScreeningPrefix);
   const baselineKey = key(baselineCandidate);
   const ledger = new BattleSampleLedger(key, (candidate: SimpleScenarioCandidate) => key(candidate) === baselineKey ? input : makeInput(candidate),
     options.side, profiler, pools.screeningSet);
-  const compare = (a: SimpleScenarioEvaluation, b: SimpleScenarioEvaluation) => b.winRate - a.winRate || key(a.candidate).localeCompare(key(b.candidate));
+  const compare = (a: SimpleScenarioEvaluation, b: SimpleScenarioEvaluation) => b.winRate - a.winRate || (b.remainingMargin ?? 0) - (a.remainingMargin ?? 0) || key(a.candidate).localeCompare(key(b.candidate));
   const unique = (candidates: readonly SimpleScenarioCandidate[]) => [...new Map(candidates.map((candidate) => [key(candidate), candidate])).values()];
   const keep = (rows: readonly SimpleScenarioEvaluation[], count: number) => {
     const ranked = [...rows].sort(compare), retained = ranked.slice(0, count);
@@ -65,7 +65,9 @@ export function* createAdaptiveSimpleStages(input: ValidationBattleInput, option
     const rows = pool.map((candidate) => {
       visited.add(TROOP_TYPES.map((troop) => candidate.leaderHeroIds[troop] ?? "").join("|"));
       const samples = ledger.outcomes(candidate, seeds), wins = samples.filter((row) => row.outcome === options.side).length;
-      return { candidate, trials: samples.length, wins, winRate: wins / samples.length,
+      const enemy = options.side === "A" ? "B" : "A";
+      const remainingMargin = samples.reduce((sum, sample) => sum + TROOP_TYPES.reduce((n,t)=>n + sample.remaining[options.side][t] - sample.remaining[enemy][t],0),0) / samples.length;
+      return { candidate, trials: samples.length, wins, winRate: wins / samples.length, remainingMargin,
         ...(key(candidate) === baselineKey ? { isCurrent: true } : {}) };
     }).sort(compare);
     profiler?.end(); audit.elapsedMs = profiler ? performance.now() - start : 0; return rows;

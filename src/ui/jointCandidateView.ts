@@ -3,9 +3,9 @@ const ratio = (value: JointJLineage["jPeakRatio"]) => value ? `${value.shield.to
 const number = (value: number | undefined) => value === undefined ? "—" : value.toExponential(8);
 const pct = (value: number | undefined) => value === undefined ? "—" : `${(100 * value).toFixed(2)}%`;
 export function recallSourceLabel(sources: readonly RecallSource[] = []): string {
-  const auto = sources.includes("globalTopJ") || sources.includes("perHeadBestJ");
+  const auto = sources.includes("globalTopJ") || sources.includes("perHeadBestJ") || sources.includes("localBattleNeighbor");
   const rows = [auto ? "本轮自动搜索" : "", sources.includes("currentConfig") ? "当前配置（保护复验）" : "",
-    sources.includes("protectedReference") ? "Protected Reference（保护复验）" : ""].filter(Boolean);
+    sources.includes("protectedReference") ? "Protected Reference（保护复验）" : "", sources.includes("localBattleNeighbor") ? "真实战斗邻域搜索" : ""].filter(Boolean);
   if (!rows.length) return "其他保护通道 / 未记录来源";
   const channel = sources.includes("globalTopJ") && sources.includes("perHeadBestJ") ? "Both：Global Top10000 + PerHead Best" :
     sources.includes("globalTopJ") ? "Global Top10000" : sources.includes("perHeadBestJ") ? "PerHead Best" : "";

@@ -71,7 +71,7 @@ export interface CriterionSearchAudit extends M1aProbeAudit, Partial<SearchDimen
   headTemplateCount?:number;ratioCount?:number;bodyCandidateCount?:number;roughJointCount?:number;theoreticalEvaluationCount?:number;
   ignoredProtectedReferencesByFixedHead?:number;
   battleScenario:OptimizationBattleScenario;candidateSide:"A"|"B";candidateRole:RallyOptimizationRole|null;
-  fixedOpponentSide:"A"|"B";optimizationObjective:"candidateSideWinRate";
+  fixedOpponentSide:"A"|"B";optimizationObjective:"candidateSideWinRate"|"minEnemyRemainingQuality";
   headEffectsActiveByRole:readonly string[];headEffectsInactiveByRole:readonly string[];
   weaponEffectsActiveByRole:readonly string[];weaponEffectsInactiveByRole:readonly string[];
   bodyEffectsActiveByRole:readonly string[];bodyEffectsInactiveByRole:readonly string[];

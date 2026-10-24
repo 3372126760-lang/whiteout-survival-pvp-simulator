@@ -19,7 +19,7 @@ function config(): OptimizationConfig {
 describe("rally head search and locks", () => {
   it("recovers a known manual head and ratio using real fast battles", () => {
     const input = rallyHeadSearchFixture();
-    const seeds = adaptiveSeedPools(91, 300, 1000).final;
+    const seeds = adaptiveSeedPools(91, 300, 1000, true).final;
     const run = createEngineCandidateRunner(input);
     const manual = evaluateSingleCandidate(opponentCandidate(), 36000, seeds, run);
     const weak = evaluateSingleCandidate({ ...opponentCandidate(), leaderHeroIds: OLD_HEAD }, 36000, seeds, run);
@@ -56,7 +56,7 @@ describe("rally head search and locks", () => {
     // Old configurations could allocate their entire coarse budget to the ratio grid.
     const limited = { ...config(), protectedCandidates: [opponentCandidate()], stages: [{ ...config().stages[0], maxCandidates: 6 },
       config().stages[1], config().stages[2]] as const };
-    const pools = adaptiveSeedPools(91, 300, 1000);
+    const pools = adaptiveSeedPools(91, 300, 1000, true);
     const indices = new Map(pools.final.map((seed, index) => [seed, index]));
     const result = searchSingleWave(input, limited, undefined, (candidate, seeds) => {
       const key = JSON.stringify(candidate.leaderHeroIds);

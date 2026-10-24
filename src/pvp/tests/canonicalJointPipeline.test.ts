@@ -182,7 +182,7 @@ describe("staged formal evidence S–AB", () => {
   it("Y: Formal300 and Final1000 receive that formalBestRatio", () => {
     const finalist = result.top.find((r) => r.candidate.initialJRank)!.candidate;
     const jobs = dispatched.filter((j) => candidateKey(j.rallyCandidate!) === candidateKey(finalist));
-    expect(jobs.some((j) => j.seeds.length === 200)).toBe(true); expect(jobs.some((j) => j.seeds.length === 700)).toBe(true);
+    expect(jobs.some((j) => j.seeds.length === 200)).toBe(true); expect(jobs.some((j) => j.seeds.length === 1000)).toBe(true);
     for (const job of jobs.filter((j) => j.seeds.length >= 200)) expect(job.rallyCandidate!.ratios).toEqual(finalist.formalBestRatio);
   });
   it("Z: final J and initial peak reuse identical compiled coefficients and ratioObjective", () => {
@@ -196,7 +196,12 @@ describe("staged formal evidence S–AB", () => {
   });
   it("AA: final DTO, correlation and Developer tables contain all J lineage fields", () => {
     const c = result.top.find((r) => r.candidate.initialJRank)!.candidate;
-    for (const key of ["initialJRank", "jPeakRatio", "criterionRatio", "theoryRatio", "jMax", "formalBestRatio", "jAtFormalRatio", "jRetentionRatio", "jLoss"]) expect(c).toHaveProperty(key);
+    for (const key of ["initialJRank", "jPeakRatio", "jMax", "formalBestRatio", "jAtFormalRatio", "jRetentionRatio", "jLoss"]) expect(c).toHaveProperty(key);
+    if (c.recalledBy?.includes("localBattleNeighbor")) {
+      expect(c).not.toHaveProperty("criterionRatio"); expect(c).not.toHaveProperty("theoryRatio");
+    } else {
+      expect(c).toHaveProperty("criterionRatio"); expect(c).toHaveProperty("theoryRatio");
+    }
     expect(c.jRetentionRatio).toBe(c.jAtFormalRatio! / c.jMax!);
     expect(profile.finalCorrelation!.finalistJRanks).toEqual(result.top.map((r) => r.candidate.initialJRank ?? null));
     const markup = performanceReportBody(profile); expect(markup).toContain("J峰值截断参考"); expect(markup).toContain("Formal Finalist Comparison");
@@ -267,10 +272,12 @@ describe("strict semantic identity and skill damage channels", () => {
     }
     expect(canonicalBodySemanticKey(copy as unknown as HeroSkillDefinition)).not.toBe(canonicalBodySemanticKey(original));
   });
-  it.each([["hero-skill.weien.thunder-raid", [ .25, .25, .25 ]], ["hero-skill.ruini.dream-mark", [ 0, .9, 0 ]], ["hero-skill.gedun.poisoned-blade", [ 0, .5, 0 ]] ] as const)("%s compiles expected skill damage, not a skillDamageIncrease multiplier", (id, expected) => {
+  it.each([["hero-skill.weien.thunder-raid", [ .25, .4, .25 ]], ["hero-skill.ruini.dream-mark", [ 0, 1.44, 0 ]], ["hero-skill.gedun.poisoned-blade", [ 0, .8, 0 ]] ] as const)("%s compiles target-weighted skill damage, not a skillDamageIncrease multiplier", (id, expected) => {
     const body = enumerateCanonicalBodyPool(input, { fixedBodyExact: true, fixedMemberSkillIds: [id] }, input.sideA.leaderHeroIds!, "A").bodies;
     const config = { ...defaultOptimizationConfig(), constraints: {} }, heads = [{ leaderHeroIds: {}, memberSkillIds: [] }];
     const table = createJointCoefficientTable(input, config, heads, body);
-    expect([...table.bodyChannels.slice(3, 6)]).toEqual(expected); expect(table.routes.some((r) => r.key.includes("skillDamageIncrease"))).toBe(false);
+    // Current-target lancer channels inherit 80% shield + 20% marksman = 1.6.
+    [...table.bodyChannels.slice(3, 6)].forEach((value, i) => expect(value).toBeCloseTo(expected[i]!, 12));
+    expect(table.routes.some((r) => r.key.includes("skillDamageIncrease"))).toBe(false);
   });
 });

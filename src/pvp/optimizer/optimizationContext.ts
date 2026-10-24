@@ -12,14 +12,14 @@ export interface OptimizationContext {
   readonly candidateSide: SideId;
   readonly rallyRole: RallyOptimizationRole | null;
   readonly fixedOpponentSide: SideId;
-  readonly optimizationObjective: "candidateSideWinRate";
+  readonly optimizationObjective: "candidateSideWinRate" | "minEnemyRemainingQuality";
 }
 export function createOptimizationContext(input: Pick<ValidationBattleInput, "scenarioType" | "battleContext">,
-  candidateSide: SideId = "A"): OptimizationContext {
+  candidateSide: SideId = "A", optimizationObjective: OptimizationContext["optimizationObjective"] = "candidateSideWinRate"): OptimizationContext {
   const battleScenario: OptimizationBattleScenario = input.scenarioType === "CITY_DEFENSE" ? "cityDefense" : input.scenarioType === "RALLY" ? "rally" :
     input.scenarioType === "THREE_QUEUE" ? "threeQueue" : input.scenarioType === "THREE_THREE_THREE" ? "333" : "single";
   return { battleScenario, candidateSide, rallyRole: battleScenario === "rally" || battleScenario === "cityDefense" ? candidateSide === "A" ? "attacker" : "defender" : null,
-    fixedOpponentSide: candidateSide === "A" ? "B" : "A", optimizationObjective: "candidateSideWinRate" };
+    fixedOpponentSide: candidateSide === "A" ? "B" : "A", optimizationObjective };
 }
 /** Same context as toEngineScenario; explicit legacy contexts remain available
  * to standalone formal-state tests, but the normal rally adapter uses rally. */
@@ -31,7 +31,7 @@ export interface OptimizationContextAudit {
   readonly candidateSide: SideId;
   readonly candidateRole: RallyOptimizationRole | null;
   readonly fixedOpponentSide: SideId;
-  readonly optimizationObjective: "candidateSideWinRate";
+  readonly optimizationObjective: OptimizationContext["optimizationObjective"];
 }
 export function optimizationContextAudit(context: OptimizationContext): OptimizationContextAudit {
   return { battleScenario: context.battleScenario, candidateSide: context.candidateSide,

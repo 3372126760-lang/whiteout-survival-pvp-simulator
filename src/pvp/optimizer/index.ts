@@ -1,8 +1,6 @@
 import { createEngineCandidateRunner, evaluateSingleCandidate,
   createSingleWaveSearchWorkflow, type SingleSearchResult } from "./singleWaveSearch";
 import { OptimizerProfiler, profileOptimizationWorkflow } from "./profiling";
-import { createMultiWaveSearchWorkflow } from "./multiWaveSearch";
-import { AutoObjective } from "./objectives";
 import { createStageSeeds } from "./seedSet";
 import { defaultTheoryOptions, validateTheoryOptions } from "./theory";
 import { resolveCriterionSearchOptions } from "./criterion/searchTypes";
@@ -10,11 +8,13 @@ import { createOptimizationContext } from "./optimizationContext";
 import { resolveSearchDimensions } from "./searchDimensions";
 import { TROOP_TYPES } from "../types";
 import { candidateToInput } from "./candidateGenerator";
+import {createEnemyQualityMetric} from "./enemyAttrition";
+import {summarizeBatchMetric} from "../validationUi/batchSimulation";
 import { createEvaluationExecutor } from "./execution";
 import type { SideId } from "../types";
 import type { ScenarioOptimizer } from "./scenarioOptimizer";
 import type { CandidateEvaluation, MultiWaveEvaluation, OptimizationConfig, OptimizationInput, OptimizationProgress, OptimizationResult, RallyCandidate } from "./types";
-import { addOptimizationPerformance, runOptimizationWorkflow, runOptimizationWorkflowAsync,
+import { runOptimizationWorkflow, runOptimizationWorkflowAsync,
   type AsyncEvaluationExecutor, type OptimizationWorkflow } from "./execution";
 
 export * from "./types";
@@ -44,7 +44,7 @@ export * from "./adaptiveBasinSearch";
 export function defaultOptimizationConfig(seed = 12_345): OptimizationConfig {
   return {
     candidateSide: "A",
-    objectiveMode: "auto",
+    objectiveMode: "singleWin",
     constraints: {},
     stages: [
       { ratioStep: 5, trials: 20, keep: 3000, maxCandidates: 300 },
@@ -95,32 +95,27 @@ function* createRallyWorkflow(input: OptimizationInput,
   profiler?: OptimizerProfiler,
 ): OptimizationWorkflow<OptimizationResult> {
   if (input.battleContext !== "rally" && input.scenarioType !== "CITY_DEFENSE") throw new Error("Optimizer is available only for rally battles.");
+  const requestedMode = config.objectiveMode;
+  // Legacy automatic/minimum-wave requests migrate to win rate; attrition is
+  // explicitly available only for the single rally attacker.
+  config = { ...config, objectiveMode: config.objectiveMode === "enemyAttrition" && config.candidateSide !== "B" && input.rallyMode !== "multi" ? "enemyAttrition" : "singleWin" };
   if (input.scenarioType === "CITY_DEFENSE") config = { ...config, objectiveMode: "singleWin",
     ...(config.candidateSide !== "B" ? { constraints: { ...config.constraints, fixedBodyExact: true, fixedMemberSkillIds: [] } } : {}) };
   validateConfig(config);
   const single = yield* createSingleWaveSearchWorkflow(input, config, onProgress, profiler);
-  const mode = config.candidateSide === "B" ? "singleWin" : config.objectiveMode === "auto"
-    ? AutoObjective.select(single.coarseBest.winRate, config) : config.objectiveMode;
-  if (mode !== "minRallies") return finishRallyOptimization(input, config, single, []);
-  const multi = yield* createMultiWaveSearchWorkflow(input,
-    single.top.map((row) => row.candidate), config, onProgress, profiler);
-  return finishRallyOptimization(input, config, { ...single,
-    performance: addOptimizationPerformance(single.performance, multi.performance) }, multi.top);
+  return { ...finishRallyOptimization(input, config, single, []), requestedMode };
 }
 
 function finishRallyOptimization(input: OptimizationInput, config: OptimizationConfig,
   single: SingleSearchResult, multi: readonly MultiWaveEvaluation[],
 ): OptimizationResult {
-  const mode = config.candidateSide === "B" ? "singleWin" : config.objectiveMode === "auto"
-    ? AutoObjective.select(single.coarseBest.winRate, config)
-    : config.objectiveMode;
+  const mode = config.objectiveMode === "enemyAttrition" ? "enemyAttrition" : "singleWin";
   return {
-    optimizationContext: createOptimizationContext(input, config.candidateSide),
+    optimizationContext: createOptimizationContext(input, config.candidateSide,mode==="enemyAttrition"?"minEnemyRemainingQuality":"candidateSideWinRate"),
     searchDimensionAudit: single.searchDiagnostics.searchDimensionAudit ?? resolveSearchDimensions(input, {
       side: config.candidateSide ?? "A", fixedHead: TROOP_TYPES.every((troop) => config.constraints.fixedLeaders?.[troop] !== undefined),
       fixedBody: config.constraints.fixedBodyExact === true || config.constraints.fixedMemberSkillIds?.length === 4 }),
-    status: mode === "minRallies" && multi.every((entry) => entry.targetWaves === null)
-      ? "target_not_met" : "success",
+    status: "success",
     seed: config.firstSeed,
     searchDiagnostics: single.searchDiagnostics,
     currentEvaluation: single.current,
@@ -130,9 +125,7 @@ function finishRallyOptimization(input: OptimizationInput, config: OptimizationC
     multiWaveTop: multi,
     evaluatedCandidates: single.evaluatedCandidates,
     performance: single.performance,
-    approximation: mode === "minRallies"
-      ? "Beam search ranks sampled enemy-state distributions and replays each expanded sequence as real trajectories; finalists use independent full Monte Carlo verification. Search is approximate, not a global optimum proof."
-      : "多阶段启发式搜索；理论评分不是胜率，最终推荐由正式 BattleEngine 复验决定，不能证明严格全局最优。",
+    approximation: mode==="enemyAttrition"?"按真实战斗剩余兵力及固定参考攻防权重排名；剩余战力指数不等于后续实际胜率，启发式搜索不能保证全局最优。":"多阶段启发式搜索；理论评分不是胜率，最终推荐由正式 BattleEngine 复验决定，不能证明严格全局最优。",
   };
 }
 
@@ -146,6 +139,7 @@ export function verifyRallyCandidate(
   trials = 10_000,
   firstSeed = input.randomSeed,
   candidateSide: SideId = "A",
+  objectiveMode: OptimizationConfig["objectiveMode"] = "singleWin",
 ): CandidateEvaluation {
   const own = candidateSide === "A" ? input.sideA : input.sideB;
   if (input.scenarioType !== "CITY_DEFENSE" && (input.battleContext !== "rally" || own.rallyDeployment === undefined)) {
@@ -160,8 +154,10 @@ export function verifyRallyCandidate(
       row.samples.outcomes.map((outcome) => ({ outcome: outcome.outcome === "B" ? "A" as const : outcome.outcome === "A" ? "B" as const : outcome.outcome,
         self: outcome.remaining.B, enemy: outcome.remaining.A, rounds: outcome.roundCount })));
   }
-  return evaluateSingleCandidate(candidate, totalTroops,
-    createStageSeeds(firstSeed, trials, 1_000_000), createEngineCandidateRunner(input));
+  const seeds=createStageSeeds(firstSeed,trials,1_000_000),run=createEngineCandidateRunner(input);
+  if(objectiveMode!=="enemyAttrition")return evaluateSingleCandidate(candidate,totalTroops,seeds,run);
+  const samples=run(candidate,seeds),quality=createEnemyQualityMetric(input);
+  return {...evaluateSingleCandidate(candidate,totalTroops,seeds,()=>samples),enemyRemainingQuality:summarizeBatchMetric(samples.map(sample=>quality.score(sample.enemy)))};
 }
 
 function validateConfig(config: OptimizationConfig): void {
@@ -197,3 +193,6 @@ function validateConfig(config: OptimizationConfig): void {
     throw new RangeError("Auto-mode thresholds are reversed.");
   }
 }
+
+export * from "./configuredMultiRally";
+export * from "./enemyAttrition";

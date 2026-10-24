@@ -36,12 +36,10 @@ export function wilsonInterval(successes: number, trials: number, z = 1.95996398
   return [Math.max(0, center - radius), Math.min(1, center + radius)];
 }
 
-/** Lexicographic; win rate dominates unless Wilson intervals overlap. */
+/** Win-rate objective: uncertainty is reported, never replaced by survivor count. */
 export function compareSingleWin(a: CandidateEvaluation, b: CandidateEvaluation): number {
-  const statisticallySeparated = a.wilson95[0] > b.wilson95[1] || b.wilson95[0] > a.wilson95[1];
-  if (statisticallySeparated && a.winRate !== b.winRate) return b.winRate - a.winRate;
-  return b.selfRemaining.total.mean - a.selfRemaining.total.mean ||
-    b.winRate - a.winRate ||
+  return b.winRate - a.winRate ||
+    b.selfRemaining.total.mean - a.selfRemaining.total.mean ||
     a.enemyRemaining.total.mean - b.enemyRemaining.total.mean ||
     a.rounds.mean - b.rounds.mean;
 }

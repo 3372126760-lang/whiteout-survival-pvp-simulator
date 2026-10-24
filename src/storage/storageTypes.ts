@@ -24,7 +24,9 @@ export interface PersistedSideInput extends Omit<ValidationSideInput,
   readonly bodySkills: readonly BodySkillConfig[];
 }
 
-export interface PersistedBattleInput extends Omit<ValidationBattleInput, "sideA" | "sideB" | "legacySceneMigration"> {
+export interface PersistedBattleInput extends Omit<ValidationBattleInput, "sideA" | "sideB" | "legacySceneMigration" | "rallyAttacks" | "rallySingleAttack"> {
+  readonly rallyAttacks?: readonly PersistedSideInput[];
+  readonly rallySingleAttack?: PersistedSideInput;
   readonly sideA: PersistedSideInput;
   readonly sideB: PersistedSideInput;
   readonly legacySceneMigration?: Omit<NonNullable<ValidationBattleInput["legacySceneMigration"]>,

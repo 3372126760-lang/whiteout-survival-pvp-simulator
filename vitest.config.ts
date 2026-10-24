@@ -3,6 +3,7 @@ import viteConfig from "./vite.config.ts";
 
 export default defineConfig((environment) => mergeConfig(viteConfig(environment), {
   test: {
+    include: ["src/**/*.test.ts"],
     // These CPU-bound optimizer suites contend with cold UI imports when Vitest
     // starts one process per logical core. Keep isolation and default timeouts.
     maxWorkers: 2,

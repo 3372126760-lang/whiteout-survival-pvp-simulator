@@ -22,7 +22,7 @@
 }
 
 * { box-sizing: border-box; }
-html { min-width: 320px; background: var(--bg); }
+html { min-width: 0; background: var(--bg); }
 body { margin: 0; min-height: 100vh; background:
   linear-gradient(rgba(82, 211, 216, .025) 1px, transparent 1px),
   linear-gradient(90deg, rgba(82, 211, 216, .025) 1px, transparent 1px),

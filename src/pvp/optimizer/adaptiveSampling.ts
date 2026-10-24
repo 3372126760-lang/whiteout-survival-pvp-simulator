@@ -167,7 +167,7 @@ export class BattleSampleLedger<C> {
 
 /** Separate derivation domains AND a collision check keep independent validation
  * draws disjoint from every possible screening draw in this session. */
-export function adaptiveSeedPools(firstSeed: number, screeningBudget: number, finalBudget: number) {
+export function adaptiveSeedPools(firstSeed: number, screeningBudget: number, finalBudget: number, independentFinal = false) {
   const screening = createStageSeeds(firstSeed, screeningBudget);
   const screeningSet = new Set(screening);
   const seen = new Set(screening);
@@ -180,7 +180,7 @@ export function adaptiveSeedPools(firstSeed: number, screeningBudget: number, fi
     }
   }
   // Even tiny custom Final budgets reserve independent validation draws.
-  const prefix = Math.min(screeningBudget, Math.floor(finalBudget / 2));
+  const prefix = independentFinal ? 0 : Math.min(screeningBudget, Math.floor(finalBudget / 2));
   return { screening, independent, final: [...screening.slice(0, prefix), ...independent.slice(0, finalBudget - prefix)],
     finalScreeningPrefix: prefix, screeningSet };
 }

@@ -22,7 +22,11 @@ const troopNames = { shield: "盾兵", lancer: "矛兵", marksman: "射手" };
 const troopIcons = { shield: troopIcon("shield"), lancer: troopIcon("lancer"), marksman: troopIcon("marksman") };
 
 export function renderModeHeader(mode: EditorMode): string {
-  return `<header class="mode-header"><div class="app-brand"><span class="brand-mark" aria-hidden="true">W</span><div><p class="eyebrow">${mode === "advanced" ? "WHITEOUT · ADVANCED" : "WHITEOUT · BATTLE LAB"}</p><h1>无尽冬日 PVP 战斗模拟器</h1><p class="subtitle">基于实际战报验证的非官方战斗模型 · Beta</p></div></div><div class="mode-header-right"><div class="mode-switch" role="group" aria-label="界面模式">${(["simple", "advanced"] as const).map((value) => `<button type="button" data-action="editor-mode" data-mode="${value}" aria-pressed="${mode === value}">${value === "simple" ? "普通模式" : "高级模式"}</button>`).join("")}</div><span class="model-version"><i></i> Model v${DISPLAY_MODEL_VERSION}</span></div></header>`;
+  return `<p class="creator-credit">583缥缈制作，欢迎移民583</p><header class="mode-header"><div class="app-brand"><span class="brand-mark" aria-hidden="true">W</span><div><p class="eyebrow">${mode === "advanced" ? "WHITEOUT · ADVANCED" : "WHITEOUT · BATTLE LAB"}</p><h1>无尽冬日 PVP 战斗模拟器</h1><p class="subtitle">基于实际战报验证的非官方战斗模型 · 正式版</p></div></div><div class="mode-header-right"><div class="mode-switch" role="group" aria-label="界面模式">${(["simple", "advanced"] as const).map((value) => `<button type="button" data-action="editor-mode" data-mode="${value}" aria-pressed="${mode === value}">${value === "simple" ? "普通模式" : "高级模式"}</button>`).join("")}</div><span class="model-version"><i></i> Model v${DISPLAY_MODEL_VERSION}</span></div></header>`;
+}
+
+export function renderModelNotice(): string {
+  return `<section class="model-notice" aria-label="使用声明"><h2>使用声明</h2><p>模型相关资料均来源于网上公开资料，仅供交流研究。本工具为非官方战斗模拟器，部分技能机制仍在验证。结果仅代表当前模型及所填配置下的模拟表现，不构成实际战斗保证。优化器采用有限预算搜索，推荐为本轮已验证候选中的较优方案，不保证全局最优；小幅胜率差请增加样本复核。</p></section>`;
 }
 
 export interface SimpleViewOptions {
@@ -54,7 +58,8 @@ export function renderSimpleMode(options: SimpleViewOptions): string {
     <fieldset class="simple-editor" ${running ? "disabled" : ""}><label class="simple-stage simple-global-stage">服务器阶段<select data-scope="server-stage">${SERVER_STAGES.map((stage) => `<option value="${stage.id}" ${stage.id === validationStageId(input) ? "selected" : ""}>${stage.label} · 最高 S${stage.maxHeroGeneration}</option>`).join("")}</select></label>${options.renderConfiguration ? options.renderConfiguration() : `<div class="simple-side-grid">${renderSimpleSide("A", input.sideA, options)}${renderSimpleSide("B", input.sideB, options)}</div>${options.renderComparisons?.() ?? ""}` }</fieldset>
     <section class="simple-run-card" aria-label="模拟设置"><div><h2><span class="step-number">02</span> 开始模拟</h2><p>多场独立战斗，观察胜率与兵力分布。</p></div><div class="simple-run-settings"><label>模拟次数<select data-scope="batch-count" ${running ? "disabled" : ""}>${[...new Set([100, 1000, 10000, count])].sort((a, b) => a - b).map((value) => `<option value="${value}" ${count === value ? "selected" : ""}>${n(value)} 场</option>`).join("")}</select></label><label class="simple-random"><input data-scope="simple-random" type="checkbox" ${input.simulationMode === "random" ? "checked" : ""} ${running ? "disabled" : ""}> 随机模拟</label><button class="btn btn-primary simple-cta" data-action="run-batch" ${running || blocked ? "disabled" : ""}>${running ? `模拟中 ${n(progress)} / ${n(count)}` : "开始模拟"}<span aria-hidden="true"> →</span></button></div>${running ? `<div class="simple-progress" role="status" aria-live="polite"><progress max="${count}" value="${progress}"></progress><span data-simple-progress>已完成 ${n(progress)} / ${n(count)} 场</span></div>` : ""}${blocked ? '<p class="simple-run-error" role="alert">请先检查配兵比例或完成高级配置中的待确认项目。</p>' : ""}</section>
     ${renderSimpleResults(result)}
-    <footer class="simple-footer"><span>WHITEOUT BATTLE LAB <b>·</b> 非官方玩家工具</span><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
+    <footer class="simple-footer"><span>模拟结果供阵容比较参考，请结合实际战报判断。</span></footer>
+    ${renderModelNotice()}
     ${options.detailsOpen && result !== null ? renderSimpleDetails(result) : ""}`;
 }
 

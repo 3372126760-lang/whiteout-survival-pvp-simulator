@@ -130,7 +130,7 @@ describe("rally optimization", () => {
     expect(createStageSeeds(91, 3)).toEqual([91, 92, 93]);
   });
 
-  it("uses wins first and self survivors to break statistically close win rates", () => {
+  it("uses self survivors only to break equal win rates", () => {
     const seeds = createStageSeeds(1, 10);
     const strong = evaluateSingleCandidate(candidateA, 100, seeds, () => seeds.map(() => ({
       outcome: "A", self: { shield: 80, lancer: 0, marksman: 0 }, enemy: zeros, rounds: 1,
@@ -140,6 +140,18 @@ describe("rally optimization", () => {
     })));
     expect(compareSingleWin(strong, weak)).toBeLessThan(0);
     expect(strong.wilson95[1]).toBeLessThanOrEqual(1);
+  });
+
+  it("does not rank more survivors ahead of higher win rate when intervals overlap", () => {
+    const seeds = createStageSeeds(1, 1000);
+    const row = (wins: number, survivors: number) => evaluateSingleCandidate(candidateA, 100, seeds, () => seeds.map((_, i) => ({
+      outcome: i < wins ? "A" as const : "B" as const,
+      self: { shield: survivors, lancer: 0, marksman: 0 }, enemy: zeros, rounds: 1,
+    })));
+    const higher = row(167, 1), lower = row(165, 99);
+    expect(higher.wilson95[0]).toBeLessThan(lower.wilson95[1]);
+    expect(compareSingleWin(higher, lower)).toBeLessThan(0);
+    expect(compareSingleWin(lower, higher)).toBeGreaterThan(0);
   });
 
   it("ranks a statistically separated higher win rate ahead of residual troops", () => {
@@ -301,7 +313,7 @@ describe("rally optimization", () => {
     expect("trace" in result.singleWaveTop[0]!).toBe(false);
   }, 15_000);
 
-  it("returns a visible best approximation when the multi-wave target is unreachable", () => {
+  it("migrates legacy minimum-wave requests to single-rally win rate without creating waves", () => {
     const base = createDefaultValidationInput();
     const input = { ...base, scenarioType: "RALLY" as const,
       battleContext: "rally" as const, maxRounds: 1,
@@ -322,9 +334,10 @@ describe("rally optimization", () => {
       ] as const,
       verificationTrials: 2, verificationTop: 2, topN: 2 };
     const result = runRallyOptimization(input, config);
-    expect(result.status).toBe("target_not_met");
-    expect(result.multiWaveTop).toHaveLength(1);
-    expect(result.multiWaveTop[0]?.waves[0]?.defeatProbability).toBeLessThan(1);
-    expect(result.multiWaveTop[0]?.sequence.length).toBe(1);
+    expect(result.status).toBe("success");
+    expect(result.selectedMode).toBe("singleWin");
+    expect(result.requestedMode).toBe("minRallies");
+    expect(result.multiWaveTop).toHaveLength(0);
+    expect(result.singleWaveTop.length).toBeGreaterThan(0);
   }, 15_000);
 });

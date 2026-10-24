@@ -142,12 +142,13 @@ describe("Greg Law Intimidation correction (Rufus template)", () => {
     const bodies = preprocessBodyCombinations([{ memberSkillIds: [] }], () => []).bodies;
     const table = createJointCoefficientTable(input, defaultOptimizationConfig(),
       [{ leaderHeroIds: input.sideA.leaderHeroIds, memberSkillIds: [] }], bodies);
-    // J retains its existing finite-horizon proxy (also used for Rufus), not a formal probability simulation.
+    // The repeatable two-round debuff uses steady refresh coverage, not just
+    // the first two rounds of the entire 40-round scoring window.
     // Both skills must compile into the SAME typed penetration group in all six survival lanes.
     expect(table.routes).toHaveLength(6);
     expect(table.routes.every((r) => r.key.includes("attributeReduction:enemyPenetrationReduction:penetration"))).toBe(true);
     expect(table.routes.every((r) => r.lane < 6 && !r.inverse)).toBe(true);
-    const expected = .2 + .5 * (1 - .8 ** 2) * (2 / 40);
+    const expected = .2 + .5 * (1 - .8 ** 2);
     for (const value of table.headValues) expect(value).toBeCloseTo(expected, 12);
   });
 });

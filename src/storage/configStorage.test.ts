@@ -372,3 +372,18 @@ describe("versioned battle config storage", () => {
       .toEqual(runValidationBattle(input).roundDamage);
   });
 });
+
+it("round-trips complete independent rally attacks and the selected attack",()=>{
+ const base=createDefaultValidationInput();
+ const second={...base.sideA,troops:{...base.sideA.troops,shield:{...base.sideA.troops.shield,attack:1234}}};
+ const input={...base,scenarioType:"RALLY" as const,battleContext:"rally" as const,rallyMode:"multi" as const,rallyActiveAttack:1,rallyAttacks:[base.sideA,second],sideA:second};
+ const restored=restorePersistedConfig(createPersistedEnvelope(input,100));
+ expect(restored.input.rallyMode).toBe("multi");
+ expect(restored.input.rallyActiveAttack).toBe(1);
+ expect(restored.input.rallyAttacks).toHaveLength(2);
+ expect(restored.input.rallyAttacks![0]!.troops.shield.attack).toBe(base.sideA.troops.shield.attack);
+ expect(restored.input.rallyAttacks![1]!.troops.shield.attack).toBe(1234);
+ const withSingle=restorePersistedConfig(createPersistedEnvelope({...input,rallySingleAttack:base.sideA},100));
+ expect(withSingle.input.rallySingleAttack).toEqual(restorePersistedConfig(createPersistedEnvelope(base,100)).input.sideA);
+ expect(restored.input.sideB).toEqual(restorePersistedConfig(createPersistedEnvelope(base,100)).input.sideB);
+});

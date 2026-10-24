@@ -642,7 +642,7 @@ function readOptimizationConfig(value: unknown, seed: number,
     candidateSide: oneOf(raw.candidateSide ?? "A", ["A", "B"] as const, "optimizationConfig.candidateSide"),
     ...(raw.jointPipeline === undefined ? {} : { jointPipeline: resolveJointPipelineOptions(record(raw.jointPipeline, "optimizationConfig.jointPipeline")) }),
     ...(racingMigrated ? { verificationTop: fallback.verificationTop } : {}),
-    objectiveMode: oneOf(raw.objectiveMode, ["singleWin", "minRallies", "auto"] as const,
+    objectiveMode: oneOf(raw.objectiveMode, ["singleWin", "enemyAttrition", "minRallies", "auto"] as const,
       "optimizationConfig.objectiveMode"),
     constraints,
     stages: normalizedStages,
@@ -853,6 +853,15 @@ function readInput(value: unknown): ValidationBattleInput {
     simulationMode, attributeInputMode: scenarioType === "THREE_QUEUE"
       ? "prediction" : attributeInputMode, postBattleCasualtyMode,
     ...(raw.defenderInTerritory === undefined ? {} : { defenderInTerritory: boolean(raw.defenderInTerritory, "defenderInTerritory") }),
+    ...(raw.rallyMode === undefined ? {} : {rallyMode:oneOf(raw.rallyMode,["single","multi"] as const,"rallyMode")}),
+    ...(raw.rallySingleAttack === undefined ? {} : {rallySingleAttack:readSide(raw.rallySingleAttack,"rallySingleAttack")}),
+    ...(raw.rallyActiveAttack === undefined ? {} : {rallyActiveAttack:integer(raw.rallyActiveAttack,"rallyActiveAttack",0,9)}),
+    ...(raw.rallyAttacks === undefined ? {} : {rallyAttacks:(()=>{
+      const attacks=array(raw.rallyAttacks,"rallyAttacks");
+      if(attacks.length>10 || (raw.rallyMode === "multi" && !attacks.length))throw new Error("多集结需要1至10支进攻部队。");
+      if(raw.rallyActiveAttack !== undefined && Number(raw.rallyActiveAttack)>=Math.max(1,attacks.length))throw new Error("当前集结索引超出范围。");
+      return attacks.map((side,index)=>readSide(side,`rallyAttacks.${index}`));
+    })()}),
     sideA: readSide(raw.sideA, "sideA"),
     sideB: readSide(raw.sideB, "sideB"),
     maxRounds: integer(raw.maxRounds, "maxRounds", 1, 1500),
@@ -979,7 +988,7 @@ export function createPersistedEnvelope(
     attributeInputMode: sanitized.input.attributeInputMode ?? "finalReport",
     postBattleCasualtyMode: sanitized.input.postBattleCasualtyMode ?? "NORMAL" });
   validateScenario(normalized);
-  const { legacySceneMigration, ...withoutLegacySnapshot } = normalized;
+  const { legacySceneMigration, rallyAttacks, rallySingleAttack, ...withoutLegacySnapshot } = normalized;
   const persistedInput: PersistedBattleInput = {
     ...withoutLegacySnapshot,
     ...(legacySceneMigration === undefined ? {} : { legacySceneMigration: {
@@ -987,6 +996,8 @@ export function createPersistedEnvelope(
       originalSideA: toPersistedSide(legacySceneMigration.originalSideA, "s16", "A"),
       originalSideB: toPersistedSide(legacySceneMigration.originalSideB, "s16", "B"),
     } }),
+    ...(rallyAttacks === undefined ? {} : {rallyAttacks:rallyAttacks.map(side=>toPersistedSide(side,stageId,"A"))}),
+    ...(rallySingleAttack === undefined ? {} : {rallySingleAttack:toPersistedSide(rallySingleAttack,stageId,"A")}),
     sideA: toPersistedSide(normalized.sideA, stageId, "A"),
     sideB: toPersistedSide(normalized.sideB, stageId, "B"),
   };

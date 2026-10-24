@@ -35,10 +35,15 @@ export function normalizeBattleInputPolicy(input: ValidationBattleInput): Valida
     return value;
   };
   const sideA = side(input.sideA, "A"), sideB = side(input.sideB, "B");
+  const rallyAttacks = input.rallyAttacks?.map(value => side(value, "A"));
+  const ralliesChanged = rallyAttacks?.some((value, i) => value !== input.rallyAttacks?.[i]) ?? false;
+  const rallySingleAttack = input.rallySingleAttack && side(input.rallySingleAttack,"A");
   const earth = input.innerEarth;
   const innerEarth = earth && TROOP_TYPES.some((troop) => level(earth.ally.t12SkillLevels[troop]) !== earth.ally.t12SkillLevels[troop])
     ? { ...earth, ally: { ...earth.ally, t12SkillLevels: Object.fromEntries(TROOP_TYPES.map((troop) =>
       [troop, level(earth.ally.t12SkillLevels[troop])])) as typeof earth.ally.t12SkillLevels } } : earth;
-  return sideA === input.sideA && sideB === input.sideB && innerEarth === earth ? input : { ...input, sideA, sideB,
+  return sideA === input.sideA && sideB === input.sideB && innerEarth === earth && !ralliesChanged && rallySingleAttack === input.rallySingleAttack ? input : { ...input, sideA, sideB,
+    ...(rallySingleAttack ? {rallySingleAttack} : {}),
+    ...(ralliesChanged ? { rallyAttacks: rallyAttacks! } : {}),
     ...(innerEarth ? { innerEarth } : {}) };
 }

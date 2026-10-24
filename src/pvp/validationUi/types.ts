@@ -180,6 +180,12 @@ export interface OptimizerHeroPoolEntry {
 }
 
 export interface ValidationBattleInput {
+  /** Missing in old saves means single rally. The defender is always sideB. */
+  readonly rallyMode?: "single" | "multi";
+  readonly rallyActiveAttack?: number;
+  /** Every attack is a complete independent side configuration; never stores defenders. */
+  readonly rallyAttacks?: readonly ValidationSideInput[];
+  readonly rallySingleAttack?: ValidationSideInput;
   readonly innerEarth?: InnerEarthConfig;
   readonly legacySceneMigration?: {
     readonly sourceScenario: "THREE_QUEUE";

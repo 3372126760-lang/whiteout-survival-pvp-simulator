@@ -28,5 +28,10 @@ export function normalizePlayerHeroLevels(input: ValidationBattleInput): Validat
       ...(!queuesChanged ? {} : { threeQueues: queues! }) };
   };
   const sideA = side(input.sideA), sideB = side(input.sideB);
-  return sideA === input.sideA && sideB === input.sideB ? input : { ...input, sideA, sideB };
+  const rallyAttacks = input.rallyAttacks?.map(side);
+  const changed = rallyAttacks?.some((value, i) => value !== input.rallyAttacks?.[i]);
+  const rallySingleAttack = input.rallySingleAttack && side(input.rallySingleAttack);
+  return sideA === input.sideA && sideB === input.sideB && !changed && rallySingleAttack === input.rallySingleAttack ? input : { ...input, sideA, sideB,
+    ...(rallySingleAttack ? {rallySingleAttack} : {}),
+    ...(changed ? { rallyAttacks: rallyAttacks! } : {}) };
 }

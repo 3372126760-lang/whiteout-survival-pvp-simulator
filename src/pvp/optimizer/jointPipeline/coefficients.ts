@@ -8,6 +8,7 @@ import { stateBindings } from "../criterion/signatures";
 import type { PreprocessedBodyRow } from "../criterion/bodyPreprocess";
 import { candidateHeadWeaponLevels, candidateToInput } from "../candidateGenerator";
 import type { OptimizationConfig, OptimizationInput, RallyCandidate } from "../types";
+import { fixedMainTargets, fixedTargetValue } from "./targetValue";
 
 export const DAMAGE_HORIZON = 20, REDUCTION_HORIZON = 40;
 export interface ProbabilityReduction { probability: number; value: number; }
@@ -38,8 +39,8 @@ function activeInRound(lifecycle: EffectLifecycle | undefined, round: number, du
   return round < start + (lifecycle?.durationRounds ?? duration ?? Infinity);
 }
 interface ReductionTerm { id: string; value: number; probabilities: readonly number[]; }
-interface Recipe { linear: Map<string, number>; reductions: Map<string, ReductionTerm[]>; channels: Float64Array; markPremiums: Map<string, Float64Array>; }
-interface Route { key: string; lane: number; inverse: boolean; }
+interface Recipe { linear: Map<string, number>; reductions: Map<string, ReductionTerm[]>; channels: Float64Array; markPremiums: Map<string, Float64Array>; procPresence: Map<string, number>; }
+interface Route { key: string; lane: number; inverse: boolean; procVulnerability?: boolean; }
 interface ReductionLookup { lane: number; headIds: Uint32Array; bodyIds: Uint32Array; bodyTypes: number; values: Float64Array; }
 export interface JointCoefficientTable {
   headCount: number; bodyCount: number; headBase: Float64Array;
@@ -51,8 +52,10 @@ export interface JointCoefficientTable {
   markCorrections?: readonly { head: Float64Array; body: Float64Array }[];
   reductions: readonly ReductionLookup[];
   incomingNormalShare: number;
+  mainTargetWeights?: Float64Array;
+  procOverlaps?: readonly { head: Float64Array; body: Float64Array; coefficient: number }[];
 }
-function emptyRecipe(): Recipe { return { linear: new Map(), reductions: new Map(), channels: new Float64Array(6), markPremiums: new Map() }; }
+function emptyRecipe(): Recipe { return { linear: new Map(), reductions: new Map(), channels: new Float64Array(6), markPremiums: new Map(), procPresence: new Map() }; }
 const sharedReceived = new Set(["receivedDamageReduction", "receivedNormalAttackReduction", "receivedSkillDamageReduction"]);
 function groupKey(kind: string, group: string, attribute: string): string {
   if (kind === "damageReduction" && sharedReceived.has(group)) return "receivedSharedDivisor";
@@ -61,8 +64,10 @@ function groupKey(kind: string, group: string, attribute: string): string {
   return `${kind}:${group}:${attribute}`;
 }
 /** Build once per Head or Body from typed definitions, never from localized descriptions. */
-function compileRecipe(bindings: readonly (SignatureBinding & { enemy?: boolean })[], enemyShares: readonly number[], curves = new Map<string, readonly number[]>()): Recipe {
+function compileRecipe(bindings: readonly (SignatureBinding & { enemy?: boolean })[], enemyShares: readonly number[], curves = new Map<string, readonly number[]>(),
+  projection = fixedMainTargets(bindings.filter(b => !b.enemy), enemyShares), ownAlive: readonly boolean[] = [true, true, true], weightTargets = true): Recipe {
   const recipe = emptyRecipe();
+  const mainWeight = (troop: number) => weightTargets ? projection.weights[troop]! : 1;
   const markBindings = bindings.filter((b) => !b.enemy && b.skill.levelValues[b.level]?.effects.some((e) => e.kind === "targetBoundMark"));
   for (const group of targetMarkSourceGroups(markBindings)) {
     const action = group.mechanic;
@@ -71,14 +76,34 @@ function compileRecipe(bindings: readonly (SignatureBinding & { enemy?: boolean 
     const p = Math.max(...group.sources.map((b) => b.skill.levelValues[b.level]?.probability ?? b.skill.probability ?? 1));
     const premium = new Float64Array(6);
     for (const [troop, name] of TROOP_TYPES.entries()) if (action.schedule.source === "army" || action.schedule.source === name) {
-      recipe.channels[3 + troop]! += p * group.coefficient * events / DAMAGE_HORIZON;
-      if (action.duplicateSourceStacking) premium[3 + troop] = p * (action.damageCoefficient - action.duplicateSourceStacking.additionalCoefficient) * events / DAMAGE_HORIZON;
+      recipe.channels[3 + troop]! += p * group.coefficient * events / DAMAGE_HORIZON * mainWeight(troop);
+      if (action.duplicateSourceStacking) premium[3 + troop] = p * (action.damageCoefficient - action.duplicateSourceStacking.additionalCoefficient) * events / DAMAGE_HORIZON * mainWeight(troop);
     }
     if (action.duplicateSourceStacking) recipe.markPremiums.set(group.key, premium);
   }
+  // Same proc family replaces rather than adds. Project repeated attempts onto
+  // the default target with fixed initial targeting probabilities (no rounds).
+  const families = new Map<string, typeof bindings[number][]>();
+  for (const binding of bindings) if (!binding.enemy && "procEffectFamilyId" in binding.skill && binding.skill.procEffectFamilyId) {
+    const id = binding.skill.procEffectFamilyId, group = families.get(id) ?? [];
+    group.push(binding); families.set(id, group);
+  }
+  const seenFamilies = new Set<string>();
   for (const binding of bindings) {
     const skill = binding.skill, level = skill.levelValues[binding.level]; if (!level) continue;
-    const p = level.probability ?? skill.probability ?? 1;
+    let p = level.probability ?? skill.probability ?? 1;
+    if (!binding.enemy && "procEffectFamilyId" in skill && skill.procEffectFamilyId) {
+      const id = skill.procEffectFamilyId;
+      if (seenFamilies.has(id)) continue;
+      seenFamilies.add(id);
+      let miss = 1;
+      for (const source of families.get(id)!) {
+        const chance = source.skill.levelValues[source.level]?.probability ?? source.skill.probability ?? 1;
+        for (let troop = 0; troop < 3; troop++) if (ownAlive[troop])
+          miss *= 1 - chance * (projection.probabilities[troop]![projection.normal] ?? 0);
+      }
+      p = 1 - miss; recipe.procPresence.set(id, p);
+    }
     const action = "actionMechanic" in skill ? skill.actionMechanic : undefined;
     const interval = action?.kind === "attackCountTrigger" ? action.schedule.interval : 1;
     const duration = level.durationRounds ?? skill.durationRounds;
@@ -90,25 +115,34 @@ function compileRecipe(bindings: readonly (SignatureBinding & { enemy?: boolean 
         firstActiveRound: level.periodStartRound ?? 1, activeWindowRounds: duration ?? 1 } :
         "activationTiming" in skill && skill.activationTiming === "nextRound" ? { activationTiming: "nextRound" as const } : undefined);
       const fixedDuration = skill.trigger === "passive" ? duration : undefined;
+      // A one-round proc can refresh every action. Its duration limits each
+      // application, not the whole battle. Absolute passive windows stay fixed.
+      let coverageLifecycle = lifecycle;
+      if (skill.trigger !== "passive" && !level.periodRounds && !lifecycle?.activeRounds && !lifecycle?.periodRounds) {
+        const { durationRounds: applicationDuration, ...recurring } = lifecycle ?? {};
+        void applicationDuration;
+        coverageLifecycle = recurring;
+      }
       const sourceWeight = effect.scope.incomingSourceTroop ? enemyShares[TROOP_TYPES.indexOf(effect.scope.incomingSourceTroop)]! : 1;
       const linked = "linkedToSkillId" in effect ? bindings.find((b) => b.skill.id === effect.linkedToSkillId && b.source === binding.source && !!b.enemy === !!binding.enemy) : undefined;
       const linkedProbability = linked ? linked.skill.levelValues[linked.level]?.probability ?? linked.skill.probability ?? 1 : 1;
       const probability = p * linkedProbability;
       const cooldown = level.cooldownRounds ?? skill.cooldownRounds ?? 0;
       const triggerRate = 1 / Math.max(1, interval, 1 + Math.max(0, cooldown - 1) * probability);
-      const eventWeight = probability * triggerRate * roundCoverage(lifecycle, DAMAGE_HORIZON, fixedDuration);
+      const eventWeight = probability * triggerRate * roundCoverage(coverageLifecycle, DAMAGE_HORIZON, fixedDuration);
       const activeDuration = skill.trigger === "passive" || level.periodRounds ? 1 : duration ?? effect.lifecycle?.durationRounds ?? 1;
       const presence = interval > 1 || cooldown > 1 ? probability * Math.min(1, activeDuration * triggerRate)
         : 1 - (1 - probability) ** activeDuration;
-      const damageWeight = presence * roundCoverage(lifecycle, DAMAGE_HORIZON, fixedDuration);
+      const damageWeight = presence * roundCoverage(coverageLifecycle, DAMAGE_HORIZON, fixedDuration);
       for (let troop = 0; troop < 3; troop++) {
         if (!enemy && source >= 0 && source !== troop) continue;
         if (defensive && effect.scope.target && !["all", "currentTarget"].includes(effect.scope.target) && effect.scope.target !== TROOP_TYPES[troop]) continue;
         if (!enemy && effect.kind === "extraDamage") {
-          const targetCount = effect.scope.target === "all" ? enemyShares.filter((v) => v > 0).length : 1;
-          recipe.channels[3 + troop]! += eventWeight * effect.coefficient * targetCount; continue;
+          const targetValue = weightTargets ? fixedTargetValue(effect.scope.target, enemyShares, mainWeight(troop))
+            : effect.scope.target === "all" ? enemyShares.filter(v => v > 0).length : 1;
+          recipe.channels[3 + troop]! += eventWeight * effect.coefficient * targetValue; continue;
         }
-        if (!enemy && effect.kind === "sameMainAttackSegment") { recipe.channels[troop]! += eventWeight * effect.damageScale; continue; }
+        if (!enemy && effect.kind === "sameMainAttackSegment") { recipe.channels[troop]! += eventWeight * effect.damageScale * mainWeight(troop); continue; }
         if (!("value" in effect) || !("group" in effect)) continue;
         const attribute = "attribute" in effect ? effect.attribute : "";
         let survival = false, output = false, inverse = false, reduction = false;
@@ -136,16 +170,16 @@ function compileRecipe(bindings: readonly (SignatureBinding & { enemy?: boolean 
             const terms = recipe.reductions.get(key) ?? [];
             // Effects of a single trigger share a Bernoulli draw; four Body runtime
             // instances remain independent. Temporal states are integrated before inversion.
-            const curveKey = JSON.stringify([lifecycle, fixedDuration, presence * sourceWeight]);
+            const curveKey = JSON.stringify([coverageLifecycle, fixedDuration, presence * sourceWeight]);
             let probabilities = curves.get(curveKey);
             if (!probabilities) { probabilities = Array.from({ length: REDUCTION_HORIZON }, (_, round) =>
-              activeInRound(lifecycle, round + 1, fixedDuration) ? Math.min(1, presence * sourceWeight) : 0); curves.set(curveKey, probabilities); }
+              activeInRound(coverageLifecycle, round + 1, fixedDuration) ? Math.min(1, presence * sourceWeight) : 0); curves.set(curveKey, probabilities); }
             const id = `${binding.runtimeId}:${skill.id}`, existing = terms.find((t) => t.id === id && JSON.stringify(t.probabilities) === JSON.stringify(probabilities));
             if (existing) existing.value += effect.value;
             else terms.push({ id, value: effect.value, probabilities });
             recipe.reductions.set(key, terms);
           } else {
-            const weight = survival ? presence * roundCoverage(lifecycle, REDUCTION_HORIZON, fixedDuration) : damageWeight;
+            const weight = survival ? presence * roundCoverage(coverageLifecycle, REDUCTION_HORIZON, fixedDuration) : damageWeight;
             recipe.linear.set(key, (recipe.linear.get(key) ?? 0) + (effect.kind === "directDamageCancellation" ? -effect.value : effect.value) * weight * sourceWeight);
           }
         }
@@ -171,19 +205,23 @@ export function combinedReductionFactor(a: readonly ReductionTerm[], b: readonly
 export function createJointCoefficientTable(input: OptimizationInput, config: OptimizationConfig,
   heads: readonly Pick<RallyCandidate, "leaderHeroIds" | "memberSkillIds">[], bodies: readonly PreprocessedBodyRow[]): JointCoefficientTable {
   const side = config.candidateSide ?? "A", ownKey = side === "A" ? "sideA" : "sideB";
-  const enemy = side === "A" ? "B" : "A", enemyOwn = input[side === "A" ? "sideB" : "sideA"];
-  const enemyTotal = TROOP_TYPES.reduce((sum, t) => sum + enemyOwn.troops[t].count, 0);
-  const shares = TROOP_TYPES.map((t) => enemyTotal ? enemyOwn.troops[t].count / enemyTotal : 1 / 3);
+  const enemy = side === "A" ? "B" : "A";
+  const preview = createValidationPreviewState(input), enemyOwn = preview[side === "A" ? "sideB" : "sideA"];
+  const enemyTotal = TROOP_TYPES.reduce((sum, t) => sum + enemyOwn.troops[t].aliveCount, 0);
+  const shares = TROOP_TYPES.map((t) => enemyTotal ? enemyOwn.troops[t].aliveCount / enemyTotal : 0);
   const curves = new Map<string, readonly number[]>();
+  const ownBindings = stateBindings(preview, side).filter(b => !input.disabledSkillIds.includes(b.skill.id));
+  const projection = fixedMainTargets(ownBindings, shares);
+  const ownAlive = TROOP_TYPES.map(t => preview[ownKey].troops[t].aliveCount > 0);
   const bodyRecipes = bodies.map((body) => compileRecipe(body.semantic.skills.flatMap((s, i) => input.disabledSkillIds.includes(s.skillId) ? [] :
-    [{ skill: s.definition, level: s.skillLevel, runtimeId: `body-${i}` }]), shares, curves));
+    [{ skill: s.definition, level: s.skillLevel, runtimeId: `body-${i}` }]), shares, curves, projection, ownAlive));
   const base = new Float64Array(heads.length * 6);
   const headRecipes = heads.map((head, i) => {
     const candidate = { ...head, memberSkillIds: [], ratios: { shield: 34, lancer: 33, marksman: 33 },
       headWeaponLevels: candidateHeadWeaponLevels(input, head.leaderHeroIds, config.constraints, side) };
     const state = createValidationPreviewState(candidateToInput(input, candidate, side)), own = state[ownKey];
     const bindings = [...stateBindings(state, side), ...stateBindings(state, enemy).map((b) => ({ ...b, enemy: true }))].filter((b) => !input.disabledSkillIds.includes(b.skill.id));
-    const recipe = compileRecipe(bindings, shares, curves);
+    const recipe = compileRecipe(bindings, shares, curves, projection, ownAlive);
     for (const [troop, t] of TROOP_TYPES.entries()) {
       const unit = own.troops[t];
       const factor = (attr: "attack" | "penetration" | "defense" | "life") => 1 + resolveTroopAttribute(own, t, attr, 1, { targetTroop: "shield", damageType: "normalAttack" }).effectiveValue;
@@ -195,7 +233,7 @@ export function createJointCoefficientTable(input: OptimizationInput, config: Op
     return recipe;
   });
   const routes: Route[] = [...new Set([...headRecipes, ...bodyRecipes].flatMap((r) => [...r.linear.keys()]))].sort().map((key) =>
-    ({ key, lane: Number(key.split("|")[0]), inverse: key.includes("|inverse:") }));
+    ({ key, lane: Number(key.split("|")[0]), inverse: key.includes("|inverse:"), procVulnerability: key.endsWith("|incomingDamageIncrease:vulnerability:") }));
   const headValues = Float64Array.from(headRecipes.flatMap((r) => routes.map((g) => r.linear.get(g.key) ?? 0)));
   const headFactors = new Float64Array(heads.length * 12).fill(1);
   for (let head = 0; head < heads.length; head++) for (const [i, route] of routes.entries()) {
@@ -220,7 +258,7 @@ export function createJointCoefficientTable(input: OptimizationInput, config: Op
   });
   // Scope projection uses the fixed opponent's typed extra-attack channels;
   // direct S/O bases never divide by opponent unit damage or HP.
-  const enemyRecipe = compileRecipe(stateBindings(createValidationPreviewState(input), enemy), shares);
+  const enemyRecipe = compileRecipe(stateBindings(preview, enemy).filter(b => !input.disabledSkillIds.includes(b.skill.id)), shares, curves, projection, ownAlive, false);
   const normal = 3 + enemyRecipe.channels.slice(0, 3).reduce((a, b) => a + b, 0), skill = enemyRecipe.channels.slice(3).reduce((a, b) => a + b, 0);
   return { headCount: heads.length, bodyCount: bodies.length, headBase: base, routes, headValues, headFactors,
     bodyOffsets: Uint32Array.from(offsets), bodyTerms: Uint32Array.from(terms), bodyValues: Float64Array.from(values),
@@ -229,21 +267,30 @@ export function createJointCoefficientTable(input: OptimizationInput, config: Op
       head: Float64Array.from(headRecipes.flatMap((r) => [...r.markPremiums.get(key) ?? new Float64Array(6)])),
       body: Float64Array.from(bodyRecipes.flatMap((r) => [...r.markPremiums.get(key) ?? new Float64Array(6)])),
     })),
+    mainTargetWeights: Float64Array.from(heads.flatMap(() => projection.weights)),
+    procOverlaps: [...new Set(headRecipes.flatMap(r => [...r.procPresence.keys()]))].map(key => ({
+      head: Float64Array.from(headRecipes.map(r => r.procPresence.get(key) ?? 0)),
+      body: Float64Array.from(bodyRecipes.map(r => r.procPresence.get(key) ?? 0)),
+      coefficient: .5 * (DAMAGE_HORIZON - 1) / DAMAGE_HORIZON,
+    })),
     reductions, incomingNormalShare: normal / (normal + skill) };
 }
 /** Scratch arrays and compact lookups only on the per-pair hot path. */
 export function combineJointCoefficients(table: JointCoefficientTable, head: number, body: number, s: Float64Array, o: Float64Array, scratch: Float64Array): void {
   for (let lane = 0; lane < 12; lane++) scratch[lane] = table.headFactors[head * 12 + lane]!;
+  let procOverlap = 0;
+  for (const family of table.procOverlaps ?? []) procOverlap += family.head[head]! * family.body[body]! * family.coefficient;
   // Replace a Head group's factor with its summed Head+Body factor. Work is
   // proportional to this Body's sparse terms, not all registry groups.
   for (let cursor = table.bodyOffsets[body]!; cursor < table.bodyOffsets[body + 1]!; cursor++) {
     const i = table.bodyTerms[cursor]!, route = table.routes[i]!, base = Math.max(1e-9, 1 + table.headValues[head * table.routes.length + i]!);
-    const factor = Math.max(1e-9, base + table.bodyValues[cursor]!) / base;
+    const overlap = route.procVulnerability ? procOverlap : 0;
+    const factor = Math.max(1e-9, base + table.bodyValues[cursor]! - overlap) / base;
     scratch[route.lane]! *= route.inverse ? 1 / factor : factor;
   }
   for (const r of table.reductions) scratch[r.lane]! *= r.values[r.headIds[head]! * r.bodyTypes + r.bodyIds[body]!]!;
   for (let i = 0; i < 3; i++) {
-    const normal = 1 + table.headChannels[head * 6 + i]! + table.bodyChannels[body * 6 + i]!;
+    const normal = (table.mainTargetWeights?.[head * 3 + i] ?? 1) + table.headChannels[head * 6 + i]! + table.bodyChannels[body * 6 + i]!;
     let skill = table.headChannels[head * 6 + 3 + i]! + table.bodyChannels[body * 6 + 3 + i]!;
     for (const correction of table.markCorrections ?? []) skill -= Math.min(correction.head[head * 6 + 3 + i]!, correction.body[body * 6 + 3 + i]!);
     s[i] = table.headBase[head * 6 + i]! / (table.incomingNormalShare / scratch[i]! + (1 - table.incomingNormalShare) / scratch[3 + i]!);

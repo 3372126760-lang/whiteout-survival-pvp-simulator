@@ -66,7 +66,7 @@ export interface JointJLineage {
   readonly jRetentionRatio?: number;
   readonly jLoss?: number;
 }
-export type RecallSource = "globalTopJ" | "perHeadBestJ" | "currentConfig" | "protectedReference";
+export type RecallSource = "globalTopJ" | "perHeadBestJ" | "currentConfig" | "protectedReference" | "localBattleNeighbor";
 export interface RecallAudit {
   globalTopJCount: number; perHeadProtectedK: number; perHeadRawCount: number; perHeadUniqueCount: number;
   overlapWithGlobalTopJ: number; mergedRecallCount: number; addedOnlyByPerHeadCount: number;

@@ -13,7 +13,7 @@ type OptimizerRequest =
     readonly options: ThreeQueueOptimizationOptions }
   | { readonly task: "optimizeInnerEarth"; readonly input: ValidationBattleInput;
     readonly options: InnerEarthOptimizationOptions }
-  | { readonly task: "verify"; readonly input: ValidationBattleInput; readonly candidate: RallyCandidate; readonly trials: number; readonly firstSeed: number; readonly candidateSide?: "A" | "B" };
+  | { readonly task: "verify"; readonly input: ValidationBattleInput; readonly candidate: RallyCandidate; readonly trials: number; readonly firstSeed: number; readonly candidateSide?: "A" | "B"; readonly objectiveMode?:OptimizationConfig["objectiveMode"] };
 
 self.onmessage = (event: MessageEvent<OptimizerRequest>) => {
   void handleRequest(event.data);
@@ -24,7 +24,7 @@ async function handleRequest(data: OptimizerRequest) {
   try {
     if (data.task === "verify") {
       const evaluation = verifyRallyCandidate(data.input, data.candidate,
-        data.trials, data.firstSeed, data.candidateSide);
+        data.trials, data.firstSeed, data.candidateSide,data.objectiveMode);
       self.postMessage({ type: "verified", evaluation });
       return;
     }
